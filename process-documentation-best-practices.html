@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Process Documentation Best Practices: How to Write Docs People Actually Use</title>
+<meta name="description" content="Process documentation best practices for small teams — why docs rot, the write-where-you-work rule, and a maintenance loop that keeps them alive.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header><a href="/index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>Process Documentation Best Practices: How to Write Docs People Actually Use</h1>
+<p>Teams don't resist documentation; they resist documentation that doesn't pay for its upkeep. A doc that's three months stale teaches people to ignore all docs. The best practices below are less about writing style and more about placement, ownership, and the maintenance loop that keeps a process document trustworthy after the person who wrote it moves on.</p>
+<h2>Start with the trigger, not the procedure</h2>
+<p>Strong process docs open with one sentence: "Do this when [trigger]." The trigger is what makes a doc findable and memorable — people remember situations, not titles. "Run this when a customer asks for a refund over $200" beats "Refund Policy — Section 4." If you can't state the trigger, you don't understand the process well enough to document it yet, and that's a useful discovery before writing.</p>
+<h2>Best practices that survive contact with real teams</h2>
+<p><strong>Name an owner for every doc.</strong> One person accountable for accuracy, not a committee. When something in the process changes, the owner updates the doc or delegates it explicitly. Ownerless docs rot in silence.</p>
+<p><strong>Write to the newest team member.</strong> If the newest hire can follow the doc without a private explanation, it's done. This forces you to spell out tribal knowledge — the acronyms, the "obviously send it to Dana" steps — which is exactly what walks out the door during turnover.</p>
+<p><strong>Capture the exception, not just the path.</strong> The happy path is easy. The doc earns its keep by listing the two or three common exceptions and what to do: "If the payment fails twice, do X." Teams abandon docs the first time reality doesn't match them.</p>
+<p><strong>Keep one source of truth.</strong> If the same procedure exists in a wiki, a Notion page, and someone's desktop file, people will follow the wrong one. Archive duplicates visibly — a big "SUPERSEDED" header, not a silent delete.</p>
+<p><strong>Link artifacts, don't describe them.</strong> Instead of "use the standard template," embed or link the actual template. Every step of indirection is a chance for the reader to stall and message someone instead.</p>
+<h2>The maintenance loop that prevents rot</h2>
+<p>Set three simple rules and write them on every doc template: (1) every doc shows its last-updated date and owner; (2) whoever finds the doc wrong fixes it in the same session — a two-minute edit, not a ticket; (3) a doc untouched for 90 days gets a scheduled 10-minute review or an explicit "still valid" stamp. This turns maintenance from a project into a habit attached to real use, which is the only time maintenance actually happens.</p>
+<h2>Honest limits</h2>
+<p>Process documentation has a real cost: time spent writing is time not doing, and for tiny teams the crossover point matters. Document only processes that repeat often enough to justify it, break often enough to hurt, or get handed to someone new. And documentation never replaces judgment — a doc that tries to cover every case becomes unreadable. Cover the common 80%, mark the rest "ask the owner," and keep the doc short enough that people read it all.</p>
+<h2>Toolkit to run alongside</h2>
+<ul>
+<li><strong>[Ops Starter Kit — $14](https://payhip.com/b/XAmBi)</strong> — pre-built checklist and planning templates that serve as the artifacts your process docs point to, saving you the from-scratch setup work. Digital download, buy once.</li>
+<li><strong>[Greyscale Mockup Kit — $9](https://payhip.com/b/OwUNc)</strong> — for documenting your product or publishing pipeline visually, greyscale mockups make docs and announcements clearer. Digital download, buy once.</li>
+</ul>
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ohrpxa">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/xcinut">Greyscale Mockup Kit</a> — $9 mockup workflow pack</li></ul><p class="hint">Store links are live; the article pages themselves publish when the launch clears.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="/incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams (1-50 People)</a></li>
+<li><a href="/severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+<li><a href="/sop-checklist-template.html">SOP Checklist Template: The 10-Part Structure That Actually Gets Followed</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>

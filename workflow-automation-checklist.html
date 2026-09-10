@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workflow Automation Checklist: What to Automate First (and What to Leave Alone)</title>
+<meta name="description" content="A decision checklist for small-team workflow automation: the 4 questions that pick your first candidate, the 3 red flags that mean don&#x27;t automate yet, and how to keep a human in the loop.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header><a href="/index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>Workflow Automation Checklist: What to Automate First (and What to Leave Alone)</h1>
+<p>The first automation a small team builds is usually the wrong one — the exciting</p>
+<p>one, not the valuable one. This checklist is the boring filter that picks candidates</p>
+<p>that actually pay back, in the order that matters.</p>
+<h2>The 4 questions (in order)</h2>
+<ol>
+<li><strong>Does this happen at least weekly?</strong> Automation pays back through repetition.</li>
+</ol>
+<p>   A once-a-quarter task that takes 10 minutes isn't worth the build, even if the</p>
+<p>   build is fun.</p>
+<ol>
+<li><strong>Is the task's rule writable in one sentence?</strong> "Every completed order gets a</li>
+</ol>
+<p>   confirmation email" — writable. "Review whether this lead looks promising" — not</p>
+<p>   yet. If you can't state the rule in one sentence, you don't understand the task</p>
+<p>   well enough to delegate it to a machine.</p>
+<ol>
+<li><strong>Is failure visible within a day?</strong> Good automation candidates fail loudly or</li>
+</ol>
+<p>   observably (email didn't send, invoice missing). Bad candidates fail silently for</p>
+<p>   weeks (data enrichment, anything where wrong output looks like right output).</p>
+<ol>
+<li><strong>Can a human check the output in under a minute?</strong> If verification is expensive,</li>
+</ol>
+<p>   you've automated the task and manualized the review — the worst trade.</p>
+<p>Four yeses = automate next sprint. Two or fewer = leave it alone for now.</p>
+<h2>The 3 red flags (any one means don't automate yet)</h2>
+<ul>
+<li><strong>The process changed in the last month.</strong> You'd be automating a snapshot of a</li>
+</ul>
+<p>  moving process. Stabilize first.</p>
+<ul>
+<li><strong>Nobody currently does the task end-to-end.</strong> Automation needs a reference</li>
+</ul>
+<p>  human; without one there's no ground truth to check against.</p>
+<ul>
+<li><strong>The task exists to catch rare, expensive errors.</strong> Human review IS the control</li>
+</ul>
+<p>  here; automate the <em>logging</em>, not the <em>judgment</em>.</p>
+<h2>Keep a human in the loop, cheaply</h2>
+<ul>
+<li>Run automation in "shadow mode" for the first week: it does the work, a human</li>
+</ul>
+<p>  spot-checks, nothing goes to customers yet.</p>
+<ul>
+<li>Define the kill switch before launch: the one command or flag that stops it, and</li>
+</ul>
+<p>  the name of the person allowed to pull it.</p>
+<ul>
+<li>Log every run — input, output, and whether the checker agreed — even informally.</li>
+</ul>
+<p>  That log is your evidence for expanding the automation (or the reason to kill it).</p>
+<h2>What to automate first (typical small-team pattern)</h2>
+<p>Confirmation emails, invoice generation and reminders, report generation, backup</p>
+<p>verification alerts, repetitive data-entry between two tools you control. All four</p>
+<p>yeses, usually. What to leave alone: anything involving judgment about people —</p>
+<p>hiring, pricing decisions, escalating an angry customer. Automate the *paperwork</p>
+<p>around* those, never the decision.</p>
+<p>The template version of this checklist (with the shadow-mode run sheet) is in our</p>
+<p><strong>Ops Starter Kit</strong> — link goes live when our payout rail unlocks.</p>
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ohrpxa">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/xcinut">Greyscale Mockup Kit</a> — $9 mockup workflow pack</li></ul><p class="hint">Store links are live; the article pages themselves publish when the launch clears.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="/small-business-automation-ideas.html">Small Business Automation Ideas: 12 Workflows Worth Automating First</a></li>
+<li><a href="/ai-automation-templates-solo-founders.html">AI Automation Templates for Solo Founders: 5 Workflows Worth Setting Up First</a></li>
+<li><a href="/employee-onboarding-checklist-template.html">Employee Onboarding Checklist Template: The First 30 Days, Planned</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>

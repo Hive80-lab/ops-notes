@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Response Plan Template for Small Teams (1-50 People)</title>
+<meta name="description" content="A one-page incident response plan template small teams actually use at 2 a.m.: who declares, what to shut down first, who talks. Fill-in-the-blanks, no security staff required.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header><a href="/index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>Incident Response Plan Template for Small Teams (1–50 People)</h1>
+<p>Small teams don't need a 40-page incident response policy. They need one page with</p>
+<p>three answers written down: who declares an incident, what gets shut down first, and</p>
+<p>who talks. This template gives you that page with fill-in-the-blank sections, sized</p>
+<p>for 1–50 people with no dedicated security staff.</p>
+<h2>Section 1 — Declaration</h2>
+<ul>
+<li><strong>Incident declarer:</strong> [name] · Backup: [name]</li>
+<li><strong>What counts as an incident</strong> (behavioral, not adjectives):</li>
+</ul>
+<p>  - a system needed for work is inaccessible,</p>
+<p>  - business or customer data is exposed, moving, or requested by someone you can't verify,</p>
+<p>  - a ransom note, extortion message, or payment-fraud attempt appears.</p>
+<p>The declarer's only job is to say "this is now an incident" and start the page. They</p>
+<p>don't need to be the most technical person in the room — they need authority and a</p>
+<p>phone.</p>
+<h2>Section 2 — Containment order</h2>
+<p>| If you see… | Do this first | Who may pull the plug |</p>
+<p>|---|---|---|</p>
+<p>| Ransom note / files encrypting | Isolate machines, cut shared drives, protect backups | [name] |</p>
+<p>| Fraud / impostor requests money | Freeze money movement; call the bank; keep systems up to investigate | [name] |</p>
+<p>| Unknown breach symptoms | Snapshot logs, then follow the fraud or ransom path per evidence | [name] |</p>
+<p>The opposite instincts are the trap: ransomware wants you offline fast, payment fraud</p>
+<p>wants systems up and money frozen. Decide the order on a calm day, not during the</p>
+<p>incident.</p>
+<h2>Section 3 — Communications</h2>
+<ul>
+<li><strong>Spokesperson:</strong> [name] · Backup: [name]</li>
+<li><strong>Staff first message:</strong> what's happening in one sentence, what changes now, where</li>
+</ul>
+<p>  updates land, when the next update comes.</p>
+<ul>
+<li><strong>Customer first message:</strong> what you know, what you don't, what you're doing, when</li>
+</ul>
+<p>  you'll write again. No speculation, no confirmation you can't support yet.</p>
+<h2>Severity levels (keep it to three)</h2>
+<ul>
+<li><strong>S1 — burning:</strong> data or money actively leaving, or the business is down. Respond</li>
+</ul>
+<p>  in 15 minutes; escalate to [name] at 2 hours.</p>
+<ul>
+<li><strong>S2 — limping:</strong> degraded, contained, or unconfirmed. Same-day fix; escalate at 3 days.</li>
+<li><strong>S3 — ugly:</strong> no active harm. Log it, review weekly.</li>
+</ul>
+<h2>After the incident</h2>
+<p>One debrief page, same day or next: timeline, what worked, what to change in this</p>
+<p>template. Update the template — it's the only artifact that gets better for free.</p>
+<p>The full kit version of this template (with the statement drafts, severity table, and</p>
+<p>a facilitator script for a 45-minute tabletop exercise) is in our <strong>Ops Starter Kit</strong> —</p>
+<p>link goes live when our payout rail unlocks.</p>
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ohrpxa">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/xcinut">Greyscale Mockup Kit</a> — $9 mockup workflow pack</li></ul><p class="hint">Store links are live; the article pages themselves publish when the launch clears.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="/first-30-minutes-incident-response.html">The 3 Questions Your IR Plan Must Answer in the First 30 Minutes</a></li>
+<li><a href="/severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+<li><a href="/content-calendar-template.html">Content Calendar Template for Solo Creators: Plan a Month in One Sitting</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>

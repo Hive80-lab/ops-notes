@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 5 Failure Points a Small-Team Tabletop Will Find (Before a Real Incident Does)</title>
+<meta name="description" content="A small-team tabletop is just walking through &#x27;every file server shows an extortion note&#x27; out loud. These five failure points show up in nearly every team: no decision-maker, backups in the same breach, no pre-written messages, stale access, unread plans.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header><a href="/index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>The 5 Failure Points a Small-Team Tabletop Will Find (Before a Real Incident Does)</h1>
+<p>A tabletop exercise sounds like enterprise theatre: a conference room, a</p>
+<p>facilitator, a binder. But the small-team version is just walking through</p>
+<p>"it's 9am Tuesday and every file server shows an extortion note" out loud,</p>
+<p>with your actual people, and writing down what you didn't have an answer to.</p>
+<p>The value isn't the ceremony — it's that the gaps surface in a room instead of</p>
+<p>at 2am.</p>
+<p>Run any of the classic walkthroughs — ransomware, business email compromise,</p>
+<p>a credential spray against your admin accounts, a leaver who still has access,</p>
+<p>a supplier breach on your shared drive — and the same handful of failure</p>
+<p>points shows up in nearly every small team:</p>
+<h2>1. Nobody knows who decides</h2>
+<p>The single most common gap. Ask "who is authorised to unplug the file server?"</p>
+<p>and the room goes quiet. Not "who can" — anyone can pull a cable. Who</p>
+<p><em>decides</em>. If that isn't written down before the incident, the decision gets</p>
+<p>made by whoever panics first.</p>
+<h2>2. The backups restore into the same breach</h2>
+<p>Everyone knows they have backups. Far fewer teams have walked the question:</p>
+<p>if ransomware encrypts the NAS, do the backups live somewhere the attacker</p>
+<p>also reached? Walkthroughs surface this in five minutes. Real incidents</p>
+<p>surface it at restore time, when it's too late.</p>
+<h2>3. No message was ever written</h2>
+<p>Someone has to tell staff what to do right now, and someone has to answer</p>
+<p>the first customer email. Teams that haven't pre-written those two messages</p>
+<p>lose hours drafting them mid-incident — or worse, say nothing and let</p>
+<p>rumours run. Two half-page templates, written on a calm day, fix this.</p>
+<h2>4. Access nobody removed</h2>
+<p>The tabletop asks: who has admin access today? The honest answer in most</p>
+<p>small teams is "more people than we meant". Old suppliers, ex-contractors,</p>
+<p>shared passwords in a spreadsheet. The exercise turns that into a one-hour</p>
+<p>cleanup task instead of an incident-scoping nightmare.</p>
+<h2>5. The plan lives in a drawer</h2>
+<p>Every walkthrough ends the same way: the "plan" was a document nobody had</p>
+<p>read. The fix isn't more documentation — it's a one-page fill-in plan with</p>
+<p>named roles, plus short checklists people can actually follow under stress.</p>
+<p>Print it. Tape it near the router if you have to.</p>
+<p>---</p>
+<p>None of these are exotic. All of them are findable in an afternoon with five</p>
+<p>pre-built scenario scripts and a facilitator page. The Ops Starter Kit</p>
+<p>includes five walkthrough scenarios (ransomware, BEC, credential spray,</p>
+<p>insider, supplier breach) with the questions and failure points above</p>
+<p>pre-written into the facilitator notes.</p>
+<p>*This is general guidance, not legal or regulatory advice. Adapt every template</p>
+<p>to your own environment.*</p>
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ohrpxa">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/xcinut">Greyscale Mockup Kit</a> — $9 mockup workflow pack</li></ul><p class="hint">Store links are live; the article pages themselves publish when the launch clears.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="/severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+<li><a href="/first-30-minutes-incident-response.html">The 3 Questions Your IR Plan Must Answer in the First 30 Minutes</a></li>
+<li><a href="/incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams (1-50 People)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>

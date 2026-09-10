@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Severity Levels: Why 3 Levels Beat 5 for Small Teams</title>
+<meta name="description" content="A five-level severity matrix is five chances to argue instead of act when you have no SOC. Three levels — stop everything, contain, schedule — name the first move in seconds.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header><a href="/index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>Severity Levels: Why 3 Levels Beat 5 for Small Teams</h1>
+<p>Ask a small team what "P3" means and you'll get five different answers. That's</p>
+<p>the core failure of enterprise-grade severity matrices: they assume a 24/7 SOC</p>
+<p>where a matrix is a routing table for on-call engineers. If you have ten people</p>
+<p>and no security staff, a five-level matrix isn't precision — it's five chances</p>
+<p>to argue instead of act.</p>
+<h2>Why 5 levels fail</h2>
+<p>Two reasons, both practical:</p>
+<ol>
+<li><strong>Distinctions nobody can enforce.</strong> The difference between a P2 and a P3</li>
+</ol>
+<p>   on paper is usually response-time targets like "1 hour vs 4 hours". In a</p>
+<p>   small team, nobody is timing it. When the targets aren't real, the levels</p>
+<p>   aren't real, and the matrix becomes decoration.</p>
+<ol>
+<li><strong>Triage debt.</strong> Under pressure, every extra level is a decision you have</li>
+</ol>
+<p>   to make before you're allowed to act. Three levels get decided in seconds.</p>
+<p>   Five get debated for twenty minutes while the incident runs.</p>
+<h2>Why 3 levels stick</h2>
+<p>Three maps to what a small team can actually do:</p>
+<ul>
+<li><strong>SEV1 — stop everything.</strong> Something is actively spreading or customers are</li>
+</ul>
+<p>  impacted. Cancel whatever you were doing; the whole team is on this.</p>
+<ul>
+<li><strong>SEV2 — contain, then continue.</strong> A machine or account is compromised but</li>
+</ul>
+<p>  it's not spreading. Isolate it, keep the business running, fix inside the day.</p>
+<ul>
+<li><strong>SEV3 — schedule it.</strong> Something is wrong but not on fire. It gets a ticket</li>
+</ul>
+<p>  and a date. No midnight wakes.</p>
+<p>The only rule that matters: <strong>the level names the first move.</strong> One look, one</p>
+<p>decision. If your matrix doesn't tell you what to do in the first ten minutes,</p>
+<p>it isn't a matrix — it's a taxonomy.</p>
+<h2>What belongs next to it</h2>
+<p>A severity level without authority attached is just a label. Your matrix</p>
+<p>should say, per level: who can declare it, who can pull machines off the</p>
+<p>network, and who talks to customers. Small teams skip this because it feels</p>
+<p>like overkill — until the day everyone waits for someone else to decide.</p>
+<p>---</p>
+<p>The full matrix in the Ops Starter Kit is three levels with escalation</p>
+<p>authority, example triggers, and first moves pre-filled — plus the tabletop</p>
+<p>exercises that let you find out where your own team disagrees <em>before</em> a real</p>
+<p>incident does it for you.</p>
+<p>*This is general guidance, not legal or regulatory advice. Adapt every template</p>
+<p>to your own environment.*</p>
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ohrpxa">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/xcinut">Greyscale Mockup Kit</a> — $9 mockup workflow pack</li></ul><p class="hint">Store links are live; the article pages themselves publish when the launch clears.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="/first-30-minutes-incident-response.html">The 3 Questions Your IR Plan Must Answer in the First 30 Minutes</a></li>
+<li><a href="/incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams (1-50 People)</a></li>
+<li><a href="/tabletop-exercise-failure-points.html">The 5 Failure Points a Small-Team Tabletop Will Find (Before a Real Incident Does)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
