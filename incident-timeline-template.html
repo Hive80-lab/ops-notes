@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Timeline Template: The 5 Timestamps Every Postmortem Needs</title>
+<meta name="description" content="A one-page incident timeline template for small teams: the five timestamps that turn a messy Slack scroll-back into a postmortem you can actually learn from. Free, copy-paste.">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/incident-timeline-template.html">
+</head>
+<body>
+<main>
+<article>
+<h1>Incident Timeline Template: The 5 Timestamps Every Postmortem Needs</h1>
+<p>Every postmortem fight starts the same way: someone scrolls back through the group chat
+trying to reconstruct what happened, and two people disagree about when the alerts first fired.
+The whole review stalls on archaeology. The fix takes one page and five timestamps, written
+<em>during</em> the incident instead of after it.</p>
+
+<h2>Why "we'll reconstruct it later" never works</h2>
+<p>At 2am nobody is taking clean notes. Messages get edited, threads fork, and by the time the
+postmortem runs, the timeline is a negotiation. The five timestamps below take seconds each to
+write down while they're true &mdash; and they're the only facts a review actually needs to start.</p>
+
+<h2>The five timestamps</h2>
+<ol>
+<li><strong>Detect &mdash; the moment anyone noticed.</strong> Not when the alert fired; when a
+human first looked at it. The gap between those two is your alerting reality, not your alerting plan.</li>
+<li><strong>Declare &mdash; one sentence, out loud.</strong> "I'm declaring an incident: what we see,
+when we first saw it, I'm running this until someone takes over." If nobody declared, the timeline
+starts at the first message that reads like a declaration, and that's a finding.</li>
+<li><strong>Mitigate &mdash; first action that reduced impact.</strong> The rollback, the feature flag,
+the restart. If you can't point to one, the outage length equals the root-cause hunt, and that's a finding.</li>
+<li><strong>Resolve &mdash; back to normal, verified.</strong> Not "we think it's fine" &mdash; the
+check you ran that proved it. No verify step means the postmortem starts with a heated debate.</li>
+<li><strong>Notify &mdash; each stakeholder message, sent.</strong> Customers, the boss, the team.
+Timestamped, so comms latency becomes a number instead of a feeling.</li>
+</ul>
+
+<h2>The one-line format</h2>
+<p>One channel, one thread, append-only. Each entry is a single line:</p>
+<p><code>[HH:MM] &lt;name&gt; &lt;event&gt; &mdash; &lt;evidence&gt;</code></p>
+<p>Example: <code>[02:41] Ana MITIGATED &mdash; rolled back checkout build 4312; error rate 14% &rarr; 2%</code>.
+The evidence half is what makes the line trustworthy at review time.</p>
+
+<h2>Where it goes wrong in practice</h2>
+<ul>
+<li><strong>The log lives in DMs.</strong> If the timeline isn't in the incident channel, it doesn't exist.</li>
+<li><strong>Timestamps get rewritten after the fact.</strong> Append-only, or the review is theater.</li>
+<li><strong>One person keeps the timeline and also fixes the problem.</strong> Split the roles or the log dies mid-fire.</li>
+<li><strong>Entries without evidence.</strong> "09:14 restarted" is a diary; "09:14 rolled back, error rate 14&rarr;2%" is a fact.</li>
+</ul>
+
+<h2>The 20-minute version</h2>
+<p>Paste five lines into your incident channel template today &mdash; DETECTED, DECLARED,
+MITIGATED, RESOLVED, NOTIFIED &mdash; with the format above. Run it on the next outage, however small.
+The first postmortem that starts with five timestamps instead of a scroll-back will sell your team
+on the whole idea by itself.</p>
+
+<p>If you'd rather start from a pre-written page, we keep the one-page version &mdash; the exact
+first-30-minutes card our crew runs, with the timeline format and the comms prompts filled in &mdash;
+as a free checklist: <a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes (free)</a>.
+The paid kit adds the comms templates and the full runbook: <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit ($14)</a>.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li></ul><p class="hint">Free card first; the paid kit is for teams that want the full bridge.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="the-2am-test-incident-handoff.html">The 2am Test: Can Someone Else Run Your Incident Bridge Tonight?</a></li>
+<li><a href="first-30-minutes-incident-response.html">The 3 Questions Your IR Plan Must Answer in the First 30 Minutes</a></li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams</a></li>
+<li><a href="severity-matrix-3-levels.html">A Severity Matrix Small Teams Will Actually Use</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
