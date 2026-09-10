@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Response Changelog Automation: Keep the 2am Log Without Relying on 2am Memory</title>
+<meta name="description" content="How to automate an incident response changelog for a small team: log templates, a copy-paste timestamp script, chat-channel logging, snapshot options, and what you should never automate.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header><a href="/index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>Incident Response Changelog Automation: Keep the 2am Log Without Relying on 2am Memory</h1>
+<p>Every serious incident ends the same way: someone asks "when did this start,</p>
+<p>exactly, and who changed what?" The teams that can answer have a changelog —</p>
+<p>one append-only, timestamped record of what was seen, decided, and done. The</p>
+<p>teams that can't answer are reconstructing the night from memory, chat</p>
+<p>scrollback, and guesses.</p>
+<p>An incident response changelog is not documentation. It's a running log with</p>
+<p>three rules: <strong>one place, timestamps on everything, append only.</strong> You never</p>
+<p>edit an old entry — you add a correction as a new entry. This page covers how</p>
+<p>small teams keep that log, and which parts of it are worth automating.</p>
+<h2>The log format (30 seconds to learn)</h2>
+<p>Each entry: <code>HH:MM INITIALS — what was observed/decided/done</code>.</p>
+<ul>
+<li><code>14:05 JT — customer reports "can't open invoices" (email quote)</code></li>
+<li><code>14:07 JT — file server shows ransom note; screenshot saved to inc-0911/</code></li>
+<li><code>14:09 PM — DECISION: payments provider will be disconnected (owner: PM)</code></li>
+<li><code>14:12 PM — correction to 14:09: disconnect sync client too, not just the share</code></li>
+</ul>
+<p>That's the whole format. The dash matters more than the tool. Entries start</p>
+<p>with what was <em>observed</em> (a fact) versus what was <em>decided</em> (a call someone</p>
+<p>made) versus what was <em>done</em> (an action). Insurance claims, police reports,</p>
+<p>and post-mortems all consume the same three categories.</p>
+<h2>What to automate first: timestamps and the incident folder</h2>
+<p>The highest-value automation is the most boring one: make the correct</p>
+<p>behaviour the easy behaviour. Two options teams actually keep using after</p>
+<p>week one:</p>
+<p><strong>Option 1 — a timestamp helper on every desk.</strong> A one-liner that prints a</p>
+<p>ready-made log line (current time + your initials) that you paste your note</p>
+<p>onto. On macOS/Linux, a tiny alias does it:</p>
+<pre><code># ~/.zshrc — `ilog JT did X` -&gt; &quot;14:07 JT — did X&quot;
+ilog() { printf &#x27;%(%H:%M)T %s — %s\n&#x27; -1 &quot;${1:-?}&quot; &quot;${*:2}&quot; | tee -a ~/Desktop/incident.log; }</code></pre>
+<p>On Windows, the same job is a two-line PowerShell function that echoes</p>
+<p><code>Get-Date -Format "HH:mm"</code> in front of the text. The point is not the shell —</p>
+<p>it's that the timestamp is never typed by a human at 2am, because tired</p>
+<p>people mistype timestamps and wrong timestamps poison the timeline.</p>
+<p><strong>Option 2 — the incident folder script.</strong> One command creates the structure</p>
+<p>you'll need by minute five, so nobody invents a folder structure mid-incident:</p>
+<pre><code>#!/bin/sh
+# newincident.sh &quot;short name&quot; — creates inc-YYYYMMDD/
+D=$(date +%Y%m%d)-&quot;$1&quot;
+mkdir -p &quot;$D&quot;/screenshots
+echo &quot;# log — append only&quot; &gt; &quot;$D&quot;/log.txt
+date &quot;+%H:%M — incident declared: $D&quot; &gt;&gt; &quot;$D&quot;/log.txt
+echo &quot;$D&quot;</code></pre>
+<p>Run it, and everything that follows — screenshots, log, comms drafts, hashes</p>
+<p>of affected files — has somewhere to live from the first minute.</p>
+<h2>Chat-channel logging: the automation most teams already have</h2>
+<p>If your team lives in Slack/Teams/WhatsApp, your cheapest changelog is a</p>
+<p><strong>dedicated incident channel</strong> plus one rule: <em>every</em> message starts with a</p>
+<p>timestamp. Most chat platforms can give you this semi-automatically:</p>
+<ul>
+<li><strong>Slack/Teams:</strong> create a workflow or scheduled-reminder template that</li>
+</ul>
+<p>  prompts the owner for a status line every 30 minutes. The prompt is the</p>
+<p>  automation — it forces the log to stay alive without anyone remembering.</p>
+<ul>
+<li><strong>The 30-minute heartbeat:</strong> `14:30 STATUS: still isolated, awaiting</li>
+</ul>
+<p>  restore verdict — PM`. If a heartbeat has no reply, that itself is a signal</p>
+<p>  the incident has lost its owner.</p>
+<p>What you <em>don't</em> do is automate the writing of the log with AI summarisers</p>
+<p>during the incident. Summarise in the post-mortem, by all means — but the</p>
+<p>live record must be exactly what a human typed at the time. A log that a</p>
+<p>model can quietly rewrite is not evidence, and insurers and lawyers care</p>
+<p>about the difference.</p>
+<h2>Snapshots: the changelog that writes itself</h2>
+<p>Some of the best incident changelog entries are automatic because they're</p>
+<p>just copies:</p>
+<ul>
+<li><strong>Screenshot immediately, rename later.</strong> The filename is metadata you can</li>
+</ul>
+<p>  fix; the pixels are the evidence.</p>
+<ul>
+<li><strong>Keep the system log.</strong> Before rebooting or wiping anything, copy the</li>
+</ul>
+<p>  machine's own logs (Windows Event Logs, macOS <code>log show</code>, syslog) into the</p>
+<p>  incident folder. The machine's timestamps are independent of human memory.</p>
+<ul>
+<li><strong>Hash the affected files</strong> if you can: <code>shasum -a 256 file &gt; hashes.txt</code>.</li>
+</ul>
+<p>  Later, proving "this file is the same one we saw at 14:07" is worth five</p>
+<p>  minutes of calm-day learning.</p>
+<h2>What not to automate</h2>
+<p>Three things resist automation, and trying to automate them is how teams end</p>
+<p>up with logs nobody trusts:</p>
+<ol>
+<li><strong>The decision record.</strong> "PM decided to disconnect" is a human call. The</li>
+</ol>
+<p>   log can remind you (a template line with DECISION: in it), but the entry</p>
+<p>   itself must come from the person who made the call.</p>
+<ol>
+<li><strong>The customer timeline.</strong> Auto-announcing "we are experiencing issues"</li>
+</ol>
+<p>   to every customer the moment a script fires is a good way to turn a</p>
+<p>   contained incident into a public one. Comms are deliberate, scheduled,</p>
+<p>   human.</p>
+<ol>
+<li><strong>Severity changes.</strong> Automated alerts will happily reclassify your</li>
+</ol>
+<p>   incident six times an hour. In the log, severity changes only when the</p>
+<p>   incident owner writes it.</p>
+<h2>Calm-day checklist (20 minutes, once)</h2>
+<ul>
+<li>[ ] Create the <code>ilog</code> helper or its Windows equivalent on the two machines</li>
+</ul>
+<p>      most likely to be awake at 2am.</p>
+<ul>
+<li>[ ] Save <code>newincident.sh</code> (or a folder template) somewhere obvious.</li>
+<li>[ ] Create the incident chat channel <strong>now</strong>, name it, pin the log format.</li>
+<li>[ ] Put the 30-minute status reminder template in the channel.</li>
+<li>[ ] Print the one-page First 30 Minutes checklist and put it where the</li>
+</ul>
+<p>      backup drive is — same cupboard, same crisis.</p>
+<p>That's the whole automation layer. It's deliberately small: the failure mode</p>
+<p>of small teams isn't "not enough tooling", it's "the plan existed but nobody</p>
+<p>could run it at 2am". Automate the typing; keep the thinking human.</p>
+<h2>Related pages</h2>
+<ul>
+<li>[The First 30 Minutes: what to do while it's happening](first-30-minutes-incident-response.html)</li>
+<li>[Incident response plan template for small teams](incident-response-plan-template-small-teams.html)</li>
+<li>[Severity matrix: why 3 levels stick](severity-matrix-3-levels.html)</li>
+<li>[Tabletop exercises: the 5 failure points](tabletop-exercise-failure-points.html)</li>
+</ul>
+<h2>Templates</h2>
+<p>The free [First 30 Minutes checklist](https://hive80lab.gumroad.com/l/first-30-minutes)</p>
+<p>includes the log format and declaration sentence. The</p>
+<p>[Ops Starter Kit](https://hive80lab.gumroad.com/l/ops-starter-kit) ($14) adds</p>
+<p>the fill-in IR plan, comms templates, and five tabletop exercises that</p>
+<p>pressure-test your logging habit before a real incident does. Everything is</p>
+<p>also on [GitHub](https://github.com/Hive80-lab/hive80-toolkit) with SHA256</p>
+<p>checksums if you prefer to review before buying.</p>
+<p>*This is general guidance, not legal or regulatory advice — adapt it to your</p>
+<p>environment and obligations.*</p>
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ohrpxa">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/xcinut">Greyscale Mockup Kit</a> — $9 mockup workflow pack</li></ul><p class="hint">Store links are live; the article pages themselves publish when the launch clears.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="/incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams (1-50 People)</a></li>
+<li><a href="/severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+<li><a href="/tabletop-exercise-failure-points.html">The 5 Failure Points a Small-Team Tabletop Will Find (Before a Real Incident Does)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
