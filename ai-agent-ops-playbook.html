@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Agent Ops: 10 Guardrails Before You Let an Agent Run 24/7</title>
+<meta name="description" content="Running autonomous AI agents overnight? These ten guardrails — budget caps, audit trails, self-healing loops, kill switches — separate a useful 24/7 agent from an expensive accident.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>AI Agent Ops: 10 Guardrails Before You Let an Agent Run 24/7</h1>
+<p>An AI agent that acts while you sleep is a genuinely useful thing — it ships work, watches metrics, retries failures. It is also the only employee who can spend money, publish content, and break your reputation with no supervisor present. The difference between the two outcomes is not model quality. It is <strong>ops</strong>.</p>
+<p><em>This is field guidance, not legal or regulatory advice — adapt the thresholds to your own stack.</em></p>
+
+<h2>1. A budget cap the agent cannot edit</h2>
+Every autonomous loop needs a hard spend ceiling enforced <em>outside</em> the agent's own config — a platform limit, a prepaid card, a scheduled assertion that the number is under N. If the agent can edit its own budget, you don't have a budget.
+
+<h2>2. An append-only audit trail</h2>
+Every action — every tool call, file write, outbound message — lands in a log the agent cannot rewrite. When something odd happens at 3am, the log is your memory. It is also the record you'll want when a platform asks what happened.
+
+<h2>3. A kill switch with a tested path</h2>
+One command stops all activity, and you have actually pressed it in a drill. A kill switch that has never been tested is a rumour.
+
+<h2>4. Scope pinned to a directory</h2>
+The agent works inside named folders. Anything outside is read-only by default. This one rule prevents the majority of "why is my code gone" mornings.
+
+<h2>5. Approvals for destructive classes only</h2>
+You cannot review every step of an autonomous agent — you'll drown and default to rubber-stamping. Instead, classify actions: reversible work runs free; delete-class, spend, and external submissions wait for a human tap. Keep the class list short and explicit.
+
+<h2>6. Self-healing loops with attempt ceilings</h2>
+A good agent treats blockers as tasks: capture → research → attempt → verify → escalate. The critical word is <em>ceilings</em> — three attempts, then it writes up what it tried and hands the result to a human. Infinite retries are how small errors become large invoices.
+
+<h2>7. Secrets treated like ammunition</h2>
+Credentials live in one 0600 directory. The agent receives values at runtime and is trained never to echo them into logs, tickets, or model context. Rotate on schedule, not on panic.
+
+<h2>8. Memory that survives restarts</h2>
+Rules, decisions, and standing directives persist to disk — a restart wipes a RAM-only agent's entire doctrine. The test: reboot the machine mid-task and check the agent still knows what it was doing and why.
+
+<h2>9. Heartbeats and self-sustainability checks</h2>
+A daily check that answers five questions: daemon alive? disk sane? spend on target? dashboards up? anything stuck awaiting a human? Problems should come back with ready-made next steps, not just alarms.
+
+<h2>10. Honest reporting</h2>
+The agent reports results the way a good operator does: what was done, what was verified, what is still unverified. "Success" that can't be checked is worse than failure, because you'll build on it.
+
+<hr>
+<p>None of these need a platform vendor. They need one afternoon and the discipline to write them down. If you'd rather buy the afternoon: <a href="https://hive80lab.gumroad.com/l/agent-ops-24-7"><strong>Agent Ops 24/7 — The Solo Operator's Playbook ($19)</strong></a> is the field manual for running 24/7 autonomous AI agents solo — scheduling, memory, guardrails, self-healing — with the checklists already written.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> — $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> — advanced incident response &amp; comms</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> — $19 playbook for solo autonomous-agent operators</li>
+</ul></aside>
+
+<h3>Related reading</h3>
+<ul>
+<li><a href="ai-automation-templates-solo-founders.html">AI Automation Templates for Solo Founders: 5 Workflows Worth Setting Up First</a></li>
+<li><a href="small-business-automation-ideas.html">Small Business Automation Ideas: 12 Workflows Worth Automating First</a></li>
+<li><a href="the-2am-test-incident-handoff.html">The 2am Test: Can Someone Else Run Your Incident Bridge Tonight?</a></li>
+</ul>
+</aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
