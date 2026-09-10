@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 2am Test: Can Someone Else Run Your Incident Bridge Tonight?</title>
+<meta name="description" content="If your pager went off at 2am, could the person who picks it up run the first thirty minutes without you? Six failure points, a 20-minute fix, and a free pre-written card.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<p>Here is the test, and it takes ten seconds to administer: <strong>if your pager went off at 2am, could the person who picks it up run the first thirty minutes without messaging you?</strong></p>
+<p>Not "could they eventually figure it out." Could they run it — declare, comms, triage, escalate — while you are unreachable, with no context except what is written down?</p>
+<p>If your honest answer is "they'd call me," you don't have an incident process. You have a person. And that person, statistically, is you, asleep, on a plane, or in a meeting with your phone on silent.</p>
+<p>We wrote this after watching the same failure repeat across small teams: the incident process lives in one head, works brilliantly, and then evaporates the first night it's actually needed.</p>
+<h2>What actually breaks at 2am</h2>
+<p>When the runbook author is asleep, six things break in a predictable order:</p>
+<ol>
+<li><strong>Nobody declares.</strong> The first responder spends 20 minutes investigating privately, hoping it's nothing. Meanwhile the clock on your recovery time objective is running.</li>
+<li><strong>Nobody roles up.</strong> "Incident Commander" feels like a title for bigger companies. So three people all kind of lead, and nobody talks to stakeholders.</li>
+<li><strong>The status update never goes out.</strong> The first #incidents message is also the last one for 45 minutes. Customers find out from Twitter instead of your status page.</li>
+<li><strong>Severity is guessed.</strong> Is a slow checkout P1 or P2? Without written thresholds, the night shift picks "medium" because that feels safer.</li>
+<li><strong>Escalation stops at the first no-answer.</strong> Page the on-call, no reply after 5 minutes… and then? An unwritten escalation path is a dead escalation path.</li>
+<li><strong>The timeline is lost.</strong> Nobody records what happened when, so the post-mortem becomes archaeology, and the fix becomes a guess.</li>
+</ol>
+<p>None of these are skill problems. Every one of them is a <strong>writing problem</strong>: the decisions were made once — by you, calmly, in daylight — and never written down where the 2am version of your team can find them.</p>
+<h2>The 20-minute fix</h2>
+<p>You do not need enterprise process. You need one page and one rule.</p>
+<p><strong>The page</strong> is a first-30-minutes card with five answers on it:</p>
+<ul>
+<li><strong>Who declares, and where</strong> (the exact command, channel, or button — not "raise an incident").</li>
+<li><strong>The severity table with thresholds</strong>, e.g. "P1 = customers cannot check out; P2 = checkout works but is slow." Binary, not vibes.</li>
+<li><strong>Who owns comms in minute 5, minute 30</strong> — and the template sentence they post.</li>
+<li><strong>The escalation ladder with real names and real wait times</strong> — "no reply in 5 minutes → next person on the list."</li>
+<li><strong>Where the timeline lives</strong> (one channel, one thread, append-only).</li>
+</ul>
+<p><strong>The rule</strong> is: the card must work for someone who has never seen your system. If it references "the usual suspects" or "the Jenkins thing," it fails. Write it for the newest hire, because at 2am your senior engineer is also effectively a stranger to the situation — tired, rushed, and missing context.</p>
+<h2>Then drill it once</h2>
+<p>A card that has never been used is a document, not a process. Run a 30-minute tabletop: pick a Tuesday afternoon, break something harmless (or simulate it), and have someone who didn't write the card run it end to end.</p>
+<p>You will find the gaps in minutes: the escalation list has a name of someone who left, the "status page" step assumes access nobody on night shift has, the severity thresholds have a tie (both "slow" and "down" match). Every one of those is a two-line edit — and every one is a failure you just avoided at 2am.</p>
+<p>That's the entire trick. Small teams don't lose incidents to complexity; they lose them to <strong>unwritten decisions</strong>. Write them down, drill them once a quarter, and the newest hire runs a calmer first thirty minutes than most enterprise teams.</p>
+<h2>The 30-minute card, pre-written</h2>
+<p>If you'd rather not start from a blank page, we packaged the checklist we use — every prompt above, plus the timeline thread format and the comms templates — as a free download:</p>
+<ul>
+<li><strong>The First 30 Minutes (free checklist):</strong> [hive80lab.gumroad.com/l/first-30-minutes](https://hive80lab.gumroad.com/l/first-30-minutes)</li>
+</ul>
+<p>If you want the full kit behind it — severity matrix, on-call ladder builder, post-mortem template, and the tabletop script to drill it:</p>
+<ul>
+<li><strong>Ops Starter Kit ($14):</strong> [hive80lab.gumroad.com/l/ops-starter-kit](https://hive80lab.gumroad.com/l/ops-starter-kit)</li>
+</ul>
+<p>And if your next gap is what happens <em>after</em> hour one — stakeholder comms, exec updates, customer messaging — the advanced volume covers exactly that:</p>
+<ul>
+<li><strong>Ops Starter Kit Vol. 2 — Advanced Incident Response &amp; Comms (≈US$19.50):</strong> [hive80lab.gumroad.com/l/ops-starter-kit-vol-2](https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2)</li>
+</ul>
+<p>Start with the free card. Fill in the five answers tonight — it really is a 20-minute job — and the next 2am page gets answered by a process instead of a person.</p>
+<p><em>Written by the Hive80 Lab crew. We build small, opinionated incident-response tools for teams of 2–20.</em></p>
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ohrpxa">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/xcinut">Greyscale Mockup Kit</a> — $9 mockup workflow pack</li></ul><p class="hint">Store links are live; the article pages themselves publish when the launch clears.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="first-30-minutes-incident-response.html">The 3 Questions Your IR Plan Must Answer in the First 30 Minutes</a></li>
+<li><a href="tabletop-exercise-failure-points.html">The 5 Failure Points a Small-Team Tabletop Will Find (Before a Real Incident Does)</a></li>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams (1-50 People)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
