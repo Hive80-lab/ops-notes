@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status Page Template: What to Say When You Don't Know What's Broken Yet</title>
+<meta name="description" content="A status page template for small teams: what to publish in the first ten minutes of an outage, the one-hour update cadence, and the phrasing that keeps customers calm while you debug. Free, copy-paste.">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/status-page-communication-template.html">
+</head>
+<body>
+<main>
+<article>
+<h1>Status Page Template: What to Say When You Don't Know What's Broken Yet</h1>
+<p>The first message on a status page is never the diagnosis &mdash; you don't have one yet.
+It's the promise that you've seen it and someone is on it. Teams freeze here, hold the update
+until they "know more," and the customers who noticed first write the story for them on social
+media. This page is the fix: a status page template you can fill in ten minutes into an outage,
+before you understand it.</p>
+
+<h2>Why waiting for the diagnosis fails</h2>
+<p>Silence doesn't read as "careful engineering." It reads as "either they don't know or they're
+hiding it." Meanwhile every customer with a broken checkout is doing their own troubleshooting
+and drawing their own conclusion. A two-line acknowledgement in minute ten costs nothing and
+buys you the hour you need to actually find the cause.</p>
+
+<h2>The first post &mdash; three sentences, minute ten</h2>
+<p>Paste this, fill the brackets, publish:</p>
+<p><code>[Service] is currently degraded. We identified the issue at [HH:MM] [timezone] and a
+member of the team is actively working on it. Next update by [HH:MM] even if the situation
+hasn't changed.</code></p>
+<p>The last sentence is the one most teams skip, and it's the most important: <strong>a named
+next-update time converts silence into schedule</strong>. If you miss the time you set, that
+becomes the story &mdash; so set the first one conservatively and beat it.</p>
+
+<h2>The update cadence that holds trust</h2>
+<ul>
+<li><strong>Every hour on the clock, changed or not.</strong> "Still investigating; no change
+since the 14:00 update" is a legitimate post. A predictable cadence means customers stop
+refreshing and start trusting.</li>
+<li><strong>Only one place, append-only.</strong> Updates stack on the same incident page;
+nobody reconstructs events from scattered tweets.</li>
+<li><strong>Say what you've ruled out.</strong> "Not a payment-processor outage" is real
+information that halves your support ticket volume.</li>
+<li><strong>Resolve is a post, not a shrug.</strong> What was wrong, what fixed it, what time
+it fully recovered &mdash; and the sentence that starts the postmortem instead of the arguments.</li>
+</ul>
+
+<h2>The wording that keeps customers calm</h2>
+<ul>
+<li><strong>Plain verbs.</strong> "We're investigating checkout failures" &mdash; not
+"experiencing a degradation event in the transaction pipeline."</li>
+<li><strong>No blame, no jargon, no "third-party provider issues" until you've confirmed them.</strong></li>
+<li><strong>Give the workaround its own line.</strong> "Orders can still be placed by phone"
+saves more carts than any apology.</li>
+<li><strong>Never promise a fix time you don't control.</strong> Promise the next
+<em>update</em>, which you fully control.</li>
+</ul>
+
+<h2>The 20-minute version</h2>
+<p>Pre-write the first post now &mdash; with brackets &mdash; and store it next to your incident
+channel template. The team that publishes a placeholder in minute ten always looks calmer than
+the team still drafting prose at minute forty, even if they resolve at the same minute.</p>
+
+<p>Pre-written versions of every message on this page &mdash; first post, hourly updates, the
+workaround line, and the resolution post &mdash; are in our comms pack: <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit ($14)</a>.
+The advanced volume adds the full major-incident comms flow (stakeholder updates, exec briefs,
+post-incident customer note): <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2 ($27)</a>.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li></ul><p class="hint">Free card first; the paid kits are for teams that want every message pre-written.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="incident-communication-templates.html">Incident Communication Templates That Don't Sound Like a Lawyer Wrote Them</a></li>
+<li><a href="incident-timeline-template.html">Incident Timeline Template: The 5 Timestamps Every Postmortem Needs</a></li>
+<li><a href="the-2am-test-incident-handoff.html">The 2am Test: Can Someone Else Run Your Incident Bridge Tonight?</a></li>
+<li><a href="severity-matrix-3-levels.html">A Severity Matrix Small Teams Will Actually Use</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>

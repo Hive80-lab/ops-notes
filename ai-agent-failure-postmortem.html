@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Agent Failure Postmortem: The 6-Line Checklist for When Your Agent Breaks Something</title>
+<meta name="description" content="An AI agent failure postmortem checklist for solo operators and small teams: scope the damage, preserve the agent log, find the trigger, name the missing guardrail, and re-run safely. Free, copy-paste.">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/ai-agent-failure-postmortem.html">
+</head>
+<body>
+<main>
+<article>
+<h1>AI Agent Failure Postmortem: The 6-Line Checklist for When Your Agent Breaks Something</h1>
+<p>An autonomous agent doesn't fail like a server. There's no 500 error and no pager &mdash; just
+a quietly wrong outcome you discover later: the ticket auto-reply sent to the wrong thread, the
+cleanup job that "cleaned" live data, the agent that ran its loop forty more times after the
+input stopped making sense. The postmortem shape is different too, and most teams improvise it.
+Here's the six-line checklist that covers what actually matters.</p>
+
+<h2>Why agent incidents break normal postmortems</h2>
+<p>A human incident has a moment of detection &mdash; someone notices and shouts. An agent
+incident often has none: every step it took <em>looked successful</em> in the logs. The review
+question isn't "when did it break?" but "how long did it run before anyone could tell?" That
+changes what you must preserve first.</p>
+
+<h2>The six lines &mdash; in this order</h2>
+<ol>
+<li><strong>Scope &mdash; what did it touch?</strong> Every record, email, ticket, payment or
+file the agent acted on, with counts. Guess here and you'll find the rest by rumor.</li>
+<li><strong>Kill &mdash; is it still running?</strong> Disable the trigger before you analyze
+anything. A postmortem written while the agent keeps taking actions is fiction.</li>
+<li><strong>Log &mdash; is the agent's log preserved?</strong> Copy it somewhere immutable
+<em>before</em> the next run overwrites it. This is the agent equivalent of keeping the black box.</li>
+<li><strong>Trigger &mdash; which input started it?</strong> The specific input, prompt or
+schedule change that set it off. "It just went wrong" is not a trigger; it's an absence of logging.</li>
+<li><strong>Guardrail &mdash; what should have caught it?</strong> Name the exact check that
+was missing: a dry-run flag, a spend cap, an allow-list, a human approval above some threshold.</li>
+<li><strong>Replay &mdash; re-run it in dry-run.</strong> Same inputs, actions logged but not
+executed. If you can't replay it, you can't prove the fix &mdash; you can only hope.</li>
+</ol>
+
+<h2>Where solo operators drift</h2>
+<ul>
+<li><strong>Fixing the prompt and calling it a postmortem.</strong> The prompt is one line of
+six. The guardrail is the one that stops the next occurrence.</li>
+<li><strong>No human checkpoint on irreversible actions.</strong> Anything that sends, pays,
+deletes or publishes belongs behind an approval gate &mdash; that's the whole lesson.</li>
+<li><strong>Running the agent with the same credentials you use for everything else.</strong>
+Scope its access to what the task needs, so the blast radius of the next failure is a folder,
+not your account.</li>
+<li><strong>No "stop" ritual.</strong> Decide now how you'll disable it at 2am &mdash; one
+command, one switch, documented where you'll look.</li>
+</ul>
+
+<h2>The 20-minute version</h2>
+<p>Put the six lines &mdash; SCOPE, KILL, LOG, TRIGGER, GUARDRAIL, REPLAY &mdash; at the top of
+your agent incident template today. The first time an agent misbehaves, that page turns a
+dizzy afternoon into an orderly one. The second time, you'll already have the guardrail that
+makes it a non-event.</p>
+
+<p>If you run agents unattended, the full playbook &mdash; the kill-switch design, scoped
+credential patterns, spend caps and the daily check routine &mdash; is here:
+<a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7 ($19)</a>.
+The free one-page version of the first-thirty-minutes card is still the best starting point:
+<a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes (free)</a>.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li></ul><p class="hint">Free card first; the paid kits are for operators who run things while asleep.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="ai-agent-ops-playbook.html">The AI Agent Ops Playbook: Running Autonomous Agents Without 2am Surprises</a></li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams</a></li>
+<li><a href="incident-timeline-template.html">Incident Timeline Template: The 5 Timestamps Every Postmortem Needs</a></li>
+<li><a href="first-30-minutes-incident-response.html">The 3 Questions Your IR Plan Must Answer in the First 30 Minutes</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
