@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Postmortem Template for Small Teams (Blameless, Fill-in)</title>
+<meta name="description" content="A fill-in blameless postmortem template for 1–50 person teams: timeline, impact, contributing factors, and 3 action items with owners and dates — plus why small teams skip them and pay for it later.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>Postmortem Template for Small Teams (Blameless, Fill-in)</h1>
+<p>Most small teams don't skip postmortems because they disagree with them. They skip them because the only template they can find was written for a company with a QA department, a change-review board, and forty minutes of status updates to document. So here is the version that fits on one screen and still catches the real causes.</p>
+
+<h2>The template — copy this</h2>
+<ol>
+<li><strong>One-line summary.</strong> What broke, in plain words, in one sentence. If you can't write this sentence, you don't understand the incident yet.</li>
+<li><strong>Impact.</strong> Who noticed, how many customers, for how long, and what it cost. Not "users were affected" — numbers or "none detected" is fine, but decide and write it down.</li>
+<li><strong>Timeline.</strong> Five to eight bullets: first symptom, first alert, detection time, mitigation started, mitigated, resolved. The only number that matters is <em>detection time</em> — it's the one you can actually improve.</li>
+<li><strong>How we found out.</strong> Alert, customer, or luck. If the honest answer is "a customer", that goes in the actions section, not in a footnote.</li>
+<li><strong>Contributing factors.</strong> Not "the cause" — plural factors. Run your finger back from the failure: why did it spread, why was detection slow, why did mitigation take hours? Each factor is a sentence, not a paragraph.</li>
+<li><strong>What went well.</strong> One to three things. Blameless doesn't mean joyless; naming what worked is what makes the document worth reading next time.</li>
+<li><strong>Actions.</strong> Exactly three, each with an owner and a date. Not ten — three. An action list longer than three items is a wish list, and wishes rot in a doc nobody reopens.</li>
+</ol>
+
+<h2>The blameless part, in one rule</h2>
+<p>Every sentence about a person becomes a sentence about a system. "Alex deployed on Friday" becomes "deploys happen on Friday afternoons with no rollback plan." Same facts, but now the fix is a system change instead of a quiet grudge. If a postmortem names a person as the cause, it will be the last honest postmortem that team ever writes.</p>
+
+<h2>Why small teams pay for skipping this</h2>
+<p>The postmortem isn't for the incident you just had — you already understand it. It's for the next person who hits the same failure while you're on leave and can't explain it. Twelve minutes now buys the next person an hour. Teams that write postmortems stop having the same incident twice; teams that don't, have it every quarter and call it bad luck.</p>
+
+<p>Timebox it: 30 minutes, one doc, one owner, same week as the incident. A rough postmortem shipped beats a perfect one that never starts.</p>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> ships this postmortem template pre-formatted with a severity matrix, an IR plan skeleton, and five tabletop exercises — launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> — advanced incident response &amp; comms</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams (1–50 People)</a></li>
+<li><a href="severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+<li><a href="tabletop-exercise-failure-points.html">The 5 Failure Points a Small-Team Tabletop Will Find</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>

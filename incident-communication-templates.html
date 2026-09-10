@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Communication Templates: Customers, Status Page, and Slack</title>
+<meta name="description" content="Copy-paste incident communication templates for small teams: the first customer ack, status page updates in plain language, an exec update that fits in five lines, and the resolution note.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>Incident Communication Templates: Customers, Status Page, and Slack</h1>
+<p>During an incident, writing is the second most expensive thing you do — after the actual fixing. Teams without templates freeze on the status page for twenty minutes trying to make a sentence perfect, and customers read silence as "they don't know yet, and it's worse than they say."</p>
+<p>These are the four messages a 1–50 person team actually needs. Copy them into your runbook tonight; fill the brackets during the bad day.</p>
+
+<h2>1. The first customer ack (send within 15 minutes)</h2>
+<blockquote>
+<p>We're aware of an issue affecting [what, in plain words — "sign-in", not "auth service"]. We're on it and will post an update by [time +30 min]. No action needed from you.</p>
+</blockquote>
+<p>Two rules: name the <em>symptom</em> the customer sees, not your internal component, and always promise the next update at a specific time. A promised update keeps you honest; a vague "we're working on it" just postpones the panic.</p>
+
+<h2>2. Status page updates (every 30–60 min while degraded)</h2>
+<blockquote>
+<p>[HH:MM] Still working on [plain-words issue]. Progress: [one sentence of real progress]. Next update: [time].</p>
+</blockquote>
+<p>Every update has the same three slots: what's still broken, one concrete thing that changed, when to look again. If nothing changed, say so — "no change yet, still on it, next update 10:30" is a good update. Customers forgive slowness; they don't forgive finding out nothing was happening.</p>
+
+<h2>3. The exec/leadership update (five lines, no jargon)</h2>
+<blockquote>
+<p>Issue: [one line]. Customers affected: [number/group]. Money impact: [orders/logins/sales]. Fix: [what's being done, one line]. Next update: [time].</p>
+</blockquote>
+<p>If your leadership update takes more than five lines, you've stopped informing and started defending. The executive's job is to decide whether to tell the whole company or pause a launch — give them the five facts that feed that decision.</p>
+
+<h2>4. The resolution note (post everywhere you posted updates)</h2>
+<blockquote>
+<p>Resolved as of [time]. What happened: [plain words]. What we're doing so it doesn't repeat: [one concrete action]. If you still see anything odd, reply here — we're watching until [time].</p>
+</blockquote>
+<p>The resolution note is the only message some customers will ever read, so it can't reference the earlier ones. And the last line — "we're watching until X" — converts a bad day into a story about how you handle bad days.</p>
+
+<h2>The one channel rule</h2>
+<p>Internally, one channel, one incident. If the war room is split across Slack, a Zoom, and two DMs, half your team is reading stale information. Everything worth keeping — decisions, timeline entries, updates — gets pasted into the incident doc, because the doc is what the postmortem reads from.</p>
+
+<p>---</p>
+<p>These snippets come pre-built into the <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 — Advanced Incident Response &amp; Comms</strong></a>, which adds the full customer/status/exec template set with severity-based variants. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">original Ops Starter Kit ($14)</a> covers the IR plan, severity matrix, and tabletops — launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong>.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> — advanced incident response &amp; comms</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="the-2am-test-incident-handoff.html">The 2am Test: Can Someone Else Run Your Incident Bridge Tonight?</a></li>
+<li><a href="first-30-minutes-incident-response.html">The 3 Questions Your IR Plan Must Answer in the First 30 Minutes</a></li>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams (1–50 People)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
