@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Standing Orders Template for Small Ops Teams: The One-Page Order Sheet That Runs the Shift Without You</title>
+<meta name="description" content="A standing orders template for small ops teams: watch conditions, escalation triggers, delegated authority, the comms plan, and a day-close checklist on one page. Standing orders answer 'what do I do while you're gone' before it's asked &mdash; one-page template, worked example, and instant-download ops kits.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Standing Orders Template for Small Ops Teams: The One-Page Order Sheet That Runs the Shift Without You</h1>
+<p class="lede">Every small team runs on invisible orders &mdash; the things the owner would say if you could ask. Standing orders make them visible: one page that says what "normal" looks like, what you're authorized to do alone, when to wake somebody up, and what never gets touched. This template turns tribal knowledge into a standing order sheet you can hand to whoever is on duty &mdash; and it's the difference between a team that runs the shift and a team that waits for the boss.</p>
+
+<h2>TL;DR: What Standing Orders Give You</h2>
+<ul>
+<li><strong>The gap they close:</strong> when the owner is asleep, in a meeting, or on a plane, the shift still needs decisions &mdash; standing orders are the decisions, written down in advance.</li>
+<li><strong>The one page:</strong> seven sections &mdash; watch conditions, escalation triggers, delegated authority, comms plan, battle rhythm, never-do list, day-close checklist.</li>
+<li><strong>The rule of thumb:</strong> if a question comes up twice, it becomes a standing order; if it happens three times, it gets a checklist of its own.</li>
+<li><strong>The payoff:</strong> fewer 2 a.m. pings, faster first response, and a team that acts instead of waits.</li>
+</ul>
+
+<h2>Why Most Small Teams Run Without Standing Orders</h2>
+<p>In the military, standing orders are the set of instructions that remain in force until changed &mdash; the sentry doesn't ask what to do if the patrol is late; the answer is already on the card. In small ops teams the equivalent rarely exists. Everything lives in the owner's head: which alerts matter, who can approve a $200 spend, when it's acceptable to reboot the staging box. So when the owner is unreachable, the shift does one of two things &mdash; nothing, or something regrettable.</p>
+<p>The symptoms are easy to recognize:</p>
+<ul>
+<li>Affordable decisions wait hours because "I wasn't sure if I was allowed."</li>
+<li>The same escalation question gets asked in three different chats and answered three different ways.</li>
+<li>The first incident of the night starts with "I didn't want to wake you, but&hellip;"</li>
+<li>Everyone's judgment is fine &mdash; nobody wrote it down.</li>
+</ul>
+<p>Standing orders fix this with one document and one habit: write down what you'd decide anyway, while you're calm, so the shift doesn't have to guess while you're gone.</p>
+
+<h2>The Standing Orders Sheet: Seven Sections</h2>
+<p>One page. If it runs past two pages, you're writing a policy manual &mdash; cut it back until everything fits on the page someone actually prints.</p>
+
+<h3>1. Watch Conditions (what "normal" looks like)</h3>
+<p>Define the shift's default state so deviations are obvious:</p>
+<ul>
+<li>Expected traffic range, batch jobs, and their finish times</li>
+<li>Which dashboards are checked, at what cadence</li>
+<li>Green/yellow/red definitions for the three systems that matter most</li>
+</ul>
+
+<h3>2. Escalation Triggers (when to wake somebody)</h3>
+<p>Name the exact conditions &mdash; not "use judgment," but lines that are crossed or not:</p>
+<ul>
+<li>Revenue-affecting outage &gt; 10 minutes &rarr; call, then <a href="escalation-policy-template.html">escalation policy</a></li>
+<li>Security signal with admin credentials &rarr; call immediately, page on-call</li>
+<li>Staging down, single worker down, cosmetic bugs &rarr; log it, fix it, mention at handoff</li>
+</ul>
+
+<h3>3. Delegated Authority (what you can do alone)</h3>
+<p>The money-and-risk section. Borrow from your <a href="delegation-of-authority-template.html">delegation of authority</a> and keep the numbers explicit:</p>
+<ul>
+<li>Spend: up to $___ per incident, $___ per day, no approval needed</li>
+<li>Reboot/restart: allowed for listed services, forbidden for the two named critical ones</li>
+<li>Customer comms: template answers allowed; promises of refunds, credits, or dates forbidden</li>
+</ul>
+
+<h3>4. Comms Plan (who hears what, where)</h3>
+<ul>
+<li>Status channel where the shift posts a one-line update every 2 hours</li>
+<li>Who the incident commander is when the owner is away (<a href="incident-commander-checklist.html">incident commander checklist</a>)</li>
+<li>Handoff: written, at a fixed time, using the <a href="on-call-handoff-checklist.html">handoff checklist</a></li>
+</ul>
+
+<h3>5. Battle Rhythm (the shift's fixed beats)</h3>
+<p>Recurring events that happen regardless of chaos: dashboard sweep at shift start, mid-shift patch window check (<a href="maintenance-window-policy.html">maintenance window policy</a>), end-of-shift audit sweep (<a href="daily-audit-checklist.html">daily ops audit</a>).</p>
+
+<h3>6. Never-Do List (the guardrails)</h3>
+<p>Every team has three to five actions that are always wrong, always tempting: raw SQL against prod during an incident, disabling alerts "just for tonight," sharing credentials over chat. Name yours on the sheet.</p>
+
+<h3>7. Day-Close Checklist</h3>
+<p>Five items, two minutes: open items logged with owners, handoff written, dashboards green-or-explained, tomorrow's known events listed, sheet date updated.</p>
+
+<h2>The Copy-Paste Standing Orders Template</h2>
+<pre>
+STANDING ORDERS &mdash; [TEAM/SHIFT]                      Sheet date: ____
+Valid until changed. When this sheet and a human disagree, the sheet wins
+until the owner says otherwise.
+
+1. WATCH CONDITIONS
+   Normal traffic: ____ req/min &plusmn; ____   Batch 0230-0310   Dashboards: ____
+   GREEN = ____   YELLOW = ____   RED = ____
+
+2. ESCALATION TRIGGERS (call = phone, not chat)
+   [ ] Revenue-affecting outage > 10 min .......... CALL OWNER, then IC checklist
+   [ ] Admin-credential security signal ........... CALL NOW, page on-call
+   [ ] Payment/checkout errors > 5 in 15 min ...... CALL, payment outage playbook
+   [ ] Staging down / cosmetic / single worker .... LOG + FIX + note at handoff
+
+3. DELEGATED AUTHORITY (no approval needed)
+   Spend: $__ per incident, $__ per day
+   Restart allowed: [list]     Restart FORBIDDEN: [two named systems]
+   Allowed comms: templates.  Forbidden: refund/credit promises, dates.
+
+4. COMMS PLAN
+   Update channel ____ every 2h.  IC when owner away: ____.
+   Handoff at ____: written, handoff checklist.
+
+5. BATTLE RHYTHM
+   Shift start: dashboard sweep.  Mid-shift: patch-window check.
+   Day close: audit sweep + handoff.
+
+6. NEVER-DO LIST
+   [ ] Raw SQL on prod during an incident
+   [ ] Silence an alert instead of fixing it
+   [ ] Credentials over chat
+
+7. DAY-CLOSE
+   [ ] Open items logged w/ owners  [ ] Handoff written  [ ] Dashboards green-or-explained
+   [ ] Tomorrow's known events listed  [ ] Sheet date updated
+</pre>
+
+<h2>Worked Example: The Night the Checkout Went Dark</h2>
+<p>02:14, the owner's phone is on do-not-disturb. Checkout errors start climbing. With standing orders on the fridge (metaphorically), the on-duty tech: (1) hits trigger 2 at 02:23 &mdash; five payment errors in fifteen minutes &mdash; and calls; (2) meanwhile opens the <a href="payment-outage-playbook.html">payment outage playbook</a> and flips the banner to "payments temporarily unavailable &mdash; orders held, not lost"; (3) spends $0, promises nothing, logs everything; (4) at 06:00 hands off in writing. The owner wakes to a resolved incident instead of a missed-call list. Without standing orders, the same night starts at 09:30 with a support inbox on fire.</p>
+
+<h2>How to Keep Standing Orders Alive</h2>
+<ol>
+<li><strong>Write v1 in 30 minutes</strong> &mdash; done beats perfect; a sheet with three blanks teaches you what to decide next.</li>
+<li><strong>Rule of two:</strong> every question asked twice in one week becomes a line on the sheet.</li>
+<li><strong>Review at handoff, weekly:</strong> crossed-out triggers and new dollar limits keep the sheet honest.</li>
+<li><strong>Version it:</strong> sheet date at the top, one page, printed copy next to the runbook binder.</li>
+<li><strong>Test it:</strong> one tabletop drill per quarter &mdash; "owner unreachable, checkout down, go."</li>
+</ol>
+
+<h2>Instant-Download Ops Kits</h2>
+<p>This template is part of the <strong>Hive80 Lab ops kit line</strong> &mdash; field-tested, instantly downloadable:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/rtodsv">Ops Field Cards</a> &mdash; 12 printable incident checklists &mdash; $4</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+<p><strong>&#9889; Launch pricing is live at the store &mdash; check the banner for today's code.</strong></p>
+
+<h2>Related Ops-Notes Pages</h2>
+<ul>
+<li><a href="delegation-of-authority-template.html">Delegation of Authority Template</a> &mdash; the who-can-do-what document behind section 3</li>
+<li><a href="escalation-policy-template.html">Escalation Policy Template</a> &mdash; the full ladder behind trigger section 2</li>
+<li><a href="on-call-handoff-checklist.html">On-Call Handoff Checklist</a> &mdash; the written handoff standing orders require</li>
+<li><a href="maintenance-window-policy.html">Maintenance Window Policy</a> &mdash; the battle-rhythm patch beat</li>
+<li><a href="daily-audit-checklist.html">Daily Ops Audit Checklist</a> &mdash; the day-close sweep in one habit</li>
+<li><a href="incident-commander-checklist.html">Incident Commander Checklist</a> &mdash; who runs the incident when the sheet says call</li>
+</ul>
+
+<hr>
+<p><strong>A shift without standing orders isn't autonomous &mdash; it's just waiting.</strong> Write the sheet once, review it weekly, and let the team run.</p>
+</main>
+</body>
+</html>
