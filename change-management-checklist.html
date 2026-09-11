@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Change Management Checklist for Small Teams (No CAB Required) &mdash; Free Template</title>
+<meta name="description" content="A free change management checklist for teams too small for a change advisory board: the 10-minute change record, the 4 questions that replace a CAB, rollback criteria, and the freeze rules that stop Friday deployments. Copy-paste ready.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Change Management Checklist for Small Teams (No CAB Required)</h1>
+<p>Big companies run change advisory boards. Small teams run on the honor system &mdash; and the honor system fails the same way every time: someone ships a "quick config tweak" on Friday afternoon, it takes down the thing nobody was watching, and the postmortem opens with "why wasn't this reviewed?" You don't need a committee. You need one ten-minute record and four questions. Here's the checklist.</p>
+
+<h2>The 10-minute change record &mdash; copy this</h2>
+<ol>
+<li><strong>Name the change in one sentence.</strong> "Rotate session timeout from 30d to 8h on the billing app." If the sentence is vague, the change is vague &mdash; and vague changes are the ones that roll back badly.</li>
+<li><strong>Classify it: standard, normal, or emergency.</strong> Standard = done before, scripted, low blast radius (deploys, cert renewals). Normal = everything else. Emergency = production is broken and you're fixing forward. Only <em>normal</em> needs the rest of this list.</li>
+<li><strong>Answer the 4 questions that replace a CAB.</strong> What breaks if this goes wrong? How do we know within 15 minutes that it went wrong? What's the rollback &mdash; and has anyone actually run it? Who's watching it for the first hour? A change with no answer to #3 doesn't ship.</li>
+<li><strong>Check the freeze rules.</strong> Friday after 2pm, the last two days of a quarter, the day before a customer demo, and any window overlapping an <a href="on-call-rotation-schedule-template.html">on-call handover</a> are freeze windows by default. A change can still ship &mdash; but it needs a named approver who isn't the person doing it.</li>
+<li><strong>Write the rollback as commands, not intentions.</strong> "Re-enable feature flag X and redeploy tag 4.1" &mdash; not "undo the change". The 2am version of you runs commands, not judgment.</li>
+<li><strong>Ship it in a change window with a watcher.</strong> Deploy, then fifteen minutes of watching the errors dashboard and the <a href="status-page-communication-template.html">customer-facing status</a>. Unwatched changes are discovered by customers.</li>
+<li><strong>Close the record within 24 hours.</strong> Outcome, actual rollback used (yes/no), and one lesson. Ten closed records a quarter beats a process nobody maintains.</li>
+</ol>
+
+<h2>The one-page change record</h2>
+<table>
+<tr><th>Field</th><th>Record</th></tr>
+<tr><td>Change</td><td>Billing app: session timeout 30d &rarr; 8h</td></tr>
+<tr><td>Class / risk</td><td>Normal &mdash; auth flows touched, ~400 users affected</td></tr>
+<tr><td>Rollback</td><td>Set SESSION_TTL=30d in config, restart app pool (tested Aug 30)</td></tr>
+<tr><td>Detection</td><td>Error-rate alarm &gt;2% for 5 min; manual login test at +10 min</td></tr>
+<tr><td>Window / watcher</td><td>Wed 14:00-16:00 &mdash; on-call engineer watching</td></tr>
+<tr><td>Outcome</td><td>Shipped 14:22, error rate flat, closed same day</td></tr>
+</table>
+
+<h2>The rules that make the checklist stick</h2>
+<ul>
+<li><strong>The requester is never the approver for normal changes.</strong> One other pair of eyes, five minutes, async is fine. This single rule catches half of all bad changes.</li>
+<li><strong>Emergency changes get a retro-record, not a pass.</strong> The rule isn't "no changes without approval", it's "no changes without a record". Fix-forward first, write the record within 24h, and the process survives contact with reality.</li>
+<li><strong>Standardize until only normal changes remain.</strong> Every change that happens twice becomes a script or a runbook &mdash; then it re-classifies as standard and stops costing review time. That's the automation path: fewer decisions, same safety.</li>
+<li><strong>Failed rollbacks are finding #1.</strong> When a change goes wrong and the rollback also goes wrong, that's two defects &mdash; and the rollback one is the expensive lesson. Test rollbacks on slow weeks, not during incidents.</li>
+<li><strong>The record is the audit.</strong> Auditors, customers, and insurers don't ask "do you do change management?" &mdash; they ask to see records. Twelve dated records answer that question.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> includes the full change-control pack &mdash; change record, freeze calendar, and the rollback log this checklist plugs into &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so routine changes never need a human at 2am</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="incident-response-changelog-automation.html">Incident Response Changelog Automation</a></li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams (Blameless)</a></li>
+<li><a href="severity-matrix-3-levels.html">Severity Levels: Why 3 Beat 5 for Small Teams</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist (The 20-Minute Drill)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
