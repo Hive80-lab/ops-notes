@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escalation Policy Template for Small Teams (No SRE Department Required)</title>
+<meta name="description" content="A one-page escalation policy template for teams of 1&ndash;50: who owns the incident, when to wake a human, and the three-level escalation ladder that replaces an on-call rotation you can't staff. Free, copy-paste.">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/escalation-policy-template.html">
+</head>
+<body>
+<main>
+<article>
+<h1>Escalation Policy Template for Small Teams (No SRE Department Required)</h1>
+<p>Escalation policies fail in small teams for one reason: they're copied from companies with
+a dedicated on-call rotation. Three tiers, two shadow tiers, a paging tool, a runbook wiki.
+A team of five doesn't have that &mdash; it has whoever is nearest the laptop. This page is the
+version that fits: a one-page escalation policy you can actually run with three people and a
+group chat.</p>
+
+<h2>The three-level escalation ladder</h2>
+<ol>
+<li><strong>Level 1 &mdash; Detect.</strong> Anyone (human or automation) who notices something wrong
+posts it in the incident channel with one line: what's broken, who it affects, since when.
+No diagnosis required. The person who posts is not automatically the owner.</li>
+<li><strong>Level 2 &mdash; Own.</strong> The most senior person online claims the incident with the
+word <em>owning</em> and one more sentence: what they're doing first. One owner at a time &mdash;
+two owners means no owner.</li>
+<li><strong>Level 3 &mdash; Escalate to a human with authority.</strong> A named rule beats a mood:
+<em>if customer impact is confirmed and not mitigated in 30 minutes, or payment/data is affected
+at all, wake the next name on the list.</em> Nobody argues with a rule at 2am &mdash; that's the point.</li>
+</ol>
+
+<h2>The template &mdash; paste this in your handbook</h2>
+<p><code>SEVERITY: S1 = checkout/data down &middot; S2 = degraded, workaround exists &middot; S3 = cosmetic, batch to Monday.<br>
+S1 &rarr; page name 1, escalate to name 2 at 30 min, name 3 at 60 min.<br>
+S2 &rarr; fix in business hours, status note if customers see it.<br>
+S3 &rarr; ticket, no page, no channel post.<br>
+Every incident gets one owner, one channel, one next-update time.</code></p>
+<p>The severity definitions are behavioral on purpose: "customers cannot complete checkout" is
+checkable at 2am, while "critical system failure" is an argument. If your severity levels need
+debate, they don't exist.</p>
+
+<h2>Rules that keep the ladder honest</h2>
+<ul>
+<li><strong>Escalation is a duty, not a failure.</strong> The thing to be embarrassed about is a
+two-hour silent outage, not a 2am phone call. Say this out loud in the policy document.</li>
+<li><strong>One channel, one owner, one next-update time.</strong> If any of the three is missing,
+the incident is unmanaged regardless of how hard people are working.</li>
+<li><strong>Rehearse quarterly with a 15-minute tabletop.</strong> The first time someone reads the
+escalation rule should not be during a real outage.</li>
+</ul>
+
+<h2>Where small teams get this wrong</h2>
+<p>They write tiers for a company three times their size, nobody remembers them, and when the
+database dies at midnight the group chat decides by vibration. A three-level ladder with named
+names and hard time thresholds fits on one screen, survives a bad week, and &mdash; most
+importantly &mdash; removes the social cost of waking someone up, because the policy already
+gave everyone permission.</p>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a>
+ships this escalation ladder pre-filled with behavioral severity definitions, the escalation
+one-pager, and the status page playbook behind it &mdash; launch month: <strong>30% off with code
+HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; comms</li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; running unattended agents without 2am surprises</li></ul><p class="hint">Launch month: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams (1&ndash;50 People)</a></li>
+<li><a href="status-page-communication-template.html">Status Page Template: What to Say When You Don't Know What's Broken Yet</a></li>
+<li><a href="the-2am-test-incident-handoff.html">The 2AM Test: Can Someone Else Run Your Incident Bridge Tonight?</a></li>
+</ul>
+</aside>
+</article>
+</main>
+<p style="text-align:center"><a href="index.html">&larr; All ops notes</a></p>
+</body>
+</html>
