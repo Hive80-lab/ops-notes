@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Single-Point-of-Failure Register for Small Teams (Audit Checklist + Four Decisions)</title>
+<meta name="description" content="A single-point-of-failure audit for small teams: five passes (people, machines, vendors, secrets, money path), a six-column register with blast radius and last-tested evidence, the four decisions (eliminate, duplicate, document, accept in writing), and a quarterly re-test cadence that pairs with your restore drill.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>The Single-Point-of-Failure Register for Small Teams</h1>
+<p>Every small team runs on single points of failure &mdash; not because anyone chose them, but because hiring one person, buying one laptop, and picking one payment processor are the <em>cheap</em> decisions. They stay invisible until the day the one thing fails. A single-point-of-failure (SPOF) audit is two hours with a spreadsheet that turns &ldquo;we think we'd be fine&rdquo; into a written register of what can take you down, how bad it would be, and what you decided to do about it. The goal is not to eliminate every SPOF &mdash; that costs more than most outages &mdash; it is to <strong>choose them on purpose</strong> instead of inheriting them by accident.</p>
+
+<h2>The Five Passes: Where SPOFs Hide</h2>
+<p>Walk the business five times, once per layer. In each pass, ask the same question: <em>if this one thing disappeared right now, what stops?</em> If the answer involves revenue, customers, or a promise you made, it goes in the register.</p>
+
+<h3>Pass 1: People</h3>
+<ul>
+<li>Name every task only one human can do: the payroll run, the deploy, the vendor negotiation, the &ldquo;why is the invoice number like that&rdquo; knowledge. The <a href="key-person-dependency-checklist.html">key-person dependency checklist</a> does the deep version; this pass just finds the rows.</li>
+<li>Count the credentials only one person holds: the domain registrar login, the hosting root account, the social accounts, the 2FA device that is also their personal phone.</li>
+<li>Count the <em>availability</em> dependencies: one founder who is the only approver, the only escalation contact, the only one awake in the vendor's timezone.</li>
+</ul>
+
+<h3>Pass 2: Machines and Software</h3>
+<ul>
+<li>The one laptop with the only working build environment, the license locked to one machine, the NAS nobody else can unlock.</li>
+<li>The self-hosted box with no second copy: if that VM dies, how long to rebuild it from documentation &mdash; and does the documentation exist? Pair this pass with the <a href="backup-restore-test-checklist.html">backup restore drill</a>: a backup of a SPOF is only half a fix if the restore was never tested.</li>
+<li>The one automation nobody else can maintain. A cron job only the person who wrote it can safely edit is a person-SPOF wearing a machine costume.</li>
+</ul>
+
+<h3>Pass 3: Vendors and Services</h3>
+<ul>
+<li>Services with no fallback named in writing: the email provider, the payment processor, the cloud host, the 3PL. For each, ask &ldquo;what is our second option and how long to switch?&rdquo; &mdash; if nobody can answer, that is the finding. The <a href="vendor-outage-runbook.html">vendor outage runbook</a> covers the day it happens; this pass makes sure it never becomes a total outage.</li>
+<li>Contracts that lock you in: one-year terms, data export only through support tickets, the domain registered at the same registrar as everything else.</li>
+<li>Vendors who are themselves SPOFs: the tiny SaaS run by two people, the local ISP with one fiber line into the building.</li>
+</ul>
+
+<h3>Pass 4: Access and Secrets</h3>
+<ul>
+<li>Count the secrets that exist in exactly one place: the API key on one laptop, the 2FA recovery codes in one drawer, the signing certificate with no export. The <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> fixes the hygiene; the audit finds the concentration.</li>
+<li>Accounts with one admin: the workspace owner account, the store admin, the DNS account. One admin means one resignation, one lost phone, or one locked account away from a hostage situation.</li>
+<li>Access that silently concentrates: every new service added to one person's password vault, one card in one wallet, one person's phone number as the fraud-call contact.</li>
+</ul>
+
+<h3>Pass 5: The Money Path</h3>
+<ul>
+<li>Trace one dollar from a customer's card to your bank account and list every single link: checkout, processor, payout schedule, bank, and the human who reconciles it. Any link with no second option is a revenue SPOF. The <a href="payment-outage-playbook.html">payment outage playbook</a> tells you what to do when a link breaks; this pass tells you which link is load-bearing.</li>
+<li>One bank account, one card, one signer. A frozen account with no second account is a company that cannot pay rent while it argues.</li>
+<li>One revenue channel? That is a strategic SPOF &mdash; record it in the register too, with a different fix timeline than the operational ones.</li>
+</ul>
+
+<h2>The Register: Six Columns, No More</h2>
+<p>One row per SPOF, six columns. If a column starts an argument, shrink it &mdash; the register's job is decisions, not documentation.</p>
+<ul>
+<li><strong>Component</strong> &mdash; the thing: &ldquo;payroll run&rdquo;, &ldquo;checkout plugin license&rdquo;, &ldquo;DNS account&rdquo;. One line, no essays.</li>
+<li><strong>What breaks if it fails</strong> &mdash; the customer-visible sentence: &ldquo;no new orders can check out&rdquo;, &ldquo;staff not paid on the 30th&rdquo;.</li>
+<li><strong>Blast radius</strong> &mdash; minutes, hours, or days: how long until revenue or trust takes a measurable hit if nothing else changes.</li>
+<li><strong>Backup today</strong> &mdash; what exists <em>right now</em>, written honestly: &ldquo;none&rdquo;, &ldquo;Dave, untested&rdquo;, &ldquo;a second laptop, 6 months stale&rdquo;. The gap between this column and what people say in meetings is the audit's main product.</li>
+<li><strong>Evidence</strong> &mdash; when was the backup last <em>tested</em>, with a date. &ldquo;Assumed&rdquo; is a red flag the register exists to catch.</li>
+<li><strong>Decision</strong> &mdash; one of the four, plus a date. See below.</li>
+</ul>
+
+<h2>Blast Radius: Score It in Money, Not Vibes</h2>
+<p>&ldquo;High/Medium/Low&rdquo; invites wishful thinking. Score in one question instead: <strong>if this failed right now, what revenue or promise is at risk in 24 hours?</strong> A checkout path that does $2,000/day is a $2,000/day problem. Payroll on the 30th is a dated promise to your own team. Write the number next to the row &mdash; it makes the four decisions obvious and depoliticized: nobody argues to &ldquo;accept&rdquo; a $60k/day blast radius for free.</p>
+
+<h2>Worked Example: A Five-Person Online Store</h2>
+<p>A five-person store runs the audit in one afternoon. Three real findings:</p>
+<ul>
+<li><strong>Checkout plugin licensed to one email.</strong> The license is bound to the founder's address, and renewal reminders go to an inbox she reads &ldquo;most Fridays.&rdquo; If it lapses on a Saturday, checkout dies until Monday. Blast radius: ~$9k over a weekend. Decision: <em>duplicate</em> &mdash; move the license to a shared ops address, add a renewal-date line to the <a href="standing-orders-template.html">standing orders sheet</a>, calendar reminder 30 days out. One hour, done.</li>
+<li><strong>Shipping labels: one vendor API, one integration, no export.</strong> If the vendor has a bad day, labels stop and the day's orders queue. Blast radius: a day of delayed shipments, angry email. Decision: <em>document, don't duplicate</em> &mdash; write the fallback (manual label purchase on the carrier's site) into the <a href="vendor-outage-runbook.html">vendor outage runbook</a> and test it once for twenty minutes. Full redundancy isn't worth it at this volume; a tested fallback is.</li>
+<li><strong>The founder's phone is the 2FA device</strong> for the store admin, the processor, and the bank. Phone in a lake = locked out of the money path. Blast radius: days. Decision: <em>duplicate</em> &mdash; hardware key in the office safe as second factor, recovery codes split between two people, done the same week.</li>
+</ul>
+<p>Total fix cost: an afternoon and a $25 hardware key. Before the audit, all three lived in &ldquo;we'd figure it out.&rdquo;</p>
+
+<h2>The Four Decisions</h2>
+<p>Every row ends in exactly one of four words, each with a date:</p>
+<ul>
+<li><strong>Eliminate</strong> &mdash; remove the dependency entirely. The most underrated option: drop the feature, the vendor, or the manual step that is only load-bearing out of habit.</li>
+<li><strong>Duplicate</strong> &mdash; make a real second one: second admin account, second signer, second factor on a device that lives elsewhere, second person trained with a shadow test. Duplicates decay, so each one gets an <a href="incident-response-drill-schedule-template.html">entry on the drill calendar</a>.</li>
+<li><strong>Document</strong> &mdash; a tested fallback procedure instead of a second system. Cheap, but only valid if someone has actually walked through it once. Untested documentation is a SPOF with a nicer font.</li>
+<li><strong>Accept in writing</strong> &mdash; for low blast radius or expensive fixes: keep the SPOF, write the number next to it, set a revisit date. An accepted SPOF is a decision; an unexamined one is a landmine.</li>
+</ul>
+
+<h2>Cadence: Pair It With the Restore Drill</h2>
+<ul>
+<li><strong>Quarterly:</strong> run the register pass in the same session as the <a href="backup-restore-drill-checklist.html">backup restore drill</a> &mdash; the drill finds dead credentials and stale exports, and those are usually register rows. Thirty minutes of updates, not a rewrite.</li>
+<li><strong>On every new hire:</strong> the audit doubles as onboarding &mdash; a new person's fresh eyes find the &ldquo;everyone knows that&rdquo; dependencies fastest. Ask them: &ldquo;what would break if [person] vanished today?&rdquo;</li>
+<li><strong>After every incident:</strong> the <a href="postmortem-template-small-teams.html">postmortem</a> adds one line to the register: which SPOF did this incident expose, and did its blast-radius number hold?</li>
+<li><strong>When anything doubles:</strong> revenue, headcount, or traffic doubling changes blast-radius math. Re-score the money-path rows before you feel it in an outage.</li>
+</ul>
+
+<h2>SPOF Audit Anti-Patterns</h2>
+<ul>
+<li><strong>Auditing the org chart instead of the tasks.</strong> &ldquo;Bob is a SPOF&rdquo; is not actionable. &ldquo;The payroll run is&rdquo; is.</li>
+<li><strong>Duplicating without testing.</strong> The second laptop that has not booted in six months is a doorstop with a title. Test duplicates on the drill calendar or write them down as <em>assumed</em>.</li>
+<li><strong>Fixing the cheap ones and forgetting the scary ones.</strong> Sort the register by blast radius and start at the top; the satisfying easy wins are not the point.</li>
+<li><strong>Registers nobody revisits.</strong> A SPOF register with no cadence is a museum. Tie it to the quarterly drill and the postmortem, or it will be stale exactly when you need it.</li>
+<li><strong>Treating redundancy as the only answer.</strong> Sometimes the right fix is to <em>eliminate</em> the dependency, or to accept it in writing with a number attached. The register exists to force the choice, not to mandate purchases.</li>
+</ul>
+
+<h2>Instant-Download Ops Kits</h2>
+<p>This checklist is part of the <strong>Hive80 Lab ops kit line</strong> &mdash; field-tested, instantly downloadable:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/rtodsv">Ops Field Cards</a> &mdash; 12 printable incident checklists &mdash; $4</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+<p><strong>&#9889; Launch pricing is live at the store &mdash; check the banner for today's code.</strong></p>
+
+<h2>Related Ops-Notes Pages</h2>
+<ul>
+<li><a href="single-point-of-failure-audit.html">Single Point of Failure Audit</a> &mdash; the two-hour walk that finds the suspects; this register prices and decides them</li>
+<li><a href="key-person-dependency-checklist.html">Key-Person Dependency Checklist</a> &mdash; the people-layer deep dive: second person per critical task</li>
+<li><a href="backup-restore-drill-checklist.html">Backup Restore Drill Checklist</a> &mdash; prove restorability, find dead rows for the register</li>
+<li><a href="vendor-outage-runbook.html">Vendor Outage Runbook</a> &mdash; the day a documented fallback gets used for real</li>
+<li><a href="payment-outage-playbook.html">Payment Outage Playbook</a> &mdash; when a money-path link snaps</li>
+<li><a href="hot-spare-loaner-laptop-checklist.html">Hot-Spare Loaner Laptop Checklist</a> &mdash; a tested duplicate for the machine layer</li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a> &mdash; de-concentrating the access layer</li>
+<li><a href="uptime-downtime-budget.html">Uptime &amp; Downtime Budget</a> &mdash; how much failure you can tolerate, decided on purpose</li>
+<li><a href="incident-commander-checklist.html">Incident Commander Checklist</a> &mdash; who runs the day a SPOF fires anyway</li>
+<li><a href="after-action-report-template.html">After-Action Report Template</a> &mdash; feeding incident lessons back into the register</li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist</a> &mdash; keeping the duplicate healthy enough to matter</li>
+</ul>
+
+<hr>
+<p><strong>You cannot un-single-point your whole business, and you don't need to.</strong> Two hours with the five passes, one register, four decisions with dates &mdash; and the next surprise outage becomes a row you already priced, not a company-level emergency.</p>
+</main>
+</body>
+</html>
