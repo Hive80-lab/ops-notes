@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backup Encryption Checklist for Small Teams (Encrypt the Backup, Keep the Key Restorable)</title>
+<meta name="description" content="A one-page backup encryption checklist for small teams: what to encrypt, how to encrypt a backup without breaking the restore, where the key lives (and never lives), and the quarterly test that proves you can still read your own backups.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Encrypt the backup, keep the key restorable</h1>
+<p>An unencrypted backup is the second prize in a breach: the attacker who already popped one machine now gets a complete, portable copy of your customers, your credentials, and your history, taken without touching the production system at all. But the over-corrected version fails too &mdash; the team that encrypts everything, stores the key in the same vault as the backup, and loses both on the same Tuesday. A backup encryption checklist has to prevent both failures at once: the copy must be <em>unreadable to a thief</em> and <em>readable to you</em>, on a clean machine, a year from now. It is the security half of the discipline you already practice in the <a href="backup-restore-test-checklist.html">backup restore test</a>.</p>
+
+<h2>1. First, inventory what the backup actually contains</h2>
+<ul>
+<li><strong>You cannot protect what you have not named.</strong> One pass through the backup job and write down: database dumps, user uploads, the <code>.env</code>/config exports (which are themselves a key ring &mdash; treat them like the <a href="api-key-rotation-checklist.html">keys they contain</a>), full-disk images, and any export that includes personal data. If the backup contains production credentials, encryption is not optional; it is the difference between a stolen archive and a stolen business.</li>
+<li><strong>Classify each item: public, internal, or regulated.</strong> Most small teams end up encrypting everything anyway, because the classification exercise reveals that the "harmless" files (logs, dumps, mail exports) quietly hold PII. That is fine &mdash; uniform encryption is simpler than a policy with exceptions. The classification still earns its keep in one place: the incident answer to "what was in the stolen archive?" should be a fact you can read off the <a href="data-breach-first-24-hours.html">breach first-24-hours</a> worksheet, not a guess.</li>
+<li><strong>Find the copies, not just the job.</strong> The encryption is only as good as the worst copy: the rsync to a spare drive in the office, the laptop's Time Machine, the "temporary" export on someone's desktop that never got deleted. The <a href="asset-inventory-checklist.html">asset inventory</a> pass that covers machines should cover backup destinations too &mdash; every location where a copy rests is a location the policy applies to.</li>
+</ul>
+
+<h2>2. Encrypt at rest, with a tool that outlives the person who set it up</h2>
+<ul>
+<li><strong>Use what your stack already trusts.</strong> For file/directory backups, the boring choices are the right ones: a modern backup tool with native encryption (restic, borg with a repo key), or a container format like <code>age</code>/<code>GPG</code> wrapped around the archive before upload. For whole drives and laptops, built-in full-disk encryption (FileVault, LUKS, BitLocker) covers the device itself. Do not invent a scheme &mdash; the scheme must be something a new admin can recognize from its file headers.</li>
+<li><strong>Encrypt before it leaves your network, not at the destination.</strong> Client-side (or at least "before upload") encryption means the storage provider never holds a readable copy &mdash; which is what turns "cloud account compromised" from a breach into a non-event. If the backup tool offers server-side encryption only, the provider holds the key or the key-derivation, and your threat model quietly includes their staff. Write the order of operations in the runbook: encrypt, verify, then upload.</li>
+<li><strong>One config flag is not a policy &mdash; it is a line item with an owner.</strong> The checklist line is: <em>backup job X writes encrypted archives with method M, verified on date D, by person P.</em> An unowned flag drifts; the next tool migration (the classic moment backups silently turn plaintext) re-introduces the gap unless someone's checklist asks. The <a href="annual-security-review-checklist.html">annual review</a> is where the drift gets caught if nobody notices sooner.</li>
+</ul>
+
+<h2>3. Where the key lives &mdash; and the one place it must never live</h2>
+<ul>
+<li><strong>The rule in one sentence: the key must be reachable by a second path, and storable by no single path.</strong> Never inside the backup itself, never in the same cloud account as the backup, never only on the machine being backed up (the classic failure: attacker exfiltrates the disk image <em>with its own decryption key sitting next to it</em>). A password manager entry, an offline copy in a sealed envelope with the <a href="break-glass-account-checklist.html">break-glass kit</a>, and a second offline copy at a different physical location: that is the whole storage policy.</li>
+<li><strong>Escrow it like it matters, because it does.</strong> If the key exists only in one admin's head or one admin's laptop, the backup dies with them &mdash; same failure as an undocumented <a href="password-manager-rollout-small-business.html">password manager</a>. The checklist line: at least two people (or the owner + the documented emergency kit) can produce the key without the first person's involvement. For teams of one, "two people" is you plus the sealed offline copy &mdash; and the test in section 5 is what proves it.</li>
+<li><strong>If the key leaks, treat it like a credential, not like a config file.</strong> The key to an encrypted backup of everything is roughly equal to an admin credential for everything, so the response is the <a href="api-key-leak-response-runbook.html">key-leak runbook</a>: revoke (rotate the key, re-encrypt the archives), assess exposure window, and check whether the old key was used after its leak. Rotate on a schedule too &mdash; but never rotate without a verified restore on the new key first (see section 5), because the most common rotation failure is destroying the ability to read history.</li>
+</ul>
+
+<h2>4. The restore test is the encryption test</h2>
+<ul>
+<li><strong>Encrypting is one command; proving you can decrypt is the checklist.</strong> Quarterly (alongside the regular <a href="backup-restore-test-checklist.html">restore test</a>), run the restore on a machine that has never seen the key from cache: fresh VM or a colleague's laptop, key entered by hand, archive decrypted, one file opened, checksum compared. If the restore only works on the admin's own machine with saved state everywhere, you do not have a backup &mdash; you have a memory.</li>
+<li><strong>The new-hire test is the honest version.</strong> Hand the documentation &mdash; not the keyboard &mdash; to someone who did not write it, and ask them to restore one file. Where they stall is where the runbook is missing a step. This is the same logic as the <a href="first-30-minutes-incident-response.html">incident first-30 runbook</a>'s tabletop: the rehearsal is cheap, the real 2AM version is not, and a backup you cannot restore mid-incident turns a <a href="ransomware-recovery-checklist.html">ransomware event</a> from "inconvenient" into "unrecoverable."</li>
+<li><strong>Log the test result next to the archive.</strong> A one-line ledger &mdash; date, archive version, machine used, who ran it, checksum match yes/no &mdash; is what makes the claim auditable (by you, by an insurer's security questionnaire, by the post-incident review). The <a href="cyber-insurance-requirements-checklist.html">insurance requirements checklist</a> increasingly asks exactly this question: are backups encrypted, and when was the last proven restore?</li>
+</ul>
+
+<h2>5. Retention, deletion, and the copies you forgot you made</h2>
+<ul>
+<li><strong>Old copies outlive the policy that created them.</strong> The encrypted archive on the current storage is fine; the plaintext dump from two migrations ago on a decommissioned NAS is not. Every backup location gets an owner and an expiry: the same disposition logic as the <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding</a> pass, applied to your own storage. When you retire a location, <a href="server-decommissioning-checklist.html">decommission it deliberately</a> &mdash; wipe, then verify the wipe.</li>
+<li><strong>Laptops and phones are backup locations too.</strong> The mail export on the laptop, the sync client's local cache, the "I'll just copy the DB for the demo" folder: each is an unencrypted shadow copy. The <a href="lost-or-stolen-laptop-runbook.html">lost laptop runbook</a> is much shorter when the disk itself is encrypted and the shadow copies were never made. Full-disk encryption on every device that touches production data is the cheapest line in this entire checklist.</li>
+<li><strong>Deletion is part of encryption hygiene.</strong> When a key rotates, the old-key archives are either re-encrypted or destroyed on a schedule &mdash; not left readable forever by a key you have already treated as burned. The same review that checks <a href="user-access-review-checklist.html">who still has access</a> should ask: which keys can still open which archives, and should they?</li>
+</ul>
+
+<h2>6. The one-page template</h2>
+<ul>
+<li><strong>Header:</strong> backup job name, what it contains (three bullets max), destination(s), encryption method + version, last verified-restore date.</li>
+<li><strong>Key card:</strong> where the key is stored (two paths), who holds it (two people or owner + sealed kit), rotation date, and the leak-runbook link.</li>
+<li><strong>Test card:</strong> the quarterly restore-from-cold steps, the new-hire test schedule, and the result ledger location.</li>
+<li><strong>Copies line:</strong> every location where a copy rests &mdash; including laptops and old drives &mdash; each with an owner and an expiry.</li>
+</ul>
+<p><em>Small-team honesty note: encryption is the part of backups that feels like extra work right up until it is the only part that mattered. If your team is one person and one NAS, this page still applies &mdash; it is three commands, a sealed envelope with the key, and a calendar reminder that says "restore one file from the encrypted backup on a clean machine." That is the entire difference between a backup and a liability.</em></p>
+
+<p>Related: <a href="backup-restore-test-checklist.html">backup restore test checklist</a> &middot; <a href="ransomware-recovery-checklist.html">ransomware recovery</a> &middot; <a href="api-key-rotation-checklist.html">API key rotation</a> &middot; <a href="password-manager-rollout-small-business.html">password manager rollout</a> &middot; <a href="data-breach-first-24-hours.html">data breach first 24 hours</a> &middot; <a href="annual-security-review-checklist.html">annual security review</a></p>
+</main>
+</body>
+</html>
