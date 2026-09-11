@@ -5,7 +5,8 @@ Incident response, on-call, and automation **checklists and templates** you can 
 **Start here:** [The First 30 Minutes of an Incident](https://hive80-lab.github.io/ops-notes/first-30-minutes-incident-response.html) — then grab the [free printable one-pager](https://hive80lab.gumroad.com/l/first-30-minutes).
 
 ## Incident response
-- [First 30 minutes](https://hive80-lab.github.io/ops-notes/first-30-minutes-incident-response.html) · [IR plan template for small teams](https://hive80-lab.github.io/ops-notes/incident-response-plan-template-small-teams.html) · [Severity matrix (3 levels)](https://hive80-lab.github.io/ops-notes/severity-matrix-3-levels.html)
+
+- [DNS outage runbook](https://hive80-lab.github.io/ops-notes/dns-outage-runbook.html) ·- [First 30 minutes](https://hive80-lab.github.io/ops-notes/first-30-minutes-incident-response.html) · [IR plan template for small teams](https://hive80-lab.github.io/ops-notes/incident-response-plan-template-small-teams.html) · [Severity matrix (3 levels)](https://hive80-lab.github.io/ops-notes/severity-matrix-3-levels.html)
 - [Postmortem template](https://hive80-lab.github.io/ops-notes/postmortem-template-small-teams.html) · [Incident timeline template](https://hive80-lab.github.io/ops-notes/incident-timeline-template.html) · [Incident comms templates](https://hive80-lab.github.io/ops-notes/incident-communication-templates.html) · [Status page comms](https://hive80-lab.github.io/ops-notes/status-page-communication-template.html)
 - [Runbook template](https://hive80-lab.github.io/ops-notes/runbook-template.html) · [Escalation policy](https://hive80-lab.github.io/ops-notes/escalation-policy-template.html) · [Tabletop exercises](https://hive80-lab.github.io/ops-notes/tabletop-exercise-failure-points.html) · [The 2AM handoff test](https://hive80-lab.github.io/ops-notes/the-2am-test-incident-handoff.html)
 

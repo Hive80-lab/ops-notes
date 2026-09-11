@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DNS Outage Runbook for Small Teams: TTLs, the Hidden Second Nameserver, and the 10-Minute Restore &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A DNS outage runbook for small teams: catch the expiry before the registrar does, know your second nameserver's actual records, lower TTLs before the change instead of during it, and the 10-minute restore path when DNS is already down.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>DNS Outage Runbook for Small Teams</h1>
+<p class="lede">A DNS outage is the quietest way to lose a whole business day: no errors in your own logs, no alerts from your own monitoring &mdash; because the thing that broke is upstream of every request. The honest runbook has four parts: <strong>watch the domain itself, keep a tested copy of your zone, lower TTLs before changes instead of during them, and know the 10-minute restore path by heart</strong>.</p>
+
+<h2>1. Monitor the domain, not just the site</h2>
+<p>Your site monitor checks <code>https://www</code> and gets an answer &mdash; so DNS must be fine, right? No: it answered <em>because</em> it resolved. The DNS checks that matter are cheap and upstream:</p>
+<table>
+<tr><th>Check</th><th>How often</th><th>What it catches</th></tr>
+<tr><td>Resolve apex + www + one API host against <strong>8.8.8.8</strong> and <strong>1.1.1.1</strong></td><td>Every 5 minutes</td><td>Zone edits gone wrong, nameserver failures</td></tr>
+<tr><td>Domain expiry date</td><td>Daily</td><td>The auto-renew that silently failed (dead card, expired email on the registrar account)</td></tr>
+<tr><td>Nameserver (NS) set matches what the registrar says</td><td>Daily</td><td>Accidental NS changes, hijack attempts</td></tr>
+</table>
+<p>A 5-line cron script with <code>dig</code> and the WHOIS date covers all three. An outage caught here costs minutes; the same outage caught by a customer tweet costs the afternoon.</p>
+
+<h2>2. Keep a tested copy of your zone (the part everyone skips)</h2>
+<p>When DNS breaks, you will need to <em>re-publish records fast</em> &mdash; at a second provider, because the primary will be having a bad day. That only works if you already have:</p>
+<ul>
+<li><strong>A zone export</strong> (BIND-style or provider JSON) stored outside the provider &mdash; in your repo or backup bucket.</li>
+<li><strong>A second DNS provider pre-configured</strong> with the same records. Free tiers are fine; the point is that the zone is already there when you need it.</li>
+<li><strong>A quarterly check</strong> that the copy is still current. An untested backup is a wish, and DNS backups rot fast.</li>
+</ul>
+<p>The 10-minute restore path: flip the NS records at the registrar to the second provider, verify with <code>dig +trace</code>, done. Doing this for the first time during an outage takes hours and mistakes; rehearsed, it takes minutes.</p>
+
+<h2>3. TTLs: lower before the change, never during the fire</h2>
+<p>The classic mistake is dropping a TTL to 60 seconds <em>after</em> something is already broken &mdash; caches keep serving the old answer for the old TTL no matter what you do now. The rule is boring and it works:</p>
+<ul>
+<li><strong>Normal TTLs: 300&ndash;3600s</strong> for hosts that change, 86,400s only for truly static ones.</li>
+<li><strong>Before a planned migration:</strong> lower TTLs 24&ndash;48h ahead, make the change, raise them back after.</li>
+<li><strong>During an outage:</strong> don't touch TTLs &mdash; republish correct records and let caches age out. Old-TTL panic edits only add a second failure mode.</li>
+</ul>
+<p>And watch out for the hidden TTL: your CDN, mail provider, or status page may hold its own cached answers with longer TTLs than yours. During an incident, check what <em>resolvers</em> see, not what the zone file says.</p>
+
+<h2>4. The 10-minute restore path (when DNS is already down)</h2>
+<ol>
+<li><strong>Confirm scope (2 min):</strong> <code>dig</code> the failing names against two public resolvers and one ISP resolver. All resolvers failing + registrar portal slow = provider-side outage, not your config.</li>
+<li><strong>Decide the path (1 min):</strong> provider-down &rarr; switch NS to the second provider. Your-record-mistake &rarr; restore the exported zone to the primary.</li>
+<li><strong>Execute from the runbook (5 min):</strong> the exact NS strings, the exact export filename, the exact <code>dig +trace</code> verification &mdash; written down, because typing nameserver hosts from memory under pressure is how typos become second outages.</li>
+<li><strong>Verify and tell people (2 min):</strong> test from a phone on mobile data (not office Wi-Fi with its own cached answers), then post the status update &mdash; even a two-line one. Silence makes a technical incident a trust incident.</li>
+</ol>
+
+<h2>5. The mistakes that turn minutes into hours</h2>
+<ul>
+<li><strong>The single nameserver dependency.</strong> Two providers' nameservers is the whole point; one provider plus "we'll set one up if needed" is not redundancy.</li>
+<li><strong>The domain registered at the same place DNS lives.</strong> If the registrar and DNS provider are one company and that company melts down, your restore path goes through their outage queue too.</li>
+<li><strong>The registrar account nobody can log into.</strong> The owner's personal email, no 2FA recovery codes stored &mdash; the most common reason a 10-minute restore becomes a multi-day support ticket.</li>
+<li><strong>Restoring the zone but not verifying the served answer.</strong> Records published &ne; records served. <code>dig +trace</code> from outside is the only truth.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Watch the domain, not just the site.</strong> Expiry, NS set, and cross-resolver answers catch DNS trouble before customers do.</li>
+<li><strong>The second provider is configured in peacetime or it doesn't exist.</strong> The zone export nobody has tested is a wish, not a backup.</li>
+<li><strong>TTLs are lowered before changes, not during fires.</strong> Caches obey the TTL that was set when the record was cached &mdash; not your 3am panic edit.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns the first-hour chaos of any outage &mdash; DNS included &mdash; into a fillable plan, and <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Vol. 2 ($27)</strong></a> adds the DR plan and evidence log for the review after. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so the DNS monitors, expiry checks, and zone exports stay current by themselves</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="ssl-certificate-expiry-checklist.html">SSL Certificate Expiry Checklist (Expiry Alerts, Renewal Dry-Runs, and the Already-Expired Runbook)</a></li>
+<li><a href="status-page-communication-template.html">Status Page Communication Template (Updates People Trust)</a></li>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule)</a></li>
+<li><a href="first-30-minutes-incident-response.html">First 30 Minutes of Incident Response (What to Do, In Order)</a></li>
+<li><a href="alert-fatigue-checklist.html">Alert Fatigue Checklist (Cut the Noise)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
