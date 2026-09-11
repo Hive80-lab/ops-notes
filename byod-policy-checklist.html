@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BYOD Policy Checklist for Small Teams (Personal Devices, Company Data, One Page of Rules) &mdash; ops-notes</title>
+<meta name="description" content="A BYOD policy checklist for small teams: decide which personal devices may touch company data, trade enrollment for privacy with a work profile the company can actually see and wipe, set the five non-negotiables (screen lock, updates, encryption, MFA, no jailbreaks), keep company files out of personal cloud drives, and wire the exit so leaving means a container wipe, not a token that still works &mdash; on one page a five-person team will actually sign.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>BYOD policy: personal devices, company data, one page of rules</h1>
+
+<p>Friday, 5:40. A designer photographs a whiteboard full of client material with her personal phone, edits the render on her own laptop over the caf&eacute; wi-fi, and emails the draft from her personal Gmail because the company one is signed out on her phone. Nobody did anything malicious. But the client files now live on two machines nobody can wipe, inside a cloud drive the company has never seen, behind an inbox that will still work after she resigns. That is what happens without a <strong>BYOD policy</strong> &mdash; and the fix is not buying everyone a second phone. It is one page that says which personal devices may touch company data, what the company sees and wipes in exchange, and the five things any such device must have before the first sync. The <a href="remote-work-security-checklist.html">remote work baseline</a> covers working from home; BYOD is the narrower and leakier problem: <em>your</em> hardware, <em>their</em> data.</p>
+
+<h2>1. Decide the device list before anyone asks</h2>
+<ul>
+<li><strong>Phones: yes, for mail, calendar, chat, and the MFA app.</strong> The phone is where work already lives and where the second factor must be. Personal phones with a proper work profile (below) are the sensible default for a small team; refusing them means someone re-adding work mail into a browser and calling it a day &mdash; <a href="shadow-it-audit-checklist.html">shadow IT</a> with worse hygiene.</li>
+<li><strong>Laptops: usually no, for client data.</strong> A personal laptop is a full desktop with a personal browser, personal cloud sync, family logins, and unknown disk state. The house rule that survives contact with reality: company work happens on a company machine built to the <a href="new-laptop-provisioning-checklist.html">provisioning build sheet</a>, and personal laptops get read-only exceptions (the shared dashboard, the docs link) rather than sync clients and credentials. Every exception is written down, or it is not an exception &mdash; it is a leak with an excuse.</li>
+<li><strong>Tablets, old phones, the spare Samsung in the drawer: the yes needs a date.</strong> A BYOD policy that says "approved devices" without naming them decays into "anything that opens the inbox." Name the models, review the list annually with the <a href="annual-security-review-checklist.html">security review</a>, and retire devices whose OS stopped getting updates.</li>
+</ul>
+
+<h2>2. The trade: enrollment for privacy &mdash; made explicit</h2>
+<ul>
+<li><strong>A work profile, not supervision of the whole phone.</strong> On iOS, the work space is the managed apps and accounts; on Android, the work profile. Company policy reaches into that container and nowhere else. Say so in the policy in one honest sentence, because the rumor version ("IT can see my photos") is what kills enrollment at the dinner-table conversation.</li>
+<li><strong>What the company can see, and can wipe.</strong> The managed apps, the work account, the compliance state (OS version, encryption, screen lock), and the ability to remove the work container or the work apps remotely &mdash; which is how the <a href="lost-or-stolen-laptop-runbook.html">lost device runbook</a> ends on a phone, too. What the company cannot see: photos, personal messages, browsing history, location, or anything outside the container.</li>
+<li><strong>The wipe has a boundary, and everyone should know it.</strong> Removing the work profile deletes work mail, work files, and the MFA enrollment from the device &mdash; it does not touch the camera roll or the personal apps. When a person leaves, this is the difference between offboarding and confiscation. The same distinction the <a href="employee-offboarding-checklist.html">offboarding checklist</a> makes for accounts applies to the pocket they live in.</li>
+</ul>
+
+<h2>3. The five non-negotiables, checked before first sync</h2>
+<ul>
+<li><strong>Screen lock with a biometric or six-digit passcode, auto-lock at two minutes.</strong> The phone that unlocks to a swipe is a door with no latch &mdash; mail, chat, and the MFA app are one glance away from whoever borrows it at the bar.</li>
+<li><strong>OS updates installed within thirty days of release.</strong> A personal device from 2021 on its final iOS is not eligible; the check is the same console or enrollment report the <a href="patch-management-checklist.html">patch program</a> already runs for company machines, pointed at the personal fleet. Eligibility ends when updates end, not when the policy gets annoyed.</li>
+<li><strong>Disk encryption on, verified.</strong> Modern phones are encrypted by default; personal laptops &mdash; the exception class &mdash; are not, and FileVault or BitLocker on and <em>verified</em> is the difference between a stolen laptop and a <a href="data-breach-first-24-hours.html">breach with a timeline</a>.</li>
+<li><strong>The MFA app lives on the device, enrolled to the company's <a href="mfa-rollout-checklist-small-business.html">MFA rollout</a>.</strong> If the authenticator dies with the phone, the <a href="mfa-device-lost-runbook.html">lost MFA runbook</a> is the recovery path &mdash; and it starts the same hour, not when the person gets around to it.</li>
+<li><strong>No jailbroken or rooted devices, ever.</strong> A device whose security model has been deliberately removed is not "personally customized"; it is a compromised terminal asking politely to hold your session tokens.</li>
+</ul>
+
+<h2>4. Where company data may and may not live</h2>
+<ul>
+<li><strong>Company apps only, inside the container.</strong> Work mail in the managed mail app, work files in the managed sync client, work chat in the managed chat app. The corporate password manager &mdash; see the <a href="password-manager-rollout-small-business.html">password manager rollout</a> &mdash; gets an exception list: some personal apps need the work login, and the policy names which.</li>
+<li><strong>The personal cloud drive is the shadow perimeter.</strong> The slide deck exported to personal iCloud "to finish tonight" is the actual data exfiltration of most small teams, and it is almost always innocent. The policy sentence is short: company files sync through company accounts. The habit that makes it true: the managed sync client is signed in and reachable, because a tool that is annoying gets routed around &mdash; the same physics behind the <a href="file-share-permissions-audit.html">permissions audit</a>.</li>
+<li><strong>Printing and screenshots: decide, don't assume.</strong> A home printer spooling client invoices is a retention problem wearing a paper tray. One line in the policy &mdash; no client data on personal printers; screenshot only what the <a href="email-security-checklist.html">email and comms policy</a> would already allow &mdash; converts a silent habit into a stated rule.</li>
+</ul>
+
+<h2>5. Accounts: separation is the whole trick</h2>
+<ul>
+<li><strong>Work sign-in stays in work apps, personal sign-in stays personal.</strong> The browser profile split (work profile / personal profile) on exception laptops, separate container accounts on phones. The account boundary is what the wipe counts: wipe the work container and the company is gone; the person's life is untouched.</li>
+<li><strong>No password reuse across the boundary.</strong> The work password reused on a personal forum is the pivot attack: breach the forum, replay into the company. The password manager's breach report is the quarterly check; the <a href="wifi-security-checklist.html">wi-fi baseline</a> and the shared-household router are the network half of the same story &mdash; company sessions ride whatever network the personal device trusts.</li>
+<li><strong>The separation survives enthusiasm, not discipline.</strong> Nobody keeps two inboxes straight by willpower in week twelve. The container does it by architecture: the work apps visibly different, the notifications labeled, the badge counts separate. Choose tooling that separates by default, then the policy is a description of reality instead of a New Year's resolution.</li>
+</ul>
+
+<h2>6. The exit: offboarding a device the company never owned</h2>
+<ul>
+<li><strong>Revoke first, wipe second, in that order.</strong> Sessions and app tokens die in the admin console the hour notice is given &mdash; the same access-revocation sweep the <a href="employee-offboarding-checklist.html">offboarding checklist</a> runs, extended to the phone in the person's pocket. Then the container wipe removes the work space. A wipe without revocation leaves tokens that still open the door; revocation without a wipe leaves the person's photos intact and the company's files gone from the device.</li>
+<li><strong>The MFA re-home happens the same day.</strong> The authenticator enrollment moves off the departing device and onto whatever comes next &mdash; the <a href="mfa-device-lost-runbook.html">MFA lost-device runbook</a> is the procedure, whether the phone was lost, replaced, or resigned.</li>
+<li><strong>Personal data returns to the person, fully.</strong> The boundary working in reverse: contacts the person imported, photos on the camera roll, personal apps &mdash; all untouched. Offboarding that feels like confiscation gets named in the group chat; offboarding that respects the container gets forgotten by the following Tuesday. One of those is cheaper.</li>
+</ul>
+
+<h2>7. Lost or stolen personal device: the same runbook, one twist</h2>
+<ul>
+<li><strong>Report it in hours, not when the upgrade cycle feels right.</strong> The personal phone with the MFA app and work mail inside is, from the company's side, a company endpoint. The report path is the same one the <a href="lost-or-stolen-laptop-runbook.html">lost laptop runbook</a> uses: revoke sessions, wipe the container, re-enroll the person on whatever device comes next, and rotate any credentials the device held.</li>
+<li><strong>The twist: the device can often be located by its owner, not by the company.</strong> Find My and Google's device tools are the owner's personal superpower &mdash; the policy should say clearly that the company never tracks personal devices, and the recovery attempt belongs to the person. The company's job is containment: assume it is gone from minute one.</li>
+</ul>
+
+<h2>8. One page, signed at onboarding, alive in the reviews</h2>
+<ul>
+<li><strong>The policy is one page, attached to the <a href="employee-onboarding-checklist-template.html">onboarding checklist</a>.</strong> Device list, the trade (container vs privacy), the five non-negotiables, the data boundaries, the exit. Signed at week one, when the new hire still reads things, and re-signed when the device list changes &mdash; the same living-document discipline as every other note in this collection.</li>
+<li><strong>Two review hooks keep it from rotting.</strong> The <a href="annual-security-review-checklist.html">annual security review</a> re-walks the device list and the eligibility rule; the <a href="user-access-review-checklist.html">access review</a> asks the device question per person: what personal devices hold sessions right now? When the answer changes, the enrollment console is where the truth lives &mdash; not in anyone's memory of who brought what.</li>
+<li><strong>The done-signals:</strong> every personal device holding company data is enrolled or explicitly exception-listed; a new phone is productive in twenty minutes without IT touching it; a leaver's phone is work-clean the same day with the camera roll intact; and nobody can name a client file living in a personal cloud drive. When those are true, the one page is doing its job &mdash; and the nine devices in the company fleet are no longer the only ones worth auditing.</li>
+</ul>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist</a></li>
+<li><a href="iot-device-security-checklist.html">IoT Device Security Checklist</a></li>
+<li><a href="wifi-security-checklist.html">Wi-Fi Security Checklist</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="mfa-device-lost-runbook.html">MFA Device Lost Runbook</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist</a></li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout</a></li>
+<li><a href="employee-onboarding-checklist-template.html">Employee Onboarding Checklist</a></li>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist</a></li>
+<li><a href="shadow-it-audit-checklist.html">Shadow IT Audit Checklist</a></li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist</a></li>
+<li><a href="email-security-checklist.html">Email Security Checklist</a></li>
+<li><a href="new-laptop-provisioning-checklist.html">New Laptop Provisioning Checklist</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a></li>
+</ul>
+</aside>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
