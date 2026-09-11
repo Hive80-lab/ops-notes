@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>After-Action Report Template (The 30-Minute Debrief That Turns Every Fire Into a Fix)</title>
+<meta name="description" content="An after-action report template small teams actually finish: five sections, thirty minutes, forty-eight-hour deadline &mdash; what was supposed to happen vs what happened, the keep list, the fix list with named owners and dates, blame-free root cause, and what changes in the runbooks. Includes the AAR-vs-postmortem-vs-weekly-review distinction, a worked example, and a paste-in CSV action tracker.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>After-Action Report Template</h1>
+
+<p class="lede">Every fire ends twice. Once when the alert clears, and once when someone writes down what changed because of it. Most small teams skip the second ending &mdash; which is why the same outage, the same scramble, and the same 2 a.m. mistake come back every quarter wearing a new timestamp. An after-action report (AAR) is the debrief that stops the loop: <strong>five sections, thirty minutes, within forty-eight hours</strong>. Not a postmortem. Not a meeting. One page that converts the pain into edits on your runbooks before memory rewrites itself.</p>
+
+<h2>The rule that makes it work: 48 hours, 30 minutes</h2>
+<p>Two numbers decide whether the debrief happens at all. If you wait a week, the timeline decays into a vibe &mdash; people remember the argument, not the sequence. And if the AAR has no timebox, it becomes a two-hour blame session nobody schedules twice. So fix both in policy:</p>
+<ul>
+<li><strong>Within 48 hours</strong> of any incident, drill, botched launch, or quarter-end scramble, the person who was on call (not the manager) opens the AAR file. They were closest to the facts.</li>
+<li><strong>Thirty minutes, hard stop.</strong> Fifteen for the timeline, ten for the keep/fix lists, five to assign owners and dates. If it needs longer, that's the signal a <a href="postmortem-template-small-teams.html">full postmortem</a> is warranted &mdash; separate document, separate session.</li>
+<li><strong>Blame is a defect, not a style.</strong> Write "we" sentences. "We didn't have the spare laptop imaged" is fixable. "Dave forgot" is a lawsuit-shaped dead end. If your AAR names a person as the cause, stop and re-run: every human error is a <em>system</em> error wearing a name tag.</li>
+<li><strong>Every fix item gets a name and a date, or it doesn't go in.</strong> "Improve monitoring" is a wish. "Sarah: add disk-usage alert at 80% &mdash; due Friday" is an action. The AAR that ends without owners and dates is paperwork that dies in the folder.</li>
+<li><strong>The next AAR starts by reading the last one.</strong> Two minutes: walk the previous fix list. Done items get a checkmark; still-open items get a harder deadline. This closing of the loop is the entire difference between a learning organization and one that just documents failure professionally.</li>
+</ul>
+
+<h2>The five sections (and what each one feeds)</h2>
+<p>Keep the template this small. Five sections, each with a one-line job:</p>
+<table>
+<tr><th>Section</th><th>Question it answers</th><th>Where it feeds</th></tr>
+<tr><td>1. What was supposed to happen vs. what happened</td><td>The gap, in sequence, with times</td><td>Becomes the first page of the <a href="postmortem-template-small-teams.html">postmortem</a> if one is ever needed</td></tr>
+<tr><td>2. The keep list</td><td>What worked and should survive</td><td>Edits into the <a href="runbook-template.html">runbooks</a> &mdash; wins get codified, not just felt</td></tr>
+<tr><td>3. The fix list</td><td>What failed, with owner + due date per line</td><td>The <a href="weekly-review-checklist.html">weekly review</a> chases these until closed</td></tr>
+<tr><td>4. Root cause, no blame</td><td>Why the gap existed at all</td><td>Goes in the fix-list rows so fixes address causes, not symptoms</td></tr>
+<tr><td>5. What we're changing</td><td>The artifacts touched, linked by name</td><td>The changelog line: "AAR 2026-09-12 &rarr; 2 runbooks, 1 checklist edited"</td></tr>
+</table>
+<p>Section 5 is the one teams skip, and it's the proof of life. If the report didn't change any document, ask honestly: did anything get learned, or did everyone just feel heard? Even one linked edit &mdash; a line added to the <a href="first-30-minutes-incident-response.html">first-30-minutes checklist</a> &mdash; is the AAR paying rent.</p>
+
+<h3>The gap timeline (section 1)</h3>
+<p>Three columns, pulled from whatever you already captured &mdash; the <a href="incident-timeline-template.html">incident timeline</a>, chat logs, alert history. Don't reconstruct from memory if artifacts exist; read them aloud into the report.</p>
+<table>
+<tr><th>Time</th><th>What was supposed to happen</th><th>What actually happened</th></tr>
+<tr><td>08:40</td><td>Disk alert at 80% pages on-call</td><td>No alert existed; the first sign was a 500-error wave</td></tr>
+<tr><td>08:47</td><td>On-call triages from the runbook</td><td>On-call couldn't SSH &mdash; laptop was the one without the VPN profile</td></tr>
+<tr><td>09:05</td><td>Failover per plan</td><td>Second node also full; failover was never rehearsed with real disk pressure</td></tr>
+<tr><td>09:30</td><td>Status page updated</td><td>Posted 09:52 &mdash; twelve minutes of customer tickets before we spoke first</td></tr>
+</table>
+<p>Notice what this four-row table already exposes: two failed defenses (no alert, no rehearsed failover) and one process slip (status page late). That's the whole AAR's skeleton &mdash; you haven't debated anything yet, you've just read the sequence.</p>
+
+<h3>The keep list (section 2)</h3>
+<p>AARs that only hunt for failure teach your team to hide their improvisations. Ask deliberately: <strong>what did someone do well that isn't written down anywhere?</strong> In the example above, maybe a teammate texted the on-call directly instead of waiting for the pager &mdash; that's now a line in the escalation section of the <a href="severity-matrix-3-levels.html">severity matrix</a>. The keep list is how heroics become systems. Three prompts that work:</p>
+<ul>
+<li>Which improvisation saved time, and which document gets it written into?</li>
+<li>Which existing checklist actually earned its keep this time?</li>
+<li>What did we NOT have to do because something we fixed last time held?</li>
+</ul>
+
+<h3>The fix list (section 3)</h3>
+<p>One row per failure mode &mdash; not per symptom. Cap it at five rows. An AAR with fifteen action items gets zero done; an AAR with three named, dated items gets three done. Each row: <em>failure &rarr; root cause (one clause) &rarr; fix &rarr; owner &rarr; due date &rarr; where the fix lands</em>.</p>
+<ul>
+<li><em>No disk alert existed</em> &rarr; monitoring never covered disk &rarr; add 80% warning + 90% critical &rarr; <strong>Sarah</strong> &rarr; <strong>Sept 16</strong> &rarr; lands in <a href="server-monitoring-checklist-small-teams.html">server monitoring checklist</a></li>
+<li><em>On-call laptop lacked VPN profile</em> &rarr; provisioning skips it &rarr; add VPN step + quarterly spot-check &rarr; <strong>Mo</strong> &rarr; <strong>Sept 15</strong> &rarr; lands in <a href="new-laptop-provisioning-checklist.html">provisioning checklist</a></li>
+<li><em>Failover never rehearsed under load</em> &rarr; drills test happy path only &rarr; next drill runs failover with real disk pressure &rarr; <strong>Ana</strong> &rarr; <strong>Oct 1</strong> &rarr; lands in the <a href="incident-response-drill-schedule-template.html">drill schedule</a></li>
+<li><em>Status page posted 12 min late</em> &rarr; draft had to be written live &rarr; pre-stage two templates (investigating / mitigating) &rarr; <strong>Sarah</strong> &rarr; <strong>Sept 14</strong> &rarr; lands in <a href="status-page-communication-template.html">status page templates</a></li>
+</ul>
+<p>Four rows, four owners, four dates, four documents that permanently improve. That is a complete AAR. If your fix list can't name where each fix <em>lands</em>, the fix is floating &mdash; tie it to a document or an <a href="sop-checklist-template.html">SOP</a> before you close.</p>
+
+<h3>Root cause without blame (section 4)</h3>
+<p>One clause per fix row, written as "the system allowed X" rather than "person Y did X." You don't need industrial five-whys theater for a 30-minute AAR &mdash; ask "why" twice and stop. <em>No disk alert existed</em> &rarr; <strong>why 1:</strong> monitoring was set up during a migration and disk was out of scope &rarr; <strong>why 2:</strong> nothing periodically audits what monitoring covers vs. what the <a href="server-hardening-checklist-small-teams.html">hardening baseline</a> promises. Now you know the fix is "coverage audit each quarter," not just "add one alert." If the second why lands on a person's name, you asked it wrong; rephrase until it lands on a process, a document, or an absent safeguard.</p>
+
+<h3>What we're changing (section 5)</h3>
+<p>A closing list of links &mdash; every document this AAR touched. This is also what you'll show a <a href="cyber-insurance-requirements-checklist.html">cyber-insurance</a> questionnaire, an enterprise customer's vendor review, or a new hire who asks "so what did the September outage change?" Answer: two runbooks, one checklist, one drill scenario, one status-page template, dated. Few answers in business sound more competent than that.</p>
+
+<h2>AAR vs. postmortem vs. tabletop retro vs. weekly review</h2>
+<p>Teams blur these four and then do none. Draw the line once:</p>
+<table>
+<tr><th>Document</th><th>Trigger</th><th>Depth</th><th>Output</th></tr>
+<tr><td><strong>AAR</strong> (this page)</td><td>Any fire, drill, flop, or scramble</td><td>30 minutes, one page, five sections</td><td>Keep/fix lists + linked edits</td></tr>
+<tr><td><a href="postmortem-template-small-teams.html">Postmortem</a></td><td>Sev-1, customer data touched, revenue impact</td><td>Half a day, evidence-first</td><td>Root-cause chain, owner-signed actions, exec readout</td></tr>
+<tr><td><a href="tabletop-exercise-failure-points.html">Tabletop retro</a></td><td>After each <a href="incident-response-drill-schedule-template.html">drill</a></td><td>20 minutes on the drill script itself</td><td>Drill-scenario edits + gap list &rarr; feeds next AAR</td></tr>
+<tr><td><a href="weekly-review-checklist.html">Weekly review</a></td><td>Every Friday</td><td>15 minutes</td><td>Chases the AAR's open fix items; nothing new</td></tr>
+</table>
+<p>The AAR is the workhorse; the postmortem is the scalpel you use maybe twice a year. If your team writes beautiful postmortems for major incidents and has nothing for the small fires, you're capturing 10% of the learning &mdash; the 90% is in the thirty-minute reports nobody wrote.</p>
+
+<h2>A worked example: the Friday-morning disk incident</h2>
+<p>Real-shaped, sixty seconds to read, sized like the real thing:</p>
+<ul>
+<li><strong>AAR-2026-09-12 &mdash; Production disk full, 08:40&ndash;09:52. Impact: 12 min of failed checkouts, 9 tickets, 1 refund.</strong> Participants: on-call (Mo), support (Ana), me.</li>
+<li><strong>Section 1 (the gap):</strong> four rows as in the table above &mdash; no alert, no SSH access from on-call laptop, failover unrehearsed under load, status page 12 min late.</li>
+<li><strong>Section 2 (keep):</strong> Ana texted the on-call directly when tickets spiked &mdash; now codified in the escalation row of the severity matrix. The <a href="incident-communication-templates.html">incident comms templates</a> for customer replies were done in minutes &mdash; keep, and pre-stage the status-page variants too.</li>
+<li><strong>Section 3 (fix):</strong> the four rows above &mdash; alert by Sept 16 (Sarah), VPN provisioning step by Sept 15 (Mo), load-failover drill Oct 1 (Ana), pre-staged status drafts Sept 14 (Sarah).</li>
+<li><strong>Section 4 (cause, no blame):</strong> monitoring coverage was never audited against the baseline; provisioning checklist predates the VPN change; drills only ever rehearsed the happy path; status drafts don't exist until written live.</li>
+<li><strong>Section 5 (changing):</strong> server-monitoring checklist +1 alert row; provisioning checklist +1 VPN step; drill schedule +1 load scenario; status-page page +2 pre-staged drafts. Next AAR opens by checking these four items.</li>
+</ul>
+<p>Total effort: about thirty minutes, most of it copy-pasting from the timeline and chat. Compare with the alternative &mdash; the same incident recurring in December, this time on the <a href="payment-outage-playbook.html">payment page</a> instead of the app, with everyone re-deriving the same four conclusions under pressure.</p>
+
+<h2>Where the fix list meets everything else you run</h2>
+<ul>
+<li><strong>The weekly review is the AAR's debt collector.</strong> Open fix items appear in the <a href="weekly-review-checklist.html">Friday pass</a> until closed. An AAR whose fix list survives two weeks unchased was never really assigned.</li>
+<li><strong>Budget learns too.</strong> If a fix needs money (new monitoring tool, spare hardware), it routes through the <a href="annual-ops-budget-template.html">incident buffer line</a> you already budgeted &mdash; that's what the buffer is for, not just "nice to have later."</li>
+<li><strong>Handoffs get better.</strong> If the gap timeline shows a knowledge vacuum mid-incident, the fix is usually a sharper <a href="on-call-handoff-checklist.html">handoff checklist</a> or a page in the <a href="the-2am-test-incident-handoff.html">2 a.m. test</a> format, not a new tool.</li>
+<li><strong>Drills stop repeating.</strong> Every AAR gap that could have been rehearsed becomes next quarter's drill scenario &mdash; that's how the <a href="incident-response-drill-schedule-template.html">schedule</a> stays pointed at your actual weaknesses instead of generic ones.</li>
+<li><strong>Hardware gaps route to the shelf.</strong> "Failover unrehearsed because the spare was unimaged" is a <a href="hot-spare-loaner-laptop-checklist.html">hot-spare</a> readiness fix; "we had no second laptop at all" routes to your asset inventory's replacement fund.</li>
+<li><strong>Lost hardware days</strong> follow the same template: a lost-laptop AAR's fix list reads like the <a href="lost-or-stolen-laptop-runbook.html">runbook</a>'s after-action &mdash; encryption verified, remote wipe timing, spare provisioned from the shelf.</li>
+</ul>
+
+<h2>Paste-in starter: the action tracker</h2>
+<p>Keep the AAR itself in a text file named <code>aar-YYYY-MM-DD-shortname.md</code> next to your other ops docs. The only table that must stay machine-readable is the fix list &mdash; CSV so the weekly review can import it:</p>
+<pre>
+id,area,failure,root_cause,fix,owner,due,lands_in,status
+1,monitoring,"no disk alert; 500s were first signal","coverage never audited vs baseline","add 80% warn / 90% crit alert",sarah,2026-09-16,server-monitoring-checklist,open
+2,access,"on-call laptop lacked VPN profile","provisioning predates VPN change","add VPN step + quarterly spot-check",mo,2026-09-15,new-laptop-provisioning-checklist,open
+3,drills,"failover unrehearsed under load","drills test happy path only","Q4 drill runs failover with disk pressure",ana,2026-10-01,drill-schedule,open
+4,comms,"status page 12 min late","drafts written live","pre-stage investigating+mitigating drafts",sarah,2026-09-14,status-page-communication-template,open
+</pre>
+<p>One CSV per AAR, four lines, statuses flipped to <code>done</code> by the weekly review. That's the whole system. The organizations that seem eerily calm during emergencies aren't luckier &mdash; they've just done thirty honest minutes after every fire, for longer than you have.</p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams</a> &mdash; the deep-dive version for Sev-1s; the AAR is its 30-minute sibling.</li>
+<li><a href="incident-timeline-template.html">Incident Timeline Template</a> &mdash; fills AAR section 1 from facts, not memory.</li>
+<li><a href="tabletop-exercise-failure-points.html">Tabletop Exercise Failure Points</a> &mdash; the drill-day debrief that feeds the next AAR.</li>
+<li><a href="incident-response-drill-schedule-template.html">Incident Response Drill Schedule</a> &mdash; where AAR gaps become next quarter's scenarios.</li>
+<li><a href="first-30-minutes-incident-response.html">First 30 Minutes of Incident Response</a> &mdash; the checklist the AAR frequently edits.</li>
+<li><a href="weekly-review-checklist.html">Weekly Review Checklist</a> &mdash; chases the AAR's open fix items every Friday.</li>
+<li><a href="runbook-template.html">Runbook Template</a> &mdash; where the keep list gets codified.</li>
+<li><a href="severity-matrix-3-levels.html">Severity Matrix (3 Levels)</a> &mdash; escalation rows improved by AAR keep items.</li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates</a> &mdash; pre-written comms that turn AAR section 1 rows into non-events.</li>
+<li><a href="status-page-communication-template.html">Status Page Communication Template</a> &mdash; the pre-staged drafts most AARs recommend.</li>
+<li><a href="the-2am-test-incident-handoff.html">The 2 a.m. Test: Incident Handoff</a> &mdash; if the gap shows a knowledge vacuum, fix the handoff.</li>
+<li><a href="on-call-handoff-checklist.html">On-Call Handoff Checklist</a> &mdash; the other half of handoff hygiene.</li>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist</a> &mdash; the most common "lands_in" destination for alert gaps.</li>
+<li><a href="new-laptop-provisioning-checklist.html">New Laptop Provisioning Checklist</a> &mdash; access gaps like the missing VPN profile land here.</li>
+<li><a href="annual-ops-budget-template.html">Annual Ops Budget Template</a> &mdash; fixes that need money route through the incident buffer.</li>
+<li><a href="cyber-insurance-requirements-checklist.html">Cyber Insurance Requirements</a> &mdash; dated AARs are exactly the "lessons learned" evidence carriers ask for.</li>
+<li><a href="weekly-status-report-template.html">Weekly Status Report Template</a> &mdash; the AAR's "what changed" line feeds the report.</li>
+</ul>
+</aside>
+</main>
+</body>
+</html>
