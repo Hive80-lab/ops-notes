@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Runbook Template (Free, Copy-Paste) — Small Teams</title>
+<meta name="description" content="A free runbook template for small teams: the 7 sections a runbook needs, when to write one, and the 2am rule that separates a runbook from documentation theater. Copy-paste ready.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>Runbook Template (Free, Copy-Paste)</h1>
+<p>A runbook is not documentation. Documentation explains how the system works; a runbook tells the person being paged at 2am what to do in the next five minutes, assumes they're half-awake, and doesn't require them to read anything else. Most small teams skip runbooks because "we don't have ops." Then the same outage happens twice and the second time still takes ninety minutes because nothing was written down.</p>
+
+<h2>The 7-section runbook — copy this</h2>
+<ol>
+<li><strong>What this service does (2 sentences max).</strong> What breaks for the <em>user</em> when this fails. "Checkout calls the payments API; if it's down, customers can't pay." Not architecture — impact.</li>
+<li><strong>Symptoms → diagnosis.</strong> What the alert looks like, what the user sees, and the first three checks in order (endpoint up? logs erroring? dependency down?). Written as steps, not paragraphs.</li>
+<li><strong>Mitigations, in try-first order.</strong> Restart command. Failover flag. Rollback command. Each with the exact command to paste, who may run it, and what "it worked" looks like. The safe-but-slow fix goes first if it's reversible.</li>
+<li><strong>Escalation.</strong> When to stop self-serving and page a human, with names and a hard time threshold — 15 minutes of no progress beats two hours of heroics.</li>
+<li><strong>Known failure modes.</strong> The top 3–5 past incidents with one-line resolutions. This section is the runbook's memory; every incident should end with a line added here.</li>
+<li><strong>Verification after fix.</strong> How to confirm recovery from the user's side (a real checkout, a real request), not just "service is green."</li>
+<li><strong>Post-incident hooks.</strong> Link to the postmortem template and where the incident timeline lives. The runbook is the front door of the incident system, not a substitute for it.</li>
+</ol>
+
+<h2>When to write a runbook</h2>
+<p>The trigger isn't "when we have time" — it's the second occurrence. First incident: fix it. Second incident: write the runbook while it's fresh, or you'll pay for the third one at full price. One page per service that pages someone. If a runbook would need more than one screen, it's two runbooks or a wiki page with a runbook on top.</p>
+
+<h2>The 2am rule</h2>
+<p>The only test that matters: could the on-call engineer — whoever is least familiar with this system this week — follow it at 2am without asking anyone anything? If any step says "check the usual suspects" or "ask Dave," it fails. Exact commands, named owners, hard thresholds. A runbook that requires tribal knowledge isn't a runbook; it's a scavenger hunt with a pager attached.</p>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/agent-ops-24-7"><strong>Agent Ops 24/7 ($19)</strong></a> kit extends runbooks to unattended agents: watchdog patterns, escalation ladders, and the monitoring design that pages a human only when a human is actually needed — launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> — $19 unattended-agent ops &amp; escalation kit</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="on-call-handover-template.html">On-Call Handover Template (Copy-Paste, 10 Minutes)</a></li>
+<li><a href="escalation-policy-template.html">Escalation Policy Template for Small Teams</a></li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams</a></li>
+<li><a href="severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
