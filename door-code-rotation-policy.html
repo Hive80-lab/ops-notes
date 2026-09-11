@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Door Code Rotation Policy for Small Teams (The Code Every Ex-Employee Still Knows)</title>
+<meta name="description" content="A door code rotation policy for small offices: inventory every keypad code first, the quarterly and event-triggered rotation cadence, same-day departure rotation done after the final walk-through, tiered codes by least privilege, how codes travel (vault, never chat), the code-change log, and what to do within the hour when a code leaks.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>The code four ex-employees still know, and the policy that retires it</h1>
+
+<p>Small offices accumulate door codes the way junk drawers accumulate keys: one for the front door from the lease signing, one for the side entrance the cleaners use, one for the alarm panel, one for the garage, one for the server room closet, each adopted at a different moment by a different person, none written down anywhere authoritative. The predictable result is a code that four ex-employees still know and nobody has changed since. A door code is a credential &mdash; it deserves the same lifecycle as any other secret: owned, inventoried, rotated on a schedule and on events, and never allowed to travel by chat or memory alone.</p>
+
+<h2>1. The inventory comes before the policy</h2>
+<ul>
+<li><strong>Walk the building and list every keypad and every code it has.</strong> Front door, back door, side entrance, garage, gate, alarm panel, server room, equipment cage, and the dial pad on the phone system if one hides a voicemail admin code. The <a href="physical-security-office-checklist.html">physical security checklist</a> covers the walk; this page covers what to do about the codes it finds.</li>
+<li><strong>Write each code into the password manager, not a shared spreadsheet.</strong> "door-codes.xlsx" on the shared drive is the most commonly leaked credential store in small business &mdash; every employee, every contractor with drive access, every synced personal laptop. The vault entry per door gets: location, code, who approved it, last rotation date. The <a href="password-manager-rollout-small-business.html">password manager rollout</a> is the precondition; the door codes are just more tenants in it.</li>
+<li><strong>Mark the zombie codes at inventory time.</strong> A code nobody can name the owner of is a code to rotate this week, not document. The inventory is not an archive of the past; it is the list of things that will get new values.</li>
+</ul>
+
+<h2>2. Two rotation clocks: the calendar and the event</h2>
+<ul>
+<li><strong>Quarterly rotation for shared codes.</strong> Any code known by more than two people &mdash; the front door, the alarm code, the cleaner's side entrance &mdash; gets a new value every quarter. The rotation is ten minutes: new code generated, written to the vault entry, keypads updated, one line in the log. Put it on the same quarterly pass as the <a href="wifi-security-checklist.html">router check</a> and the printer firmware walk, and none of the three gets skipped.</li>
+<li><strong>Event-triggered rotation, same day:</strong> any employee departure, any contractor end date, any cleaning-company change, any suspected leak, any lost key fob that shared a door. The <a href="access-request-offboarding-checklist.html">offboarding checklist</a> should already have the line "door codes rotated" &mdash; this page is the detail behind that line.</li>
+<li><strong>Rotate on departures even when the person was trusted.</strong> The point is not suspicion; it is that four ex-employees knowing the code is itself the risk, regardless of anyone's character. Memory outlasts grudges &mdash; and outlasts NDA goodwill.</li>
+</ul>
+
+<h2>3. The departure rotation: after the walk-through, not during</h2>
+<ul>
+<li><strong>Change the code after the final walk-through, not in front of the departing person.</strong> The professional sequence: final day, exit walk-through, property returned, access reviewed &mdash; then the code changes that evening. Rotating the code while someone is still packing sends a message; the goal is the control, not the insult.</li>
+<li><strong>One named person owns departure rotation.</strong> The same owner who approves grants runs the revocations &mdash; the same rule as every other offboarding artifact. When three people each assume someone else changed the alarm code, nobody changed the alarm code.</li>
+<li><strong>Departure rotation covers the human network too:</strong> the person who shared their door code with a courier, the team that gave the cleaner the garage code for deliveries. The walk-through conversation ("anything you shared access to?") is fifteen seconds and catches the informal grants that were never in the vault.</li>
+</ul>
+
+<h2>4. Tier the codes like any other access</h2>
+<ul>
+<li><strong>Least privilege applies to doors.</strong> The cleaner needs the side entrance and the supply closet, not the server room. The courier needs the loading door at delivery hours. If every code opens everything, every leaked code opens everything &mdash; the fix is separate codes per door and per role, which the inventory from section 1 makes visible.</li>
+<li><strong>Alarm codes are their own tier.</strong> The alarm code plus the front-door code is the complete burglary kit; anyone who needs the alarm code gets a unique user code with their own name where the panel supports it, so the panel log shows who armed and disarmed. Shared alarm codes are a finding in every insurance inspection &mdash; fix them before the adjuster finds them.</li>
+<li><strong>Server room and network gear doors are the highest tier.</strong> A door code to the room with the switches and the NAS outranks almost every digital credential in the office. Treat it like a production secret: unique, two-person knowledge where practical, rotated on every change of who manages the network, and covered by the same discipline as the <a href="server-hardening-checklist-small-teams.html">server hardening checklist</a>.</li>
+</ul>
+
+<h2>5. How codes travel &mdash; the rule that prevents most leaks</h2>
+<ul>
+<li><strong>Codes move through the vault's sharing, never through chat or email.</strong> A code pasted into a group chat lives in phone clouds, in notifications on lock screens, and in the chat provider's servers. The vault share link expires; the group chat message does not. The same reasoning the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> applies to API keys applies to the front door.</li>
+<li><strong>"Tell me in person" is a valid distribution channel.</strong> For a five-person office, walking to the keypad together and entering the new code is the entire distribution plan &mdash; and it leaves no artifact to leak. The vault records the new value; the people know it; nothing was transmitted.</li>
+<li><strong>Retire the sticky note inside the alarm cabinet.</strong> The code written next to the panel it protects is a joke with a straight face, and it is in most offices. The vault entry replaces the note; the note goes in the shred bin the same day the new code is set.</li>
+</ul>
+
+<h2>6. Keypad realities: work with the hardware you have</h2>
+<ul>
+<li><strong>Legacy single-code keypads get an upgrade path, not an excuse.</strong> If the front door keypad holds one code for everyone, put "per-user codes" on the replacement criteria and rotate the shared code quarterly until then. Most modern keypads cost little more than one locksmith call and give per-user logs.</li>
+<li><strong>Length and lockout matter more than cleverness.</strong> Five or six digits beats four; lockout after repeated wrong entries beats "try again forever"; no sequential or repeated patterns (1234, 2580 &mdash; every code list starts there). The lockout setting is in the keypad manual and takes five minutes to enable.</li>
+<li><strong>Check what a power cycle does.</strong> Some cheap keypads revert to factory defaults after a power loss &mdash; meaning the code you rotated is not the code that unlocks the door after the next outage. Test it once: pull the battery or breaker, power back, try the default. If the default works, that is the highest-priority replacement in the building.</li>
+</ul>
+
+<h2>7. The log, and the leak runbook</h2>
+<ul>
+<li><strong>One code-change log, four columns:</strong> date, door, "rotated" (the value lives in the vault, never in the log), authorized by. The log turns the annual question &mdash; "when was this last changed, and why?" &mdash; into a lookup. The <a href="annual-security-review-checklist.html">annual security review</a> walks the log against the inventory in the same fifteen minutes as the badge and printer passes.</li>
+<li><strong>A leaked code is a credential exposure: rotate within the hour.</strong> The visitor who saw the code typed in, the delivery driver who heard it, the group chat that shouldn't have had it &mdash; the response is the same: new code today, log line written, and a check of who else might have it. The <a href="badge-access-control-checklist.html">badge checklist</a> handles the same event for cards; door codes just rotate faster.</li>
+<li><strong>Entry logs, where the hardware supports them, close the loop.</strong> Per-user codes plus a keypad audit log answer "who entered at 2am" with a name instead of a shrug. If the current keypad cannot answer that, the upgrade case writes itself &mdash; bring the log excerpt from the <a href="visitor-log-template.html">visitor log</a> reconciliation where the unexplained entries showed up.</li>
+</ul>
+
+<p class="closing">Door codes are credentials: inventory them into the vault, rotate shared codes quarterly and every departure same-day (after the walk-through, not during), tier them by least privilege, move them by vault share or in person &mdash; never chat &mdash; keep a four-column change log, and rotate within the hour when one leaks. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the code-inventory and change-log templates, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the quarterly rotation and the offboarding pass so the code four ex-employees know finally expires.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="badge-access-control-checklist.html">Badge &amp; Door Access Control Checklist</a></li>
+<li><a href="physical-security-office-checklist.html">Physical Security Checklist for Small Offices</a></li>
+<li><a href="visitor-log-template.html">Visitor Log Template for Small Offices</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="contractor-security-onboarding-checklist.html">Contractor Security Onboarding Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
