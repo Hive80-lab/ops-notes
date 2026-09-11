@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Printer Security Checklist for Small Teams (The Unpatched Computer That Copies Everything)</title>
+<meta name="description" content="Printer and MFP security for small teams: the admin plane before the WiFi password, firmware on a calendar, what the printer's hard drive keeps after a lease ends, scan-to-email credentials that outlive their owners, secure print release, and the quarterly ten-minute printer audit.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Printers: the computer nobody patches, the disk nobody wipes</h1>
+
+<p>Every office has one device that is treated as furniture: the printer. It is actually a computer &mdash; a Linux box with a web server, stored credentials, a hard drive that has copied every page anyone printed or scanned for years, and a firmware update cadence that runs in years, not weeks. Auditors ask about printers because attackers do: a printer on the flat office network is the classic lateral-movement hop, and a lease return without a disk wipe is a quiet data-breach event. This checklist walks the whole fleet in about an hour, then keeps it honest in ten minutes a quarter.</p>
+
+<h2>1. Count the fleet and give every device an owner</h2>
+<ul>
+<li><strong>Every printer and MFP is a computer; inventory it like one.</strong> Walk the office and the network: DHCP leases, the router's client list, and the physical room. Label each device with a sticky note inside the tray lid: model, serial, owner, date checked. The <a href="iot-device-security-checklist.html">IoT device checklist</a> runs the same sweep for cameras, thermostats, and door controllers &mdash; do both walks in the same hour, because printers and cameras fail the same way.</li>
+<li><strong>One named owner per device, even for the $99 inkjet.</strong> Unowned devices are the ones nobody patches and everybody assumes somebody else admins. The owner does not need to be technical; they need to be the person who notices when the printer starts offering a new cloud service after a firmware update.</li>
+<li><strong>Retire the zombie.</strong> Every office has a printer that only one person uses, in a corner, on the flat network, running 2019 firmware. Decide at inventory time: keep it (then own and patch it) or unplug it. The honest answer for most five-person offices is unplug.</li>
+</ul>
+
+<h2>2. Fix the admin plane first &mdash; it outranks every other printer control</h2>
+<ul>
+<li><strong>Log in to the printer's web admin and change the default password.</strong> If admin/admin or admin/serial-number still works on a network-connected device, that is finding number one and the day is not done until it is changed. The <a href="server-hardening-checklist-small-teams.html">server hardening checklist</a> starts with the same step for the same reason: the management plane is the machine.</li>
+<li><strong>Unique admin credential, stored in the password manager, never on a sticker.</strong> Printer admin passwords live taped to printers in half the offices in the world. The password manager entry is named after the device; the sticker is retired the day the entry is created.</li>
+<li><strong>Disable remote administration from the internet.</strong> "Allow admin from WAN" and vendor cloud remote-print portals are how printers end up in botnets. If a vendor portal is genuinely used, it gets an owner, a named account with MFA, and a line in the <a href="shadow-it-audit-checklist.html">shadow IT audit</a> &mdash; because a printer that phones home is a third-party service whether anyone called it that or not.</li>
+</ul>
+
+<h2>3. Put the printer where the damage stops</h2>
+<ul>
+<li><strong>Best: a dedicated VLAN or guest-lan segment for printers, cameras, and smart TVs.</strong> The printer that talks only to the print server cannot hand an attacker a route to the file server. If the router supports guest networks or VLANs, use one for the device zoo &mdash; the <a href="wifi-security-checklist.html">wifi checklist</a> covers the SSID split; extend it to wired ports where the switch allows.</li>
+<li><strong>Flat network reality: document it, then compensate.</strong> Most small offices run one flat network, and the fix is not a weekend re-cabling project. The compensations that matter: unique admin credentials, firmware current, printers on wired LAN only (no duplicate WiFi radio), and no stored credentials beyond what scanning genuinely needs. Write the flat-network gap into the <a href="annual-security-review-checklist.html">annual security review</a> so it is a known, owned risk instead of a surprise.</li>
+<li><strong>No printer on the office WiFi "for convenience".</strong> The duplicate SSID radio inside an MFP is a second front door that nobody audits. Wired only, unless the device lives in a room with no cable &mdash; and then it gets the same segment treatment as guest devices.</li>
+</ul>
+
+<h2>4. Firmware on a calendar, not on a crisis</h2>
+<ul>
+<li><strong>Twice a year, per device: check and install firmware.</strong> Printer vendors ship fixes slowly but they do ship &mdash; including for the print-spooler and web-UI vulnerabilities that get printers added to botnets. The ten-minute per-device check goes on the same calendar as the quarterly router check in the wifi checklist, and the <a href="patch-management-checklist.html">patch management checklist</a> owns the general cadence: printers are simply the slowest, most-forgotten line in it.</li>
+<li><strong>End-of-life means replace or quarantine.</strong> A seven-year-old MFP that the vendor will never patch again either leaves the network (pull the cable) or leaves the office. The lease cycle is the natural decision point &mdash; make "is the replacement more secure?" part of the copier RFP.</li>
+<li><strong>Watch what a firmware update turns ON.</strong> The classic small-office surprise: an update enables the vendor's cloud-print service by default, and suddenly the printer has a new internet account nobody chose. The owner from section 1 checks the admin screen after every update for new services and turns them off unless they were deliberately wanted.</li>
+</ul>
+
+<h2>5. The credentials stored inside the printer outlive the people who set them</h2>
+<ul>
+<li><strong>Scan-to-email is an email account with a password saved in the printer.</strong> When the staff member who set it up leaves, that password stays behind. Rotate the printer's SMTP or mailbox credential in the same pass as offboarding &mdash; the <a href="vendor-offboarding-data-deletion-checklist.html">offboarding checklist</a> pattern applies to devices too: list what the device holds, rotate it, log it.</li>
+<li><strong>Scan-to-folder runs on a service account &mdash; scope it to one folder.</strong> The scan destination should be a single drop folder with write-only access, not a domain-wide account. If the only way to make scanning work was a full admin service account, that is a finding for the next <a href="access-request-offboarding-checklist.html">access review</a>.</li>
+<li><strong>Treat a compromised print server like a compromised mailbox.</strong> The printer's scan-to-email identity can send. If a printer account gets phished or abused, the blast radius includes your email domain's reputation &mdash; check the SPF/DKIM guidance in the <a href="email-security-checklist.html">email security checklist</a> and keep printer identities out of any domain-spoofable path.</li>
+</ul>
+
+<h2>6. What the drive keeps &mdash; and what leaves with the lease</h2>
+<ul>
+<li><strong>Modern MFPs copy every page to an internal disk.</strong> Contracts, salaries, medical letters, that passport someone scanned at reception. The controls: enable disk encryption or the data-overwrite feature if the device has one, and enable secure print release so jobs print to the person standing at the tray, not the tray.</li>
+<li><strong>Lease return without a wipe is a data-breach event.</strong> The copier that leaves the building carries years of documents on its disk. Before the lease truck arrives: run the vendor's disk-wipe / data-overwrite utility (three passes is the standard), photograph the confirmation screen, and file it with the lease paperwork. The same discipline the <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding checklist</a> applies to SaaS accounts applies to the box in the corner &mdash; it is just heavier.</li>
+<li><strong>When a printer dies or is stolen, treat the event like a lost laptop.</strong> A stolen networked MFP is a device with stored credentials and possibly a document history. The first hour of the <a href="data-breach-first-24-hours.html">data breach runbook</a> is the right play: rotate the credentials it held, note what it could reach, log the timeline.</li>
+</ul>
+
+<h2>7. The human layer: paper is a data-loss channel too</h2>
+<ul>
+<li><strong>Abandoned printouts are the classic office leak.</strong> The salary schedule someone printed and left, the client contract at the tray, the HR letter in the recycle bin. The rules are small: collect jobs within minutes, a locked shred bin within one step of every printer, and a walking route that does not cross the reception line. The <a href="visitor-log-template.html">visitor log</a> exists because strangers see paper; the shred bin exists because colleagues forget it.</li>
+<li><strong>Sensitive data gets a release code, not a hope.</strong> Secure print release (badge or PIN at the device) costs minutes to enable on most MFPs and removes the abandoned-document problem for anything sensitive. For the small office that cannot justify it, the written rule "no customer PII on paper unless it is being collected immediately" costs nothing.</li>
+<li><strong>The fax line still exists &mdash; and still routes to the same disk.</strong> Law firms and clinics still fax. If the MFP faxes, the received-fax store is part of the same data picture: clear it with the same wipe routine at lease end, and include the fax number in the inventory row.</li>
+</ul>
+
+<h2>8. The quarterly ten minutes that keep it all true</h2>
+<ul>
+<li><strong>One walk, four checks, ten minutes:</strong> firmware current? admin password still unique (not the one taped inside the tray lid in 2022)? device count on the network still explainable? no new cloud services switched on by an update? Four yes answers and the printer leaves the risk register for another quarter.</li>
+<li><strong>Log it next to the router and badge reconciliations.</strong> The wifi checklist's quarterly router pass, the <a href="physical-security-office-checklist.html">physical security walk</a>, and this printer pass are the same fifteen-minute block on the same calendar day &mdash; three small walks that together are the audit evidence for the "we manage our physical and network devices" question.</li>
+<li><strong>The printer gets a row in the inventory the way every device does:</strong> model, serial, owner, firmware date, admin credential location (vault entry name, never the password), lease end date. The row takes two minutes to maintain and turns the next unexpected question &mdash; from an auditor, an insurer, or a new hire &mdash; into a lookup instead of an archaeology project.</li>
+</ul>
+
+<p class="closing">A printer is a computer that copies everything and gets patched never. Give each device an owner, fix the admin plane before the WiFi, segment the device zoo, put firmware on a calendar, rotate the scan-to-email credentials at every offboarding, wipe the disk before the lease truck arrives, and spend ten minutes a quarter keeping all of it true. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the device-inventory row and the quarterly walk sheet, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the firmware checks and the offboarding rotation so the printer stops being the machine everyone forgot.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="iot-device-security-checklist.html">IoT Device Security Checklist</a></li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist</a></li>
+<li><a href="physical-security-office-checklist.html">Physical Security Checklist for Small Offices</a></li>
+<li><a href="vendor-offboarding-data-deletion-checklist.html">Vendor Offboarding &amp; Data Deletion Checklist</a></li>
+<li><a href="shadow-it-audit-checklist.html">Shadow IT Audit Checklist for Small Teams</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
