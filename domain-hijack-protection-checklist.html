@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Expiry &amp; Hijack Protection Checklist for Small Business (The One Asset You Can't Re-Issue)</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="The domain-protection checklist for small business: multi-year registration with billing alarms, registrar transfer lock, the circular recovery-email trap, ownership under the business entity, a quarterly RDAP drill, and the first-hour sequence when the domain moves anyway.">
+</head>
+<body>
+    <header>
+        <h1>Domain Expiry &amp; Hijack Protection Checklist for Small Business</h1>
+        <nav><a href="index.html">&larr; Index</a></nav>
+    </header>
+
+    <section>
+        <h2>Why this page exists</h2>
+        <p>You can lose your server and be back in an afternoon. You can lose your email provider and be back before lunch. Lose the <strong>domain</strong> &mdash; the name itself &mdash; and everything built on it stops at once: the website, the mail (every invoice, every password reset), the DNS records a dozen SaaS tools quietly depend on, and the trust customers place in the addresses they already know. And unlike a server, a domain that moves to someone else is not a restore job. It is a legal dispute measured in weeks, if it resolves at all.</p>
+        <p>Domains don't usually get "hacked" in the movie sense. They lapse, get phished, get transferred by a fraudster who social-engineers a support desk, or get locked inside a founder's personal account that nobody else can reach. All four are preventable with about an hour of setup and a ten-minute quarterly drill. This page is that setup and that drill.</p>
+        <p>The <a href="dns-outage-runbook.html">DNS outage runbook</a> handles the day nameservers are down but you still own the name. This page is about the worse case: the name moving to someone who shouldn't have it &mdash; or expiring out from under you.</p>
+    </section>
+
+    <section>
+        <h2>1. The five ways businesses lose a domain</h2>
+        <ul>
+            <li><strong>The expired card.</strong> Auto-renew fires, the card on file was reissued or hit its limit, the renewal fails, and the warning emails go to a mailbox nobody reads. Somewhere between 30 and 45 days later the domain drops and &mdash; for a window &mdash; anyone can register it. Dropped domains get bought by resale farms within minutes, because expired names with traffic and backlinks are inventory.</li>
+            <li><strong>The phished transfer.</strong> An email that looks like registrar housekeeping asks you to "confirm ownership" or "validate your contact details," and you hand over an EPP/auth code to someone who isn't your registrar. The transfer completes at the gaining registrar and the clock starts against you.</li>
+            <li><strong>The account takeover.</strong> The registrar login uses the same password as something already breached, protected by SMS "2FA" that SIM-swap defeats. Attackers don't need to beat the registrar; they need to beat one reused password.</li>
+            <li><strong>The inside change.</strong> Whoever holds the registrar account changes nameservers and points the name somewhere else &mdash; mail reroutes to an attacker's server (every password reset is now readable by them), web traffic redirects to a clone of your checkout. No transfer happens; nothing shows up in the way people usually watch for it.</li>
+            <li><strong>The frozen founder.</strong> The domain sits in one person's personal account &mdash; their email, their phone, their death or their departure &mdash; and the business discovers it never actually owned its own name. This is the quietest of the five and the one auditors find most often.</li>
+        </ul>
+        <p>Every control below maps to one of these five. If you do them all, none of the five is cheap to execute against you.</p>
+    </section>
+
+    <section>
+        <h2>2. Registration: make expiry a non-event</h2>
+        <ul>
+            <li><strong>Register in multi-year blocks.</strong> One to three years out, not the minimum. The marginal cost is nothing; the failure mode it removes is the single most common way small businesses lose a domain.</li>
+            <li><strong>Auto-renew ON &mdash; and assume it will fail anyway.</strong> Auto-renew is a convenience, not a control. It depends on one card. Put a <strong>billing alarm</strong> in the calendar at 60, 30, and 7 days before expiry, with the renewal card's last four digits in the note so whoever gets the alarm can fix it without detective work.</li>
+            <li><strong>The card itself gets a checklist line.</strong> The card that renews the domain is a dependency, exactly like a vendor. When it's reissued, someone updates the registrar. Add it to the <a href="vendor-offboarding-data-deletion-checklist.html">offboarding-style checklist</a> you run when a bank card changes.</li>
+            <li><strong>Owner-of-record = the business entity, not a person.</strong> Registrant organization should be the legal entity with a role mailbox (domains@yourcompany) as the contact &mdash; a mailbox that outlives any employee, monitored by more than one person. If the founder's personal Gmail is the registrant contact, fix that this quarter.</li>
+            <li><strong>Whois privacy is fine; ownership anonymity inside the company is not.</strong> Privacy protection hides the contact from the public. It does not excuse the company from knowing exactly which account, which email, and which recovery path control the domain. That lives in the one-page record (section 5).</li>
+            <li><strong>Watch the drop window even if you did everything right.</strong> Know your registrar's grace/redemption timeline. Redemption fees are annoying; redemption deadlines missed are final.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>3. Locks and codes: make transfers hard</h2>
+        <ul>
+            <li><strong>Transfer lock ON, always.</strong> Most registrars default to it; verify, don't assume. In registry terms you want the status <code>clientTransferProhibited</code> visible on your domain. It costs nothing and blocks the casual transfer.</li>
+            <li><strong>The EPP/auth code is a credential.</strong> Treat it like a password reset link. It is only ever generated from inside your logged-in registrar account, on your request. No legitimate registrar support flow asks you to read an auth code out over a call you didn't initiate, and no legitimate buyer of your business receives it over email. If someone emails asking for it &mdash; even using your registrar's logo, even citing an "expiring validation" &mdash; that's the attack.</li>
+            <li><strong>Nameserver changes are the real prize &mdash; watch them.</strong> A hijacker who has your account doesn't need to transfer anything; flipping nameservers takes one click and takes your mail with it. Prefer a registrar that emails on every nameserver change, and treat any such email you didn't cause as a <a href="api-key-leak-response-runbook.html">live incident, not a notification</a>.</li>
+            <li><strong>DNSSEC where the registrar supports it.</strong> It doesn't stop a nameserver change at the registrar, but it does protect resolvers and customers from forged DNS between you and them. If your registrar supports DNSSEC with a one-click DS record, it's a free layer; if DNS is managed elsewhere, keep the DS record consistent in both places or mail validation breaks.</li>
+            <li><strong>Registry lock is the enterprise tier.</strong> Verisign's Registry Lock and equivalents require a verified human out-of-band step (a phone call to a pre-registered number) before any nameserver or nameserver-host change clears. If your domain is the business, ask your registrar what they offer; if the answer is nothing, the transfer lock plus the drills below is the realistic baseline.</li>
+            <li><strong>Thin your attack surface:</strong> no shared registrar logins &mdash; one account, named seats, MFA by app or hardware key rather than SMS, and the recovery path reviewed the same way you review a <a href="password-manager-rollout-small-business.html">password rollout</a>.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>4. The circular trap: recovery email and the domain it protects</h2>
+        <p>The most self-inflicted outage in this whole subject: the registrar account's <strong>recovery email is an address on the domain it protects</strong>. Attacker flips your nameservers, your mail stops resolving, and the reset link for getting your registrar account back is sent to a mailbox that no longer exists on the network. Now you're recovering access through a support queue with no email, proving identity with documents, while customers see a dead site.</p>
+        <ul>
+            <li><strong>Recovery email lives on an independent domain.</strong> A second, separately-renewed domain used for nothing but administration, or a provider mailbox on a domain you don't also operate DNS for. One hour of setup, removes an entire class of lockout.</li>
+            <li><strong>Two humans, both paths.</strong> At least two people at the company can name the registrar, log in, and describe the recovery path. If that person is on a flight, the domain waits for no one.</li>
+            <li><strong>Test the recovery path annually.</strong> Actually click "forgot password" and walk the flow to the last step. Untested recovery paths rot silently &mdash; this is the same lesson as the <a href="backup-restore-test-checklist.html">restore test</a>: a control you've never exercised is a story you tell yourself.</li>
+            <li><strong>The same logic applies to hosting and email vendors:</strong> the account that controls your domain's DNS at Cloudflare/wherever is a second door &mdash; same MFA rules, same ownership rules, same record-keeping. The <a href="vendor-security-review-checklist.html">vendor security review</a> applies to your registrar and DNS provider like any other vendor.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>5. The one-page domain record (and the 10-minute quarterly drill)</h2>
+        <p>Write it once, review it quarterly, store it where the <a href="disaster-recovery-plan-template-small-teams.html">DR plan</a> lives:</p>
+        <ul>
+            <li>Domain, registrar, account owner(s), MFA method, recovery email (and where that mailbox lives)</li>
+            <li>Expiry date, auto-renew status, renewal card last-4</li>
+            <li>Transfer-lock status, DNSSEC on/off (and DS record location), nameserver provider</li>
+            <li>Who is authorized to request an EPP code (roles, not just names)</li>
+            <li>Registrar support line for fraud/urgent cases, and the account number they'll ask for</li>
+        </ul>
+        <p><strong>The quarterly drill, ten minutes with a browser:</strong></p>
+        <ol>
+            <li>Look the domain up on RDAP (rdap.org forwards to the right registry). Confirm: expiry date more than 90 days out, status shows <code>clientTransferProhibited</code>, nameservers match the record above.</li>
+            <li>Log in to the registrar. MFA still works. Recovery email still receives mail (send yourself a test).</li>
+            <li>Check the audit/notifications tab: any logins or changes you don't recognize?</li>
+            <li>Confirm the renewal card is still the card you think it is.</li>
+            <li>If anything drifted, fix it now, not in the next quarterly.</li>
+        </ol>
+        <p>This is the domain's version of the <a href="annual-security-review-checklist.html">annual review</a> cadence, compressed &mdash; because the domain is the one asset where a silent drift becomes a hostage situation instead of an inconvenience.</p>
+    </section>
+
+    <section>
+        <h2>5b. First hour when the domain moves anyway</h2>
+        <p>Despite everything, assume a bad hour can come. Order of operations:</p>
+        <ol>
+            <li><strong>Don't email the hijacker and don't tip them off.</strong> Every minute of their ignorance is leverage.</li>
+            <li><strong>If nameservers changed but you still hold the registrar account:</strong> revert the nameservers first &mdash; that's one screen and restores mail and web instantly. Then rotate the account password and MFA, and treat the account as compromised (the <a href="lost-or-stolen-laptop-runbook.html">first-hour revoke sequence</a> applies to accounts, not just laptops).</li>
+            <li><strong>If a transfer completed:</strong> call the <em>losing</em> registrar's fraud team immediately &mdash; not a web form. Registrars can file a registrar-level transfer dispute, and under ICANN's Transfer Policy a domain within 60 days of a transfer can't be transferred again &mdash; which contains the damage while it's contested. Ask specifically for the fraud/security team and say the words "unauthorized domain transfer."</li>
+            <li><strong>If the account itself was taken over:</strong> registrar support, account recovery with documented ownership (your one-page record is now evidence), and your payment history as proof of control.</li>
+            <li><strong>While DNS is hostile:</strong> publish your status through a channel you control that isn't on the dead domain (a status page on another domain, direct email to staff via an external provider) &mdash; the <a href="incident-communication-templates.html">incident comms templates</a> cover the wording.</li>
+            <li><strong>Expect email-based attacks during the outage:</strong> with your mail down, "we noticed your mail is bouncing" phishing lands differently. Warn finance about payment-change requests the same week; the <a href="invoice-fraud-bec-prevention-checklist.html">callback rule</a> is the only thing that keeps a DNS incident from becoming a wire incident.</li>
+            <li><strong>Document timestamps from the first minute.</strong> Every registrar dispute, every ICANN escalation, every insurance claim runs on your timeline log &mdash; same discipline as the <a href="incident-timeline-template.html">incident timeline</a>.</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>The short version</h2>
+        <ul>
+            <li>Multi-year registration + auto-renew + calendar alarms at 60/30/7 days.</li>
+            <li>Transfer lock ON; the EPP code is a credential; nameserver-change emails are incidents.</li>
+            <li>Business entity owns the domain; role mailbox is the contact; two people can log in.</li>
+            <li>Recovery email on an independent domain &mdash; never on the domain it protects.</li>
+            <li>Ten-minute RDAP drill every quarter; one-page record next to the DR plan.</li>
+        </ul>
+        <p>An hour of setup and ten minutes a quarter. That's the entire price of never explaining to a customer why your invoices started coming from someone else's server.</p>
+    </section>
+
+    <section>
+        <h2>Related notes</h2>
+        <ul>
+            <li><a href="dns-outage-runbook.html">DNS Outage Runbook</a> &mdash; when the name is yours but resolution is broken.</li>
+            <li><a href="ssl-certificate-expiry-checklist.html">SSL Certificate Expiry Checklist</a> &mdash; the other silent-expiry clock customers see first.</li>
+            <li><a href="email-deliverability-spf-dkim-dmarc-checklist.html">Email Deliverability (SPF/DKIM/DMARC)</a> &mdash; the DNS records that depend on you holding the name.</li>
+            <li><a href="vendor-security-review-checklist.html">Vendor Security Review</a> &mdash; your registrar is a vendor; review it like one.</li>
+</section>
+
+    <footer>
+        <p>Part of HIVE80lab Ops-Notes. Published: 2026-09-11</p>
+    </footer>
+</body>
+</html>
