@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyber Insurance for Small Teams: The 12 Controls the Application Actually Checks</title>
+<meta name="description" content="A cyber insurance requirements checklist for small businesses: the twelve controls underwriters actually verify &mdash; MFA, tested backups, EDR, patching, offboarding, an incident-response plan &mdash; the answers that quietly void a claim, and the evidence to assemble before you apply.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Cyber insurance for small teams: the 12 controls the application actually checks</h1>
+
+<p>Small teams get denied cyber insurance for one reason more than any other: <strong>the answers on the application contradict each other or contradict reality</strong>. Not the headcount, not the revenue &mdash; the controls. An underwriter reading "yes to MFA" next to "no to offboarding checklist" next to "backups: yes" (untested) reads a team that filled in the form optimistically, and optimistic forms are exactly what claims adjusters subpoena later. The checklist below is the twelve controls that actually appear on small-business applications, in roughly the order the forms ask, with the evidence you should have <em>before</em> you apply &mdash; because the cheapest premium is the one you get when your answers are true.</p>
+
+<h2>1. Why the application is a security audit in disguise</h2>
+<ul>
+<li><strong>The form is the underwriting.</strong> For small accounts, nobody visits your office. The application <em>is</em> the risk assessment &mdash; and it is written to be defensible in court. Every "yes" you tick is a representation you are making about your business.</li>
+<li><strong>Claims are paid or denied on those answers.</strong> The ransomware claim gets denied not because you lacked backups but because the backups were never tested, and the application said "regularly tested backups: yes." <em>Regularly</em> was doing a lot of work.</li>
+<li><strong>Contradictions cost more than gaps.</strong> "We enforce MFA" plus "one shared admin login for the billing portal" is worse than honestly saying "MFA is rolling out next quarter." Underwriters price honesty; adjusters punish fiction.</li>
+</ul>
+
+<h2>2. The twelve controls, in the order the form asks</h2>
+<ol>
+<li><strong>MFA on email and admin accounts.</strong> The first question on nearly every form. Email first &mdash; business email compromise is the #1 small-business claim. Hardware keys or authenticator apps count; SMS is accepted but noted. <a href="mfa-rollout-checklist-small-business.html">MFA rollout checklist &rarr;</a></li>
+<li><strong>Backups &mdash; tested, offsite, and disconnected.</strong> Three copies, one offsite, at least one offline or immutable. The word underwriters look for is <em>tested</em>: a restore you have run, not a job that says "successful." <a href="backup-restore-test-checklist.html">Backup / restore test checklist &rarr;</a></li>
+<li><strong>Endpoint protection (EDR/AV) on all laptops and servers.</strong> "All" is the operative word &mdash; the one unmanaged laptop the founder's spouse uses for invoicing is the gap the application asks about indirectly.</li>
+<li><strong>Patching cadence with a documented window.</strong> Critical patches within 14 days is the common line. You need a cadence and a record, not perfection. <a href="patch-management-checklist.html">Patch management checklist &rarr;</a></li>
+<li><strong>No end-of-life systems touching the internet.</strong> The 2012 Windows Server still running the file share is a denial on its own if it's exposed. Retire, isolate, or disclose it.</li>
+<li><strong>Access reviews and a real offboarding process.</strong> "How do you remove access when someone leaves?" has a right answer ("same day, checklist, verified") and a wrong one ("we ask them to hand over their laptop"). <a href="access-request-offboarding-checklist.html">Offboarding checklist &rarr;</a></li>
+<li><strong>Unique accounts, no shared logins.</strong> Shared admin passwords make every other control unfalsifiable &mdash; you can't prove who did what, so insurers assume the worst.</li>
+<li><strong>A written incident-response plan.</strong> One page counts. Who calls whom in the first hour, who talks to the insurer, who decides on ransom (answer: nobody, pre-decided). <a href="incident-response-plan-template-small-teams.html">IR plan template &rarr;</a></li>
+<li><strong>Log retention long enough to investigate.</strong> Thirty days of auth and email logs is the practical floor; sixty to ninety is comfortable. <a href="log-retention-policy-small-teams.html">Log retention policy &rarr;</a></li>
+<li><strong>Disk encryption on laptops.</strong> BitLocker or FileVault, default-on. This is the cheapest "yes" on the form &mdash; a stolen unencrypted laptop is the classic small claim.</li>
+<li><strong>A password manager.</strong> It signals the rest of the hygiene, and it makes MFA and unique accounts sustainable. "Passwords in a spreadsheet" is an answer that raises the rate.</li>
+<li><strong>Security awareness / phishing training.</strong> Annual training plus a way to report a suspicious email. The underwriter wants evidence the humans are part of the control set. <a href="phishing-response-checklist-small-teams.html">Phishing response checklist &rarr;</a></li>
+</ol>
+
+<h2>3. The answers that quietly void a claim</h2>
+<ul>
+<li><strong>"Tested backups" with no test date.</strong> If challenged, you need a date, a system restored, and ideally a person's name. A dashboard status is not evidence &mdash; <a href="backup-restore-test-checklist.html">run the restore test</a> and write down when you ran it.</li>
+<li><strong>"MFA enforced" on an account with a shared service login.</strong> Service accounts and scripts don't carry phones; scope them deliberately and document the exceptions <em>before</em> the form asks.</li>
+<li><strong>"We have an incident-response plan" that exists only in someone's head.</strong> If it isn't written down, it doesn't exist to an adjuster. A one-page plan beats a ten-page intention.</li>
+<li><strong>"No known incidents" when there was one.</strong> The "known" standard is broad. Prior incidents disclosed honestly usually cost a small rate adjustment; prior incidents discovered by the insurer cost the policy.</li>
+<li><strong>Answers from memory.</strong> The person filling the form should be able to point at the thing behind each answer. If nobody can, the answer isn't yes yet.</li>
+</ul>
+
+<h2>4. Evidence to assemble before you apply (one folder, one afternoon)</h2>
+<ul>
+<li>MFA: a screenshot of the enforcement setting per critical app, and the list of documented exceptions with expiry dates.</li>
+<li>Backups: the date and output of your last restore test &mdash; what was restored, where it was restored, how long it took.</li>
+<li>Patching: your patch window policy and the last two cycles' records (even a simple sheet).</li>
+<li>Offboarding: the checklist and the last two departures' completion dates.</li>
+<li>IR: the one-page plan itself, with names and phone numbers current enough to survive a real call.</li>
+<li>Encryption: the MDM or settings export showing FileVault/BitLocker coverage across laptops.</li>
+</ul>
+
+<h2>5. If you can't meet a control yet</h2>
+<ul>
+<li><strong>Answer truthfully with a date.</strong> "MFA enforcement completes 30 Sep; authenticator app, break-glass accounts documented" reads as a managed roadmap, not a gap.</li>
+<li><strong>Sequence by claim likelihood.</strong> Email MFA and laptop encryption close the two most common small claims; do those first if the list is long.</li>
+<li><strong>Don't let the broker pre-fill.</strong> Some applications arrive pre-ticked. Read every line &mdash; you are signing representations, and the broker's optimistic defaults are your representations once bound.</li>
+<li><strong>Ask what evidence a claim would need.</strong> Underwriters will tell you. "What would you ask for if we filed?" is the single best question in the process &mdash; it converts the checklist from abstract to exact.</li>
+</ul>
+
+<h2>6. After binding: the annual attestation trap</h2>
+<ul>
+<li><strong>Renewals re-ask the questions.</strong> The controls must stay true all year, because the renewal application re-certifies them. A control that decayed quietly in month four becomes next year's misrepresentation.</li>
+<li><strong>Attach the checklist to a calendar.</strong> Quarterly: MFA exceptions review, restore test, patch records, offboarding audit. Annual: the full twelve, evidenced, before the renewal form arrives. <a href="daily-operations-checklist-template.html">Daily ops checklist &rarr;</a></li>
+<li><strong>When something changes, change the story.</strong> New ERP, new laptops, new offshore contractor &mdash; each is a control change. Ten minutes of updating the evidence folder beats a denied claim over a stale answer.</li>
+</ul>
+
+<p>The pattern across all twelve: <strong>insurers don't buy your intentions, they buy your evidence</strong>. A small team that runs the <a href="backup-restore-test-checklist.html">restore test</a>, enforces <a href="mfa-rollout-checklist-small-business.html">MFA properly</a>, and keeps a <a href="incident-response-plan-template-small-teams.html">one-page IR plan</a> answers every question on the form with a document, not a hope &mdash; and gets the rate that reflects it.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Teams</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup / Restore Test Checklist</a></li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist for Small Teams</a></li>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams</a></li>
+<li><a href="data-breach-first-24-hours.html">Suspected Data Breach: the First 24 Hours</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
