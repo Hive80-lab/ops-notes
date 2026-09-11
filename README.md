@@ -1,3 +1,4 @@
+- [SaaS Sprawl Audit for Small Teams](saas-sprawl-audit-checklist.html) — one hour, one owner per tool, kill/keep/consolidate.
 - [Password Manager Rollout for Small Teams](password-manager-rollout-small-business.html) — break-glass first, pilot, enforce with a date.
 - [Vendor Security Review Checklist for Small Teams](vendor-security-review-checklist.html) — 12 questions before you sign, red-flag answers, tiering.
 # Ops-notes — free ops guides for small teams (no ops department required)

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SaaS Sprawl Audit for Small Teams: Find the Tools You Forgot You're Paying For</title>
+<meta name="description" content="A SaaS sprawl audit for small businesses: one hour, one card statement, one owner per tool. The kill/keep/consolidate decision, the offboarding tie-in, and the renewal calendar that stops the creep.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>SaaS sprawl audit for small teams: find the tools you forgot you're paying for</h1>
+
+<p>Nobody decides to run eleven tools. It accretes: a free trial that converted, a tool one person loved, two apps that do the same thing because nobody checked. The cost isn't just the subscriptions &mdash; it's the <strong>data scattered across logins nobody owns</strong>, and the churn risk when one of those forgotten accounts is also an <a href="vendor-security-review-checklist.html">unreviewed vendor</a> with your customer list in it. This audit takes one hour and pays for itself the first month.</p>
+
+<h2>1. Why sprawl happens (and what it actually costs)</h2>
+<ul>
+<li><strong>Trials convert silently.</strong> The card on file auto-bills, the invoice goes to a shared inbox nobody reads, and the tool becomes furniture. If an invoice lands in an inbox instead of a person, the spend is already unowned.</li>
+<li><strong>The person who bought it left.</strong> Their tool keeps billing, and only they knew the workflow it supported. This is the <a href="access-request-offboarding-checklist.html">offboarding checklist</a> leaking money: access gets revoked, but subscriptions and their data don't.</li>
+<li><strong>Duplicates look cheaper than they are.</strong> Two task apps, two e-sign tools, three analytics scripts. Each is cheap; the real cost is that no single source of truth exists, so every process built on them is <a href="what-to-automate-first.html">harder to automate</a> later.</li>
+<li><strong>Every tool is also an attack surface.</strong> An abandoned survey tool with 4,000 customer emails is a breach waiting on someone else's password policy. Sprawl audits are <a href="cloud-cost-spike-runbook.html">cost control</a> and security hygiene in the same hour.</li>
+</ul>
+
+<h2>2. The one-hour audit, step by step</h2>
+<ol>
+<li><strong>Pull the card statement for the last 90 days.</strong> Export it (CSV), and mark every line that isn't payroll, rent, or a supplier. Recurring software hides in descriptions like "SQ *SOMEAPP" &mdash; google anything unfamiliar before assuming it's known.</li>
+<li><strong>Ask the team for their logins, not their opinions.</strong> One shared doc: tool name, what it's for, who uses it, last used. Password manager shared collections are the ground truth &mdash; if a tool isn't in the <a href="password-manager-rollout-small-business.html">vault</a>, nobody can revoke it, which makes it both a spend and a security finding.</li>
+<li><strong>Name exactly one owner per tool.</strong> "Marketing" is not an owner. If a tool has no name next to it, that's the kill pile by default &mdash; the audit's sharpest rule.</li>
+<li><strong>Check usage against cost.</strong> For each paid tool: what did the last invoice cost, and did anyone log in this month? The tools with zero logins and nonzero invoices are your first wins. Expect to find at least one.</li>
+<li><strong>Check the admin seat count.</strong> Most SaaS bills per seat. Ex-staff still holding seats, contractors who finished months ago, the "sales@" generic login counted as a human &mdash; seat cleanup is often 10&ndash;20% of the bill, and it's the same cleanup as removing <a href="access-request-offboarding-checklist.html">departed people's access</a>.</li>
+</ol>
+
+<h2>3. The kill / keep / consolidate decision</h2>
+<ul>
+<li><strong>Kill:</strong> zero logins in 60 days, or the owner left and nobody picked it up. Cancel the same week &mdash; "we'll look at it next quarter" is how sprawl survives audits. Export the data first if anything in it matters, then note where it went.</li>
+<li><strong>Keep:</strong> daily use, clear owner, invoice goes to a person. These are fine. Don't over-prune: the tool that saves two hours a week is worth $30 a month, and pretending otherwise costs more in payroll than it saves in software.</li>
+<li><strong>Consolidate:</strong> two tools that do the same job. Pick one by workflow fit, migrate the live data, and keep the other's export in the archive. If both survive because two people each prefer theirs, the decision rule is: the one with the <em>documented</em> process wins &mdash; the other is undocumented tribal knowledge wearing a subscription.</li>
+<li><strong>The uncomfortable pile:</strong> tools you keep because leaving means migration work. Price that migration honestly (usually a day, not a month), then decide. Paying $40/month to avoid one day of work breaks even in a year &mdash; and most of these are $200/month.</li>
+</ul>
+
+<h2>4. Stop the creep from coming back</h2>
+<ul>
+<li><strong>One card for software, period.</strong> A virtual or dedicated card for every SaaS subscription. When the audit runs next time, the statement <em>is</em> the inventory &mdash; and cancelled cards kill orphaned trials automatically.</li>
+<li><strong>A renewal calendar with the owner's name on it.</strong> Annual renewals get a calendar entry 30 days out: "renew Y &mdash; owner Z &mdash; used weekly? yes/no." The renewal prompt is the only moment cost and value are both visible; waste it and you auto-pay another year on hope.</li>
+<li><strong>New-tool rule: trial with the software card, owner named before signup.</strong> If nobody will put their name next to a trial, it doesn't start. This is a <a href="change-management-checklist.html">change decision</a> like any other &mdash; small, recorded, reversible.</li>
+<li><strong>Feed the winners into automation.</strong> The tools that earned "keep" are your automation surface: the two that pass data between each other by copy-paste are the first <a href="workflow-automation-checklist.html">workflow to automate</a>, and the pick-first sequence lives in the <a href="small-business-automation-ideas.html">automation ideas list</a>.</li>
+<li><strong>Security check the survivors annually.</strong> Every tool that survives an audit owes you a pass of the <a href="vendor-security-review-checklist.html">vendor security review</a> &mdash; what data it holds, how it's accessed, and what happens if <em>it</em> gets breached. Sprawl you decided to keep is a portfolio; sprawl you forgot is an exposure.</li>
+</ul>
+
+<p>The pattern across the whole audit: <strong>every subscription needs a name next to it</strong> &mdash; an owner, an invoice destination, and a renewal date. Tools with names get managed; tools without names quietly become both a line item and a liability.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist for Small Teams</a></li>
+<li><a href="cloud-cost-spike-runbook.html">Cloud Cost Spike Runbook for Small Teams</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="what-to-automate-first.html">What to Automate First (Pick-First Guide)</a></li>
+<li><a href="workflow-automation-checklist.html">Workflow Automation Checklist</a></li>
+<li><a href="change-management-checklist.html">Change Management Checklist (No CAB Required)</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
