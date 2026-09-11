@@ -109,3 +109,6 @@ Incident response, on-call, and automation **checklists and templates** you can 
 
 *Templates, not legal or regulatory advice. Site: <https://hive80-lab.github.io/ops-notes/>*
 - [File server permission audit](https://hive80-lab.github.io/ops-notes/file-share-permissions-audit.html)
+
+- **NEW: [Payment Outage Playbook for Small Teams](https://hive80-lab.github.io/ops-notes/payment-outage-playbook.html)** — the hour your checkout goes dark: confirm processor vs site, flip to manual invoicing in 15 minutes, banner copy that keeps trust, refund/chargeback triage, processor redundancy (second provider dormant + monthly live test), one-page incident record.
+- **NEW: [SSL Certificate Expiry Runbook](https://hive80-lab.github.io/ops-notes/ssl-certificate-expiry-runbook.html)** — renew at T-14 on a calendar, the 30-minute deploy-and-verify card, what breaks in the outage window (webhooks, mobile apps, pinned integrations, cron), the T-21 alert, and the annual ceremony that ends expiry risk.

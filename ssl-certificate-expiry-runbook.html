@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSL Certificate Expiry Runbook: The Renewal That Makes It a Non-Event — HIVE80lab Ops Notes</title>
+<meta name="description" content="An SSL certificate expiry runbook for small teams: why renew at T-14, the 30-minute deploy-and-verify, what breaks during the outage window, how to monitor at T-21, and the annual ceremony that ends expiry risk forever">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>SSL Certificate Expiry Runbook</h1>
+<p class="lede">An expired SSL certificate at 11pm on a Friday turns a one-line browser warning into a lost support ticket, confused customers, and a panic that fills your inbox. The runbook has five parts: <strong>renew the certificate at T-14 on a calendar, not T-0, deploy and verify in 30 minutes, watch for what breaks (webhooks, mobile apps, pinned integrations, cron), monitor at T-21 and act early, and conduct an annual ceremony that permanently removes expiry risk from your to-do list</strong>. One hour per year to prevent an hour of chaos.</p>
+
+<h2>1. Renew at T-14, not T-0</h2>
+<p>Start by entering the renewal date on your calendar 14 days before expiry. For example, if the certificate expires on June 15, mark June 1 as “SSL certificate renewal due.” The 14-day window gives you time to troubleshoot without the pressure of a midnight deadline. T-7 is still safe for most modern tools, but T-14 eliminates the feeling that you’re working backwards.</p>
+<p>When you hit that date, generate the new certificate using the same details as the previous one: same domain, same organization, same SANs (subject alternative names). This ensures that any integrations that look for those exact fields won’t break. If your environment changed (new subdomains, different departments), update the SAN list before generating the new cert so you don’t create gaps.</p>
+
+<h2>2. The 30-minute deploy-and-verify</h2>
+<p>Do not deploy the certificate and move on. You must verify it within the same run. Here’s a realistic timeline:</p>
+<ol>
+<li><strong>10 minutes:</strong> install the new certificate on all hosts (load balancers, web servers, API gateways). Use the same paths and key names as before so monitoring and health checks don’t need changes.</li>
+<li><strong>10 minutes:</strong> reload or restart the service that uses the cert (nginx, Apache, HAProxy, etc.). Monitor logs for “certificate loaded” or similar success messages. If you have SSL termination at an edge/CDN, push the new cert there as well.</li>
+<li><strong>10 minutes:</strong> open a clean browser session on a different network (e.g., 4G/5G mobile data) and visit your domains. Look for the lock icon and verify that no “Your connection is not secure” warning appears. Use an online checker like SSL Labs or curl -v to confirm the chain is correct and the protocol is TLS 1.2 or higher.</li>
+</ol>
+<p>If any step fails, fix it before moving on. A certificate that fails chain validation will show warnings to your users, and those warnings erode trust quickly.</p>
+
+<h2>3. What breaks during the outage window</h2>
+<p>Once the new certificate is live, there’s still an “outage window”—the period between expiry and full propagation. During this window, a few things can break:</p>
+<ul>
+<li><strong>Webhooks</strong> — if you send notifications to external systems (payment gateways, CRMs, CI tools), some systems may reject requests with an expired cert. Log the errors and retry after propagation completes. If you control the receiving system, add retry logic or use a shorter validity period (e.g., 60 days) to reduce the window.</li>
+<li><strong>Mobile apps</strong> — apps that pin the old certificate or do not allow certificate fallback will fail to connect. iOS and Android support certificate pins, so test your apps on test devices or on a simulator. If you receive crash reports during the expiry window, validate your pins against the new cert and update your build.</li>
+<li><strong>Pinned integrations</strong> — CI/CD pipelines, monitoring agents, and other internal tools may have the old cert baked into their configuration. Audit your CI jobs, agent configs, and scripts for any certificate hardcoding. A simple grep for “BEGIN CERTIFICATE” or “-----BEGIN” across your repo will surface most of them.</li>
+<li><strong>Cron jobs</strong> — scheduled tasks that fetch data from your APIs may fail during the outage window if they include certificate validation. Adjust the schedule so that these jobs run after you’ve verified propagation, or add a small retry loop in your code.</li>
+</ul>
+<p>Test these pieces in staging before deployment. If staging has an expired cert, the production outage will be even worse.</p>
+
+<h2>4. The T-21 monitoring alert</h2>
+<p>Twenty-one days before expiry, set a monitoring alert for certificate expiration. Most modern certificate management tools can send a webhook or email when the validity drops below 21 days. The alert should go to the person responsible for SSL (ops, sysadmin, or the founder). It should include the domain, the remaining days, and a link to the certificate status page.</p>
+<p>When you receive the alert, open the certificate page and confirm the dates. If something looks wrong (dates not in future, status “Issued” but expiring soon), investigate immediately. A small oversight here can grow into a larger problem if you ignore it for another week.</p>
+<p>If your environment is complex, set a follow-up alert at T-7. This catches any drift in the renewal process or any configuration changes that might affect the cert.</p>
+
+<h2>5. The annual ceremony that ends expiry risk</h2>
+<p>Treat SSL renewal as an annual ritual that you perform for yourself and for your team. The ceremony has five steps:</p>
+<ol>
+<li><strong>Review</strong> — walk through your certificate configuration, SAN list, and any integrations that use the cert. Note any patterns that become obvious (e.g., every new subdomain requires a new cert). Document these patterns so the next person can hit the ground running.</li>
+<li><strong>Update</strong> — make any necessary changes to SANs, host paths, or integration configs. If you added a new API or a new SaaS product, update the cert and the integrations in one go.</li>
+<li><strong>Document</strong> — write a short note in your runbook (like this one) that records what changed and why. Include the reason for each decision, even if it’s “kept the same as last year.” This audit trail prevents drift over time.</li>
+<li><strong>Test</strong> — run a full deploy-and-verify cycle in a staging environment. Test all the edge cases: webhooks, mobile apps, pinned integrations, cron jobs. Document any failures and fixes.</li>
+<li><strong>Close</strong> — archive this year’s certificate and notes in your records system. Mark the task as complete and celebrate that you’ve removed one recurring risk from your to-do list.</li>
+</ol>
+<p>Do this once per year. After that, the ceremony becomes routine and you won’t feel the pressure of a midnight deadline ever again.</p>
+
+
+<h2>Toolkit</h2>
+<p>If you would rather buy the runbooks than assemble them, the Hive80 kits exist as paid packs:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2 &mdash; advanced incident response and comms (A$27)</a></li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7 &mdash; the solo operator's playbook (A$19)</a></li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Hive80 Ops Mega Bundle &mdash; all five kits, one download (A$29)</a></li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes &mdash; free incident quick-start checklist</a></li>
+</ul>
+
+<h2>Related notes</h2>
+<ul>
+<li><a href="payment-outage-playbook.html">Payment outage playbook for small teams</a></li>
+<li><a href="internet-outage-runbook.html">Internet outage runbook: when the whole office goes dark</a></li>
+<li><a href="maintenance-window-policy.html">Maintenance window policy for small teams</a></li>
+</ul>
+
+</main>
+</body>
+</html>

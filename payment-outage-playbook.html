@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment Outage Playbook for Small Teams: The Hour Your Checkout Goes Dark — HIVE80lab Ops Notes</title>
+<meta name="description" content="A payment outage playbook for small teams: how to tell if the processor is down, flip to manual invoicing in 15 minutes, keep customers calm, triage refunds and chargebacks, and decide whether you need a second processor">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Payment Outage Playbook for Small Teams</h1>
+<p class="lede">Every small team has a checkout page that looks fine until the processor goes dark. Within an hour, your revenue stops flowing, customers panic, and the to-do list grows faster than you can type. The playbook has five parts: <strong>confirm it is the processor not your site, flip to manual invoicing in 15 minutes, keep customers calm with the right banner copy, triage refunds and chargebacks after the backlog clears, and decide if you need a second processor configured and live-tested monthly</strong>. One hour a year to prepare, the hour when things go wrong to act.</p>
+
+<h2>1. The diagnosis: processor outage vs your site</h2>
+<p>First rule: never assume the processor is down. Start with a clean stack in an incognito window. Use a different card than the one you already failed with. If the transaction fails again, the processor is likely down. If it passes, the problem is local (edge/CDN, environment misconfiguration, rate limit).</p>
+<p>Next, check the processor’s status page. Stripe, PayPal, Square, and similar all publish real-time incident updates. Look for keywords like “maintenance,” “degraded,” or “outage.” If the page is blank or shows only vague status, reach out to their support chat—they’ll tell you in real time whether customers are seeing errors.</p>
+<p>Finally, check your environment. Search your error logs for gateway 5xx, timeout, or “connection refused” messages around the outage. If only one environment (production) shows these errors while staging is fine, you may have a deployment on that host or a persistent connection issue in your integration code. A quick pgrep of the gateway process or checking your firewall rules can confirm whether the problem is external or internal.</p>
+
+<h2>2. Flip to manual invoicing in 15 minutes</h2>
+<p>The fastest path to stay paid is to shift from API-driven checkout to manual invoicing. Steps:</p>
+<ol>
+<li>Pause API collection—remove the “Pay now” button from your storefront temporarily.</li>
+<li>Generate a one-time invoice in your billing system or accounting tool. Include the customer’s name, the amount, a short line of context (“SaaS subscription” or “Project deliverable”), and a clear due date (14 days is typical).</li>
+<li>Email the invoice. Include a subject line that tells the customer exactly what it is (e.g., “Invoice #12345 – HIVE80lab SaaS subscription for December”). Avoid generic labels like “Payment due.”</li>
+<li>Follow up 24 hours later by phone or the shared support channel if no payment comes in. A personal touch during an outage is a trust builder.</li>
+<li>When payment arrives via bank transfer or manual credit card entry, update your records in the same tool where the invoice lives. This keeps your ledger consistent and visible to any accounting or bookkeeping tool you may use.</li>
+</ol>
+<p>This method doesn’t give you analytics about who abandoned, but it does keep revenue flowing. It assumes you already have an invoicing or accounting system in place—if not, a simple spreadsheet template can work while you build a proper one.</p>
+
+<h2>3. Customer banner copy that keeps trust</h2>
+<p>When you flip to manual invoicing, show a banner above the checkout that explains the situation. The goal is transparency without alarm. Example copy (adapt to your brand voice):</p>
+<ul>
+<li><strong>Short version (top of page):</strong> “Payment is temporarily unavailable. We’ll email you an invoice now. No action is needed until you receive it.”</li>
+<li><strong>More detailed version (below the fold):</strong> “We’re experiencing a temporary issue with our payment processor. You can still complete your purchase—just email us at <em>support@yourdomain.com</em> with the item name and we’ll invoice you. Normal checkout will resume shortly. We apologize for the inconvenience.”</li>
+</ul>
+<p>Avoid technical jargon like “gateway timeout” or “downstream provider.” Customers don’t care about DNS; they care about whether they can pay. Use a friendly, apologetic tone and include an email or phone contact where they can follow up directly.</p>
+
+<h2>4. Refund and chargeback triage after the backlog clears</h2>
+<p>When the processor is back online, you’ll have a backlog of transactions that failed or were never completed. Start with refunds first—these are under your control and have no long-term financial impact on your business.</p>
+<p>Identify which customers paid after you switched to manual invoicing and who never paid at all. For customers who paid but were later refunded, confirm that the money left their account and use your reconciliation tool to note the refund status. Then reach out personally: “Thanks for your payment. I’ve processed your refund due to the outage. No need to re-chargethe same order—we’ll sort this internally.”</p>
+<p>Chargebacks are a separate category. These are disputes where a cardholder claims the transaction was unauthorized or never received the service. When the processor returns, review your chargeback logs for entries flagged during the outage. If a transaction was placed during the outage window and the customer disputes it, the processor may wave the fee or provide evidence of the incident. If a chargeback is upheld, you may decide to waive it as a customer-relations gesture, but keep an eye on patterns—repeated disputes after an outage may indicate you need a fallback processor or a change in your onboarding process.</p>
+<p>Document every refund and chargeback in your records system with notes like “Processor outage – automatic waiver” or “Customer escalation – waived as goodwill.” This audit trail can be useful if the processor disputes your claims or if you decide to negotiate fees.</p>
+
+<h2>5. The processor-redundancy decision</h2>
+<p>Small teams often keep a single processor for simplicity. If you’ve experienced an outage that cost you revenue or goodwill, consider adding a second processor with dormant capacity. Here’s a pragmatic approach:</p>
+<ol>
+<li>Open accounts with a second provider. Aim for the same payment methods you already support.</li>
+<li>Use one provider as primary and the other as fallback. This means writing code that tries the primary first, and only invoking the fallback if the primary call fails repeatedly (with a short retry window to avoid multiple simultaneous attempts).</li>
+<li>Run a monthly small live test: place a test purchase for $0.50 in the fallback account only. This confirms that the integration works, your testing tools capture the event, and you can spot configuration drift before a real outage.</li>
+<li>Record the test in your incident record and in your password manager so another team member can replicate it if needed.</li>
+</ol>
+<p>Redundancy costs time and money. Only pursue it if an outage has already cost you more than the setup and monthly test would. The test itself should be lightweight—just a single record in your database and a confirmation email to you.</p>
+
+<h2>Incident record (one page)</h2>
+<p>After the outage, fill out this single-page incident record and store it with your documentation:</p>
+<ul>
+<li><strong>Date &amp; time</strong> — when the outage started and when it ended.</li>
+<li><strong>Processor</strong> — which processor was down and its reference number.</li>
+<li><strong>Root cause</strong> — processor outage, network issue, configuration error, etc.</li>
+<li><strong>Steps taken</strong> — diagnosis, manual invoicing, banner copy, communication, refund/chargeback actions.</li>
+<li><strong>Impact</strong> — number of transactions affected, revenue lost, customer support tickets opened.</li>
+<li><strong>Follow-up</strong> — whether you switched to a second processor, what changes you made, what you’ll test monthly.</li>
+</ul>
+<p>When you revisit this page next year, you’ll know exactly how to shorten the response time and how much redundance is worth the effort.</p>
+
+<h2>Toolkit</h2>
+<p>Need a head start? The Ops Starter Kit Vol. 2 covers runbook templates, incident record formats, and billing workflows designed for small teams.</p>
+<p><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2" target="_blank">Ops Starter Kit Vol. 2 — Full runbook &amp; incident workflow templates</a></p>
+<p><br></p>
+<p>Need a 24/7 ops presence for emergencies like this? Agent Ops 24/7 keeps your systems monitored and your runbooks followed—without a full-time headcount.</p>
+<p><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7" target="_blank">Agent Ops 24/7 — Autonomous ops coverage when you can’t be online</a></p>
+<p><br></p>
+<p>Prefer a bundle? The Hive80 Ops Mega Bundle includes the Starter Kit, Agent Ops, plus a suite of automation scripts, templates, and playbooks for small teams scaling to product-led growth.</p>
+<p><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle" target="_blank">Hive80 Ops Mega Bundle — Full automation suite + templates</a></p>
+<p><br></p>
+<p>New to ops? Grab the free First 30 Minutes guide to get your monitoring, alerts, and incident response running in under half an hour.</p>
+<p><a href="https://hive80lab.gumroad.com/l/first-30-minutes" target="_blank">Free First 30 Minutes — Ops quick-start guide for busy founders</a></p>
+
+</main>
+</body>
+</html>
