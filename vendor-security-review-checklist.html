@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor Security Review Checklist for Small Teams: 12 Questions Before You Sign</title>
+<meta name="description" content="A vendor security review checklist for small businesses: the 12 questions to ask before signing &mdash; breach history, sub-processors, MFA and SSO, data handling, breach notification terms &mdash; plus the red-flag answers and the tiering that keeps the review to one afternoon.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Vendor security review for small teams: 12 questions before you sign</h1>
+
+<p>Every vendor you sign becomes part of your incident response, whether you planned for that or not. The payroll SaaS holds every employee's bank details, the ticketing system holds every customer conversation, and the little browser extension the ops person swears by holds an OAuth grant to your whole Google Workspace. When the <em>vendor</em> gets breached, your name ends up in <em>their</em> disclosure &mdash; and your <a href="data-breach-first-24-hours.html">first-24-hours plan</a> runs on facts you never collected. The checklist below is the 12 questions worth asking before you sign, in the order to ask them, with the red-flag answers that should slow the deal down. It is sized for a small team: one afternoon, a spreadsheet, and no procurement department.</p>
+
+<h2>1. Why you inherit their breach</h2>
+<ul>
+<li><strong>Your data is their attack surface.</strong> Attackers follow the data. A 5-person vendor aggregating customer records from 400 small businesses is a better target than any one of its customers &mdash; and their compromise exposes your records without anyone touching your network.</li>
+<li><strong>Third parties are a standard sentence in breach notices.</strong> "A supplier we use was compromised" now headlines a large share of disclosures &mdash; and your customers read it as <em>your</em> breach, because it was their data.</li>
+<li><strong>Your contracts often make you the messenger.</strong> Many vendor terms put notification duties on you: if their breach affects your customers, <em>you</em> may be the one holding the clock. You cannot run that clock without knowing who your vendors are and what they hold. This is also exactly what <a href="cyber-insurance-requirements-checklist.html">cyber insurance applications</a> now ask about.</li>
+</ul>
+
+<h2>2. The 12 questions, in the order to ask them</h2>
+<ol>
+<li><strong>What exact data will you hold, and where?</strong> Not "customer data" &mdash; the field-level list: emails, addresses, payment tokens, credentials, health fields. Where it is stored (region, cloud provider) and whether backups leave that region.</li>
+<li><strong>Have you had a breach or material security incident in the last 24 months?</strong> The right answer is not "no," it is an honest account &mdash; what happened, what was exposed, what changed. Vendors who say "never" to everything are either lucky or not looking, and the second is worse.</li>
+<li><strong>Do you enforce MFA for your staff accessing customer data &mdash; and for our admin account?</strong> Their internal MFA matters; yours is a control you can verify today. <a href="mfa-rollout-checklist-small-business.html">The same rollout you should run on yourself &rarr;</a></li>
+<li><strong>How do we authenticate to your product?</strong> SSO/SAML availability, API key scoping and rotation, session timeouts. If your integration uses a long-lived API key, ask how <a href="api-key-leak-response-runbook.html">that key gets rotated</a> when it leaks &mdash; their answer should match the runbook you would run.</li>
+<li><strong>Who are your sub-processors, and how are we notified when they change?</strong> The SaaS is rarely the whole chain: hosting, email delivery, support tooling, AI features. A published, versioned sub-processor list with a change-notification commitment is the mature answer.</li>
+<li><strong>What is your breach notification commitment to us &mdash; in the contract, in hours?</strong> "Without undue delay" is a vibe; "72 hours from confirmation, to named contacts" is a term. Get it written into the contract or order form, not just the trust page.</li>
+<li><strong>What is your encryption posture at rest and in transit?</strong> Standard now; the differentiator is key management &mdash; who holds the keys, whether they can be customer-managed, and what happens to your data on cancellation.</li>
+<li><strong>Do you have SOC 2 / ISO 27001 &mdash; or a substitute?</strong> A full report under NDA beats a badge on the homepage. No report at all is not automatically disqualifying for low-risk tooling, but it should move the vendor down a tier (&sect;4), not up.</li>
+<li><strong>How is our data deleted on exit?</strong> The offboarding question. Deletion timeline, certificate of deletion, backups included. <a href="access-request-offboarding-checklist.html">The same thinking as your staff offboarding, pointed at them &rarr;</a></li>
+<li><strong>What access will your support staff have to our data, and is it logged?</strong> "Break-glass access, logged, with a named approver" is the adult answer. "Support can log in as any customer" is a finding, not a feature.</li>
+<li><strong>When were your penetration tests, and will you share results under NDA?</strong> Annual external testing plus a fixes-verified statement is the baseline. A vendor who tests but cannot share anything is asking you to trust a logo.</li>
+<li><strong>Who is legally responsible if their breach becomes our notification event?</strong> Indemnification, liability cap, and whether the cap covers regulatory fines. This one is for whoever signs, armed with the answers from the first eleven.</li>
+</ol>
+
+<h2>3. Red-flag answers (slow the deal, or price the risk)</h2>
+<ul>
+<li><strong>"Security information is available on request" &mdash; then nothing arrives.</strong> The trust page with no substance behind it. One written follow-up before signature; if it is ignored before signature, it will be ignored during an incident.</li>
+<li><strong>"We've never had any incidents and we don't do testing."</strong> No incidents <em>and</em> no testing means no detection. That is not a clean history, it is an unread one.</li>
+<li><strong>"MFA is available on enterprise plans."</strong> MFA on <em>your</em> admin account held behind the most expensive tier is a pricing decision, not a security control &mdash; budget for it or tier the vendor down.</li>
+<li><strong>Breach notification: "we'll comply with applicable law."</strong> Applicable law to <em>them</em> may not match your obligations to <em>your</em> customers. The number you need lives in your contract, not theirs.</li>
+<li><strong>Sub-processors: "we use industry-standard providers."</strong> A versioned list with change notification &mdash; or the answer is a shrug with extra words.</li>
+</ul>
+
+<h2>4. Tier it: not every tool needs the full questionnaire</h2>
+<ul>
+<li><strong>Tier 1 &mdash; full 12 questions.</strong> Holds customer PII, employee PII, credentials, payment data, or production access: payroll stack, CRM, identity provider, cloud accounts, backup tooling.</li>
+<li><strong>Tier 2 &mdash; light-touch.</strong> Internal-only tooling with no PII: five questions (data inventory, MFA, notification term, deletion, sub-processors), five minutes, asked on the same call as pricing.</li>
+<li><strong>Tier 3 &mdash; register and move on.</strong> Zero-data utilities. The only requirement is that they are on the vendor list, because the list itself is the deliverable: <strong>when their breach notice lands, you need to know in minutes whether you are affected</strong>, and a tiered spreadsheet answers that faster than memory.</li>
+<li><strong>Re-review on change, not calendar alone.</strong> New AI features (new sub-processors), acquisition, plan changes &mdash; any of these re-opens the file. The <a href="vendor-outage-runbook.html">vendor outage runbook</a> should point at the same spreadsheet: the vendor list is shared infrastructure between security and ops.</li>
+</ul>
+
+<h2>5. Make it a one-afternoon process, not a project</h2>
+<ul>
+<li><strong>Template the ask.</strong> One email with the 12 questions, sent at contract-drafting stage, not after signature. Vendors with a real trust page answer in a day; vendors without one tell you something by the delay.</li>
+<li><strong>One spreadsheet, four columns beyond the vendor's name:</strong> data held, tier, notification term (hours), last reviewed. That sheet is also your evidence for the <a href="cyber-insurance-requirements-checklist.html">insurance application's</a> vendor-risk question and your auditor's third-party question.</li>
+<li><strong>Attach the review to onboarding, not enthusiasm.</strong> It happens between verbal-yes and signature, when you still have leverage. After the data is in, you are negotiating from dependency.</li>
+<li><strong>Store the answers where incidents run.</strong> The vendor sheet, signed DPAs, and sub-processor lists belong in the same drive as your <a href="incident-response-plan-template-small-teams.html">incident plan</a> &mdash; because the 2am question is "which of our vendors just had a breach, and what did they hold?"</li>
+</ul>
+
+<p>The pattern across all twelve: <strong>you are not auditing their security, you are collecting the facts your own incident will need</strong>. A small team that knows what each vendor holds, how fast it must be told, and how the data leaves turns somebody else's breach notification from a Monday-morning panic into a ten-minute lookup &mdash; and that lookup is the entire point.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="vendor-outage-runbook.html">Vendor Outage Runbook</a></li>
+<li><a href="cyber-insurance-requirements-checklist.html">Cyber Insurance: the 12 Controls the Application Checks</a></li>
+<li><a href="api-key-leak-response-runbook.html">API Key Leaked: the First-Hour Runbook</a></li>
+<li><a href="data-breach-first-24-hours.html">Suspected Data Breach: the First 24 Hours</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>

@@ -1,3 +1,4 @@
+- [Vendor Security Review Checklist for Small Teams](vendor-security-review-checklist.html) — 12 questions before you sign, red-flag answers, tiering.
 # Ops-notes — free ops guides for small teams (no ops department required)
 
 Incident response, on-call, and automation **checklists and templates** you can read right now — no signup, no email wall. Built and maintained by [Hive80 Lab](https://hive80lab.gumroad.com).
