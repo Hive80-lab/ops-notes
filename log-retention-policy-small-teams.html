@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log Retention Policy for Small Teams: What to Keep, How Long, and the One-Command Check &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A log retention policy small teams actually keep: tiered durations per log type, logs that land off-box and append-only, the never-log list, and lifecycle rules that enforce deletion without anyone remembering to.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Log Retention Policy for Small Teams</h1>
+<p class="lede">Nobody writes a retention policy until an audit, a customer security questionnaire, or an incident investigation asks &ldquo;how long do you keep logs?&rdquo; &mdash; and &ldquo;it depends&rdquo; is the answer that fails. The fix is small: <strong>tiered durations per log type, logs that land somewhere an attacker can't wipe, a short never-log list, and lifecycle rules that delete on schedule so nobody has to remember</strong>.</p>
+
+<h2>1. The one question the policy has to answer</h2>
+<p>A retention policy is not a document &mdash; it's five numbers you can recite: how long you keep <strong>auth logs</strong>, <strong>access logs</strong>, <strong>cloud audit logs</strong>, <strong>application logs</strong>, and <strong>security events</strong>. When the auditor asks, you answer with the numbers. When an incident needs last month's SSH sessions, you check the numbers and the logs are actually there. Everything else in the policy exists to make those two sentences true.</p>
+<p>The tier that matters most is the one you'll regret losing: <strong>investigations almost always want the window <em>before</em> the alert</strong>. If you keep 7 days, a brute-force that started quietly 3 weeks ago is invisible. That's why the security tiers below are measured in months, not days.</p>
+
+<h2>2. The tier table: what to keep and how long</h2>
+<table>
+<tr><th>Log type</th><th>Keep (hot)</th><th>Keep (cold/archive)</th><th>Why</th></tr>
+<tr><td>Auth &amp; SSH &amp; sudo</td><td>90 days</td><td>12 months</td><td>Investigations reach back months; the &ldquo;who logged in&rdquo; trail is the first thing an auditor asks for</td></tr>
+<tr><td>Web/access logs</td><td>30&ndash;90 days</td><td>Optional</td><td>Traffic debugging and abuse investigation; old access logs rarely pay for their storage</td></tr>
+<tr><td>Cloud audit trails (admin actions)</td><td>90 days hot</td><td>12 months</td><td>&ldquo;Who changed this setting?&rdquo; has a 6-month half-life and a long tail</td></tr>
+<tr><td>Application audit trail (who did what)</td><td>12 months</td><td>Per contract</td><td>Support disputes and customer questions age slowly</td></tr>
+<tr><td>Security events (failed logins, firewall denies)</td><td>12 months</td><td>12 months</td><td>Pattern evidence for incidents; the tier you set first if you only fix one</td></tr>
+</table>
+<p>Two rules make the table stick. <strong>One: the tier table is the policy</strong> &mdash; write it on one page with the tooling next to each row. <strong>Two: cold storage is a bucket, not a project</strong> &mdash; an export to cheap object storage once a day beats a &ldquo;we should centralise logging&rdquo; plan you never finish.</p>
+
+<h2>3. Where logs must land to count</h2>
+<p>Retention duration is meaningless if the logs can be destroyed by the thing you're investigating. Three properties matter more than any number in the table:</p>
+<ul>
+<li><strong>Off-box:</strong> logs ship to storage that isn't the server that produced them. If the only copy of your auth log is on the compromised host, your retention policy is decoration.</li>
+<li><strong>Append-only:</strong> the destination accepts writes but not edits or deletes &mdash; an object-storage bucket with versioning and delete permissions revoked for the log shipper is the two-minute version.</li>
+<li><strong>Clock-synced:</strong> every host runs NTP. A timeline built from logs with drifting clocks wastes the hours you don't have during an incident.</li>
+</ul>
+<p>And the check that keeps the pipeline honest: a daily job that verifies <strong>new log objects actually landed in the last 24h</strong>, and pages you when they didn't. The most common retention failure isn't a bad policy &mdash; it's a shipper that died three months ago and nobody noticed. This is the same pattern as the <a href="server-monitoring-checklist-small-teams.html">cron heartbeat check</a>: test that the thing that watches is itself alive.</p>
+
+<h2>4. The never-log list (shorter than you think)</h2>
+<p>Retention turns logs into a liability surface: everything you keep for a year is a year's worth of data for whoever gets the bucket. So the policy also says what must <em>never</em> be written:</p>
+<ul>
+<li><strong>Passwords, API keys, tokens, session cookies.</strong> Run secret-scanning over your log buckets once &mdash; the first sweep almost always finds a key someone printed in an error message. (See the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> for what to do about the ones you find.)</li>
+<li><strong>Full payment numbers.</strong> The payment processor's references and amounts, never card data. If you can't answer &ldquo;why do we store this field?&rdquo;, the field shouldn't be in the log.</li>
+<li><strong>Personal data beyond what the question needs.</strong> Email + user ID is usually enough; keep the log useful and the privacy exposure boring. Deleting on schedule (Section 5) is also your privacy answer &mdash; data you no longer hold can't leak.</li>
+</ul>
+
+<h2>5. Enforce it with lifecycle rules, not memory</h2>
+<p>&ldquo;We delete old logs manually&rdquo; means you don't. Every object store and log service has a lifecycle/expiry setting; the policy is one page of those settings plus one command that verifies them:</p>
+<ol>
+<li><strong>Set expiry per bucket/service:</strong> hot tier buckets expire at the table's hot duration; the archive bucket expires at 12 months.</li>
+<li><strong>Verify with one command:</strong> for each log bucket, list the <em>oldest</em> object. If the oldest object is older than the tier allows, the lifecycle rule is off &mdash; fix the rule, not the object. Ten lines of script, run it weekly from the same cron as the heartbeat.</li>
+<li><strong>Re-check after every migration:</strong> the logging vendor change is where old retention settings get silently lost. Make the one-command check part of the <a href="backup-restore-test-checklist.html">quarterly restore-test ritual</a> &mdash; different failure mode, same discipline.</li>
+</ol>
+<p>Deletion is not the enemy of an investigation &mdash; it's the enemy of a breach. A log bucket with no expiry grows forever, costs more every quarter, and multiplies the blast radius of every leak. The lifecycle rule <em>is</em> the security control.</p>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>The policy is five numbers.</strong> Auth 90d/12mo, access 30&ndash;90d, cloud audit 90d/12mo, app audit 12mo, security events 12mo. Write them on one page with the tooling next to each.</li>
+<li><strong>Off-box and append-only beat &ldquo;longer retention.&rdquo;</strong> Logs an attacker can wipe were never retained; logs with a drifted clock waste the incident window.</li>
+<li><strong>Lifecycle rules + a weekly oldest-object check are the policy.</strong> If deletion depends on someone remembering, the bucket grows and the blast radius grows with it.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns log retention from a document nobody reads into a fillable one-pager your team can recite, and <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Vol. 2 ($27)</strong></a> adds the DR plan and evidence log that retention feeds during an incident. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so log shipping, expiry rules, and the oldest-object check run on their own</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams (First 10 Servers)</a></li>
+<li><a href="ransomware-recovery-checklist.html">Ransomware Recovery Checklist (The First 48 Hours)</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist (Rotate What Leaks, Not Everything)</a></li>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule)</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup &amp; Restore Test Checklist</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
