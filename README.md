@@ -1,3 +1,4 @@
+- [DNS Filtering Checklist](dns-filtering-checklist.html) - one resolver choice, router-level coverage for guests+IoT, safe-search + new-domain rules, block test from three devices, travel-laptop pinning, exception log, quarterly re-check.
 - [Physical Security Checklist](physical-security-office-checklist.html) - crown-jewel inventory (paper counts), two locked rooms + named keyholders, visitor log, unattended-desk rule, offsite media/shredded drives, quarterly walk.
 - [WiFi Security Checklist](wifi-security-checklist.html) - log in once: admin plane, firmware, WPS off, WPA3/WPA2-AES, guest+IoT split, rotation trigger, quarterly walk test.
 - [Shadow IT Audit Checklist](shadow-it-audit-checklist.html) - card-statement inventory, OAuth-grant walk, data-and-access scoring, the AI-tools line, adopt/sandbox/kill, SSO-only door, quarterly recount.

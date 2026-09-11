@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DNS Filtering Checklist for Small Teams (The Free Layer That Blocks Half the Bad Days)</title>
+<meta name="description" content="A DNS filtering checklist for small teams: point every device at a filtering resolver, set it on the router so guests and IoT are covered, turn on safe-search and adult-site blocking, test the block with a known-bad domain, cover the laptops that leave the building, log the exceptions, and run the quarterly re-check.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>DNS filtering checklist for small teams: the free layer that blocks half the bad days</h1>
+
+<p>Every phishing link, every "your-invoice-is-here" domain and every sketchy redirect has to resolve through DNS before anything bad happens. Most small businesses leave that door wide open and spend their whole security budget on the rooms behind it. A filtering resolver &mdash; the kind free tiers of Cloudflare Gateway, Quad9 or CleanBrowsing offer &mdash; refuses to answer known-malicious and adult domains before the browser ever loads them. It is not antivirus and it will not save someone who pastes their password into a fake login page. But it kills a large share of drive-by and lure-traffic risk in one afternoon, for zero dollars, with no agent to install. This checklist is that afternoon.</p>
+
+<h2>1. Pick one filtering resolver and write down why</h2>
+<ul>
+<li><strong>Choose the baseline by what you need blocked.</strong> Quad9 (9.9.9.9) is a set-and-forget malware blocklist run by a nonprofit; CleanBrowsing's free family filter blocks malware and adult content; Cloudflare Gateway's free tier lets you see and tune the policy. Pick one, write the choice and date in the IT drawer &mdash; the same baseline instinct as the <a href="annual-security-review-checklist.html">annual security review</a>.</li>
+<li><strong>One house resolver, not three.</strong> If the office laptop uses one service, the printer another and nobody knows what the router uses, you have three policies and no policy. The rule is the house rule from the <a href="wifi-security-checklist.html">WiFi checklist</a>: one owned decision, written down.</li>
+<li><strong>Know what DNS filtering cannot do.</strong> It will not block a phishing link on a domain that is five minutes old, and it does nothing for someone on a mobile hotspot. Say so in the note. A control with a known blind spot is honest; a control with a presumed one is a liability.</li>
+</ul>
+
+<h2>2. Set it on the router first &mdash; that covers guests and IoT for free</h2>
+<ul>
+<li><strong>Put the filtering resolver in the router's DHCP settings, not on each device.</strong> Every laptop, phone, printer and camera that joins the office network then inherits the policy, including visitor devices you will never manage. Two settings, five minutes, whole-building coverage.</li>
+<li><strong>Then check nothing needed was blocked.</strong> Printers, payroll portals and point-of-sale tablets sometimes phone home to domains a family-tier filter hates. Walk the room and use each of them once. What breaks gets an exception in section 6, not a silent rollback to the ISP resolver.</li>
+<li><strong>Leave the ISP resolver as the documented fallback.</strong> If the filtering service has an outage, you want a one-line note saying "the old DNS is 203.0.113.1, revert path: router admin, DHCP, DNS", not a support ticket during a payment run.</li>
+</ul>
+
+<h2>3. Turn on the category controls the tier already includes</h2>
+<ul>
+<li><strong>Enable safe search and restricted mode where the service supports it.</strong> CleanBrowsing and Cloudflare's family resolvers can force safe search on major engines and video sites by DNS alone. For an office with a shared front-desk machine, that is a ten-minute toggle that prevents most "I didn't search for that" conversations.</li>
+<li><strong>Block the new-domain window if your tier offers it.</strong> Phishing kits burn domains in days. A "block domains registered in the last 7 days" rule (Cloudflare Gateway's free plan includes it) catches the burn-and-replace pattern that static blocklists miss.</li>
+<li><strong>Keep the category list boring.</strong> Block malware, phishing, adult and &mdash; for most offices &mdash; gambling and recently-registered domains. Resist the urge to block shopping or social categories "for productivity": a filter that blocks people's lunch break gets disabled by lunchtime, and a disabled filter protects no one.</li>
+</ul>
+
+<h2>4. Test the filter like you would test a fire alarm</h2>
+<ul>
+<li><strong>Run a known-bad domain through it.</strong> The filter services publish their own test domains (Quad9's isitblocked.org and friends). From a wired office machine, a guest phone and the printer, resolve a test domain and confirm it fails or lands on a block page. A filter nobody has ever tested is a claim, not a control &mdash; the same reachability-test logic as the guest network in the <a href="wifi-security-checklist.html">WiFi checklist</a>.</li>
+<li><strong>Resolve a benign domain from the same devices.</strong> If example.com is fine but the test domain fails, the filter is working. If both fail, you have an outage, not a policy.</li>
+<li><strong>Screenshot the result and date it.</strong> This is the quarterly evidence line: "filter tested 12 Sep, block confirmed on office LAN + guest SSID." It answers the customer-security-questionnaire question "do you filter malicious domains?" in one sentence, and feeds the <a href="annual-security-review-checklist.html">annual review</a>.</li>
+</ul>
+
+<h2>5. Handle the laptops that leave the building</h2>
+<ul>
+<li><strong>Name the gap out loud: DNS on the router only protects devices on that router.</strong> The sales laptop at a conference is on hotel WiFi with default DNS the moment it leaves. The fix in order of preference: install the vendor's lightweight roaming client or an MDM profile that pins the filtering resolver, or at minimum pin the resolver in the OS network settings so it survives network switches.</li>
+<li><strong>Pair the roaming fix with the habits that already exist.</strong> Filtered DNS plus the always-on VPN discipline in the <a href="remote-work-security-checklist.html">remote work checklist</a> closes most of the road-warrior gap; the browser extension audit closes the rest of what a laptop is willing to run.</li>
+<li><strong>Do not let perfect block the free win.</strong> If pinning the resolver on every laptop is a two-week project, ship the router change today and put the laptop pinning on the roadmap with an owner. Whole-office coverage this afternoon beats per-device coverage someday.</li>
+</ul>
+
+<h2>6. Log the exceptions before they become the back door</h2>
+<ul>
+<li><strong>Every exception gets an owner, a domain and a review date.</strong> The payroll portal that trips the malware category, the label-printer cloud that needs a whitelist entry &mdash; one line each in the same IT-drawer note. An untracked exception is a hole with a steward who forgot it.</li>
+<li><strong>Decide who may change the DNS settings.</strong> One name. Router admin access is already restricted by the <a href="wifi-security-checklist.html">WiFi checklist</a> &mdash; the DNS settings are the most valuable rows in that admin plane, and "everyone with the password" is not an access model.</li>
+<li><strong>Write the break-glass rule.</strong> If the filter blocks something a customer demo genuinely needs mid-meeting, the permitted response is a logged exception by the named owner &mdash; not a quiet switch of the office resolver back to whatever the ISP defaults to, which is how last year's setup quietly returns.</li>
+</ul>
+
+<h2>7. The quarterly five-minute re-check</h2>
+<ul>
+<li><strong>Re-run the block test after any router or firmware change.</strong> Router replacements, ISP modem swaps and "helpful" office moves are how resolver settings get reset to defaults. The <a href="iot-device-security-checklist.html">IoT checklist</a> and the firmware pass in the WiFi checklist are the natural moments to re-test.</li>
+<li><strong>Read the filter's status page or dashboard once a quarter.</strong> Free tiers still publish incidents. Five minutes skimming "was there an outage that week we blamed the ISP?" turns mystery slowness into a known event.</li>
+<li><strong>Write the three-line pass: resolver, test result, exceptions changed.</strong> It slots into the same quarterly folder as the WiFi walk test and the <a href="physical-security-office-checklist.html">physical security walkthrough</a>, so the whole site layer gets reviewed in one sitting &mdash; and it is the cheapest real answer you will ever give an insurer or a customer questionnaire.</li>
+</ul>
+
+<p class="closing">DNS filtering for a small team is one free afternoon: choose one filtering resolver and write down why, set it in the router so guests and IoT inherit it, switch on the safe-search and new-domain controls the tier already includes, test the block from a wired machine, a guest phone and the printer, pin the resolver on the laptops that travel, log every exception with an owner, and re-run the five-minute test each quarter after anything touches the router. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns the exception log and the quarterly pass into fill-in-the-blank sheets, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the recurring checks so the re-test happens without anyone remembering to remember.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="wifi-security-checklist.html">WiFi Security Checklist</a></li>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist</a></li>
+<li><a href="iot-device-security-checklist.html">IoT Device Security Checklist</a></li>
+<li><a href="physical-security-office-checklist.html">Physical Security Checklist</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
