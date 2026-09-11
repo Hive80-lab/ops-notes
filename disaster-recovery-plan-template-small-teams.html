@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Disaster Recovery Plan Template for Small Teams (The One-Page DR Plan) &mdash; Free Template</title>
+<meta name="description" content="A free disaster recovery plan template for small teams: one page, five fill-in blanks, the 3-number summary (RTO, RPO, who's called), the quarterly 20-minute failover drill, and why your DR plan is worthless if it lives in a PDF nobody can open during the outage. Copy-paste ready.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main><article>
+<h1>Disaster Recovery Plan Template for Small Teams</h1>
+<p class="sub">The one-page DR plan: five fill-in blanks, three numbers, one drill per quarter. Written for teams of 2&ndash;30 who cannot afford an enterprise BCP engagement and don't need one.</p>
+
+<p>Most small teams' "disaster recovery plan" is a folder of PDFs from an insurance-driven compliance push, last opened the week it was written. When the region actually goes down, nobody opens the folder &mdash; they open a chat window and start improvising. Improvising during a disaster is expensive: the same question ("where are the backups?") gets answered three times, by three people, three different ways, and the two answers that are wrong cost you hours.</p>
+
+<p>The fix isn't a 40-page plan. It's one page that answers, before the outage, the questions everyone will ask during it. Here is the whole template &mdash; fill in the blanks, print it, stick it in two places (your password manager and your phone), and rehearse it once a quarter.</p>
+
+<h2>The five fill-in blanks</h2>
+
+<ol>
+<li><strong>The trigger.</strong> What counts as a disaster? Write the test, not the vibes: "primary region unreachable for 15+ minutes from two networks" or "database server dead and restore ETA exceeds 2 hours." If the trigger requires a human to decide whether it's bad enough, you wrote a debate, not a trigger.</li>
+<li><strong>The three numbers.</strong> <em>RTO</em> &mdash; how long until you're back (target: a number you've actually achieved once). <em>RPO</em> &mdash; how much data you can afford to lose (this is a statement about backup frequency, nothing else). <em>Who's called</em> &mdash; in order, with phone numbers, not Slack handles. Slack is down in the disasters Slack handles were meant for.</li>
+<li><strong>The failover path.</strong> The exact sequence: restore from where, to where, verified how. This is the same rule as rollbacks: <em>as exact commands, not as descriptions</em>. "Restore from backups" is not a path. "aws s3 cp s3://dr-bucket/latest.sql.gz . &rarr; psql &lt; it &rarr; run smoke test script" is a path.</li>
+<li><strong>The degraded mode.</strong> What does the business do while you're restoring? Write-only mode? Static status page + "orders paused"? A DR plan without a degraded mode forces full recovery to be the only acceptable outcome &mdash; and full recovery is the slowest one.</li>
+<li><strong>The drill.</strong> When it's tested (quarterly), who runs it, and where the drill result is written. An unrehearsed DR plan is a rumor.</li>
+</ol>
+
+<h2>The one-page plan, filled in</h2>
+<table>
+<tr><th>Field</th><th>Example</th></tr>
+<tr><td>Trigger</td><td>api region unreachable 15+ min from 2 networks, OR db restore ETA &gt; 2h</td></tr>
+<tr><td>RTO</td><td>4 hours (achieved in March drill: 3h 41m)</td></tr>
+<tr><td>RPO</td><td>15 minutes (nightly full + 15-min WAL shipping)</td></tr>
+<tr><td>Call order</td><td>1. Sam (mobile) 2. Priya (mobile) 3. Dan (contractor, +44&hellip;)</td></tr>
+<tr><td>Failover</td><td>DR runbook step 1&ndash;7 at /ops/dr-runbook.md &mdash; ends with smoke-tests.sh green</td></tr>
+<tr><td>Degraded mode</td><td>Status page live, orders paused, support replies with template #3</td></tr>
+<tr><td>Drill</td><td>Quarterly, first Friday; result logged in ops journal; failures become tickets</td></tr>
+</table>
+
+<h2>The drill is the plan</h2>
+<p>Untested numbers are wishes. The 20-minute quarterly drill: pick a Tuesday, restore the database to a scratch instance from last night's backup, run the smoke tests, time it, log one line. If the restore takes 3 hours, your RTO of 4 hours just became 3 hours of staring + 1 hour of work &mdash; and you learned it on a quiet Tuesday instead of during the real thing. This is the same discipline as the <a href="backup-restore-test-checklist.html">backup restore test</a>, with the added step of timing it against your written RTO.</p>
+
+<h2>The rules that keep the plan alive</h2>
+<ul>
+<li><strong>One page, or it's dead.</strong> A DR plan nobody can read in five minutes during an outage is shelf-ware. Everything operational fits on one page; the appendices can be long, the plan cannot.</li>
+<li><strong>It lives where the outage can't reach it.</strong> Inside your own infrastructure is wrong. Print it, put it in the password manager, put it on two phones. Assume every tool you normally use is part of the disaster.</li>
+<li><strong>Phone numbers, not usernames.</strong> Your chat platform and your email are both down-or-trusted-nothing scenarios in a real region outage. The call list has mobile numbers because that's what survives.</li>
+<li><strong>Degraded mode is a business decision, written in advance.</strong> "Should we pause orders?" is an awful question to answer live at 2am by whoever is most awake. Decide it now, write it down, make it boring.</li>
+<li><strong>Every drill failure becomes a ticket with a date.</strong> A failed drill with no follow-up ticket is a rehearsal of failure, not prevention. The ticket is what turns the drill into a program.</li>
+<li><strong>Changes to the failover path go through the same change record as everything else.</strong> If the runbook is stale, it's because DR was exempted from change control. It isn't.</li>
+</ul>
+
+<h2>The numbers that tell the truth</h2>
+<p>Track three lines per drill and per incident: time-to-detect, time-to-restore, data lost (in minutes). If those three aren't trending down (or already flat-good), the plan is decorative. Everything else &mdash; the documents, the tooling, the vendor SLAs &mdash; exists only to move those three numbers.</p>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> includes the full continuity pack &mdash; the one-page DR plan, the restore drill card, and the on-call call list template &mdash; plus the advanced incident response and comms templates. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so backups, health checks and log shipping run without a human remembering them</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist (The 20-Minute Drill)</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes: Incident Response for Small Teams</a></li>
+<li><a href="on-call-handover-template.html">On-Call Handover Template</a></li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates</a></li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+</main>
+</body>
+</html>
