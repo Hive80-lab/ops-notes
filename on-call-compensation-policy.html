@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-Call Compensation Policy Template for Small Teams (Pay the Pager, Not Just the Person)</title>
+<meta name="description" content="A one-page on-call compensation policy a small team can actually adopt: what counts as compensable on-call, the pay models that survive the first invoice, how to count middle-of-the-night response time, fairness rules for thin rotations, and the records that keep payroll honest.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Pay the pager, not just the person</h1>
+<p>Nothing corrodes a rotation faster than the 2AM page that pays nothing. The engineer answers, resolves, logs it, and comes back the next morning to an inbox that never noticed they were awake from 2 to 3:40. One unpaid night is solidarity; a quarter of them is a rotation that quietly stops answering, and then your <a href="on-call-rotation-schedule-template.html">on-call schedule</a> is a document, not a system. An on-call compensation policy is not a luxury for companies with HR departments &mdash; it is one page that says what being on call is worth, so nobody has to negotiate it at 2AM while an incident is burning. Write it before the first page, the same way you write the <a href="escalation-policy-template.html">escalation policy</a> before the first escalation.</p>
+
+<h2>1. First, decide what &ldquo;on call&rdquo; legally and practically means for you</h2>
+<ul>
+<li><strong>The restriction test decides the model.</strong> If being on call means the person must be sober, reachable, within fifteen minutes of a laptop, and able to answer within ten minutes &mdash; that is not free time, it is constrained time, and most pay systems treat constrained time as work time. If being on call means &ldquo;keep your phone nearby, respond when you can,&rdquo; that is a stipend situation. Your policy should say which one your rotation is, in one sentence, because everything else follows from it.</li>
+<li><strong>Write the response SLA into the policy itself.</strong> &ldquo;Acknowledge within 15 minutes, engage within 30&rdquo; is the same SLA your <a href="severity-matrix-3-levels.html">severity matrix</a> implies &mdash; put the numbers in the compensation policy too, because pay and expectations belong on the same page. If the SLA is unmeetable, the policy is fiction and the rotation will burn out exactly like <a href="alert-fatigue-checklist.html">alert fatigue</a> predicts.</li>
+<li><strong>Say what counts as an engagement.</strong> A page acknowledged and resolved in ten minutes, a false-positive alert investigated for forty, a question from a customer-success teammate at 11PM that turned into a two-hour fix &mdash; all of it is on-call work if it happened because the person was on call. The classic leak is &ldquo;informal favors&rdquo; that never touch the timesheet; the policy closes it by defining engagement as <em>any interruption initiated by someone else because you were on call</em>.</li>
+</ul>
+
+<h2>2. Pick the pay model &mdash; then write down the exact arithmetic</h2>
+<ul>
+<li><strong>Model A: stipend per shift.</strong> A flat amount per week or per weekend on call, regardless of pages. Simple, budgetable, fair when page volume is low and unpredictable. The failure mode: a rotation that melts under a real incident season still pays the same, which is why the stipend needs the engagement rules from section 3 underneath it.</li>
+<li><strong>Model B: engaged time, hourly.</strong> Time on call is unpaid or stipend-covered; time actually spent responding is paid at an hourly rate (often 1&times; or 1.5&times; the person's effective rate), with a minimum increment per engagement. This is the fairest under low volume and the most common for small teams. The arithmetic must be exact: &ldquo;each engagement is paid for a minimum of 30 minutes, rounded up to the next 15&rdquo; &mdash; because a four-minute fix at 3AM took twenty minutes of human cost to even see.</li>
+<li><strong>Model C: hybrid.</strong> A small weekly stipend (the price of carrying the phone) plus engaged-time hourly on top. This is what most mature small-team rotations converge on, and it is the model the template below assumes. Whatever you pick, write the formula in the policy so a single line can be pointed at during any payroll dispute: <em>pay = stipend + (engaged minutes &times; rate, min 30 per engagement)</em>.</li>
+<li><strong>Overtime and exempt status are not optional details.</strong> Non-exempt employees legally may be working when they are on call &mdash; constrained time can trigger overtime rules, and salaried-exempt misclassification is a classic expensive mistake. This page is not legal advice: the policy template includes a &ldquo;check with your accountant or local labor authority before first payroll&rdquo; line, and that line is the most important one in the document.</li>
+</ul>
+
+<h2>3. Count middle-of-the-night time like it is real, because it is</h2>
+<ul>
+<li><strong>The engagement clock starts at the page, not at the login.</strong> The person who hears the pager at 2:07 and starts looking at the dashboard at 2:11 worked from 2:07. Minimum-increment rules (30 minutes per engagement) exist precisely so nobody has to litigate the difference between a nine-minute and an eleven-minute fix at 3AM.</li>
+<li><strong>Interrupted sleep counts as engaged time.</strong> A 1:40AM page resolved by 2:05 that leaves the person too wired to sleep until 3:30 is, practically, a 2AM-to-3:30 engagement. Sophisticated policies handle this with a simple rule: engagements between 10PM and 6AM carry a minimum of 60 paid minutes, not 30. The number matters less than the principle: <em>the cost of a night page is bigger than the duration of the fix</em>.</li>
+<li><strong>False positives are still engagements.</strong> If your monitoring wakes someone for something that was not a real incident, that is a monitoring problem (fix it with the <a href="alert-fatigue-checklist.html">alert-fatigue checklist</a>) and it is still paid time (fix it in the policy). A policy that pays false positives is the fastest known way to get the noisy alerts actually deleted.</li>
+</ul>
+
+<h2>4. The one-page policy template</h2>
+<ul>
+<li><strong>Header:</strong> who is covered (roles, not names &mdash; the policy survives team changes), the effective date, and the review date. Review it at the same cadence as the rotation itself, quarterly, using the <a href="weekly-review-checklist.html">weekly review</a> habit scaled up.</li>
+<li><strong>Section: what on-call means here.</strong> The restriction test result (constrained vs free), the response SLA (acknowledge within X, engage within Y), and the devices/availability expected (laptop reachable, internet, phone charged &mdash; the unglamorous engineering requirements of a rotation).</li>
+<li><strong>Section: what it pays.</strong> The model (stipend / hourly / hybrid), the exact formula, the minimum increment per engagement, the night-page multiplier if any, and the cap-free honesty clause: <em>there is no cap on incident pay; bad weeks are the company's problem, not the engineer's</em>. A cap converts every bad incident into a personal loss and quietly teaches people to stop engaging.</li>
+<li><strong>Section: exclusions and disputes.</strong> What does not count (a scheduled maintenance window the person chose to watch voluntarily; their own week of duty swapped with a willing colleague &mdash; swaps keep the original pay split unless you say otherwise), and the one-line dispute path: raised in the <a href="on-call-handoff-checklist.html">handoff</a>, resolved by the ops lead within one payroll cycle.</li>
+</ul>
+
+<h2>5. Fairness in a thin rotation</h2>
+<ul>
+<li><strong>Small teams rotate thin; compensate for thinness deliberately.</strong> A three-person rotation means every third week is constrained. The stipend exists to acknowledge that constraint even in weeks with zero pages &mdash; the person who carried the phone all week and got lucky still did not get to plan an evening. Paying zero for a quiet week is how you teach people to resent the rotation.</li>
+<li><strong>Comp time for heavy weeks.</strong> A shift with more than N engagements (pick N &mdash; five is a common first guess) is a data point: either the product has a real problem or the rotation is too thin. The policy should offer a half-day of comp time for such weeks <em>and</em> trigger the review: any week that heavy gets a look at the <a href="uptime-downtime-budget.html">downtime budget</a> and the underlying incident trend.</li>
+<li><strong>Swaps are allowed and paid.</strong> Whoever carries the pager gets the pay, regardless of whose name was on the schedule originally. Bureaucratic pay-follows-schedule rules create silent disputes over shifts that were swapped in good faith at the <a href="on-call-handover-template.html">handover</a>.</li>
+</ul>
+
+<h2>6. Records: the boring half that makes the policy defensible</h2>
+<ul>
+<li><strong>Log every engagement, same day.</strong> Timestamp, page source, duration, outcome. Two minutes of logging per engagement is all it takes. Without the log, payroll is memory, memory is dispute, and dispute is resentment. The log doubles as your rotation health data: it is where you will see that Tuesday pages tripled after that deploy pipeline change.</li>
+<li><strong>Pay from the log, not from memory.</strong> The payroll cycle pulls the engagement log, applies the formula, and pays. Exceptions require a written note. This is the same discipline as any other ops control: the <a href="runbook-template.html">runbook</a> makes the response repeatable, the log makes the pay defensible.</li>
+<li><strong>Keep the records with the pay records.</strong> On-call pay is wages or compensation, and its records belong with payroll retention, not buried in a chat thread. If a labor authority ever asks how you compensate constrained time, the answer is a document and a log &mdash; not a Slack search.</li>
+</ul>
+
+<h2>7. The policy is a living control &mdash; review it on incidents</h2>
+<ul>
+<li><strong>Every severe incident ends with a compensation check.</strong> When the <a href="postmortem-template-small-teams.html">postmortem</a> is written, one line item asks: did anyone's on-call week absorb an unusual load, and did the policy pay it the way the policy promises? This closes the loop between incident process and compensation &mdash; and it is how the policy earns the trust that makes people willing to carry the phone.</li>
+<li><strong>Retire the policy the day it stops being true.</strong> If the team grows, if the product gets a real on-call burden, if the law where your people live changes &mdash; update the one page. A compensation policy that has not been touched in a year is not a policy; it is a fossil the team works around.</li>
+</ul>
+
+<p class="note">This page is an operational template, not legal advice. Employment-law treatment of on-call time varies by country and state &mdash; have an accountant or local labor authority confirm the pay model before the first payroll run.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li></ul><p class="hint">The kit fixes the incident. This page fixes what the person who fixed it gets paid.</p></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="on-call-rotation-schedule-template.html">On-Call Rotation Schedule Template</a></li>
+<li><a href="on-call-handoff-checklist.html">On-Call Handoff Checklist</a></li>
+<li><a href="on-call-handover-template.html">On-Call Handover Template</a></li>
+<li><a href="escalation-policy-template.html">Escalation Policy Template</a></li>
+<li><a href="severity-matrix-3-levels.html">Severity Matrix (3 Levels)</a></li>
+<li><a href="alert-fatigue-checklist.html">Alert Fatigue Checklist</a></li>
+<li><a href="the-2am-test-incident-handoff.html">The 2AM Test: Incident Handoff</a></li>
+<li><a href="uptime-downtime-budget.html">Uptime &amp; Downtime Budget</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>. No analytics, no tracking &mdash; just notes that work at 2AM.</footer>
+</main>
+</body>
+</html>
