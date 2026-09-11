@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MFA Rollout Checklist for Small Teams (Enforce It Without Locking Anyone Out)</title>
+<meta name="description" content="A step-by-step MFA rollout checklist for small teams: pilot order, break-glass and recovery codes before enforcement, the enforcement-day sequence, authenticator over SMS, and the mistakes that flood your helpdesk with lockouts.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>MFA rollout checklist for small teams: enforce it without locking anyone out</h1>
+
+<p>Multi-factor authentication is the cheapest security win on the board &mdash; a stolen password alone stops opening most accounts. But half-finished rollouts are worse than none: an "optional" MFA policy is a policy nobody follows, an SMS-only rollout trains everyone to approve prompts they never meant to send, and an enforcement day without recovery codes becomes the day your bookkeeper is locked out of payroll. The rollout below is ordered so that <strong>the recovery layer exists before the enforcement switch does</strong>.</p>
+
+<h2>1. Pre-flight: inventory before you touch a setting</h2>
+<ul>
+<li><strong>List the accounts that matter:</strong> email, bank, payroll, cloud console, domain registrar, code hosting, the admin panels behind your product. Everything else can wait &mdash; roll out to the five accounts that can hurt, not to forty that can't.</li>
+<li><strong>Find the non-humans.</strong> Service accounts, scripts, printers, old mail clients, and API integrations don't carry a phone. Tag them now; they get scoped app passwords or exceptions with expiry dates, not surprises.</li>
+<li><strong>Check what each app actually supports.</strong> Most MFA-capable apps distinguish <em>available</em> from <em>enforced</em>. You want the enforce toggle &mdash; note where it lives for each account, because you'll visit it on enforcement day.</li>
+<li><strong>Pick the factor before the rollout:</strong> an authenticator app (TOTP) as the default, hardware keys for the two admin accounts, SMS only as a documented last resort. Passkeys where the app offers them.</li>
+</ul>
+
+<h2>2. Build the recovery layer first (the part everyone skips)</h2>
+<ul>
+<li><strong>Two break-glass admin accounts</strong> that are not tied to any employee's phone: long random passwords in the password manager, MFA via hardware key, credentials sealed offline (paper in the safe, not a doc called "emergency.txt"). Test one by logging in, then leave them alone.</li>
+<li><strong>Recovery codes, generated and stored, per human</strong> &mdash; printed or in the password manager <em>before</em> enrollment, not after the first lockout. Ten codes, one use each, dated.</li>
+<li><strong>One backup admin per critical app:</strong> the person who can reset MFA for someone else must not be the person most likely to lose their own phone the same week.</li>
+<li><strong>A written "lost phone" path</strong> &mdash; who to message, how identity is verified (video call with the manager, not "answer me in Slack"), and the expected turnaround. If it's not written down, enforcement day invents it under pressure.</li>
+</ul>
+
+<h2>3. The rollout: volunteers first, everyone second</h2>
+<ol>
+<li><strong>Pilot with 3&ndash;5 volunteers for one week.</strong> They will find every broken integration: the desktop mail client that only does passwords, the invoicing tool that logs in once a quarter, the script that calls an old API. Fix or exempt those <em>now</em>, on five people, instead of on forty.</li>
+<li><strong>Collect the friction and answer it publicly</strong>: "why do I keep getting codes," "what happens when my phone dies," "does this log me out of my session." The questions repeat; answer them once in the rollout note.</li>
+<li><strong>Announce with real dates:</strong> T-7 "MFA goes enforced on the 15th, here's the 5-minute setup," T-1 reminder with the setup guide, T-0 enforcement. Open-ended "soon" rollouts never finish.</li>
+<li><strong>Offer a 15-minute setup window</strong> with someone screen-sharing. The volunteers who did it already are the best teachers &mdash; and the culture win is "we all did this together," not "IT made me."</li>
+</ul>
+
+<h2>4. Enforcement day, in order</h2>
+<ol>
+<li><strong>Flip one account to enforced first</strong> (a volunteer who still has recovery codes), and verify a normal login works end-to-end &mdash; including on the mobile app and the desktop client people actually use.</li>
+<li><strong>Then enforce the rest in one batch.</strong> Keep "allow existing sessions" on if the app offers it, so nobody gets logged out mid-task on day one.</li>
+<li><strong>Watch the channel you named for lockouts</strong> for the rest of the day. Every unblock goes through the written path &mdash; verify identity, have them use a recovery code, re-enroll the new device.</li>
+<li><strong>Same day: check the exceptions list.</strong> Service accounts and old clients should now have scoped app passwords or API tokens &mdash; each one labeled with an owner and an expiry.</li>
+<li><strong>Close the loop in the weekly review:</strong> enforcement status per app, exceptions remaining, and the date the last "optional" box gets turned off. An MFA rollout ends when <em>nothing</em> is optional.</li>
+</ul>
+
+<h2>5. The mistakes that flood the helpdesk</h2>
+<ul>
+<li><strong>Enforcing before recovery codes exist.</strong> This is the one that turns a Tuesday into a payroll outage. The recovery layer is section 2 for a reason.</li>
+<li><strong>One human's phone as the factor for a shared account.</strong> Shared mailboxes and service logins get scoped app passwords or delegated access &mdash; not one employee's personal device as a single point of failure.</li>
+<li><strong>SMS as the default.</strong> SIM-swap and phishing make it the weakest common factor, and it's the one that breaks silently when someone changes carriers. Authenticator app by default; document every SMS exception.</li>
+<li><strong>"Optional" forever.</strong> The users who most need MFA are the ones most likely to skip an optional setting. Set the enforcement date when you announce the rollout.</li>
+<li><strong>No re-auth on sensitive actions.</strong> MFA at login but password-only for changing the bank account on file is a drawer with a lock on the drawer handle. Ask for the factor again on admin and money-path changes.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Recovery before enforcement:</strong> break-glass admins, per-person recovery codes, and a written lost-phone path exist <em>before</em> the first "enforced" toggle.</li>
+<li><strong>Pilot on volunteers</strong> so the broken integrations surface on five people instead of forty.</li>
+<li><strong>Authenticator over SMS, hardware keys for admins, exceptions with expiry dates</strong> &mdash; and nothing stays "optional."</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the account inventory and access-review sheets that make the pre-flight list ten minutes instead of an afternoon, and <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> turns the weekly review &mdash; exceptions, expiry dates, enforcement status &mdash; into a recurring workflow. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="email-security-checklist.html">Email Security Checklist for Small Teams (SPF, DKIM, DMARC)</a></li>
+<li><a href="phishing-response-checklist-small-teams.html">Phishing Response Checklist for Small Teams (The First Hour After Someone Clicks)</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams (First 10 Servers)</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
