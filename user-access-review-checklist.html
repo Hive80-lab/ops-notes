@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Access Review Checklist for Small Teams (Quarterly Access Recertification)</title>
+<meta name="description" content="A quarterly user access review checklist for small teams: build the people list and the systems list, walk every person against every system, catch the five findings that always appear, revoke or downgrade same-day, and file the evidence SOC 2 and ISO 27001 auditors actually ask for.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>User access review for small teams: the quarterly pass that proves nobody kept a key</h1>
+
+<p>Every audit conversation about access eventually lands on the same question, and it is not a technical one: <em>who still has access to what, and how do you know?</em> The joiner part of access is usually handled &mdash; there is a ticket, an onboarding list, an <a href="employee-onboarding-checklist-template.html">onboarding checklist</a>. The leaver part has its own page (<a href="access-request-offboarding-checklist.html">access request &amp; offboarding</a>). What rots in the middle is the <em>staying</em>: the support contractor moved to another client but kept the admin seat, the manager's old backup login survived the promotion, the shared drive permission granted "just for the audit" in March is still wide open in September. A quarterly user access review is the pass that finds the rot &mdash; and it is the single cheapest piece of evidence SOC 2, ISO 27001, and every customer security questionnaire will ask you for. This page is the walk.</p>
+
+<h2>1. Why the review exists before how to run it</h2>
+<ul>
+<li><strong>An access review is not a security project &mdash; it is a habit with a signature.</strong> The whole deliverable is a dated record that says: on this date, this person walked every person against every system, decided keep or revoke, and signed it. Auditors do not ask whether your access was perfect on the day of the audit. They ask whether you <em>looked</em>, on a schedule, and what you did about what you found. "We reviewed access on 12 Sep and revoked 4 accounts" is evidence. "We're pretty careful about that" is not.</li>
+<li><strong>The review is where movers get caught, not just leavers.</strong> People changing roles is the quiet one: the engineer who became a manager and kept production access, the ops person who moved to sales and still receives the finance reports. Offboarding handles the departure; only a periodic review catches the drift while the person is still employed.</li>
+<li><strong>Small teams do this faster than big ones.</strong> Twenty people and fifteen systems is a two-hour quarterly pass. The enterprise-grade framing ("recertification campaigns", "RBAC matrices") is borrowed costume &mdash; what the auditor wants, and what actually reduces risk, is the walk this page describes, done honestly, four times a year.</li>
+</ul>
+
+<h2>2. Build the people list before the systems list</h2>
+<ul>
+<li><strong>The people list is whoever is paid or contracted today.</strong> Employees, contractors, and the bookkeeper who logs in from her own practice &mdash; everyone with credentials, in one column. The source of truth is whoever pays them, not the SSO admin panel: the SSO shows you who <em>can</em> log in; the payroll list tells you who <em>should</em>. Every name in the SSO that is not on the people list is already a finding before the walk starts.</li>
+<li><strong>Mark every line with the one detail that matters: end date or "ongoing".</strong> Contractors and temp staff get a date &mdash; the date their access should already have died. A person on the list whose end date passed two months ago and who still appears in the SSO is the highest-value finding this whole exercise produces, and it costs one line item to surface.</li>
+<li><strong>Keep the list to one screen.</strong> A spreadsheet with name, role, type (employee/contractor), end date, and reviewer initials. If it grows past one screen, you have outgrown the spreadsheet &mdash; but most small teams have not, and pretending otherwise just postpones the first review until after the first incident.</li>
+</ul>
+
+<h2>3. Inventory the systems list &mdash; include the ones without a dashboard</h2>
+<ul>
+<li><strong>Start with the SSO tenant and walk outward.</strong> The <a href="google-workspace-security-checklist.html">Google Workspace</a> or <a href="microsoft-365-security-checklist.html">Microsoft 365</a> admin panel lists the first dozen apps by itself. Then the stragglers: cloud consoles (AWS, Vercel, Cloudflare), the code host (<a href="github-repository-security-checklist.html">GitHub</a>), the password vault, the VPN, the finance tool, the shared drives, the project tracker, the status page. The <a href="shadow-it-audit-checklist.html">shadow IT audit</a> is what fills in the tools people adopted without telling you &mdash; the review assumes that list is roughly current.</li>
+<li><strong>Add the systems that do not have an "Admin &rarr; Users" screen.</strong> The NAS, the router, the monitoring server, the WordPress admin, the database itself. These are the accounts nobody revokes because there is no offboarding button &mdash; exactly why they need a human walking a list every quarter.</li>
+<li><strong>Count shared logins as systems, not as people.</strong> The admin login to the billing portal that "the three of us share" gets its own row. Reviews that skip shared accounts skip the accounts most likely to outlive every person who knows the password. (The fix direction is named accounts for humans &mdash; the <a href="password-manager-rollout-small-business.html">password manager rollout</a> is what makes that affordable.)</li>
+</ul>
+
+<h2>4. The walk: every person against every system they touch</h2>
+<ul>
+<li><strong>Go system by system, not person by person.</strong> Open the admin panel for one system, list its users, and check each name against the people list: does this person still work here, in this role? Keep / downgrade / revoke, one word per name, written down. System-first is faster, catches orphan accounts automatically, and produces the exact export auditors want.</li>
+<li><strong>Apply the role test, not just the employment test.</strong> "Still works here" is the easy half. The harder half: does a person in <em>this role</em> need <em>this access</em>? The salesperson with production deploy rights is still employed &mdash; and still wrong. Least privilege is the standard the review enforces; the downgrade is usually a two-minute admin-panel change.</li>
+<li><strong>Treat admin, break-glass, and service accounts as their own pass.</strong> Admin seats, the break-glass super-admin from the <a href="google-workspace-security-checklist.html">Workspace checklist</a>, CI tokens, API keys tied to a person &mdash; these get named individuals and a review every quarter even when nothing else changes. Service accounts should map to a system, not a person; any credential that maps to an ex-employee gets rotated the same afternoon (<a href="secrets-rotation-checklist.html">secrets rotation</a> has the pass).</li>
+<li><strong>Look for the deltas the SSO can show you.</strong> Last-login columns and admin-audit logs turn the walk from a guess into a scan: an account with no login in 90 days is a revoke candidate by default; an account logging in at 3am from the finance tool it has no role touching is a conversation. You are not investigating &mdash; you are letting the data point at the lines that deserve the two-minute look.</li>
+</ul>
+
+<h2>5. The five findings you will find on the first pass</h2>
+<ul>
+<li><strong>Orphan accounts.</strong> People on the systems list who are not on the people list &mdash; ex-employees, ended contractors, "test" accounts someone never deleted. Expect a handful the first quarter. Revoke the same day; note the reason each one survived (usually: no offboarding checklist existed for that system, which is a process fix, not a blame).</li>
+<li><strong>Role creep.</strong> Access granted for a one-off project that became permanent. The backup admin from the server migration, the read access granted "while Priya was on leave" in February. Downgrade to what the role needs today; the project archive can live in the vault if it is ever needed again.</li>
+<li><strong>Shared logins with no owner.</strong> The billing portal password in a group chat. The fix is naming an owner and moving the credential into the vault as a shared item with a named list &mdash; shared access is fine, <em>anonymous</em> shared access is the finding.</li>
+<li><strong>Stale contractor access.</strong> The engagement ended, the date passed, the seat is still active. This is the finding most likely to embarrass you in front of a customer &mdash; an ex-contractor is one password reuse away from being an outsider with a live account. Revoke, and add the end date check to the next contractor onboarding (<a href="contractor-security-onboarding-checklist.html">contractor checklist</a> already carries the expiry-stamp rule).</li>
+<li><strong>The unreviewed break-glass.</strong> The super-admin or root credential that "nobody uses" &mdash; which usually means nobody has checked whether its last use was staff, a leaver, or an attacker. Verify its password was rotated after the last time anyone left who knew it, confirm the second factor still points at a current person, and log the verification.</li>
+</ul>
+
+<h2>6. Fix same-day, log the decision, skip the re-education</h2>
+<ul>
+<li><strong>Revoke and downgrade during the walk, not "next week".</strong> The review's value collapses if findings queue up in a doc. The admin panel is open; the decision is written; the button is right there. Every fix takes less time than the meeting to schedule the fix.</li>
+<li><strong>Log every keep with a reason when it is surprising.</strong> "Keep &mdash; bookkeeper needs billing export until year-end (review again Jan)" is a decision. A bare "keep" next to an odd permission is a loophole wearing a checkbox. The log is also what turns next quarter's review from an investigation into a diff.</li>
+<li><strong>Tell people what changed, once, kindly.</strong> A two-line note: quarterly access review ran, here's what changed for you, here's why. Not a lecture &mdash; a notification. Reviews that turn into blame theater get quietly skipped next quarter, and a skipped review is worse than a shallow one because it produces false evidence.</li>
+</ul>
+
+<h2>7. File the evidence the auditor (or the customer) will ask for</h2>
+<ul>
+<li><strong>The artifact is: date, reviewer, scope, decisions, signature.</strong> Export the user list from each system <em>before</em> the changes, save it with the decisions marked, and add reviewer name + date at the top. A folder per quarter, one PDF or spreadsheet per system. Ten minutes of filing converts the whole pass into the artifact that answers the access-review question on every <a href="customer-security-questionnaire-template.html">security questionnaire</a> for the next ninety days.</li>
+<li><strong>Keep the "all clear" quarters too.</strong> A review that found nothing is still evidence &mdash; arguably the best kind. The folder should show four dated reviews a year, including the boring ones. Auditors read continuity as control; a gap where a quarter should be reads as "they review when they remember".</li>
+<li><strong>Tie the review into the audit calendar you already run.</strong> The access review slots next to the <a href="annual-security-review-checklist.html">annual security review</a> (which lifts results from it), the quarterly rotation pass, and the <a href="tabletop-exercise-failure-points.html">tabletop exercise</a> &mdash; one compliance afternoon a quarter, four artifacts, and every framework question about access control has a file behind it.</li>
+</ul>
+
+<h2>8. The quarterly rhythm, and the part to automate</h2>
+<ul>
+<li><strong>Same week every quarter, two hours, calendar-locked.</strong> Pick the week after quarter close when the payroll list is fresh. Two hours for a twenty-person, fifteen-system shop is generous; if it runs long, the systems list is the thing to trim first &mdash; merge the four cloud consoles into one line item with sub-bullets, not four investigations.</li>
+<li><strong>Automate the boring half: the report, not the decision.</strong> A scheduled script that pulls the user list from the SSO and the cloud consoles into one sheet, diffs it against last quarter's, and flags zero-login accounts does 80% of the reading so the human does 100% of the deciding. The decision stays manual on purpose &mdash; that judgment call is what the evidence exists to prove. The <strong>Automation Starter Pack</strong> below schedules exactly this kind of pull-and-diff, and the quarterly nudge that makes the review happen without anyone remembering.</li>
+<li><strong>When headcount doubles, upgrade the ritual, not the frequency.</strong> The quarterly human walk scales to roughly fifty people; past that, move to per-system owners reviewing their own roster with you spot-checking &mdash; the artifact format stays identical. What never changes: quarterly, dated, decided, signed.</li>
+</ul>
+
+<p class="closing">A user access review is one list of people, one list of systems, and a walk that leaves a dated decision on every intersection: revoke the orphans, downgrade the role creep, name the shared logins, kill the stale contractor seats, and verify the break-glass nobody uses. Fix same-day, file the export with a signature, and repeat in the same week every quarter. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> puts the review sheet and the evidence folder structure on fill-in-the-blank templates, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the quarterly review nudge and the user-list pulls so the walk starts from data instead of memory.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="contractor-security-onboarding-checklist.html">Contractor Security Onboarding Checklist</a></li>
+<li><a href="shadow-it-audit-checklist.html">Shadow IT Audit Checklist</a></li>
+<li><a href="google-workspace-security-checklist.html">Google Workspace Security Checklist</a></li>
+<li><a href="github-repository-security-checklist.html">GitHub Repository Security Checklist</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>

@@ -54,4 +54,6 @@ Incident response, on-call, and automation **checklists and templates** you can 
 
 - [Website maintenance checklist](https://hive80-lab.github.io/ops-notes/website-maintenance-checklist-small-business.html)
 - [Microsoft 365 security checklist](https://hive80-lab.github.io/ops-notes/microsoft-365-security-checklist.html)
+- [User access review checklist](https://hive80-lab.github.io/ops-notes/user-access-review-checklist.html)
+
 *Templates, not legal or regulatory advice. Site: <https://hive80-lab.github.io/ops-notes/>*
