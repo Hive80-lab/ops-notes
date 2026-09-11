@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch Management Checklist for Small Teams (Monthly Cadence That Ships) &mdash; Free Template</title>
+<meta name="description" content="A free patch management checklist for small teams: the monthly cadence, the 4-tier triage that answers 'which CVE first?', the blast-radius rule, reboot scheduling, and the one-line patch log auditors ask for. Copy-paste ready.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Patch Management Checklist for Small Teams (Monthly Cadence That Ships)</h1>
+<p>Most small teams don't skip patching out of laziness &mdash; they skip it out of fear. Every patch is a change, changes break things, and "we'll patch it next window" quietly becomes never. Then a VPN or a PDF reader makes the news and the patch that sat for 200 days suddenly becomes an all-hands emergency. The fix isn't a tool. It's a short monthly cadence and a triage rule that tells you which of the 200 open CVEs actually matters. Here's the checklist.</p>
+
+<h2>The monthly patch cycle &mdash; copy this</h2>
+<ol>
+<li><strong>Keep one inventory list.</strong> Every server, workstation, router, NAS, and container host on a single list with its OS and last-patched date. If you can't say how many machines you have, that unknown machine is your finding #0 &mdash; it's the one nobody patches.</li>
+<li><strong>Triage advisories into 4 tiers.</strong> Tier 1: actively exploited or auth bypass &mdash; patch within 48 hours. Tier 2: network-facing or remote code execution &mdash; 7 days. Tier 3: privilege escalation or local &mdash; 30 days. Tier 4: everything else &mdash; next monthly window. Without tiers, every advisory is urgent and nothing gets patched.</li>
+<li><strong>Take the snapshot before the patch, not after.</strong> Snapshot or backup every host you're about to touch, and write the rollback command (downgrade, uninstall, config restore) next to it. A patch you can't undo is a change &mdash; and it belongs in the same discipline as every other change.</li>
+<li><strong>Watch the blast radius, don't feel it.</strong> If you have staging, patch there first. If you don't, patch ONE production host, run the service for 24 hours, then roll the fleet. "apt said ok" is not verification &mdash; check the version command and the service health check.</li>
+<li><strong>Patch in the window, with a watcher.</strong> Pick a monthly window (e.g. first Wednesday 14:00&ndash;16:00), put it on the calendar, and have one person watching for the first 30 minutes after. Unwatched patches are discovered the same way unwatched changes are: by customers.</li>
+<li><strong>Schedule the reboots.</strong> The reboot is the real deadline. A patched-but-not-rebooted kernel is a server running yesterday's vulnerability with a green dashboard. Batch reboots into the same window and accept the 4 minutes of downtime &mdash; it's cheaper than the CVE.</li>
+<li><strong>Patch the things that aren't the OS.</strong> The VPN appliance, the printer firmware, the npm and pip dependencies, the TLS certs, the firewall. Attackers don't care that your Ubuntu is current when your router is 14 versions behind.</li>
+<li><strong>Close the log within 24 hours.</strong> One line per host: date, CVEs applied, outcome, rollback used (yes/no). Ten closed log lines a quarter beats a scanning tool nobody reads.</li>
+</ol>
+
+<h2>The one-line patch log</h2>
+<table>
+<tr><th>Date</th><th>Host</th><th>Applied</th><th>Tier</th><th>Outcome</th></tr>
+<tr><td>2026-09-03</td><td>vpn-gw-01</td><td>CVE-2026-1234 + firmware 7.2.1</td><td>1 &mdash; exploited in the wild</td><td>Patched 09:40, reboot 09:52, services green</td></tr>
+<tr><td>2026-09-03</td><td>db-01</td><td>openssl 3.0.13 &rarr; 3.0.15</td><td>2 &mdash; network-facing</td><td>Patched 15:10, no reboot needed, health check ok</td></tr>
+<tr><td>2026-09-04</td><td>fleet (11 hosts)</td><td>September OS batch (tier 4)</td><td>4</td><td>Batched window, 1 rollback (driver), closed same day</td></tr>
+</table>
+
+<h2>The rules that make the cadence stick</h2>
+<ul>
+<li><strong>Reachable beats loud.</strong> A CVSS 9.8 on an internal box that only one admin can reach is usually less urgent than a CVSS 7.5 on your internet-facing gateway. Patch what's reachable first &mdash; exposure order, not headline order.</li>
+<li><strong>Emergency patches get a retro-record, not a skip.</strong> When a Tier 1 lands mid-week, you patch immediately &mdash; and write the one-line log within 24h. The rule isn't "no patches outside the window", it's "no patches without a record".</li>
+<li><strong>Watch advisories 20 minutes a week.</strong> One person, one list (vendor advisories + a feed), 20 minutes, mark which tier each one falls into. That's the entire "patch intelligence" function for a team under 30 people.</li>
+<li><strong>End-of-life software is a project, not a patch.</strong> Anything past vendor support goes on the replacement list with a date. You cannot patch your way out of EOL &mdash; and "we know it's risky" isn't a control, it's an apology you haven't written yet.</li>
+<li><strong>Failed patches are findings too.</strong> When a patch breaks a service, the rollback isn't the end of the story &mdash; test the same patch on one more host before the next window, and write down what broke. Recurring patch failures mean a test environment is overdue.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> includes the full maintenance pack &mdash; patch log, maintenance-window calendar, and the change record this checklist plugs into &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so the routine patch jobs run without a human</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="change-management-checklist.html">Change Management Checklist for Small Teams (No CAB Required)</a></li>
+<li><a href="deployment-rollback-checklist.html">Deployment Rollback Checklist (Tested Before You Need It)</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist (The 20-Minute Drill)</a></li>
+<li><a href="on-call-rotation-schedule-template.html">On-Call Rotation Schedule Template</a></li>
+<li><a href="what-to-automate-first.html">What to Automate First (Pick-First Workflows)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+</main>
+</body>
+</html>
