@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IT Asset Inventory Template for Small Teams (Columns, Example Rows, Drift Check)</title>
+<meta name="description" content="An IT asset inventory template for small teams: the twelve columns that carry the whole weight (serial, warranty EOL, encryption + MDM status, owner), one register with three row families — hardware, SaaS, network gear — worked example rows, the four fields nobody fills and what they cost later, where each column gets used in the bad-day runbooks, and the fifteen-minute quarterly drift check.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>IT Asset Inventory Template for Small Teams</h1>
+<p class="lede">The <a href="asset-inventory-checklist.html">asset inventory checklist</a> is the hunt &mdash; the discovery pass that finds the smart plug, the contractor's laptop, and the Raspberry Pi nobody registered. This page is what you put the finds <em>into</em>: <strong>one register, twelve columns, three row families</strong> &mdash; hardware, SaaS, and network gear &mdash; with worked example rows and the four fields nobody fills until the day they cost real money. The register earns its keep on bad days: the insurance claim that wants serials and costs, the stolen laptop that needs its MDM status, the disposal run that starts with a row, and the quarterly walk that finds the unpatchable NAS before it finds you.</p>
+
+<h2>1. What the register must answer on a bad day</h2>
+<ul>
+<li><strong>The insurance claim.</strong> "List the stolen equipment with serial numbers and purchase values." A register with a serial column and a cost column turns that from a two-day archaeology project into a filtered export. This is why <em>serial</em> and <em>cost</em> are columns, not notes.</li>
+<li><strong>The stolen laptop hour.</strong> The <a href="lost-or-stolen-laptop-runbook.html">lost-or-stolen runbook</a> needs three facts fast: which device (model + serial), what data it touches (classification), and whether remote wipe will actually land (MDM enrollment + encryption status). Three columns, read in one row.</li>
+<li><strong>The disposal run.</strong> The <a href="old-hardware-disposal-checklist.html">old hardware disposal checklist</a> starts with "inventory row before power-off." A register without rows makes disposal a guess &mdash; and the copier or NAS that isn't on the list is exactly the one that keeps a hard drive with payroll exports on it.</li>
+<li><strong>The EOL walk.</strong> Quarterly, the <a href="patch-cadence-calendar.html">patch cadence</a> needs one question answered per device: <em>does the vendor still ship updates?</em> That answer lives in the warranty/support-ends column. No dates, no walk &mdash; just a shrug at the old NAS until the day it matters.</li>
+<li><strong>The normal day, too.</strong> Onboarding needs to know there's a spare ready (the <a href="hot-spare-loaner-laptop-checklist.html">hot spare checklist</a> points at a status column). Procurement needs the cost column for budgeting. The register is boring on good days so it can be decisive on bad ones.</li>
+</ul>
+
+<h2>2. The twelve columns that carry the whole weight</h2>
+<p>Keep them exactly this boring. Every column must answer a named question or it becomes a column nobody fills.</p>
+<table>
+<tr><th>Column</th><th>The question it answers</th><th>Example</th></tr>
+<tr><td>1. Asset ID</td><td>Which row is this? (one convention, never re-used)</td><td>LT-014</td></tr>
+<tr><td>2. Type</td><td>What family does it belong to?</td><td>Laptop</td></tr>
+<tr><td>3. Make + model</td><td>What exactly is it?</td><td>MacBook Air M2 13"</td></tr>
+<tr><td>4. Serial number</td><td>Which physical one is it?</td><td>C02XK9ABLT86</td></tr>
+<tr><td>5. Assigned to</td><td>Who owns it? (one name; <em>shared:</em> prefix for pooled gear)</td><td>Dana Ortiz</td></tr>
+<tr><td>6. Status</td><td>In service / spare / repair / exiting</td><td>In service</td></tr>
+<tr><td>7. Purchase date</td><td>How old is it?</td><td>2024-03-11</td></tr>
+<tr><td>8. Warranty / support ends</td><td>Will the vendor still help in a year?</td><td>2027-03-11 (AppleCare)</td></tr>
+<tr><td>9. Encryption + MDM</td><td>Can we lock and wipe it remotely &mdash; and has that been <em>verified from the console</em>?</td><td>FileVault on / MDM yes / verified 2026-09</td></tr>
+<tr><td>10. Data classification</td><td>What's on it if it walks away?</td><td>Customer PII</td></tr>
+<tr><td>11. Cost</td><td>What does the insurance form ask next?</td><td>$1,290</td></tr>
+<tr><td>12. Notes</td><td>The story the row can't say (2FA device, runs the dashboard, spare in the drawer)</td><td>Also team 2FA phone</td></tr>
+</table>
+<ul>
+<li><strong>Twelve is the ceiling, not a floor.</strong> If a column doesn't get used in a bad-day runbook or a quarterly walk, delete it &mdash; every dead column makes the live ones less likely to get filled. The <a href="asset-inventory-checklist.html">discovery checklist</a> says keep the register small enough to survive contact with reality; the columns are where that principle gets enforced.</li>
+<li><strong>The verification date in column 9 is not optional decoration.</strong> "MDM: yes" written at purchase decays. The honest value is "verified from the console on a date" &mdash; re-verified by the quarterly drift check below, because the console is the only place "enrolled" is a fact instead of a hope.</li>
+</ul>
+
+<h2>3. One register, three row families</h2>
+<ul>
+<li><strong>Hardware rows (most of the register).</strong> Laptops, desktops, phones, tablets, monitors, printers, the NAS. Anything with a serial number gets a row &mdash; and the things people forget are the ones with serial numbers: monitors with HDMI capture, the old phone kept as the <a href="mfa-rollout-checklist-small-business.html">MFA</a> device, the copier that's quietly a computer with a hard drive.</li>
+<li><strong>SaaS and license rows.</strong> The subscription that renews yearly is an asset: it has an owner, a cost, an expiry, and a way to lose it (nobody remembers the login). This row family shares five columns with hardware &mdash; ID, owner, cost, renewal date, notes &mdash; but the register to run it on is the <a href="software-license-register.html">software license register</a>. Keep the two files linked, not merged: different rhythms, different bad days.</li>
+<li><strong>Network rows (few but critical).</strong> The router, the switches, the VPN concentrator, the access points. These get the same columns plus one more habit: firmware version in Notes. The <a href="wifi-security-checklist.html">wifi security checklist</a> and the <a href="vpn-security-checklist.html">VPN checklist</a> both assume somebody can name the exact model on the shelf &mdash; that somebody is this register.</li>
+<li><strong>Shared devices get the <em>shared:</em> prefix and a second column value: where they live.</strong> "shared: NAS &mdash; server closet" beats "the NAS" as an owner. The failure mode of pooled gear is that it is everyone's responsibility, which is the same as no one's; the register's job is to make the pool nameable.</li>
+</ul>
+
+<h2>4. The four columns nobody fills &mdash; and what each costs later</h2>
+<ul>
+<li><strong>Serial number.</strong> Skipped because it means flipping a laptop over. Costs later: the police report that can't identify the machine, the insurance claim that pays for "a laptop" at its lowest believable value, the warranty call that can't proceed. Rule: the serial is captured <em>once</em>, at the day-one row &mdash; the <a href="new-laptop-provisioning-checklist.html">provisioning checklist</a> already puts it there; the register is where it lives forever.</li>
+<li><strong>Warranty / support ends.</strong> Skipped because purchase dates feel final. Costs later: the EOL NAS that stopped shipping patches a year ago, the out-of-warranty laptop whose $900 motherboard dies six weeks after the coverage did. Column 8 is the cheapest calendar reminder you will ever set.</li>
+<li><strong>Encryption + MDM (with a verified date).</strong> Skipped because "we set that up when we bought them." Costs later: the stolen laptop whose disk was never encrypted, the remote wipe that fires into a device that left management last macOS update. This is the column the <a href="byod-policy-checklist.html">BYOD policy</a> leans on for the "enroll or don't connect" line.</li>
+<li><strong>Owner.</strong> Skipped because "it's whoever uses it." Costs later: the laptop that returns from a departed contractor with no owner, no wipe, and no row. Every row's owner is a name from payroll; when the name leaves, the <a href="employee-offboarding-checklist.html">offboarding checklist</a> reads the register, not the org chart.</li>
+</ul>
+
+<h2>5. Example rows that show the register working</h2>
+<table>
+<tr><th>ID</th><th>Type</th><th>Model</th><th>Serial</th><th>Owner</th><th>Status</th><th>Purchased</th><th>Support ends</th><th>Enc + MDM</th><th>Data</th><th>Cost</th><th>Notes</th></tr>
+<tr><td>LT-014</td><td>Laptop</td><td>MacBook Air M2</td><td>C02&hellip;LT86</td><td>Dana Ortiz</td><td>In service</td><td>2024-03</td><td>2027-03</td><td>FV on / MDM v09-26</td><td>Customer PII</td><td>$1,290</td><td>&mdash;</td></tr>
+<tr><td>LT-021</td><td>Laptop</td><td>ThinkPad L14</td><td>PF-3X&hellip;Q21</td><td>&mdash;</td><td>Spare</td><td>2025-08</td><td>2028-08</td><td>BitLocker on / MDM v09-26</td><td>none (wiped)</td><td>$840</td><td>Hot spare, charged on shelf, ready-check 09-12</td></tr>
+<tr><td>PH-003</td><td>Phone</td><td>Pixel 7a</td><td>G&hellip;7721</td><td>shared: office</td><td>In service</td><td>2023-06</td><td>out of warranty</td><td>PIN only, no MDM</td><td>2FA codes</td><td>$499</td><td>Team TOTP device &mdash; lives in the safe</td></tr>
+<tr><td>NW-002</td><td>Router</td><td>UniFi UDM-SE</td><td>F24B&hellip;9C04</td><td>shared: ops</td><td>In service</td><td>2024-01</td><td>2027-01</td><td>fw 3.2.12</td><td>network edge</td><td>$599</td><td>Guest SSID + office SSID; management UI LAN-only</td></tr>
+<tr><td>SW-007</td><td>SaaS</td><td>Figma org seat</td><td>&mdash;</td><td>Sam Reyes</td><td>In service</td><td>&mdash;</td><td>renews 2027-01-15</td><td>SSO enforced</td><td>design files</td><td>$540/yr</td><td>Full row in license register</td></tr>
+</table>
+<ul>
+<li><strong>Read the table the way an auditor would.</strong> LT-021 is the hot spare whose readiness has a date. PH-003 is honest about being weak (PIN only) so nobody pretends it's protected &mdash; the honest row triggers the fix (move TOTP to the manager's enrolled phone, safe optional). NW-002 carries its firmware version so the quarterly walk can compare it to the vendor's latest. The register's value is exactly this: every row makes a promise, and the weak ones say so.</li>
+<li><strong>The &mdash; in a column is a decision, not a shrug.</strong> A SaaS row has no serial; writing "&mdash;" says "we looked, there isn't one." An empty cell says "nobody checked." Pick the convention and keep it.</li>
+</ul>
+
+<h2>6. Statuses and the exit lane</h2>
+<ul>
+<li><strong>Four statuses, no more: in service, spare, repair, exiting.</strong> Every device is in exactly one; a device that's "kind of in service but also maybe broken" is in <em>repair</em> until a human moves it. The spare status is what makes the <a href="hot-spare-loaner-laptop-checklist.html">loaner laptop</a> page work &mdash; its one-per-ten rule counts rows, not memories.</li>
+<li><strong>"Exiting" is the handoff to disposal.</strong> The day a device is taken out of service, its row moves to <em>exiting</em> &mdash; which is the <a href="old-hardware-disposal-checklist.html">disposal runbook's</a> cue: deregister from MDM, wipe, verify, log, recycle with a receipt. The register never deletes the row; it gains the outcome in Notes ("disposed 2026-10-02, wiped + verified, recycler receipt #4411"). An inventory that forgets its exits becomes a museum of machines that left years ago.</li>
+<li><strong>Repair has a return date or it becomes exiting.</strong> A laptop in repair for six months is a spare with worse PR. Any row in <em>repair</em> longer than 30 days gets reviewed at the monthly ops check: fix it, replace it, or retire it through the exit lane.</li>
+<li><strong>Date-of-death columns stay in the register, not in a separate log.</strong> Small teams don't need two files. "Disposed + date + receipt" in Notes, status <em>exiting</em> (or a fifth, <em>retired</em>, if you'd rather never confuse it with active stock) &mdash; either is fine; having none is not.</li>
+</ul>
+
+<h2>7. Where each column gets used &mdash; the runbook map</h2>
+<ul>
+<li><strong>Serial + cost &rarr; insurance and police.</strong> The claim form wants both; the register has both in one filter. Keep a quarterly CSV export of in-service hardware rows in the same folder as the <a href="incident-response-plan-template-small-teams.html">incident response plan</a> &mdash; the export is what you open at 7 a.m., not the live sheet.</li>
+<li><strong>Model + serial + encryption + data class &rarr; the stolen-device hour.</strong> The <a href="lost-or-stolen-laptop-runbook.html">runbook</a> needs the row read aloud to the MDM console and the insurer in one phone call.</li>
+<li><strong>Model + firmware + support-ends &rarr; the patch and EOL walk.</strong> The <a href="patch-cadence-calendar.html">patch cadence calendar</a> and the EOL sweep read columns 3, 8, and the firmware note per network row.</li>
+<li><strong>Owner + status &rarr; onboarding, offboarding, and audits.</strong> New laptop arrives &rarr; day-one row. Person leaves &rarr; filter owner &rarr; collect or reassign every row with their name. The <a href="user-access-review-checklist.html">user access review</a> gets a hardware column for free.</li>
+<li><strong>The 80/20 of it: if a runbook can't name what it needs from the register, the register is missing a column or the runbook is guessing.</strong> Say which, in one line, and fix it &mdash; that review is how the twelve columns stay honest.</li>
+</ul>
+
+<h2>8. Keeping it alive: the fifteen-minute quarterly drift check</h2>
+<ul>
+<li><strong>Count reality, not rows.</strong> Same drill as the <a href="asset-inventory-checklist.html">discovery pass</a>, but quarterly and fifteen minutes: scan the LAN, count the devices, compare against rows in status <em>in service</em>. Every delta is either a missing row (write it) or a ghost row (move to <em>exiting</em>).</li>
+<li><strong>Spot-check five rows against the world.</strong> Five devices at random: is the owner still employed? Is the spare still on the shelf and charged? Does the 2FA phone still have its SIM? The <a href="annual-security-review-checklist.html">annual security review</a> runs the same walk with more columns; the quarterly check is its heartbeat.</li>
+<li><strong>Re-verify column 9 from the console, not the sheet.</strong> Filter to managed hardware, compare the MDM console's device list against the register, and update the verification dates. Two lists that disagree are the entire finding &mdash; and the fix is one afternoon, done once, with the delta in front of you.</li>
+<li><strong>One writer, one file, one habit.</strong> The register lives where the team works (shared spreadsheet beats unlaunched platform &mdash; same rule as the <a href="key-inventory-register.html">key inventory register</a>). Rows are written the week the thing arrives, by whoever unboxes it; the drift check is scheduled next to the <a href="patch-cadence-calendar.html">patch cadence</a> so the two walks share a slot.</li>
+</ul>
+
+<h2>9. The starter &mdash; paste this in and fill the first five rows today</h2>
+<pre>
+asset_id,type,make_model,serial,assigned_to,status,purchase_date,support_ends,enc_mdm_verified,data_class,cost,notes
+LT-014,laptop,MacBook Air M2,C02XK9ABLT86,Dana Ortiz,in service,2024-03-11,2027-03-11,FileVault+MDM v2026-09,customer PII,1290,
+LT-021,laptop,ThinkPad L14,PF3XQ21,,spare,2025-08-02,2028-08-02,BitLocker+MDM v2026-09,none (wiped),840,hot spare - charged on shelf
+NW-002,router,UniFi UDM-SE,F24B9C04,shared: ops,in service,2024-01-15,2027-01-15,fw 3.2.12,network edge,599,guest+office SSID
+PH-003,phone,Pixel 7a,G7721,shared: office,in service,2023-06-01,out of warranty,PIN only (no MDM),2FA codes,499,team TOTP device - lives in safe
+SW-007,saas,Figma org seat,,Sam Reyes,in service,,renews 2027-01-15,SSO enforced,design files,540/yr,full row in license register
+</pre>
+<ul>
+<li><strong>Five rows, then stop.</strong> The five devices you'd actually miss &mdash; the owner's laptop, the spare, the NAS, the router, the 2FA phone. That's a working register in twenty minutes. The other forty rows can trickle in through onboarding, the drift check, and the discovery pass; momentum beats completeness every time this file is concerned.</li>
+<li><strong>CSV or spreadsheet, but one place.</strong> The starter above is a CSV so it can be pasted into anything &mdash; Sheets, Notion, Numbers. Paste it once, keep it where the team already looks, and never let a second copy exist. The <a href="workflow-automation-checklist.html">workflow automation</a> can watch the sheet for stale verification dates; the <a href="small-business-automation-ideas.html">automation ideas</a> and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack ($19)</a> workflows include the scheduled nudge that keeps column 9 honest.</li>
+</ul>
+
+<p class="closing">The register is twelve boring columns and one honest habit: write the row the day the thing arrives, keep serial, support-end, encryption-status, and owner filled even when it means flipping a laptop over, mark the exits instead of forgetting them, and walk the whole sheet against reality for fifteen minutes a quarter. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the fill-in-the-blank register sheet and the drift-check half-page, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the verification nudges so column 9 stays a fact instead of a hope.</p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="asset-inventory-checklist.html">Asset Inventory Checklist</a> &mdash; the discovery pass that finds what nobody wrote down.</li>
+<li><a href="new-laptop-provisioning-checklist.html">New Laptop Provisioning Checklist</a> &mdash; the day-one row this template depends on.</li>
+<li><a href="hot-spare-loaner-laptop-checklist.html">Hot Spare / Loaner Laptop Checklist</a> &mdash; the spare row, kept ready on a schedule.</li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a> &mdash; the bad day the serial and MDM columns pay for.</li>
+<li><a href="old-hardware-disposal-checklist.html">Old Hardware Disposal Checklist</a> &mdash; the exit lane every row eventually takes.</li>
+<li><a href="patch-cadence-calendar.html">Patch Cadence Calendar</a> &mdash; the walk that reads your support-ends column.</li>
+<li><a href="software-license-register.html">Software License Register</a> &mdash; the SaaS row family, run properly.</li>
+<li><a href="key-inventory-register.html">Key Inventory Register Template</a> &mdash; the physical-keys twin of this register.</li>
+<li><a href="byod-policy-checklist.html">BYOD Policy Checklist</a> &mdash; the enroll-or-don't-connect rule for personal devices.</li>
+<li><a href="wifi-security-checklist.html">Wifi Security Checklist</a> &mdash; the network rows' operating manual.</li>
+<li><a href="vpn-security-checklist.html">VPN Security Checklist</a> &mdash; the concentrator row, kept patched and least-privilege.</li>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist</a> &mdash; filter the register by owner when someone leaves.</li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a> &mdash; the quarterly meeting this drift check rides with.</li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a> &mdash; the yearly version of the same walk.</li>
+</ul>
+</aside>
+</main>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
