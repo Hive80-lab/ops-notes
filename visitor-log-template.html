@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visitor Log Template for Small Offices (Sign-In Sheet Columns + NDA Language)</title>
+<meta name="description" content="A visitor log template for small offices: the seven sign-in columns that carry the whole weight, who signs and who is exempt, the plain-language acknowledgment line that does most of an NDA's job, escort and guest-wifi rules, paper vs digital, retention windows, and the quarterly reconciliation that keeps it usable in an insurance claim or a SOC 2 physical-control question.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>The visitor log that turns a clipboard into evidence</h1>
+
+<p>Most small offices have a visitor log, and most visitor logs are theater: a sign-in sheet by the door that nobody reconciles, nobody retains on purpose, and nobody could produce on the day it actually matters. The day it matters is unglamorous &mdash; a laptop walks out of the office and the police report asks <em>who was in the building that afternoon?</em> An insurer asks for evidence of physical access controls. A customer's security questionnaire asks how visitors are handled. A clipboard with seven honest columns answers all three. This page is the template and the operating rules: what each column is for, who signs and who is exempt, the one acknowledgment line that does most of an NDA's job, and the reconciliation that keeps the log from rotting into decoration.</p>
+
+<h2>1. What the log is for &mdash; the two questions it must answer</h2>
+<ul>
+<li><strong>Question one: who was here, and who let them in?</strong> Every row needs a name and a host. "Visitors: 6" is not an answer to anything; "Dana Ortiz, Brightline Co, hosted by Sam, 13:04&ndash;14:20, badge #12 returned" is an answer. When something goes missing, the host is the first person who can say what their guest saw and where they went &mdash; that is why the host column is not optional.</li>
+<li><strong>Question two: can you produce it, later, as evidence?</strong> A log lives in three rooms: the incident timeline (pair it with the <a href="incident-response-plan-template-small-teams.html">incident response plan</a> &mdash; visitors in the building are part of hour one), the insurance claim, and the compliance conversation about physical controls. It is only useful in all three if it is retained on purpose and reconciled on a schedule. The <a href="physical-security-office-checklist.html">physical security checklist</a> puts the log on the quarterly walk; this page is the log's own operating manual.</li>
+<li><strong>What it is not for: security through guilt.</strong> A sign-in sheet does not stop anyone determined; it stops the <em>casual</em> walk-in and documents everyone else. Say this out loud to the team so nobody thinks the clipboard is the locked door. The locked door work is the <a href="badge-access-control-checklist.html">badge and door access checklist</a>; the log is its paper twin for the people the badges don't cover.</li>
+</ul>
+
+<h2>2. The seven columns that carry the whole weight</h2>
+<ul>
+<li><strong>Date and time in, time out.</strong> One date column and two time columns. The out-time is the one small offices skip, and it is the column an insurer asks about ("when did they leave?" is a question only answered by a row that was closed). Rule: nobody is still "in" overnight &mdash; the last person out closes any open rows from the day, initialing the out-time.</li>
+<li><strong>Name, company or organization.</strong> Full name printed by the visitor themselves (you read handwriting better than they think), plus the company they claim. For the delivery driver and the vending-machine restocker, "Company: FedEx" is fine; for the auditor and the candidate, insist on a person, not a logo.</li>
+<li><strong>Host.</strong> The employee expecting them. The test for "is this visit legitimate": if nobody will write their name in this column, the visit is not expected, and expected-ness is exactly what you are documenting. No host, no entry past reception &mdash; that is the whole rule.</li>
+<li><strong>Badge or pass issued &mdash; and returned.</strong> If you issue visitor badges, the log records the badge number in and the same number out. A visitor badge that never came back is a key that walked out the door; treat it the way the <a href="badge-access-control-checklist.html">badge checklist</a> treats an employee badge that outlives its holder &mdash; deactivate the same day you notice.</li>
+<li><strong>Signature and acknowledgment.</strong> The visitor signs one line that does three jobs at once (see section 4). Unsigned rows are decoration; if a visitor refuses to sign, that is a conversation the host gets to have, not a shrug.</li>
+</ul>
+
+<h2>3. Who signs, who is exempt, and the repeat-visitor problem</h2>
+<ul>
+<li><strong>Signs: clients, candidates, auditors, vendors' technicians, contractors' first day.</strong> Anyone entering beyond reception with a laptop, a toolbox, or a reason to be alone for five minutes. The contractor's everyday access is the <a href="contractor-security-onboarding-checklist.html">contractor onboarding checklist's</a> job (named accounts, expiry dates); the visitor log catches the humans those accounts don't describe &mdash; the contractor's colleague who carries the boxes.</li>
+<li><strong>Exempt: letter carriers, food delivery left at the door, cleaning crews on a standing contract.</strong> But exempt does not mean invisible &mdash; write the standing rule down ("couriers hand off at reception; cleaning enters 18:30&ndash;20:00 under the facilities contract") so the exemption is a policy, not a memory. An exemption nobody can point to in writing is just an unlocked door with good PR.</li>
+<li><strong>Repeat visitors get pre-logged, not un-logged.</strong> The client who comes every Tuesday still signs each visit &mdash; pre-print their rows for the month if the friction bothers them, but every row still gets a signature and an out-time. The visitor who signs four times and then stops signing is the one you needed to notice; a log with gaps tells you that only if the gaps are deliberate exceptions rather than Tuesday apathy.</li>
+<li><strong>Interviews and sensitive visitors get the escort treatment.</strong> A candidate touring the office sees the nice parts and is escorted the whole way; an auditor sees everything and is escorted anyway, because the escort is not distrust &mdash; it is the person who answers "where's the bathroom" and "why is that door locked" so the visitor never needs to wander to find out.</li>
+</ul>
+
+<h2>4. The acknowledgment line that does most of an NDA's job</h2>
+<ul>
+<li><strong>The one-line version, on the sign-in sheet itself:</strong> <em>"I agree not to disclose or make use of confidential information seen or heard on these premises, and to be accompanied by my host in non-public areas."</em> One sentence, signed per visit, covers the 90% case: the client who glimpses a whiteboard, the candidate who sits next to the printer queue, the vendor tech who hears a roadmap discussion. It is not a substitute for a negotiated NDA &mdash; it is the floor that exists without one.</li>
+<li><strong>When a real NDA is still needed: the three triggers.</strong> Long engagements with access to code or customer data, demos of unreleased product, and any meeting where a visitor's lawyers will eventually be involved (acquisition conversations, disputes, enterprise procurement). For those, the mutual NDA is signed before the visit and the log row references it ("NDA on file, dated"). The <a href="tabletop-exercise-failure-points.html">tabletop exercise</a> is a good place to discover which of your recurring visits actually fell into trigger three.</li>
+<li><strong>Keep the paper honest about what it collects.</strong> A sign-in sheet with names, companies, and times is personal data. Say so on the sheet: why you collect it (safety and building security), how long you keep it (see section 7), and who to contact about it. Two sentences at the bottom of the sheet, and the log survives the "wait, why do you keep a list of everyone who visits us?" question from a visitor's own compliance person.</li>
+</ul>
+
+<h2>5. Badges, escorts, and the guest wifi &mdash; the log's three supporting rules</h2>
+<ul>
+<li><strong>Visitor badges expire by the day.</strong> Color or date-stamp them so yesterday's badge is visibly dead; collect at the exit and drop in a bowl the host can see from their desk. The visitor badge is the same control as the employee badge with a shorter leash &mdash; the <a href="badge-access-control-checklist.html">badge checklist</a> owns the system, the log owns the daily ledger.</li>
+<li><strong>The escort rule is one sentence: no visitor alone in non-public areas.</strong> Restrooms and the reception lobby excepted, everything else is accompanied. This is the rule that makes the log's host column true, because the host is physically with their guest for the whole visit. Break the sentence and the log becomes fiction &mdash; the row says "hosted by Sam" while the guest is alone in the ops room.</li>
+<li><strong>Guest wifi is a credential, treat it like one.</strong> Visitors get the guest SSID &mdash; split from the office network per the <a href="wifi-security-checklist.html">wifi checklist</a> &mdash; and the password changes when it leaks or when a quarter turns, whichever comes first. The log does not need the wifi password in it; it needs the rule that visitors never touch the office SSID, written somewhere the host reads it.</li>
+</ul>
+
+<h2>6. Paper or digital: pick by where the incident will happen</h2>
+<ul>
+<li><strong>Paper wins on adoption, loses on forensics.</strong> A clipboard gets 100% sign-in compliance because it is physically in the doorway; a tablet form gets 70%. But paper burns, walks, and cannot be searched. If your realistic incident is "something is missing, who was here Tuesday?", paper plus a weekly phone-photo of the sheet into a dated folder is the cheap hybrid that keeps both halves.</li>
+<li><strong>Digital wins on retention and reconciliation.</strong> A shared form or a simple page in the ops wiki timestamps itself, survives the coffee spill, and lets the quarterly reconciliation be a filter instead of a flip-through. If you go digital, keep the doorway friction near zero: a tablet with a two-field form beats any system that makes the visitor wait.</li>
+<li><strong>Either way, one canonical log.</strong> The failure mode is two half-logs (a clipboard <em>and</em> a form), each missing what the other caught. Choose one, retire the other with a sign by the door, and make the <a href="annual-security-review-checklist.html">annual security review</a> confirm which one is canonical.</li>
+</ul>
+
+<h2>7. Retention, reconciliation, and the after-theft timeline</h2>
+<ul>
+<li><strong>Retention: one year is the default; longer when a matter is open.</strong> A year covers the insurance claim window and the "when did that vendor visit?" memory horizon without becoming an archive of everyone who ever came to the office. Open legal or insurance matters keep their relevant pages until the matter closes &mdash; then they follow the same clock.</li>
+<li><strong>Reconcile quarterly, fifteen minutes.</strong> Walk the last quarter's rows against reality: every row has an out-time (chase the open ones), every badge number came back (chase the missing), every host remembers the visit (the one nobody remembers is the row that gets a second look). This is the same reconciliation habit the <a href="badge-access-control-checklist.html">badge checklist</a> runs for employee badges &mdash; do both in the same fifteen minutes and neither gets skipped.</li>
+<li><strong>The after-theft timeline is the log's moment.</strong> When a device or a document walks out, the log gives you the visitor list for the window in minutes, not from memory in days: names, hosts, times, who was alone. Feed it to the first hour of the <a href="data-breach-first-24-hours.html">data breach runbook</a> and the police report. This is the moment the team stops seeing the clipboard as bureaucracy &mdash; and the moment you never get, if the log rotted.</li>
+</ul>
+
+<p class="closing">A visitor log is seven columns and one sentence: name, company, host, time in, time out, badge issued and returned, signature &mdash; plus the acknowledgment line about confidentiality and escorts. Close every row nightly, exempt couriers in writing, escort everyone else, expire badges daily, keep it a year, and reconcile it quarterly next to the badge log. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the fill-in-the-blank sign-in sheet and the quarterly reconciliation half-page, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the nightly row-close nudge and the quarterly walk so the log stays evidence instead of becoming furniture.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="badge-access-control-checklist.html">Badge &amp; Door Access Control Checklist</a></li>
+<li><a href="physical-security-office-checklist.html">Physical Security Checklist for Small Offices</a></li>
+<li><a href="contractor-security-onboarding-checklist.html">Contractor Security Onboarding Checklist</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams</a></li>
+<li><a href="tabletop-exercise-failure-points.html">Tabletop Exercise Failure Points</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
