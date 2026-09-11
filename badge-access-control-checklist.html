@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Badge &amp; Door Access Control Checklist for Small Offices (Who Can Walk In)</title>
+<meta name="description" content="A door access control checklist for small offices: count the doors that matter, issue badges like accounts with named holders, revoke badges and door codes the same day as offboarding, retire shared door codes and named spare keys, escort visitors and expiry-stamp contractor badges, treat the badge log as an audit trail you actually review, and run the fifteen-minute quarterly door walk.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Badge &amp; door access control for small offices: who can walk in</h1>
+
+<p>Every small office has a door story. The server closet that opens with a code four ex-employees still know. The front door that stays propped open in summer because the closer sticks. The badge drawer with "spares" nobody has counted since the office moved. Door access is the layer of security that predates the internet, and it still decides who can walk up to the machines you spent the rest of this site hardening. None of it is expensive. It is mostly decisions made on the day someone joins, and a fifteen-minute walk once a quarter. This checklist is the pass that keeps the doors honest.</p>
+
+<h2>1. Count the doors that matter before you count the badges</h2>
+<ul>
+<li><strong>Make the short list of doors that guard real loss.</strong> The server or comms closet, the finance cabinet, the room where backups live, and the front door itself &mdash; that is usually the whole kingdom for a small office. The broader perimeter work (cameras, alarms, the unattended desk) already lives in the <a href="physical-security-office-checklist.html">physical security checklist</a>; this page is the layer under it: what opens those doors.</li>
+<li><strong>Write down how each door on the list is opened today.</strong> Badge reader, keypad code, physical key, or "it has been unlocked since 2019" &mdash; one line per door, plus who currently knows the code or holds the key. The honest list is usually shorter than feared but weirder: the fire escape that never latches and the cleaning crew with a master key both belong on it.</li>
+<li><strong>Assign every door one named owner.</strong> Not a department &mdash; a person. When the keypad battery dies or a badge goes missing, the door owner is who gets the call. A door owned by everyone is a door owned by no one, and that is exactly how a shared code outlives four employees.</li>
+</ul>
+
+<h2>2. Issue badges like you issue accounts</h2>
+<ul>
+<li><strong>Every badge has a named holder, a purpose, and a revocable owner.</strong> The same rule that governs SSO accounts applies to plastic: nobody gets "a badge for the office" &mdash; they get badge #14 issued to Dana, for the front door and the server closet, logged where the <a href="access-request-offboarding-checklist.html">access request and offboarding checklist</a> already records their accounts. If the badge log cannot answer "whose is this?" in one minute, it is a drawer, not a log.</li>
+<li><strong>Provision door access on the same ticket as everything else.</strong> When someone joins, the onboarding ticket that creates their email and repository access adds their badge in the same pass &mdash; one place to look when you audit. The <a href="employee-onboarding-checklist-template.html">onboarding checklist template</a> is where the line belongs; add "badge issued, which doors" as a checkbox, not a hallway conversation.</li>
+<li><strong>Default to least doors.</strong> Marketing does not need the server closet; the bookkeeper does not need the roof. Grant the front door by default and everything else by request. Every extra door is an attack surface you have to remember to close at 5pm on someone's last day &mdash; and last days are exactly when nobody remembers.</li>
+</ul>
+
+<h2>3. Revocation happens the same day, and door codes are not grandfathered</h2>
+<ul>
+<li><strong>Offboarding includes the badge and every door code the person knew.</strong> Deactivate the badge the same hour the email account dies &mdash; the <a href="access-request-offboarding-checklist.html">offboarding checklist</a> should treat "badge returned &amp; deactivated" as a gate, not a footnote. A badge that still opens the server closet after HR says someone left is the physical version of an orphaned admin account.</li>
+<li><strong>Rotate the keypad code when anyone who knew it leaves.</strong> Codes are the one credential every small office shares badly. The rule is simple: if a leaver knew the code, the code changes that week. It takes five minutes and a message to everyone with a reason attached &mdash; "rotating after departures, new code is in the usual place."</li>
+<li><strong>Collect keys like credentials, or accept they are credentials.</strong> A physical key on a lanyard is an access token that never expires. Offboarding collects laptop, badge, and keys in the same bag; if the key is "lost," the lock or cylinder changes on the doors it opened. For the doors that matter most, this is the same reflex as the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> &mdash; a credential that left your control gets rotated, no debate.</li>
+</ul>
+
+<h2>4. Shared codes and spare keys: name them or retire them</h2>
+<ul>
+<li><strong>No anonymous codes.</strong> If the server room code is "1111 because everyone needs in," it is not access control, it is a welcome mat with a rhythm. Either assign per-person codes (most keypads support this) so the log names who entered, or accept one shared code &mdash; written down in the password manager, rotated on departures, and never spoken across the room at a demo.</li>
+<li><strong>The spare-key drawer gets an inventory or an eviction notice.</strong> Count the spares. Each one gets a label, a holder, and a row in the same log as badges. Spares nobody can account for are why "we changed the locks" eventually happens anyway &mdash; on the day something walks out the door. Two hours of labeling beats one lock replacement and one incident report.</li>
+<li><strong>Master keys are named, few, and stored like production secrets.</strong> The cleaner's master key and the director's master key are both real production access. Record who holds them, review the list quarterly, and never let "the landlord has one too" stay vague &mdash; write it down with a date, and put the master on the same audit rhythm as the rest of the <a href="physical-security-office-checklist.html">office physical layer</a>.</li>
+</ul>
+
+<h2>5. Visitors, contractors, and the escort rule</h2>
+<ul>
+<li><strong>Contractor badges expire by default.</strong> The installer who needs the comms closet for two days gets a badge that dies on day three &mdash; physically or in the reader. Permanent access for temporary people is how a six-week project leaves a working badge behind forever. The <a href="contractor-security-onboarding-checklist.html">contractor onboarding checklist</a> should carry the same expiry line as it does for accounts.</li>
+<li><strong>Visitors log in, wear the badge, and get escorted past the short list.</strong> The ten-line visitor book from the physical checklist is the floor; the escort rule is the ceiling: beyond the reception line, visitors walk with a host. The rule is one sentence in the onboarding pack and one sign at the door &mdash; it does not need a policy document to work, it needs to be said out loud once.</li>
+<li><strong>Temps, cleaners, and building staff get the same revocation day as everyone else.</strong> The people with after-hours access to every room are the easiest to forget because they were never in HR. Keep a one-page list of non-employee access with the date it was granted and the date it should end &mdash; then actually end it.</li>
+</ul>
+
+<h2>6. The badge log is an audit trail, not a receipt printer</h2>
+<ul>
+<li><strong>Export the badge report quarterly and reconcile it against people.</strong> Badge system, meet the HR list: every active badge matches a current person; every current person's badge matches their granted doors. The mismatches are the whole point of the exercise &mdash; badges for people who left in spring, doors granted "temporarily" during the fit-out two years ago. Twenty minutes, once a quarter.</li>
+<li><strong>Read the after-hours entries before an incident reads them for you.</strong> The badge log is the quietest detective on staff: 2am entries to the finance room, a badge used in the office the same week it was "returned." When something is wrong, this log is what the <a href="incident-response-plan-template-small-teams.html">incident response plan</a> will ask for &mdash; pull it habitually and it stays meaningful; ignore it and it decays into a CSV nobody can interpret.</li>
+<li><strong>Keep one paper fallback that is itself controlled.</strong> If the reader dies, the fallback cannot be "the door stays open." A physical log sheet and a known-good override key, both inventoried, both owned &mdash; the failure mode is planned the same way you plan the <a href="backup-restore-test-checklist.html">backup restore test</a>: rehearse the broken state once so it is boring on the day.</li>
+</ul>
+
+<h2>7. The fifteen-minute quarterly door walk</h2>
+<ul>
+<li><strong>Walk every door on the short list with the checklist in hand.</strong> Does it close and latch? Is the propped-open wedge gone? Does the badge reader show the right door name? Does the server closet code open it &mdash; and did it change when it should have? Fifteen minutes, four times a year, catches what memos never do.</li>
+<li><strong>Test revocation, not just issuance.</strong> Grab the most recently deactivated badge from the offboarding bag and try it on every door it used to open. If it beeps green anywhere, you have found this quarter's finding, and it costs one screwdriver to fix. Revocation you have not tested is a rumor.</li>
+<li><strong>Write the walk into the same quarterly folder as the rest.</strong> The door walk slots next to the WiFi walk test and the DNS filter re-check, so the whole "things that silently rot" layer gets reviewed in one sitting &mdash; and the finding (even "all clear") goes in the folder with a date and a name.</li>
+</ul>
+
+<p class="closing">Door access for a small office is one short list and one habit: count the doors that guard real loss, issue badges like accounts with named holders and least doors, revoke badges and rotate codes the same day people leave, name or retire the shared codes and spare keys, expire contractor badges and escort visitors past reception, reconcile the badge log against the people list each quarter, and walk the doors for fifteen minutes with the deactivation badge in your pocket. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> puts the issue/revoke passes on fill-in-the-blank sheets, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the quarterly walk and the badge-log reconciliation so both happen without anyone having to remember.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="physical-security-office-checklist.html">Physical Security Checklist for Small Offices</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="contractor-security-onboarding-checklist.html">Contractor Security Onboarding Checklist</a></li>
+<li><a href="employee-onboarding-checklist-template.html">Employee Onboarding Checklist Template</a></li>
+<li><a href="wifi-security-checklist.html">WiFi Security Checklist</a></li>
+<li><a href="travel-security-checklist.html">Travel Security Checklist for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
