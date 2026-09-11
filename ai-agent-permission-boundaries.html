@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Agent Permission Boundaries Checklist (What Your Agent May Touch)</title>
+<meta name="description" content="A checklist for scoping AI agents safely: read-only by default, write paths with human gates, secrets scoping, spend caps, audit logs, and the kill switch that lives outside the agent.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>AI Agent Permission Boundaries Checklist</h1>
+<p class="lede">An AI agent is a junior teammate with production credentials and infinite enthusiasm. The one conversation you owe it &mdash; and yourself &mdash; is <strong>what it may touch</strong>. The checklist: <strong>read-only by default, writes behind gates, secrets scoped and rotatable, spend capped from the outside, every action logged, and a kill switch that doesn't need the agent's cooperation</strong>.</p>
+
+<h2>1. Read-only by default; writes are granted, not assumed</h2>
+<table>
+<tr><th>Action class</th><th>Default</th><th>Upgrade path</th></tr>
+<tr><td>Read code, logs, docs, tickets</td><td>Allowed</td><td>&mdash;</td></tr>
+<tr><td>Write files in a workspace</td><td>Allowed within a sandbox directory</td><td>Nothing outside the sandbox</td></tr>
+<tr><td>Post / send / publish</td><td>Draft-only queue</td><td>Human approval gate for first weeks, then sampled review</td></tr>
+<tr><td>Pay / delete / email customers / modify infra</td><td><strong>Never autonomous</strong></td><td>Human-in-the-loop, every time, with a visible diff</td></tr>
+</table>
+<p>The upgrade path matters more than the table: an agent earns wider writes by <em>weeks of boring behavior</em>, not by asking convincingly.</p>
+
+<h2>2. Credentials: scoped, few, rotatable</h2>
+<ul>
+<li><strong>One identity per agent</strong> &mdash; never your personal admin key. If the agent misbehaves, you revoke <em>it</em>, not yourself.</li>
+<li><strong>Least-scope tokens:</strong> read where possible; write only on the two resources the job actually touches.</li>
+<li><strong>Short-lived tokens over long-lived keys</strong> where the platform allows (see the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a>).</li>
+<li><strong>The agent cannot read its own credentials file.</strong> Prompt injection plus a secrets file is how "harmless summarizer" becomes "exported the customer list".</li>
+</ul>
+
+<h2>3. Ceilings from the outside (the agent can't negotiate with these)</h2>
+<ul>
+<li><strong>Max actions per run</strong> and <strong>max spend per day</strong> &mdash; enforced by the wrapper that launches the agent, not by its prompt. Prompt-level guardrails are suggestions; wrappers are walls.</li>
+<li><strong>Dead-letter after N failures</strong> instead of infinite retry (see the <a href="runaway-automation-runbook.html">runaway automation runbook</a>).</li>
+<li><strong>Rate limits on outbound calls</strong> &mdash; politeness that doubles as a ceiling on billable calls.</li>
+</ul>
+
+<h2>4. Every action leaves a trail</h2>
+<ul>
+<li><strong>Append-only action log:</strong> timestamp, action, target, and the human-readable "why". This is the evidence log for every future review.</li>
+<li><strong>Alert on the unusual:</strong> deletes, permission errors, and spend spikes should page a human, not just log.</li>
+<li><strong>Weekly review of the log</strong> &mdash; five minutes. Agents drift as models change; the log is how you notice.</li>
+</ul>
+
+<h2>5. The kill switch that doesn't need consent</h2>
+<ul>
+<li><strong>Stop the launcher, not the agent:</strong> a wrapper flag (<code>AGENT_PAUSE=1</code>) that prevents the next run beats politely asking a loop to end.</li>
+<li><strong>Revoke-by-default design:</strong> the agent's identity can be disabled in one command, tested quarterly.</li>
+<li><strong>Graceful stop beats hard kill for queued work</strong> &mdash; pause intake, finish in-flight work, then stand down (see the <a href="ai-agent-ops-playbook.html">agent ops playbook</a>).</li>
+</ul>
+
+<h2>6. The mistakes that turn agents into incidents</h2>
+<ul>
+<li><strong>Admin credentials "because it's easier."</strong> The blast radius of a prompt-injected agent is the blast radius of its keys.</li>
+<li><strong>Trusting the agent's self-report.</strong> "Done!" is a claim; the log and the result are the evidence.</li>
+<li><strong>No human gate on irreversible actions.</strong> Delete, pay, email-customers, infra-change: a human reads the diff first, every time.</li>
+<li><strong>Boundaries that exist only in the system prompt.</strong> Prompt boundaries are requests. Permission boundaries are enforced by what the credentials <em>can</em> do.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Read-only by default; writes earned by boring weeks,</strong> never by convincing requests.</li>
+<li><strong>One scoped, rotatable identity per agent</strong> &mdash; and it never reads its own credentials.</li>
+<li><strong>Ceilings, logs, and the kill switch live outside the agent.</strong> That's what makes 24/7 operation survivable.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/agent-ops-24-7"><strong>Agent Ops 24/7 ($19)</strong></a> playbook is the operator's manual for exactly this layer &mdash; keepalives, watchdogs, graceful shutdowns, and the review cadence for agents that run around the clock. The <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> covers the bounded-workflows side. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 the solo operator's playbook for autonomous agents</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows with guardrails included</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="ai-agent-ops-playbook.html">AI Agent Ops Playbook</a></li>
+<li><a href="runaway-automation-runbook.html">Runaway Automation Runbook (Kill Switches and Ceilings)</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist (Rotate What Leaks, Not Everything)</a></li>
+<li><a href="ai-agent-failure-postmortem.html">AI Agent Failure Postmortem</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
