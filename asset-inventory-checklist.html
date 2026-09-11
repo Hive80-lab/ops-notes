@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IT Asset Inventory Checklist for Small Teams (You Can't Protect What You Never Counted)</title>
+<meta name="description" content="A checklist for building an IT asset inventory a small team will actually keep alive: the register fields that earn their upkeep, the discovery pass that finds the devices and SaaS nobody wrote down, lifecycle states with owners, and the quarterly audit that keeps the list honest.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>You can't protect what you never counted</h1>
+<p>Every security conversation eventually lands on the same question: <em>&ldquo;what do we even have?&rdquo;</em> The breach post-mortem, the insurance questionnaire, the offboarding of the employee who left eight months ago &mdash; all of them need a list of devices, accounts, and services that actually exists, not the list someone wrote in a spreadsheet in 2023 and never opened again. An asset inventory is not an enterprise compliance artifact; it is the smallest possible map of what matters, and the <a href="annual-security-review-checklist.html">annual security review</a> is only as good as it is.</p>
+
+<h2>1. Keep the register small enough to survive contact with reality</h2>
+<ul>
+<li><strong>One row per thing that could hurt you if it vanished or leaked.</strong> Laptops, phones, servers, routers, SaaS accounts with data in them, API tokens that can move money or mail, the printer with a stored scan-to-email credential. If a row would never change a decision, cut it &mdash; an inventory that lists the coffee machine's MAC address is a museum, not a control.</li>
+<li><strong>Eight fields, no more, to start.</strong> Name, owner (a person, not &ldquo;IT&rdquo;), serial or identifier, purchase or contract date, data class (customer data, credentials, nothing), access level (admin/user), where it lives (office/cloud/staff homes), and status (active/retired). Everything else is an enterprise hallucination &mdash; you can add fields the day you actually use them.</li>
+<li><strong>The owner field is the whole point.</strong> An asset without a named owner is an orphan, and orphans are where stale credentials and unpatched firmware live. The owner is the person who gets the phone call when the thing is found doing something strange &mdash; the same naming discipline as the <a href="key-inventory-register.html">key inventory register</a>, where every physical key has a hand attached to it.</li>
+<li><strong>Pick the dullest tool that three people can edit.</strong> A shared spreadsheet beats an asset-management platform the team won't log into. What matters is that the file has one copy (not six), version history, and a rule that changes get written the week they happen &mdash; the same &ldquo;one source of truth&rdquo; rule as the <a href="on-call-rotation-schedule-template.html">on-call schedule</a>.</li>
+</ul>
+
+<h2>2. The discovery pass: find what nobody wrote down</h2>
+<ul>
+<li><strong>Count the network first.</strong> Log into the router or run a scan from a laptop on the LAN and list every device that responds. Compare that count to the register &mdash; the gap is the inventory. The smart plug, the contractor's laptop, the spare phone in a drawer: they're all on the network whether or not the spreadsheet knows it.</li>
+<li><strong>Then count the SaaS.</strong> Every email inbox is a list of vendors nobody remembers signing up for. Sort by sender and by auto-renewal charge: the invoice feed is an asset feed. Pair this with the <a href="shadow-it-audit-checklist.html">shadow IT audit</a> &mdash; the discovery pass and the audit are the same walk with different questions.</li>
+<li><strong>Ask each person for their list.</strong> One message per employee: &ldquo;what company devices, accounts, and logins do you personally hold?&rdquo; The answers won't match the spreadsheet, and that mismatch is the most valuable output of the exercise. Personal devices used for work go on a second list with a policy attached &mdash; that's the <a href="remote-work-security-checklist.html">remote work security</a> conversation, not a shaming exercise.</li>
+<li><strong>Chase the shared and the forgotten.</strong> The NAS in the closet, the laptop that &ldquo;sometimes runs the dashboard,&rdquo; the old phone used as the 2FA device, the Raspberry Pi someone's Raspberry-Pi'ing with prod data on it. The forgotten devices are the ones that skip every patch cycle; write them down before the <a href="patch-management-checklist.html">patch management checklist</a> tries and fails to find them.</li>
+</ul>
+
+<h2>3. Assign a lifecycle state to every row &mdash; and make onboarding write the first one</h2>
+<ul>
+<li><strong>Every asset is exactly one of: onboarding, active, at-risk, retired.</strong> Four states, no more. &ldquo;At-risk&rdquo; means unpatched, unknown-owner, or holding data it shouldn't &mdash; it's the state that generates work, which is exactly what makes the inventory a tool instead of a filing cabinet.</li>
+<li><strong>Onboarding is the moment the row is born.</strong> The day a laptop is handed over, the row exists with its owner, serial, and data class filled in &mdash; bake it into the <a href="employee-onboarding-checklist-template.html">onboarding checklist</a> as a step, because inventories built &ldquo;later&rdquo; are never built. Account-based assets (email, SaaS seats, tokens) get the same treatment in the <a href="access-request-offboarding-checklist.html">access request checklist</a>.</li>
+<li><strong>Offboarding is the moment the row closes.</strong> Device returned and wiped, accounts disabled, tokens revoked, the row flips to <em>retired</em> with a date and the name of who verified it. The <a href="employee-offboarding-checklist.html">offboarding checklist</a> should point at the register row, not the other way around.</li>
+<li><strong>Retire, don't delete.</strong> A retired row is history you will want: &ldquo;that laptop held customer data until March, was wiped on the 14th, verified by ___.&rdquo; Deleting rows destroys the audit trail the next incident (or the cyber-insurance renewal) will ask for.</li>
+</ul>
+
+<h2>4. Tag the data, not just the device</h2>
+<ul>
+<li><strong>Data class beats device class for risk.</strong> A laptop holding the customer database and a laptop holding PDF manuals are the same hardware and different emergencies. Tag every row with what it can reach: customer data, credentials, production systems, money movement, nothing sensitive. This single field decides backup priority, encryption requirements, and breach panic level.</li>
+<li><strong>Credentials are assets too.</strong> The admin passwords, API tokens, and shared logins belong in a credential manager with their own inventory rows &mdash; what they open, who holds them, when they last rotated. The <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> needs this list to exist before it can schedule anything.</li>
+<li><strong>Mark the money-paths explicitly.</strong> Anything that can move money &mdash; banking tokens, payment dashboards, payroll access &mdash; gets its own tag, its own MFA requirement, and its own review line in the <a href="user-access-review-checklist.html">user access review</a>. If a breach ever happens, this tag is the difference between a bad day and a very bad quarter.</li>
+</ul>
+
+<h2>5. Keep it alive with one calendar and one honest audit</h2>
+<ul>
+<li><strong>Quarterly, 30 minutes, honest counting.</strong> Re-run the network count, diff it against the register, and walk the retired-and-purchased rows for the quarter. The audit is not the problem &mdash; skipping it is. Drift of more than a few devices between audits means the register has stopped being a map and started being a decoration.</li>
+<li><strong>Renewals and warranties feed the register.</strong> Every auto-renewal email is a prompt to update a row: still in use? owner still right? data class still true? Cancel the ones that aren't &mdash; an inventory that quietly saves money pays for its own upkeep, which is the only budget argument that ever wins.</li>
+<li><strong>Tie the register to the checks you already run.</strong> Patch cycles read the &ldquo;active&rdquo; list. The access review reads the account rows. The <a href="annual-security-review-checklist.html">annual review</a> reads everything. If a checklist references the register and the register is stale, the check fails visibly &mdash; that feedback loop is what keeps it honest.</li>
+<li><strong>Write the &ldquo;found something&rdquo; drill down while it's fresh.</strong> The first discovery pass always finds devices and accounts nobody knew about. Record what they were, how they were found, and what happened to them &mdash; that one-page story is what convinces the next holdout that the register matters.</li>
+</ul>
+
+<h2>6. The 10-minute version for teams with no time</h2>
+<ul>
+<li><strong>Today:</strong> one shared spreadsheet, eight columns, the five most dangerous things you can name off the top of your head. That's a register &mdash; incomplete, but real.</li>
+<li><strong>This week:</strong> network scan + SaaS inbox sort, add everything found, assign owners to the top 20 rows.</li>
+<li><strong>This month:</strong> quarterly audit on the calendar with a named owner; onboarding and offboarding checklists updated to write to the register.</li>
+</ul>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li></ul><p class="hint">The kit assumes your asset list exists. This page is how it starts.</p></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="key-inventory-register.html">Key Inventory Register</a></li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a></li>
+<li><a href="shadow-it-audit-checklist.html">Shadow IT Audit Checklist</a></li>
+<li><a href="employee-onboarding-checklist-template.html">Employee Onboarding Checklist Template</a></li>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist</a></li>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist</a></li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>. No analytics, no tracking &mdash; just notes that work at 2AM.</footer>
+</main>
+</body>
+</html>

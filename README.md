@@ -1,3 +1,5 @@
+- **NEW: [IT Asset Inventory Checklist for Small Teams](https://hive80-lab.github.io/ops-notes/asset-inventory-checklist.html)** — a register the team keeps alive: eight fields per row, a discovery pass over the network and the SaaS inbox, lifecycle states wired into onboarding/offboarding, data-class tags, credentials as assets, and a 30-minute quarterly audit.
+
 - **NEW: [Server Decommissioning Checklist for Small Teams](https://hive80lab.github.io/ops-notes/server-decommissioning-checklist.html)** — retire a server without leaving keys in the door: discovery pass, data export with a verified restore, rotation of everything that lived on its disks, a thirty-day cold parachute, a wipe matched to the disks (and the cloud’s), paper trail closed with a two-week check.
 
 - **NEW: [Break-Glass Account Checklist for Small Business](https://hive80-lab.github.io/ops-notes/break-glass-account-checklist.html)** — build the emergency admin login before the lockout: cloud-only, CA-exempt, sealed offline, alerted, quarterly-tested, used with a paper trail.
