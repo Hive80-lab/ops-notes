@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contractor Security Onboarding Checklist for Small Teams (Your Freelancer Is a New Hire You Forgot to Onboard)</title>
+<meta name="description" content="A contractor security onboarding checklist for small teams: what accounts to create (and what to never create), scoped access instead of teammate access, secrets shared through the password manager instead of chat, security clauses in the contract, expiry dates on every grant, and the end-of-engagement revocation that actually happens.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Contractor security onboarding checklist for small teams: your freelancer is a new hire you forgot to onboard</h1>
+
+<p>Small teams onboard external people constantly &mdash; a designer for the rebrand, a contractor for the migration sprint, a part-time bookkeeper, a dev shop for the app &mdash; and almost never onboard them <em>as security decisions</em>. The employee gets an orientation day; the freelancer gets a Slack invite and the wifi password. Three weeks later that person holds accounts, seats, and secrets that nobody inventoried, and when the engagement ends, half of it stays behind. This checklist is the fifteen-minute version of doing it right: scope the access, route the secrets through the <a href="password-manager-rollout-small-business.html">password manager</a>, write the security clause, stamp every grant with an end date, and run the revocation with the same discipline you'd use for a full-time <a href="employee-onboarding-checklist-template.html">employee offboarding</a>.</p>
+
+<h2>1. Before day one: the decision that gates everything else</h2>
+
+<ul>
+<li><strong>Decide what the contractor needs, not what they'll ask for.</strong> Write one sentence before any account is created: "<em>Contractor needs read access to the design repo and a Figma seat to ship the new pricing pages.</em>" Every account, seat, and secret either serves that sentence or waits until the sentence changes. This is the contractor version of the scoping you already do for a <a href="vendor-security-review-checklist.html">vendor security review</a> &mdash; same reflex, smaller scale.</li>
+<li><strong>Create accounts, not credential-sharing.</strong> The one-account-everyone-shares pattern (the shared login to the staging box, the agency account on the ad platform) is the root of most contractor mess: no attribution, no revocation, no expiry. Every external person gets their own named account with their own email, and shared systems get handled through shared vaults and groups instead.</li>
+<li><strong>Put the end date in the plan before the work starts.</strong> The engagement has a last day; write it down where the access lives &mdash; a note next to the grant list, a calendar event, a line in the contract. Access without an end date is how a 2024 migration contractor still has a production read token in 2026.</li>
+<li><strong>Pick the single person who owns the relationship.</strong> One internal owner approves every grant and runs the final revocation. When three people each hand the contractor "a few things," nobody knows what the full set is.</li>
+</ul>
+
+<h2>2. The accounts (create these, exactly these)</h2>
+
+<ul>
+<li><strong>One identity email, MFA-backed, owned by the contractor but linked to your recovery.</strong> The account's email should be the contractor's real working address (not a plus-alias on your domain that dies with their contract), and the underlying account should have <a href="mfa-rollout-checklist-small-business.html">MFA</a> turned on before it touches anything. If your plan supports group-based MFA enforcement, put contractors in the same enforcement group as employees &mdash; exceptions breed weaker accounts.</li>
+<li><strong>Least-privileged seats only.</strong> Contractor tier in Slack (guest, not member), read-only where the tool supports it (repo viewers, analytics viewers, staging viewers), and no billing or admin screens. If the tool's free tier makes you pay per seat, that's a scoping question, not a reason to share your account.</li>
+<li><strong>A shared vault for shared secrets, never a shared password.</strong> Tools the contractor genuinely shares (staging credentials, service dashboards) go in a shared collection in your password manager, with the contractor as a named member. You can revoke the membership; you can't revoke a password that was pasted into a chat. This is the same discipline as the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> &mdash; shared secrets are secrets, wherever they land.</li>
+<li><strong>Mark every contractor account at creation time.</strong> Same convention as the <a href="slack-workspace-security-checklist.html">Slack guest labels</a>: the role note, the engagement name, and the end date go into the account's display name or profile field. Accounts that are visibly "contractor / rebrand / ends Mar 14" get cleaned up; anonymous accounts persist forever.</li>
+</ul>
+
+<h2>3. Scope like a vendor, not a teammate</h2>
+
+<ul>
+<li><strong>Split the tool inventory into "grant," "share," and "never."</strong> Grant: named accounts with least privilege. Share: read-only exports, screen-share walkthroughs, a PDF of the data they need. Never: the production admin panel, the billing console, the DNS registrar, the email workspace admin. A contractor who says "I just need admin for a second" is telling you they haven't scoped their own work &mdash; help them scope it.</li>
+<li><strong>Repo access follows the branch model, not the org model.</strong> External people get a fork or a scoped project with read on what they need and write on what they ship, reviewed through PRs. Direct push to your main branch from an outside account is a <a href="github-repository-security-checklist.html">repository hygiene</a> violation, not a speed optimization.</li>
+<li><strong>Chat access is a channel list, not the org chart.</strong> A single-channel guest in the project channel sees what the project needs. A full member sees #leadership, #payroll-oops, and the layoff thread &mdash; the same reasoning the Slack checklist applies to single-channel guests, applied before they join instead of after.</li>
+<li><strong>Production is a milestone, not a default.</strong> The contractor access ladder: local sandbox &rarr; staging &rarr; production read &rarr; production write, and each step is a decision somebody makes when the work earns it &mdash; not a bucket of credentials handed over on day one to save a ticket.</li>
+</ul>
+
+<h2>4. The secrets you hand over (and how)</h2>
+
+<ul>
+<li><strong>Everything through the vault, nothing through chat.</strong> Credentials, tokens, and config values live in the shared vault collection. Slack DMs, email, and (worst of all) the contract PDF are distribution channels that keep copies forever &mdash; a leaked secret in a contract attachment behaves exactly like the chat-leaked keys the <a href="api-key-leak-response-runbook.html">API key leak runbook</a> handles.</li>
+<li><strong>Issue per-purpose secrets where the system allows it.</strong> A contractor deploy key, a contractor analytics token, a contractor database user. Named credentials can be rotated and revoked individually; the shared production password can only be changed globally &mdash; which is why it ends up being changed never.</li>
+<li><strong>Write down what was issued, to whom, and when.</strong> The grant log is five lines: secret name, contractor, issued date, expiry date, vault location. This is also your rotation map &mdash; at the end of the engagement, the log is the list of things to rotate.</li>
+<li><strong>Rotate on the calendar, not on suspicion.</strong> Long engagements get periodic rotations of anything the contractor holds: staging passwords, shared vault contents, any legacy credential they needed once in week two. The <a href="secrets-rotation-checklist.html">rotation cadence</a> you run internally extends to them without drama if the log already exists.</li>
+</ul>
+
+<h2>5. The paper trail (cheap now, priceless later)</h2>
+
+<ul>
+<li><strong>One security clause, in every contractor agreement.</strong> Plain sentences: access is limited to the listed systems; secrets may not be shared, pasted, or stored outside agreed tools; data may not be copied to personal devices or personal cloud accounts; access is revoked at engagement end; the contractor reports suspected compromise within 24 hours. Ten lines. You don't need a lawyer to draft it; you need it to exist before the dispute.</li>
+<li><strong>Data return and deletion, written down.</strong> At the end, the contractor confirms: working files returned, copies deleted (including local copies and personal cloud sync), credentials no longer held. For anything touching customer data this is the same clause a real <a href="vendor-security-review-checklist.html">vendor review</a> demands &mdash; contractors are vendors with fewer lawyers.</li>
+<li><strong>An acceptable-use line beats an acceptable-use policy.</strong> Contractors don't read your 14-page policy. One paragraph in the engagement message: what systems, what data, what's forbidden, who to call. The 14-page policy can stay for the enterprise deal.</li>
+<li><strong>Re-verify identity channels on day one.</strong> The person you're granting access to should be the person you signed the contract with. One video call, one confirmed email domain, and a rule that future credential sharing happens in the vault &mdash; not in a reply to a friendly "can you resend the staging password" email that came from a lookalike domain. This is basic <a href="phishing-response-checklist-small-teams.html">phishing hygiene</a> aimed at the grant instead of the inbox.</li>
+</ul>
+
+<h2>6. Machines and networks (their laptop is your new office)</h2>
+
+<ul>
+<li><strong>One laptop policy sentence, not a fleet audit.</strong> The clause: "Work happens on a machine with current OS updates, a screen lock, and disk encryption. If you can't meet that, ask before accepting the engagement." Full <a href="remote-work-security-checklist.html">remote-work requirements</a> for a three-week engagement is overkill; "updated, encrypted, locked" is not.</li>
+<li><strong>Route through your perimeter where the data is sensitive.</strong> Anything touching production, customer data, or internal repos goes through your VPN or gateway so access logs exist on your side. If you don't have a VPN, at minimum enable tool-level audit logs for every contractor-facing system &mdash; "who viewed what when" is the minimum forensic floor.</li>
+<li><strong>Browsers count.</strong> The contractor's browser holds your webmail, your staging dashboards, your cloud console. Their <a href="browser-extension-security-audit.html">extension hygiene</a> is now your login-session risk. The one-line ask: "No extensions with all-site access while working in our systems." You're not auditing their laptop; you're setting the conditions of yours.</li>
+<li><strong>Never grant from your own session.</strong> The classic mistake: the founder, logged in as themselves on a call, "quickly adds" the contractor to the billing console because permissions take a ticket. If a grant can't survive your own access-request process, it shouldn't survive the call. The <a href="access-request-offboarding-checklist.html">access request checklist</a> applies to contractors verbatim.</li>
+</ul>
+
+<h2>7. The audit trail (what your future self needs)</h2>
+
+<ul>
+<li><strong>Keep the grant log with the contract.</strong> Contract, grant log, security clause, end date &mdash; one folder per engagement. When someone asks "what does the migration contractor still have access to?", the answer takes ninety seconds instead of an afternoon of audit archaeology.</li>
+<li><strong>Calendar the mid-engagement review.</strong> Engagements over six weeks get one fifteen-minute check: accounts still needed? secrets still current? end date still correct? scope creep is real, and it enters through permissions.</li>
+<li><strong>Log access on your side too.</strong> Every system the contractor touches should produce a log line you can read later: SSO logs, repo audit, workspace member history. If your stack can't log contractor activity at all, that's a finding, not an excuse.</li>
+<li><strong>Treat an ownership change like a new engagement.</strong> The dev shop assigns a new person to your account mid-project. That's not a handoff note; that's a fresh grant: new account, new vault membership, and the old person's access is revoked the day their name comes off the project. Account access follows people, not companies.</li>
+</ul>
+
+<h2>8. The end date (revocation day is part of onboarding)</h2>
+
+<ul>
+<li><strong>Run the same offboarding you'd run for an employee, in half the time.</strong> Deactivate accounts (not delete &mdash; audit trails), remove vault membership, remove repo and tool seats, revoke sessions, remove the wifi/network identity, and confirm app or bot tokens they created are also revoked. The <a href="access-request-offboarding-checklist.html">offboarding checklist</a> is the master list; this is its contractor pass.</li>
+<li><strong>Rotate everything shared.</strong> Any credential that existed in the shared vault, any contractor-named token, and any legacy secret they touched gets rotated on the last day. Shared secrets that "weren't changed because they'd break the CI job" are exactly how ex-contractor access survives a year.</li>
+<li><strong>Get the return confirmation in writing.</strong> One email: files returned, copies deleted, accounts surrendered. It takes them two minutes to confirm and gives you the audit line you'll want if the relationship ever turns litigious.</li>
+<li><strong>Check the residue a week later.</strong> One pass through your tools searching for the contractor's email address and name. The stragglers &mdash; the analytics invite, the board seat, the support-desk agent they created &mdash; show up only when you look. This is the same residue hunt the SaaS audit does for <a href="saas-sprawl-audit-checklist.html">orphan subscriptions</a>.</li>
+</ul>
+
+<h2>9. Production, sensibly</h2>
+
+<ul>
+<li><strong>If production access is unavoidable, make it boring.</strong> Named account, least-privileged role, changes through PRs, deploy windows you choose, and a second pair of eyes for anything destructive. The goal isn't zero contractor production access; it's contractor production access that looks exactly like a junior employee's.</li>
+<li><strong>Pre-agree the break-glass.</strong> "If you need production access tonight, message this person and we'll grant it together in ten minutes." Emergency grants happen &mdash; the failure is an emergency grant nobody wrote down. Log it like everything else, rotate it like everything else.</li>
+<li><strong>Watch the tokens, not just the logins.</strong> Contractors ship code that holds tokens: CI variables, deploy keys, webhook URLs, analytics snippets. When the engagement ends, tokens in CI pipelines die with a rotation &mdash; which is why the grant log lists them. A webhook URL pasted into their Zapier account is a live <a href="api-key-leak-response-runbook.html">bearer credential</a> nobody's thinking about.</li>
+<li><strong>Aggregate access gets vendor treatment.</strong> A dev shop with five staff, a shared CI, and its own secrets vault is no longer a contractor; it's a vendor. That's the moment you run the full <a href="vendor-security-review-checklist.html">vendor security review</a> and stop pretending a checklist for freelancers covers it.</li>
+</ul>
+
+<h2>10. When something goes wrong anyway</h2>
+
+<ul>
+<li><strong>Suspected compromise:</strong> revoke first, investigate second. End the contractor's sessions and rotate what they held immediately &mdash; the <a href="data-breach-first-24-hours.html">first-24-hours rule</a> doesn't care whose account it was.</li>
+<li><strong>Scope creep discovered:</strong> revoke to the documented scope the same day, then re-decide what you actually meant to allow. Quiet creep reversed slowly is how six-month "temporary" grants become permanent infrastructure.</li>
+<li><strong>Contractor left with copies:</strong> rotate every credential, revoke everything, demand the written deletion confirmation, and document your timeline from the first message. Legal remedies are a lawyer question; containment is your question, and it starts now.</li>
+<li><strong>Not sure what they still hold:</strong> assume the worst set. The cost of rotating five secrets is an hour; the cost of a stale contractor credential on a production deploy key is unbounded.</li>
+</ul>
+
+<p class="closing">Contractor security in a small team is one page: the scoping sentence, named accounts, vault-routed secrets, the ten-line clause, expiry dates, and a revocation day that actually happens. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the access-audit sheets that turn this into a per-engagement table &mdash; account, scope, issued, expiry, owner &mdash; and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> automates the expiry checks so grants end when the contract says they end. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week code <strong>HIVE-LAUNCH30</strong> &mdash; 30% off any paid kit.</p></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="employee-onboarding-checklist-template.html">Employee Onboarding Checklist Template</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist for Small Teams</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
