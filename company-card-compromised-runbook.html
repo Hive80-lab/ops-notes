@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Company Card Compromised Runbook (Freeze, Replace Autopays, Prove It) &mdash; ops-notes</title>
+<meta name="description" content="A stolen-card runbook for small teams: kill the card within the hour, enumerate every autopay before the declines start, replace the card everywhere with a dated ledger, reconcile the fraud window line by line, report and document, then make the next card harder to abuse &mdash; card-sharing, sub-accounts, and per-card limits.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Company card compromised: kill the card, save the autopays, prove the damage</h1>
+
+<p>Tuesday, 08:40. A bank text about a $1,340 charge at an electronics retailer arrives, and nobody in the team bought so much as a cable. The card is a shared one &mdash; it has paid the software stack, the ads, and the flights for two years, and nobody can name every service riding on it. That combination &mdash; <em>one card, many services, no list</em> &mdash; is how a one-hour fraud turns into a two-week outage of the whole company's payments, because cancelling the card kills every autopay at once. This runbook is the sequence that keeps the fraud small and the damage boring: freeze first, enumerate before the declines start, replace deliberately, reconcile line by line, report in writing, and make the next card harder to abuse. The <a href="invoice-fraud-bec-prevention-checklist.html">invoice fraud checklist</a> covers the fake-invoice cousin of this incident; this page is the plastic itself. The one rule that runs the whole page: <strong>the card is dead in the first hour, but the list of what it was feeding exists before you call the bank.</strong></p>
+
+<h2>1. The first hour: freeze the card, don't debate it</h2>
+<ul>
+<li><strong>Freeze, don't cancel &mdash; yet.</strong> Every major card network lets you lock the card from the app in seconds: new charges decline, existing authorizations still settle. Locking is reversible, which makes it the right first move before anyone has finished arguing about whether that weird charge "might be legitimate." The debate happens after the card is already inert; a ten-minute discussion with a live card is ten minutes of open door.</li>
+<li><strong>One person owns the freeze; everyone else owns enumeration.</strong> Two people calling the bank at once produce two contradictory statements and a slower investigation. The owner of the freeze confirms the lock on screen, screenshots it, and posts the timestamp in the team channel. The <a href="incident-communication-templates.html">incident communication templates</a> principle applies at company scale: one voice on the outside, parallel work on the inside.</li>
+<li><strong>Pull the last 30 days of statements before you call.</strong> The disputed charge is rarely the only one. Fraudsters test a card with small amounts first &mdash; a $1.02 subscription, a $4.99 verification &mdash; and those authorizations are the map of when the card leaked and what else to expect. Download the statement now, because the bank's own dispute portal may limit how far back you can see without effort later.</li>
+<li><strong>Write down the freeze time.</strong> It sounds like ceremony until you are answering "when did you report this?" in a dispute form, a cyber-insurance questionnaire, or the <a href="incident-timeline-template.html">incident timeline</a>. The minute is the difference between "unauthorized" and "you let it ride for a week."</li>
+</ul>
+
+<h2>2. Enumerate every autopay before the declines arrive</h2>
+<ul>
+<li><strong>The statement <em>is</em> the list; build it while the card is frozen.</strong> Three months of statements, every recurring merchant extracted to a table: service, owner, monthly amount, account email, alternate card on file. Most five-person teams find 15&ndash;30 autopays, half of which nobody remembered &mdash; the <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a> exists because this list is always longer than anyone thinks. The frozen card just turned that audit from "someday" into "in the next two hours, or the services that matter go dark."</li>
+<li><strong>Rank the table by blast radius, not by alphabet.</strong> Domain registrar, cloud hosting, and the payroll-adjacent tools are the tier that kills the business if they decline; the design tool and the newsletter can ride a grace period. The tiering mirrors the <a href="severity-matrix-3-levels.html">severity matrix</a>: what stops customer-facing work is P1, what merely annoys the team is P3, and the P1s get the new card number first.</li>
+<li><strong>Check for charges not on the statement.</strong> Annual subscriptions bill on anniversaries, and usage-based services bill in arrears &mdash; the statement shows history, not everything. Ask the owners of the critical tier one question: "what does this service bill the company card for?" The answer usually surfaces two forgotten charges and one expired-card time bomb per page of the list.</li>
+<li><strong>The enumeration table outlives the incident.</strong> Save it next to the <a href="software-license-register.html">software license register</a> &mdash; same idea, different columns. The next card compromise (and there will be one) starts with a table instead of a scramble, and the <a href="annual-security-review-checklist.html">annual review</a> finally has a payments section to check off.</li>
+</ul>
+
+<h2>3. Replace the card on your schedule, not the bank's</h2>
+<ul>
+<li><strong>Get the replacement, then migrate in the ranked order.</strong> The new number goes first to the P1 tier &mdash; domain, hosting, anything the customers touch &mdash; verified by a screenshot of the saved card or a successful one-dollar charge, then down the list. "The bank is shipping a new card" is not a plan; a table with a <em>migrated-on</em> column is. Nothing on the list is done until its row says so.</li>
+<li><strong>Keep the old card's status in the ledger.</strong> Banks vary on whether a reissued number kills recurring authorizations; assume nothing. The rows that decline during the migration window are normal &mdash; the failure mode to avoid is discovering the domain renewal was still on the dead card when it auto-cancels the account. The <a href="ssl-certificate-expiry-checklist.html">expiry checklist</a> rule applies: things that expire silently need an owner, not a hope.</li>
+<li><strong>Decide what the old card never gets again: everything.</strong> There is a temptation to keep one "legacy" charge on the frozen card for a service nobody wants to log into. The dead card stays dead; that one service gets the new number and an owner's name, or it gets cancelled. Half-alive cards are how the next compromise inherits the same house of cards.</li>
+<li><strong>Virtual and single-merchant cards end this incident class.</strong> Most modern business cards issue per-merchant virtual numbers: the ads account gets a card, the SaaS stack gets a card, and a compromise of any one number is a one-row incident instead of a company-wide one. Migrating this week is the cheapest moment to adopt it &mdash; every service is already being touched for the new number.</li>
+</ul>
+
+<h2>4. Reconcile the fraud window line by line</h2>
+<ul>
+<li><strong>Define the window, then audit it completely.</strong> From the first unauthorized authorization to the freeze timestamp, every charge on the card gets a verdict: recognized, unrecognized, or unrecognized-but-actually-yours (the intern's test subscription). The 30-day statement pull from step 1 is the source of truth. The outcome is a number &mdash; total fraudulent charges &mdash; that everything downstream depends on.</li>
+<li><strong>File the dispute for each charge, not one blanket claim.</strong> Banks process line items; a dispute per fraudulent charge with date, amount, and merchant is the claim that clears. Attach or reference the freeze timestamp, the statement pages, and the fact that the card was locked within the hour. The <a href="lost-or-stolen-laptop-runbook.html">stolen laptop runbook</a> and this page share the same spine: evidence produced at the time beats evidence reconstructed later.</li>
+<li><strong>Business cards are not consumer cards &mdash; know your liability window.</strong> Consumer cards carry strong zero-liability protections; some small-business cards do not, and the clock matters. This is exactly what the <a href="cyber-insurance-requirements-checklist.html">cyber-insurance requirements</a> review should have surfaced: the card agreement's fraud liability terms, read in daylight, not mid-incident. If the terms are bad, the fix is a different card product, not a wish.</li>
+<li><strong>Watch for the second wave for 90 days.</strong> Card data sold in bulk resurfaces weeks later &mdash; a $0.99 test, then a real charge. Calendar a recurring check of the closed card's final statement weekly for a month and monthly after. The new-card question on the <a href="user-access-review-checklist.html">access review</a> gets one more line: are the compromised number's charges still appearing anywhere?</li>
+</ul>
+
+<h2>5. Report, document, and close the loop</h2>
+<ul>
+<li><strong>Report to the bank in writing, and the police report exists whether they want it or not.</strong> The bank's fraud form is the primary channel, but a police report number (most jurisdictions take these online) costs ten minutes and is repeatedly requested later &mdash; by insurers, by the bank's own escalation, by clients' auditors. The <a href="data-breach-first-24-hours.html">breach first-24-hours</a> principle holds: generate the paper trail while the facts are fresh.</li>
+<li><strong>Write the one-page incident record the same day.</strong> What happened, when the card was frozen, what was on it, what migrated when, what the fraud total was, what the dispute status is. This page becomes the postmortem's raw material using the <a href="postmortem-template-small-teams.html">postmortem template</a>, and the exhibit that answers the security questionnaire's "describe an incident and your response" question with something real. The <a href="incident-timeline-template.html">timeline template</a> gives it a spine.</li>
+<li><strong>Find the leak point &mdash; or at least shrink the blast radius for next time.</strong> Where did the number live? A browser profile with autofill on every workstation, a spreadsheet of card details, a screenshot in Slack, a contractor's copy. The <a href="secrets-rotation-checklist.html">secrets rotation</a> rule applies to card numbers the same as API keys: a credential shared with five people and stored in four places has a leak probability, not a question of one. Whatever the entry point was, it gets fixed in the same week, not "when things calm down."</li>
+</ul>
+
+<h2>6. Make the next card boring before it's urgent</h2>
+<ul>
+<li><strong>The shared card gets retired by architecture, not by policy.</strong> A policy that says "don't save the card anywhere" loses to human convenience every time. The structure that wins: per-merchant or per-owner virtual cards for subscriptions, a physical card for two named humans, and per-card spending limits so any single compromise has a ceiling. The <a href="delegation-of-authority-template.html">delegation of authority</a> table gets a payments column &mdash; who can issue a virtual card, who can raise a limit, who freezes.</li>
+<li><strong>Card alerts on, thresholds low.</strong> Transaction alerts above a small threshold (and declined-charge alerts always) turn the next compromise from a Tuesday-morning surprise into a same-minute response. The alert that fired this incident is the control; make it permanent and make it louder, the same way the <a href="alert-fatigue-checklist.html">alert fatigue</a> page tunes noise out of the way of signal.</li>
+<li><strong>Quarterly, ten minutes: the card table.</strong> Statement review against the autopay table &mdash; every recurring charge matches a row with an owner, anything unmatched gets investigated, dead rows get cancelled. This is the <a href="weekly-review-checklist.html">weekly review</a> habit applied to money, and it is the difference between the next incident being one row and the next incident being this page again from step one.</li>
+</ul>
+
+<p>The whole discipline fits one sentence a five-person team can keep: <em>freeze within the hour, enumerate before the declines, migrate by rank, reconcile the window, report in writing, and end the single card forever.</em> A compromised card handled this way costs one afternoon and one ledger table. Handled the usual way, it costs the domain, the hosting, the ads, and a week of every owner's attention &mdash; for the same thirty dollars of fraud.</p>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="invoice-fraud-bec-prevention-checklist.html">Invoice Fraud &amp; BEC Prevention Checklist</a></li>
+<li><a href="api-key-leak-response-runbook.html">API Key Leak Response Runbook</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="saas-sprawl-audit-checklist.html">SaaS Sprawl Audit Checklist</a></li>
+<li><a href="software-license-register.html">Software License Register</a></li>
+<li><a href="cyber-insurance-requirements-checklist.html">Cyber Insurance Requirements Checklist</a></li>
+<li><a href="incident-timeline-template.html">Incident Timeline Template</a></li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates</a></li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams</a></li>
+<li><a href="delegation-of-authority-template.html">Delegation of Authority Template</a></li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a></li>
+<li><a href="ssl-certificate-expiry-checklist.html">SSL Certificate Expiry Checklist</a></li>
+</ul>
+</aside>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
