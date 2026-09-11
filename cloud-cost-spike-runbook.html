@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cloud Cost Spike Runbook for Small Teams</title>
+<meta name="description" content="A practical runbook for cloud bill spikes: triage the top movers before touching anything, the usual suspects (egress, logs, retries, NAT), free guardrails, and the 30-minute path from spike to fix.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Cloud Cost Spike Runbook for Small Teams</h1>
+<p class="lede">Nobody catches a cloud bill by reading it &mdash; by the time the invoice lands, the spike ran for a month. The honest runbook has four parts: <strong>triage by top movers before you change anything, know the usual suspects, put free guardrails in place so the next spike pages you instead of the invoice, and rehearse a 30-minute path from spike to fix</strong>.</p>
+
+<h2>1. Triage by top movers, not by guesswork</h2>
+<p>Before you delete anything, answer one question: <em>what changed between last month and this month?</em> Every major provider has a cost explorer; sort by <strong>absolute dollar change</strong>, not percentage (a 900% jump on a $2 service is noise next to a 30% jump on compute):</p>
+<table>
+<tr><th>Look at</th><th>How</th><th>What it tells you</th></tr>
+<tr><td>Cost by service, change vs. prior month</td><td>Cost explorer, sorted by $ delta</td><td>The 1&ndash;3 line items that produced the spike</td></tr>
+<tr><td>Cost by tag (team/service/env)</td><td>Tag breakdown on the same window</td><td>Who owns the mover &mdash; and whether it was deliberate</td></tr>
+<tr><td>One resource, daily granularity</td><td>Drill into the top mover, day-by-day</td><td>The date it started &mdash; which maps to a deploy, a campaign, or a stuck job</td></tr>
+</table>
+<p>Resist the urge to "optimize" before this step. Teams that start by deleting things delete the wrong things.</p>
+
+<h2>2. The usual suspects (small-team edition)</h2>
+<p>In a decade of bills, the spike almost always lives in one of these &mdash; all boring, all preventable:</p>
+<ul>
+<li><strong>Egress + NAT gateway.</strong> Traffic you didn't notice: big downloads, public assets served from the wrong place, or a NAT gateway charging per GB for the privilege of reaching the internet.</li>
+<li><strong>Logs nobody set a retention on.</strong> Application logs, flow logs, and request logs defaulting to forever. A chatty microservice can out-earn the instance it runs on.</li>
+<li><strong>Retry storms.</strong> A slow dependency makes every caller retry &times;3; retries make the dependency slower; the bill multiplies while the outage is still "loading".</li>
+<li><strong>The forgotten monster.</strong> Load test environments left up, a snapshot job that snapshots snapshots, dev instances sized like prod. They never get caught because nobody looks at dev.</li>
+<li><strong>A success you didn't budget for.</strong> A viral week or a new customer is the <em>good</em> spike &mdash; but it still needs a decision: absorb it, resize to reserved capacity, or move heavy assets to a CDN/edge so you stop paying per-pull.</li>
+</ul>
+
+<h2>3. Guardrails that cost nothing</h2>
+<ul>
+<li><strong>Budget alert with a forecast condition.</strong> Not just "over $X" &mdash; "forecast to hit $Y" alerts while you can still change course. One notification per day, to a channel people actually read.</li>
+<li><strong>One anomaly alert per account.</strong> Provider anomaly detection is free on most plans; a single alert on total daily spend catches the patterns budgets miss.</li>
+<li><strong>Tag or die.</strong> Untagged resources are unattributable spend. A simple owner/service tag policy + a weekly untagged-spend report is half the battle.</li>
+<li><strong>Auto-stop the obviously ephemeral.</strong> Scheduled shutdown for dev/test instances and preview environments. Nobody needs a Saturday-night database cluster they forgot about.</li>
+</ul>
+
+<h2>4. The 30-minute triage path</h2>
+<ol>
+<li><strong>Minutes 0&ndash;5:</strong> Cost explorer, sorted by dollar change vs. prior period. Write down the top 3 movers.</li>
+<li><strong>Minutes 5&ndash;10:</strong> For each mover, drill to daily granularity and find the start date. Map the date to deploys, launches, or config changes that day.</li>
+<li><strong>Minutes 10&ndash;20:</strong> Kill or fix the actual cause: stop the forgotten instance, set log retention to 30 days, add the missing cache, move public assets off per-pull egress.</li>
+<li><strong>Minutes 20&ndash;30:</strong> Add the guardrail that would have caught this: the budget forecast alert, the anomaly alert, or the retention setting. One guardrail per incident is the rule &mdash; that's how the checklist grows without becoming a project.</li>
+</ol>
+
+<h2>5. The mistakes that turn a spike into a habit</h2>
+<ul>
+<li><strong>Cutting capacity during a growth spike.</strong> If the cause is revenue, the fix is efficiency (reservations, caching, right-sizing) &mdash; not deleting the workload that earned the money.</li>
+<li><strong>Alerting on "spend &gt; $X" only.</strong> Hard caps are for runaway resources; forecasts are for trends. You need both, and the forecast matters more.</li>
+<li><strong>Treating it as finance's problem.</strong> The bill is an engineering output: chatty services, unbounded logs, and retry storms are code decisions. Put the top movers in the next retro.</li>
+<li><strong>Doing this once a quarter, by hand.</strong> The teams that stay ahead look at daily spend for five minutes every week &mdash; usually as a scripted check, not a meeting.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Triage by top movers before touching anything.</strong> Dollar change, tagged by owner, drilled to the start date.</li>
+<li><strong>The spike lives in the boring places:</strong> egress, NAT, logs without retention, retry storms, forgotten dev monsters.</li>
+<li><strong>Guardrails are free:</strong> forecast budget alerts, one anomaly alert, tag discipline, auto-stop for ephemeral environments.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> turns the weekly five-minute spend review, the retention sweep, and the ephemeral-environment shutdown into pick-first workflows that run themselves &mdash; which is exactly what this runbook needs to stop being manual. <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> covers the incident side; <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Vol. 2 ($27)</strong></a> adds the DR plan and evidence log. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so the cost checks and shutdowns run by themselves</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule)</a></li>
+<li><a href="alert-fatigue-checklist.html">Alert Fatigue Checklist (Cut the Noise)</a></li>
+<li><a href="dns-outage-runbook.html">DNS Outage Runbook (Watch the Domain, Keep a Tested Zone Copy)</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist (Rotate Without Breaking Prod)</a></li>
+<li><a href="dr-plan-template.html">DR Plan Template (Tested, Not Decorative)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
