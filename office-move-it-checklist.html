@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Office Move IT Checklist for Small Teams (The Week the Servers Move Buildings)</title>
+<meta name="description" content="An IT checklist for moving a small office: the network survey of the new space before the move, what gets backed up and photographed before disconnecting anything, the safe packing order for network gear, the first-day connectivity plan, the rekey and access changes the new building needs, and the decommission check for the old office.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Moving offices is a data-center migration wearing a cardboard costume</h1>
+
+<p>Every office move goes the same way: the lease is signed six weeks out, everyone thinks about desks and boxes and the wifi, and the internet circuit at the new building is ordered two weeks out &mdash; which is when the provider says the install takes six to eight weeks. Then the team works from a coffee shop for a fortnight while the "simple move" becomes the most expensive outage of the year. An office move is a migration project with a deadline, movers who drop things, and a landlord who controls your physical security &mdash; and it deserves the same runbook discipline as any other migration. The <a href="first-30-minutes-incident-response.html">first-30-minutes</a> instinct applies: the failures are predictable, so they get a checklist, not a memory.</p>
+
+<h2>1. The survey happens before the move, not during it</h2>
+<ul>
+<li><strong>Order the connectivity first; everything else is negotiable.</strong> Business fiber installs take six to eight weeks in most buildings, sometimes longer if the suite has never been wired. Order the circuit the week the lease is signed, confirm the install date in writing, and plan the move date around the confirmed live date &mdash; not the other way around. If the new building's only option is a consumer-grade circuit, that is a finding now, not on moving day.</li>
+<li><strong>Walk the new space with the network map.</strong> Where does the rack go, where do the drops go, is there a locked closet or rack (the <a href="server-hardening-checklist-small-teams.html">server hardening checklist</a> applies to the closet, not just the servers), where are the power circuits, and is the ceiling accessible for cable runs. Photograph everything on the walk; the photos are the as-built documentation you will not have time to write later.</li>
+<li><strong>Count power, heat, and noise like a data-center would.</strong> A closet with a NAS, a switch, and a UPS needs airflow and its own circuit; a closet that shares a wall with the kitchen fridge trips breakers at lunch. The <a href="server-monitoring-checklist-small-teams.html">server monitoring checklist</a> should gain a temperature row the week you move &mdash; the new room's thermal profile is unknown and summer is real.</li>
+<li><strong>Verify what the building provides and what it blocks.</strong> Shared buildings often have their own management network on "your" wiring, security cameras on your VLAN, and a property manager with opinions about antennas and satellite dishes. Ask in writing what is included; the answers belong in the move runbook next to the circuit install date.</li>
+</ul>
+
+<h2>2. The pre-move backup is the actual insurance</h2>
+<ul>
+<li><strong>Everything gets a fresh backup the week before, and the backup is tested, not assumed.</strong> The move puts every disk, NAS, and cable through vibration, cold cars, and unfamiliar hands. A restore test of the backup that will matter if a drive does not wake up is the entire insurance policy &mdash; the <a href="backup-restore-test-checklist.html">backup restore test checklist</a> is the procedure, and "we backed up last month" is not a backup.</li>
+<li><strong>Two copies leave the building separately.</strong> One backup travels with a person, one goes to cloud or a second site. The single bag with all the drives in it that rides in the same van as the NAS is the classic move-day failure &mdash; the <a href="ransomware-recovery-checklist.html">recovery mindset</a> is the same: no single failure may reach both copies.</li>
+<li><strong>Photograph and label the old wiring before unplugging anything.</strong> Every rack, every cable run, every wall port, phone-first. Labels go on both ends of every cable. The three hours this costs saves three days of "which port did the printer use?" at the new site &mdash; and the photo set doubles as evidence for the security deposit conversation.</li>
+<li><strong>Inventory what moves and what does not.</strong> The move is the best moment for a device register: serial numbers, what is being decommissioned instead of moved (the old printer nobody loves), and what gets replaced rather than re-racked. Anything not moving gets wiped or destroyed per the <a href="vendor-offboarding-data-deletion-checklist.html">data deletion checklist</a> before it is left behind &mdash; decommissioned hardware in a dumpster is a data breach with a lid on it.</li>
+</ul>
+
+<h2>3. Packing and moving the gear</h2>
+<ul>
+<li><strong>Servers and NASes travel in their original boxes or padded cases, carried, not stacked.</strong> Spinning drives in a moving van are the single most at-risk asset of the whole project. The backup from section 2 is what makes a dropped NAS an inconvenience instead of an extinction event; belt-and-suspenders is fine here.</li>
+<li><strong>Nothing with a screen or a disk rides loose.</strong> Monitors in crates, drives in antistatic bags, security keys and spare laptops in one numbered box that a named person personally carries. The <a href="lost-or-stolen-laptop-runbook.html">device-loss runbook</a> is written for exactly the environment of a moving day: unfamiliar hands, no chain of custody, no badge cameras.</li>
+<li><strong>Label by destination, not origin.</strong> Every box gets the name of the room and desk it lands at in the NEW office. Boxes labeled "misc cables" are boxes that stay sealed for a year; boxes labeled "marketing desk 3 &mdash; dock + keyboard" are unpacked in the first hour.</li>
+<li><strong>The critical kit rides in a car, not the van.</strong> Firewall, core switch, the NAS or its backup, security keys, spare laptops, the modem for the new circuit, and a printed copy of the network map and credentials vault access. If the van is a day late, the office still comes online.</li>
+</ul>
+
+<h2>4. First day at the new office: connectivity before comfort</h2>
+<ul>
+<li><strong>The standing order is: circuit, firewall, wifi, then everything else.</strong> Internet live, firewall on, core switch up, test VLANs, then wifi. Desks, chairs, and the coffee machine are somebody else's day-one job; the network being down blocks every one of the team's first-day tasks, so it gets the first hours of the day and the best troubleshooting slot of the week.</li>
+<li><strong>Test the failover story while the installer is still in the building.</strong> Power-cycle the circuit, unplug and re-plug the handoff, confirm the UPS holds the closet through a breaker flip, and verify the failover circuit or LTE backup if one exists &mdash; the day everything is new is the one day the vendor's engineer is standing next to you when something is wrong.</li>
+<li><strong>Print and post the two things nobody remembers:</strong> the wifi password policy (per the <a href="wifi-security-checklist.html">wifi security checklist</a> &mdash; guest network separate from the office network from day one, not "temporarily" shared) and the new building's alarm and access rules. The <a href="door-code-rotation-policy.html">door code policy</a> starts its life in the new building on day one, with a fresh vault entry per door.</li>
+</ul>
+
+<h2>5. The new building resets your physical security &mdash; take the upgrade</h2>
+<ul>
+<li><strong>The new building is a rekey you did not have to argue for.</strong> Old keys do not open the new doors, which means the copy-count problem from the <a href="key-inventory-register.html">key inventory register</a> resets to zero &mdash; if the register is written before new keys are issued. Named holders, stamped copies, no master keys to the whole floor unless the register says so; the move is the one moment in an office's life when clean key discipline is free.</li>
+<li><strong>Alarm codes, badges, and the visitor desk start fresh too.</strong> Set the alarm-code policy on day one &mdash; per-user codes where the panel supports it, quarterly rotation on the calendar &mdash; and stand up the <a href="badge-access-control-checklist.html">badge access control</a> before the first visitors arrive. The <a href="visitor-log-template.html">visitor log</a> starts on day one; retrofitting it later is how the "who was in the office that day?" question becomes unanswerable.</li>
+<li><strong>The closet or rack room gets its access tier on day one.</strong> The room with the switches and the NAS is the highest-value target in the office; its key or code goes on the register's highest tier, and it does not share a code with the front door. Landlord and building-staff master keys are recorded in the register's vendor section with the name of whoever accepted them.</li>
+<li><strong>Cabling discipline is a security decision, not tidiness.</strong> The new office is the only day the patch panel can be labeled, the switch ports mapped to desks, and the unmanaged switch under someone's desk prevented from ever existing. The <a href="annual-security-review-checklist.html">annual review</a> will thank the person who took the extra hour.</li>
+</ul>
+
+<h2>6. Leaving the old office: the decommission checklist</h2>
+<ul>
+<li><strong>Everything left behind is either wiped, destroyed, or deliberately abandoned-and-documented.</strong> Hard drives from decommissioned machines leave with the team or get destroyed; cables that stay are cut; the old NAS cabinet is emptied. The <a href="employee-offboarding-checklist.html">offboarding rule</a> applies to rooms: an office nobody fully clears is a warehouse of credentials &mdash; keys in drawers, notes on whiteboards, a hub still blinking with a live VPN.</li>
+<li><strong>The old circuit and accounts are cancelled deliberately, not by non-payment.</strong> Cancel in writing, keep the confirmation, and strip the old address from every system that uses it for verification &mdash; billing accounts, vendor portals, insurance, the mailroom redirects. The old address in a password-reset answer is social engineering bait for the <a href="phishing-response-checklist-small-teams.html">phishing crowd</a>.</li>
+<li><strong>Update the physical-address records everywhere within the week.</strong> Legal documents, insurance, the security-questionnaire answers customers ask for (the <a href="customer-security-questionnaire-template.html">questionnaire template</a> mentions facilities), the DNS TXT records if the address appears in SPF-adjacent services &mdash; an office move has a long tail of paperwork, and the checklist catches what memory does not.</li>
+<li><strong>Close the move the way incidents close:</strong> one postmortem page &mdash; what took longer than planned, what the checklist missed, what the next move (or the next new site) inherits. The <a href="postmortem-template-small-teams.html">postmortem template</a> fits, and the second office move should cost a third of the first.</li>
+</ul>
+
+<p class="closing">An office move is a migration: survey and circuit order first, fresh tested backups with two copies traveling separately, photographed-and-labeled wiring, critical kit in a car rather than the van, connectivity-first on day one, and a full physical-security reset at the new building &mdash; rekeyed doors, register-written keys, tiered codes, day-one visitor log &mdash; then a deliberate decommission of the old site. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the checklists and runbooks that structure weeks like this one, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the follow-ups (backup tests, code rotations, address sweeps) so the move's loose ends actually close.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="key-inventory-register.html">Key Inventory Register for Small Offices</a></li>
+<li><a href="door-code-rotation-policy.html">Door Code Rotation Policy for Small Teams</a></li>
+<li><a href="physical-security-office-checklist.html">Physical Security Checklist for Small Offices</a></li>
+<li><a href="badge-access-control-checklist.html">Badge &amp; Door Access Control Checklist</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist</a></li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
