@@ -50,7 +50,7 @@
 
 <h2>4. Dependencies: Dependabot plus a review habit</h2>
 
-<p>Most small teams run <code>npm install</code> against hundreds of transitive packages per build. You will not audit them all &mdash; you need the three free controls that catch the realistic cases:</p>
+<p>Most small teams run <code>npm install</code> against hundreds of transitive packages per build. You will not audit them all &mdash; the <a href="software-supply-chain-security-checklist.html">software supply chain checklist</a> owns shrinking the chain itself; this section is just the three free GitHub controls that catch the realistic cases:</p>
 
 <ul>
 <li><strong>Enable Dependabot alerts and version updates (Settings &rarr; Code security).</strong> Alerts tell you when a dependency you already ship has a known CVE; version updates keep the PRs coming so the fix is a merge, not a migration. Budget the triage: thirty minutes weekly, high/critical first, and expect some alerts to be noise you will explicitly dismiss with a reason &mdash; that reason is audit evidence, per the <a href="customer-security-questionnaire-template.html">security questionnaire</a>.</li>
@@ -117,6 +117,7 @@
 <aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
 
 <aside class="related"><h2>Related notes</h2><ul>
+<li><a href="software-supply-chain-security-checklist.html">Software Supply Chain Security Checklist</a></li>
 <li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
 <li><a href="api-key-rotation-checklist.html">API Key Rotation Checklist for Small Teams</a></li>
 <li><a href="api-key-leak-response-runbook.html">API Key Leak Response Runbook</a></li>
