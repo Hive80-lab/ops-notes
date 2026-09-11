@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backup Restore Drill Checklist for Small Teams (Test the Restore, Not the Backup)</title>
+<meta name="description" content="A quarterly restore drill that proves your backups work: pick a random file and date, restore it, time it, and score what was missing. The five-column drill scorecard, the six ways green backups still fail a restore, measured RTO/RPO, and the one-line drill log your insurer and auditors read.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Backup Restore Drill Checklist for Small Teams: Test the Restore, Not the Backup</h1>
+<p class="lede">A backup you have never restored is not a backup &mdash; it's a wish with a cron job. Backup software reports the only metric it can see: "job completed." It cannot see whether the catalog matches the objects, whether the credentials still decrypt the vault, or whether restoring a Friday's worth of work takes forty minutes or four days. The fix is small and boring: once a quarter, actually restore something, time it, and write down what was missing. This checklist is that drill on one page.</p>
+
+<h2>TL;DR: The Quarterly Restore Drill</h2>
+<ul>
+<li><strong>The gap it closes:</strong> green backup jobs say nothing about restorability. The only proof is a restore you performed, timed, and logged.</li>
+<li><strong>The cadence:</strong> once a quarter, restore one file set from a random date at least 30 days back &mdash; and once a year, restore a whole system.</li>
+<li><strong>The rule:</strong> if the drill took longer than you'd accept during an outage, that number is your real RTO &mdash; not the one on the slide.</li>
+<li><strong>The payoff:</strong> dead credentials, stale catalogs, and never-opened SaaS exports get found in July, not on the bad day.</li>
+</ul>
+
+<h2>Why Green Backups Still Fail</h2>
+<p>Most small teams check backups the way they check a smoke detector's LED: it's blinking, therefore we're safe. But a restore is a chain, and the nightly job only tests the first link:</p>
+<ul>
+<li><strong>The job runs, the vault doesn't open.</strong> The backup account password or encryption key was rotated and nobody updated the restore tooling. Jobs keep "succeeding"; the data is unreadable.</li>
+<li><strong>The catalog is stale.</strong> The listing says the file exists; the object behind it was pruned by a retention policy running on different terms. Old-date restores fail selectively &mdash; on exactly the dates you'll ask for.</li>
+<li><strong>Nobody knows where it lives.</strong> The backup works, but the one person who knows the passphrase, the portal, and the procedure left in March.</li>
+<li><strong>SaaS data was never really covered.</strong> "We have backups" meant a CRM export someone downloaded in 2023 and never opened.</li>
+<li><strong>The restore target doesn't exist.</strong> The plan says "restore to clean hardware," but no machine, VM, or spare account was ever named &mdash; so the real incident starts with three hours of improvising.</li>
+</ul>
+<p>Every one of these is invisible until you rehearse. The drill is how a wish becomes a capability.</p>
+
+<h2>Before the Drill: Ten Minutes of Prep</h2>
+<ul>
+<li><strong>Pick the target:</strong> one file set, VM, or mailbox &mdash; and one date at least 30 days back. Random beats convenient, because convenient dates are always the ones that happen to work.</li>
+<li><strong>Pick the environment:</strong> an isolated folder, sandbox VM, or spare account &mdash; never over the live copy. The drill must not be able to make anything worse.</li>
+<li><strong>Name the crew and the clock:</strong> one person restores, one person times. Sixty-minute timebox &mdash; if you're not done in an hour, that <em>is</em> the finding.</li>
+<li><strong>Use the documentation, not memory:</strong> restore procedure, passphrase location, portal login &mdash; opened from the binder. If memory is the only source, log it as a finding.</li>
+</ul>
+
+<h2>The Drill: Six Steps</h2>
+<ol>
+<li><strong>Start the clock and open the runbook</strong> &mdash; no archaeology in chat history for "the link Dave sent." Steps that exist only in someone's head are finding #1. If you need a skeleton, start from the <a href="runbook-template.html">runbook template</a>.</li>
+<li><strong>List the catalog for the chosen date</strong> &mdash; confirm the file set you expect actually exists for that day. Catalog-vs-reality gaps are finding #2.</li>
+<li><strong>Restore real content</strong> &mdash; not a test file you planted last quarter: a document tree, a database dump, a mailbox folder. Open it. Verify the data is current to that date. Existence isn't restoration.</li>
+<li><strong>Prove the credentials work</strong> &mdash; decrypt or sign in from the documented location. This is where rotated keys and departed admins bite.</li>
+<li><strong>Stop the clock and score it</strong> &mdash; minutes from "go" to "verified content." Compare with the RTO you'd tell a customer; the drill number wins.</li>
+<li><strong>Write the log line</strong> &mdash; one dated row with a fix owner. Ten seconds of writing, and it's the evidence your insurer and auditors actually want.</li>
+</ol>
+
+<h2>The Drill Scorecard: Five Columns</h2>
+<p>One sheet, five columns, one row per drill:</p>
+<ul>
+<li><strong>What was restored</strong> &mdash; file server, mailbox, database dump, SaaS export.</li>
+<li><strong>Date restored to</strong> &mdash; the random past date.</li>
+<li><strong>Minutes taken</strong> &mdash; start to verified content: your measured RTO.</li>
+<li><strong>What was missing</strong> &mdash; credentials, docs, tooling, files. Blank is a win.</li>
+<li><strong>Fix + owner</strong> &mdash; one line with a name and a date; the row is done when the gap closes.</li>
+</ul>
+<p>Four rows a year is a restorability record you can hand to anyone who asks "can you actually recover?" &mdash; and the only honest answer to that question is a sheet with dates on it.</p>
+
+<h2>The Six Ways Small-Team Backups Fail a Restore</h2>
+<ol>
+<li><strong>Credentials rot.</strong> The vault key and portal login live in one person's head. Fix: password manager plus a documented location, tested every drill.</li>
+<li><strong>Retention theater.</strong> The policy says 90 days; the storage tier silently drops objects at 35. Only a deep-past drill date catches it.</li>
+<li><strong>SaaS exports never opened.</strong> An export is only a backup once a restore has been rehearsed from it. Include one SaaS export row per year.</li>
+<li><strong>The restore target doesn't exist.</strong> "Clean hardware" requires hardware. Name it: the spare VM, the <a href="hot-spare-loaner-laptop-checklist.html">hot-spare laptop</a>, the cloud instance.</li>
+<li><strong>Nobody can find the backup.</strong> Three tools, two dead subscriptions, an external drive in a drawer. List every backup location in the <a href="key-inventory-register.html">key inventory register</a> like any other key.</li>
+<li><strong>Untested network dependency.</strong> A cloud restore needs the network; during an <a href="internet-outage-runbook.html">internet outage</a> that's a problem. Know which restores work offline.</li>
+</ol>
+
+<h2>Worked Example: The Tuesday Scare</h2>
+<p>09:40: the shared projects folder is missing half its client work &mdash; deleted since Friday, cause unknown. Because this team drilled in July, the response is boring: restore the folder tree from Friday's backup into an isolated directory &mdash; 22 minutes; discover two project folders were created after the last successful job, so the gap is four hours, not four days; write the Q3 scorecard row while it's fresh; assign the fix (put the folder inside the job's scope) and close it the same day. The un-drilled version of the same Tuesday ends with "our backup vendor says the job has been failing since June." If the deletion turns out to be malicious, the drill is also the rehearsal for the <a href="ransomware-recovery-checklist.html">ransomware recovery checklist</a> &mdash; attackers delete or encrypt backups first.</p>
+
+<h2>Paste-In Drill Log (CSV)</h2>
+<pre>
+date,restored_what,restore_date,minutes,missing,fix_owner,fix_date
+2026-03-12,fileserver/projects,2026-02-02,38,none,n/a,n/a
+2026-06-11,mailbox@owner,2026-04-15,52,vendor-portal MFA reset,alex,2026-06-14
+2026-09-10,crm pg-dump,2026-07-01,71,restore VM image stale,sam,2026-09-12
+</pre>
+
+<h2>How This Fits the Rest of the Plan</h2>
+<p>The drill is the proof step of your <a href="disaster-recovery-plan-template-small-teams.html">disaster recovery plan</a>: the plan says what gets restored and in what order, the drill proves you can. The measured RTO/RPO numbers belong in your <a href="uptime-downtime-budget.html">downtime budget</a>, and the <a href="cron-job-monitoring-checklist.html">cron monitoring checklist</a> keeps the job that feeds this drill watched &mdash; a backup job nobody monitors is a backup that fails silently for months.</p>
+
+<h2>Instant-Download Ops Kits</h2>
+<p>This checklist is part of the <strong>Hive80 Lab ops kit line</strong> &mdash; field-tested, instantly downloadable:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/rtodsv">Ops Field Cards</a> &mdash; 12 printable incident checklists &mdash; $4</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+<p><strong>&#9889; Launch pricing is live at the store &mdash; check the banner for today's code.</strong></p>
+
+<h2>Related Ops-Notes Pages</h2>
+<ul>
+<li><a href="disaster-recovery-plan-template-small-teams.html">Disaster Recovery Plan Template for Small Teams</a></li>
+<li><a href="ransomware-recovery-checklist.html">Ransomware Recovery Checklist</a></li>
+<li><a href="uptime-downtime-budget.html">Uptime &amp; Downtime Budget</a></li>
+<li><a href="cron-job-monitoring-checklist.html">Cron Job Monitoring Checklist</a></li>
+<li><a href="runbook-template.html">Runbook Template</a></li>
+</ul>
+</main>
+</body>
+</html>
