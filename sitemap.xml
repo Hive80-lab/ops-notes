@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://hive80-lab.github.io/ops-notes/saas-sprawl-audit-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
+<url><loc>https://hive80-lab.github.io/ops-notes/lost-or-stolen-laptop-runbook.html</loc><lastmod>2026-09-11</lastmod></url>
+<url><loc>https://hive80-lab.github.io/ops-notes/cyber-insurance-requirements-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/api-key-leak-response-runbook.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/mfa-rollout-checklist-small-business.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/log-retention-policy-small-teams.html</loc><lastmod>2026-09-11</lastmod></url>
@@ -58,7 +61,7 @@
 <url><loc>https://hive80-lab.github.io/ops-notes/server-hardening-checklist-small-teams.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/alert-fatigue-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/phishing-response-checklist-small-teams.html</loc><lastmod>2026-09-11</lastmod></url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/ops-starter-kit-landing.html</loc>
-  </url>
+<url><loc>https://hive80-lab.github.io/ops-notes/vendor-security-review-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
+<url><loc>https://hive80-lab.github.io/ops-notes/password-manager-rollout-small-business.html</loc><lastmod>2026-09-11</lastmod></url>
+<url><loc>https://hive80-lab.github.io/ops-notes/ops-starter-kit-landing.html</loc></url>
 </urlset>
