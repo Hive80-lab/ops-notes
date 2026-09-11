@@ -1,3 +1,4 @@
+- [Physical Security Checklist](physical-security-office-checklist.html) - crown-jewel inventory (paper counts), two locked rooms + named keyholders, visitor log, unattended-desk rule, offsite media/shredded drives, quarterly walk.
 - [WiFi Security Checklist](wifi-security-checklist.html) - log in once: admin plane, firmware, WPS off, WPA3/WPA2-AES, guest+IoT split, rotation trigger, quarterly walk test.
 - [Shadow IT Audit Checklist](shadow-it-audit-checklist.html) - card-statement inventory, OAuth-grant walk, data-and-access scoring, the AI-tools line, adopt/sandbox/kill, SSO-only door, quarterly recount.
 - [Contractor Security Onboarding Checklist](contractor-security-onboarding-checklist.html) — scoping sentence first, named MFA accounts not shared logins, guest seats + read-only repos, vault-routed secrets, ten-line security clause, expiry dates, production-as-milestone, last-day revocation + rotation.

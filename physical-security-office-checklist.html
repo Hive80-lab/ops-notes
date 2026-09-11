@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physical Security Checklist for Small Offices (The Server Closet Nobody Locks)</title>
+<meta name="description" content="A one-afternoon physical security checklist for small offices: lock the closet with the routers and switches in it, decide who holds keys, start a ten-line visitor log, gate screen locks and cable locks for laptops, handle the paper that is really data, and the 15-minute quarterly walk &mdash; because most breaches don't need the internet.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Physical security checklist for small offices: the server closet nobody locks</h1>
+
+<p>Companies spend a year hardening their cloud accounts and then leave the physical network switch, the NAS with the customer backups, and the spare laptop in an unlocked closet that anyone in the building &mdash; and the cleaning crew, and the landlord's contractor &mdash; can open. Physical security for a small office is not cameras and badges; it is about six decisions: what is actually valuable in this room, who can touch it, what happens when a stranger walks in, and whether the paper on the printer counts as data. Most real-world breaches at small companies don't need the internet &mdash; they need an unattended desk. This is the one-afternoon pass, written for the office that has no security team, in the same voice as the <a href="wifi-security-checklist.html">network checklist</a> next door: decide once, write two lines, and stop drifting.</p>
+
+<h2>1. Inventory what is worth protecting &mdash; it is a shorter list than you think</h2>
+<ul>
+<li><strong>Walk the office and name the crown jewels out loud.</strong> The NAS or backup drive, the network rack, the router, the laptop that runs payroll, the file cabinet with contracts. Five to ten items. If the list is longer, you are protecting everything, which is how you protect nothing.</li>
+<li><strong>Count the paper that is really data.</strong> Invoices, signed contracts, printed customer lists, the whiteboard from the strategy offsite. Paper doesn't appear in asset lists because IT doesn't buy it &mdash; and it doesn't appear in breach reports because nobody counted it. The <a href="data-breach-first-24-hours.html">breach first-24-hours page</a> applies to a photo of a whiteboard exactly as much as to a database dump.</li>
+<li><strong>Match each item to the threat that actually applies.</strong> A stolen backup drive is the same incident as a stolen laptop: data leaves the building. The <a href="lost-or-stolen-laptop-runbook.html">stolen laptop runbook</a> already tells you the sequence &mdash; the drive just never got a line in it.</li>
+</ul>
+
+<h2>2. Lock the two rooms that matter</h2>
+<ul>
+<li><strong>The server/network closet gets a lock with a named keyholder list.</strong> Not "anyone in the office has a key" &mdash; two named people, one backup. The switch and NAS being reachable by every visitor, courier, and building contractor is the single most expensive default in the room. If the closet is a shared building utility, a lockable cabinet inside it costs $150 and solves it.</li>
+<li><strong>The router lives behind that lock too.</strong> A router an intruder can touch is a router an intruder can factory-reset or tap. The <a href="wifi-security-checklist.html">Wi-Fi security checklist</a> hardened the config; the lock protects the config's existence.</li>
+<li><strong>Lock the file cabinet, not the desk drawer.</strong> Desks are searched casually; cabinets with real locks require intent. Contracts, HR files, spare hardware, the blank cheque stock &mdash; one cabinet, named keyholders, same rule as the closet.</li>
+</ul>
+
+<h2>3. Decide who gets in &mdash; and write it where the door can see it</h2>
+<ul>
+<li><strong>Keys and badges get issued like accounts.</strong> Same discipline as the <a href="access-request-offboarding-checklist.html">access request/offboarding pair</a>: a physical key is an access grant with an owner and a revocation path. The key cabinet (or a line in the password manager) records who holds which key; offboarding collects them with the laptop. A departed employee's unreturned key is an open door with no audit trail.</li>
+<li><strong>The visitor log is ten lines and starts today.</strong> A clipboard by the door: name, company, who they are here to see, time in/out. Its value is not the paper &mdash; it is that someone notices a stranger in the office, because noticing requires the expectation that strangers are logged. The <a href="contractor-security-onboarding-checklist.html">contractor checklist</a> gets one more line: "escort on first day, badge after."</li>
+<li><strong>The "no tailgating" rule is one sentence, said kindly.</strong> "Let me walk you in &mdash; who are you here to see?" turns a held-open door into a hosted visit. Nobody wants to challenge anyone; everyone will host someone.</li>
+</ul>
+
+<h2>4. The unattended-desk rule &mdash; where most incidents start</h2>
+<ul>
+<li><strong>Lock screens: on, short, automatic.</strong> A session left unlocked on an unattended desk is admin access to whatever that person can reach &mdash; email, CRM, payments. Company policy in one line: "Lock your screen when you leave your desk, always" (Win+L / Ctrl+Cmd+Q). The <a href="mfa-rollout-checklist-small-business.html">MFA rollout</a> already made people log in again; this is the same muscle.</li>
+<li><strong>Laptops leaving the office get cable locks or a locked drawer.</strong> The <a href="remote-work-security-checklist.html">remote work checklist</a> covers the café; the office after hours is its own threat model &mdash; cleaning crews, building staff, other tenants' guests. A $12 cable lock on a docked laptop is not paranoia; it is a rate limiter.</li>
+<li><strong>The printer and copier are paper machines and data machines.</strong> The print tray is the most-read document in the office. Rule: collect prints immediately; shred pile lives next to the printer; old copiers with internal drives get wiped or removed before disposal, not sold on eBay with three years of invoices inside.</li>
+<li><strong> shred the paper on a schedule.</strong> A "to shred" box that grows for six months is an unsecured archive. Monthly shred (a $20 cross-cut shredder, or a quarterly service) closes it. The <a href="website-maintenance-checklist-small-business.html">monthly maintenance pass</a> gets one added line: empty the shred box.</li>
+</ul>
+
+<h2>5. Backup media, drives, and the garbage</h2>
+<ul>
+<li><strong>Offsite or fire-safe backup media are on the inventory.</strong> The rotation drive in a desk drawer is a single-event disaster: fire, flood, or one thief takes the server and the backup. One offsite copy (bank box, founder's house, or cloud) completes the <a href="backup-restore-test-checklist.html">3-2-1 rule</a> physically.</li>
+<li><strong>Drives die by shredding, not by binning.</strong> Any drive that held company data leaves the building as a shredded brick, not a "maybe still fine" drive in the recycling bin. Wiped-or-shredded is a two-word policy that ends the argument.</li>
+<li><strong>Dumpster-diving is a real, cheap attack.</strong> Printed customer lists in the building's shared bins are a data breach with no computer involved. Locked shred bins or the monthly shred pass handle it.</li>
+</ul>
+
+<h2>6. Cameras and alarms &mdash; proportionate, not cinematic</h2>
+<ul>
+<li><strong>A $100 alarm or even door sensors beat an unmonitored camera.</strong> For most small offices, the highest-value spend is a loud noise at 2am. Cameras that nobody watches are furniture; a door sensor that texts the founder is a response.</li>
+<li><strong>If you do add a camera: one on the server closet door beats four in the parking lot.</strong> Coverage of the two locked rooms (section 2) plus the entrance is the whole design. And the camera system itself gets a password change &mdash; default-credential cameras are the <a href="shadow-it-audit-checklist.html">shadow IT</a> of the physical world.</li>
+<li><strong>Check the lease and the landlord.</strong> Shared buildings mean shared risk decisions. The building's front-door policy is part of your perimeter whether you chose it or not; worth one conversation with the landlord, and a note in the runbook.</li>
+</ul>
+
+<h2>7. The quarterly 15-minute walk</h2>
+<ul>
+<li><strong>Walk the inventory list from section 1 in order.</strong> Each item: still in its locked place? Keyholder list still correct? The <a href="annual-security-review-checklist.html">annual security review</a> covers the whole program; this walk is just the physical 15 minutes of it.</li>
+<li><strong>Try your own door.</strong> The closet lock that has been left ajar for a week, the fire-exit magnet that defeats your lock, the cabinet everyone stopped closing. You are looking for the drift, and drift is normal &mdash; that is what the walk is for.</li>
+<li><strong>Recount keys and badges.</strong> New hires, departures, the key that went to the landlord's contractor in March. Five minutes, once a quarter, and the door inventory stays true.</li>
+</ul>
+
+<h2>8. What done looks like</h2>
+<ul>
+<li><strong>Two locked rooms (closet, cabinet), two named keyholders each, keys issued and revoked like accounts.</strong></li>
+<li><strong>A visitor log in use, screens locking automatically, prints collected, shred box emptied monthly.</strong></li>
+<li><strong>A two-line runbook:</strong> "New key or badge? Owner, purpose, return path &mdash; same as an account. Quarterly: walk the list, try the doors, recount the keys." The office stops being the softest part of the stack.</li>
+</ul>
+
+<p class="cta">Physical security is the perimeter behind the perimeter. The incident playbooks that assume someone got in anyway &mdash; first 30 minutes, breach disclosures, recovery &mdash; are in the <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a>, and the recurring reviews that keep every checklist honest are in the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a>. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week code <strong>HIVE-LAUNCH30</strong> &mdash; 30% off any paid kit.</p></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="wifi-security-checklist.html">WiFi Security Checklist</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="data-breach-first-24-hours.html">Data Breach: The First 24 Hours</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup &amp; Restore Test Checklist</a></li>
+<li><a href="shadow-it-audit-checklist.html">Shadow IT Audit Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>. Templates, not legal or security advice.</footer>
+</main>
+</body>
+</html>
