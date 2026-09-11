@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-Call Handover Template (Copy-Paste, 10 Minutes)</title>
+<meta name="description" content="A fill-in on-call handover template for small teams: status line, alerts open, watchlist, deployment freeze, pending follow-ups, and escalation notes — plus the one rule that makes handovers actually work.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab — Ops notes</a></header>
+<main>
+<article>
+<h1>On-Call Handover Template (Copy-Paste, 10 Minutes)</h1>
+<p>Most bad handovers aren't lazy — they're chat scrolls. The outgoing engineer types three paragraphs in Slack at 5:58pm, the incoming engineer skims them at 6:20pm between two meetings, and the thing that breaks at 2am lives in paragraph two, unbolded. A handover that fits on one screen beats a thread nobody rereads. Here is that screen.</p>
+
+<h2>The template — copy this</h2>
+<ol>
+<li><strong>Status line.</strong> One sentence, traffic-light: GREEN (nothing on fire), AMBER (watching X), RED (incident #N open, link). If the incoming engineer reads nothing else, this sentence carries the shift.</li>
+<li><strong>Alerts handled today.</strong> Bullets only: what fired, what it was, what you did. This is how the next person recognizes the same alert in ninety seconds instead of rediscovering it at 2am.</li>
+<li><strong>Alerts still open / watchlist.</strong> Anything that fired twice, anything you suppressed, anything with a ticket. Name the ticket number and the owner — "watch it" is not an owner.</li>
+<li><strong>Deployments &amp; freezes.</strong> What shipped today, what ships tomorrow, and anything frozen (and why). The 2am pager should never meet a surprise deploy.</li>
+<li><strong>Pending follow-ups.</strong> Every promise made today: the customer who needs an update, the metric someone asked about, the doc someone owes. Each with an owner and a date, or it's not a follow-up — it's a hope.</li>
+<li><strong>Escalation notes.</strong> Who is out, who covers whom, any stakeholder currently upset or waiting. People context is the part that never lives in the monitoring dashboard.</li>
+</ol>
+
+<h2>The one rule</h2>
+<p>If it lives only in your head, it doesn't exist. Handovers fail on the quiet stuff — "I was watching that retry queue," "the CFO's export runs at 6am," "the vendor has an outage window tonight." Ten minutes of writing it down is cheaper than one 2am page with no context. Timebox it: 10 minutes, one screen, end of shift, every shift.</p>
+
+<h2>Why small teams pay for skipping this</h2>
+<p>In a 1–10 person team, on-call rotates between two or three people. Every handover gap gets paid back with interest within one rotation, because the same person reads their own vague notes two weeks later — and by then the memory is gone too. The handover doc is not a courtesy to the next engineer; it's a message to your future self at 2am.</p>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/agent-ops-24-7"><strong>Agent Ops 24/7 ($19)</strong></a> kit builds on this: unattended-agent monitoring, escalation ladders, and the watchdog patterns that page a human only when a human is actually needed — launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> — free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> — $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> — $19 unattended-agent ops &amp; escalation kit</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="the-2am-test-incident-handoff.html">The 2AM Test: What a Good Incident Handoff Must Survive</a></li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates (Status Page, Slack, Customer Email)</a></li>
+<li><a href="severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
