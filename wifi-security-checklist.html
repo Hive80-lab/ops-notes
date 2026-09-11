@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WiFi Security Checklist for Small Teams (The Office Router Nobody Has Logged Into Since Install Day)</title>
+<meta name="description" content="A WiFi security checklist for small teams: log into the router once, fix the admin password and firmware, kill WPS and remote management, separate guest and IoT devices onto their own network, plan the shared-password rotation, and run the quarterly walk test.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>WiFi security checklist for small teams: the office router nobody has logged into since install day</h1>
+
+<p>Almost every small office runs on a router that one person set up on day one and nobody has opened since. The admin password is still <em>admin</em> or a sticker value, the firmware is from the year the business opened, the guest network broadcasts the same password as the office network because separating them "seemed complicated", and the WPS button is still enabled because it was never anyone's job to turn it off. None of this is a technical failure. It is an ownership failure &mdash; and the fix is one hour, once, followed by a ten-minute quarterly pass. This checklist is that hour.</p>
+
+<h2>1. Log in to the router and write down what you find</h2>
+<ul>
+<li><strong>Find the admin address and actually log in.</strong> Usually <code>192.168.1.1</code> or <code>192.168.0.1</code>, printed on the router or in the ISP handbook. If the default admin password still works, that is your first finding and you are not done until it is changed.</li>
+<li><strong>Screenshot the status page: firmware version, SSIDs in use, connected device count.</strong> This becomes your baseline. Every later audit starts with "is the count still explainable?" &mdash; the same inventory instinct as the <a href="annual-security-review-checklist.html">annual security review</a>.</li>
+<li><strong>Write the date and who did it on a sticky note inside the IT drawer.</strong> The point is not ceremony; it is that the next person knows there is a baseline and when it was taken.</li>
+</ul>
+
+<h2>2. Fix the admin plane first &mdash; it outranks the WiFi password</h2>
+<ul>
+<li><strong>Change the admin password to a unique value in the password manager.</strong> The WiFi password gets shared with every visitor's laptop; the admin password must never leave the manager. Two different credentials, always.</li>
+<li><strong>Turn off remote administration and UPnP unless something genuinely needs them.</strong> "Allow admin from the internet" is how routers end up in botnets. If a monitoring tool needs UPnP, log the exception with an owner and a review date &mdash; same discipline as the <a href="server-hardening-checklist-small-teams.html">server hardening checklist</a>.</li>
+<li><strong>Disable WPS.</strong> The push-button pairing feature has known attacks and exists only to save typing a password once. Nothing in a small office needs it.</li>
+<li><strong>Check for firmware updates and enable auto-update if the router offers it.</strong> Router firmware is a vendor product like any other: check the vendor's advisories the same way you review any supplier &mdash; the questions are in the <a href="vendor-security-review-checklist.html">vendor security review</a>.</li>
+</ul>
+
+<h2>3. Use WPA3 if the devices allow it, WPA2-AES if they do not</h2>
+<ul>
+<li><strong>Set the strongest mode your oldest work device supports.</strong> WPA3 everywhere is ideal; WPA2-AES is acceptable; WEP or the "mixed" TKIP modes are not. If a five-year-old printer forces you backward, that printer belongs in the guest/IoT network, not the office one.</li>
+<li><strong>Make the WiFi passphrase long, not clever.</strong> Six random words beats a memorable symbol-swapped phrase. Length is the only property that scales; the math on that lives with the <a href="password-manager-rollout-small-business.html">password manager rollout</a>.</li>
+<li><strong>Never reuse the office WiFi password on any account.</strong> People type WiFi passwords into captive portals and hotel-style pages. A shared passphrase is a shared secret the moment it leaves the building.</li>
+</ul>
+
+<h2>4. Split the network: staff, guests, everything else</h2>
+<ul>
+<li><strong>Put guests on the guest SSID and say so out loud.</strong> One SSID for visitors, isolated from the office network, with a password you can hand to a courier without thinking. If your router cannot isolate guests, say "we will connect you to a hotspot instead" &mdash; that is a normal sentence.</li>
+<li><strong>Move printers, cameras, thermostats and door locks to the guest or IoT network.</strong> Smart devices are computers with terrible patch records; the honest treatment of them is in the <a href="iot-device-security-checklist.html">IoT device checklist</a>. A compromised camera must not be able to reach the accounting laptop.</li>
+<li><strong>Test the separation once.</strong> Join the guest network from a phone and try to reach a shared drive or the printer admin page. Whatever you can reach from guest WiFi is what a visitor can reach. If the answer is "the file server", you have found this month's fix.</li>
+</ul>
+
+<h2>5. Plan the shared-password rotation before you need it</h2>
+<ul>
+<li><strong>Decide the trigger, not just the interval.</strong> Rotate the office WiFi password when someone with the password leaves, when a device is lost, or every six months &mdash; whichever comes first. The offboarding moment is the one that bites; pair it with the <a href="access-request-offboarding-checklist.html">access request and offboarding checklist</a>.</li>
+<li><strong>Make rotation cheap enough to actually happen.</strong> Update the router, print the new passphrase, walk the office in ten minutes. If rotation takes an afternoon, it will never happen, and a password nobody rotates is a password everyone's cousin's babysitter may hold.</li>
+<li><strong>Keep the guest password separate and rotate it freely.</strong> Nobody has to coordinate a hotdesking day to change the guest network. Cheap rotation on the throwaway network trains the habit.</li>
+</ul>
+
+<h2>6. The devices on the network matter more than the password on it</h2>
+<ul>
+<li><strong>Turn off auto-join for open networks on every work laptop.</strong> An evil-twin access point named "Airport_Free_WiFi" wins the moment a laptop connects automatically. Manual join plus the always-on VPN habit from the <a href="remote-work-security-checklist.html">remote work checklist</a> closes the airport and cafe versions of this.</li>
+<li><strong>Count the devices against the router's list quarterly.</strong> The router knows how many clients are connected. Fifteen clients for a nine-person office is a conversation, not a crisis &mdash; but it is a conversation worth having, because the extra four have owners who forgot them.</li>
+<li><strong>Retire devices, not just people.</strong> The printer that left the building in March is still on the WiFi list if nobody removed it. Dead clients on the list are how forgotten devices keep a foothold after hardware goes to e-waste.</li>
+</ul>
+
+<h2>7. The quarterly ten-minute walk test</h2>
+<ul>
+<li><strong>Walk the carpark and the cafe next door with a phone.</strong> If your office SSID is full bars from the street, strangers can attempt your passphrase at leisure. Long passphrases survive attempts; short ones do not. If the signal bleeds badly, reduce transmit power or move the router inward.</li>
+<li><strong>Re-read the router's client list and admin log.</strong> New clients, unfamiliar MACs, admin logins at 3am &mdash; the router keeps this history whether anyone reads it or not.</li>
+<li><strong>Write three lines: firmware date, client count, changes made.</strong> It feeds the <a href="annual-security-review-checklist.html">annual review</a> and answers the insurance-renewal and customer-questionnaire question "how is office network access controlled?" in one sentence.</li>
+</ul>
+
+<p class="closing">WiFi security for a small team is one owned hour: log into the router once, fix the admin password, firmware, WPS and remote admin, split staff from guests and IoT, set the rotation trigger, then run a ten-minute quarterly walk test that reads the client list before the coffee goes cold. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns the device inventory and the review cadence into fill-in-the-blank sheets, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the recurring checks so the quarterly pass happens without anyone remembering to remember.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="iot-device-security-checklist.html">IoT Device Security Checklist</a></li>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist</a></li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>. Templates, not legal or security advice.</footer>
+</main>
+</body>
+</html>
