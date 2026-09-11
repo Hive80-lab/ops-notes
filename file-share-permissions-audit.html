@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>File Server Permission Audit for Small Teams (The Spreadsheet That Ends "Who Can See This Folder?") &mdash; ops-notes</title>
+<meta name="description" content="A file server permission audit for small teams: inventory every shared root from the admin console, kill the two dangerous defaults (Everyone groups and unbroken inheritance), move to role-based group access, audit external sharing links, wire access to joiner-mover-leaver events, and run a 30-minute quarterly re-check that doubles as insurance and customer-questionnaire evidence.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>File server permission audit: the spreadsheet that ends "who can see this folder?"</h1>
+
+<p>File permissions sprawl the way shared drives sprawl: one folder at a time, one "quick, can you give her access" at a time, until the day a departure triggers the question nobody can answer &mdash; <em>what exactly could they see?</em> The <a href="user-access-review-checklist.html">user access review</a> covers accounts and apps; this page is the pass for the folders themselves: the NAS share, the SharePoint site, the Google Drive, and the "old-server" share somebody forgot to decommission. One afternoon for the first audit, thirty minutes per quarter after that.</p>
+
+<h2>1. Inventory the shares &mdash; from the console, not from memory (60 minutes)</h2>
+<ul>
+<li><strong>Ground truth is the admin console, not anyone's memory.</strong> NAS admin panel for SMB shares, SharePoint admin center for sites, Google Drive's shared-drive list, plus every cloud-sync root on the accounting laptop. List each shared root with what it holds and which business function it serves. The share nobody can name a purpose for is the first finding.</li>
+<li><strong>Include the forgotten servers.</strong> Every small office has a share that survived a migration: the old server still powered on "just in case", the external drive plugged into the router. The <a href="server-decommissioning-checklist.html">server decommissioning checklist</a> is the exit for those; the audit is how they get found.</li>
+<li><strong>One row per share in a spreadsheet:</strong> share name, where it lives, business function, owner (a person, not "IT"), access model (group or per-user), external links (yes/no), last reviewed. This sheet &mdash; not the folders &mdash; is the deliverable; it is what makes the <em>next</em> audit thirty minutes.</li>
+</ul>
+
+<h2>2. The two dangerous defaults: Everyone groups and unbroken inheritance</h2>
+<ul>
+<li><strong>Run the open-share test first.</strong> Enumerate folders where "Everyone", "Authenticated Users", or "domain users" has read or write access. In a typical first audit this list is longer than expected, and it contains payroll. The fix is deliberate: a folder is either intentionally open (documented, reviewed) or it inherits nothing from an open parent.</li>
+<li><strong>Break inheritance where the data changes class.</strong> The finance subfolder inside the general share should not inherit the open share's permissions. Breaking inheritance is a one-click operation; the discipline is writing <em>why</em> in the audit row, so the next person does not "helpfully" re-enable it.</li>
+<li><strong>Least privilege is a direction, not a day.</strong> You will not get to perfect access in one pass, and pretending to is how audits die. The realistic goal for pass one: no <em>write</em> access for Everyone anywhere, and the sensitive folders named and closed. Read-access sprawl gets tightened over the following quarters.</li>
+<li><strong>Cloud shares have the same trap with better manners.</strong> Microsoft 365 and Google Drive both default to broad internal sharing &mdash; the <a href="microsoft-365-security-checklist.html">M365 security checklist</a> and <a href="google-workspace-security-checklist.html">Workspace checklist</a> cover the tenant-level sharing defaults; this audit walks the actual folders underneath them.</li>
+</ul>
+
+<h2>3. Group-based access only: no per-person grants</h2>
+<ul>
+<li><strong>One group per role, and access follows the group.</strong> "Accounting" gets the finance share; "Operations" gets the ops share. A permission list you can read as a roster is auditable; a folder with nine individual user entries and one mystery account is not.</li>
+<li><strong>Per-user ACLs are findings, not features.</strong> Every individual grant on a folder is a TODO: either it becomes a group membership (role-based, reviewable) or it is removed. The exception worth writing down: a named project folder with an expiry date in its own row.</li>
+<li><strong>Group membership must mirror the current roster.</strong> The group "Accounting" containing three people who left in 2024 is the access review's favorite finding. Membership lists print in one page &mdash; diff them against the current org chart and the <a href="employee-offboarding-checklist.html">offboarding checklist</a> that should have caught the exits.</li>
+</ul>
+
+<h2>4. External sharing links: the shadow perimeter</h2>
+<ul>
+<li><strong>Search for "anyone with the link" and treat every hit as a finding.</strong> Anonymous links are how small offices leak without knowing it: a link shared to a vendor in March, forwarded twice, still open in December. Enumerate them, kill the stale ones, and keep only links with a reason and an expiry.</li>
+<li><strong>Turn anonymous sharing off by default at the tenant level</strong> so the exception requires intent. The working pattern for real vendor collaboration is a named external folder, expiring access, and a row in the audit sheet &mdash; not a link that outlives the project.</li>
+<li><strong>The client-facing folder deserves its own rules.</strong> Expiry dates on every link, notification when files are added, and a monthly glance at who actually accessed it. This is also the answer to the "how do you protect client data" question in the <a href="customer-security-questionnaire-template.html">customer security questionnaire</a> &mdash; a real answer with a real screenshot beats "we are careful".</li>
+</ul>
+
+<h2>5. Admins, service accounts, and the backup job with god rights</h2>
+<ul>
+<li><strong>Full-control access is a short list.</strong> The audit sheet names every account with admin or full-control access to the file estate and why it needs it. Service accounts count: the backup job account that reads everything is legitimate; the backup account that can also delete and nobody remembers creating is not.</li>
+<li><strong>Backup accounts get read-scoped where possible</strong> &mdash; ransomware loves a backup credential that can encrypt the backups too. The <a href="backup-encryption-checklist.html">backup encryption checklist</a> covers the storage side; the permission audit covers who can touch the job.</li>
+<li><strong>Break-glass is documented, tested, and rare.</strong> The one admin account that exists for emergencies belongs on the <a href="break-glass-account-checklist.html">break-glass checklist</a>, not scattered across three desktops as a saved browser password.</li>
+</ul>
+
+<h2>6. Wire access to joiner-mover-leaver, not hallway conversations</h2>
+<ul>
+<li><strong>The rule that makes the audit hold: access changes only through a request, never by direct grant.</strong> The <a href="access-request-offboarding-checklist.html">access request and offboarding checklist</a> is the form; the audit sheet is the map. "Just give her access to the drive" becomes "add her to Operations &mdash; here's the request", which leaves a trail.</li>
+<li><strong>Role changes are the leak everyone forgets.</strong> The promoted employee who kept their old department's folders is a joiner-mover-leaver miss. Access follows the <em>current</em> role; movers lose the old group in the same week they gain the new one.</li>
+<li><strong>Departures are the audit's deadline.</strong> The <a href="employee-offboarding-checklist.html">offboarding checklist</a> removes the account; the file audit is what answers "could they still see the folders" afterwards &mdash; especially shared mailboxes, synced folders, and the personal laptop that synced a share the <a href="employee-onboarding-checklist-template.html">onboarding checklist</a> provisioned.</li>
+</ul>
+
+<h2>7. The quarterly thirty minutes, and the evidence it produces</h2>
+<ul>
+<li><strong>Export the permission report, diff against last quarter, read the changes.</strong> Every file platform can produce a permissions export; the thirty minutes is spent on the delta, not the whole list. New folders, new external links, new per-user grants &mdash; each gets a decision, and the <a href="shadow-it-audit-checklist.html">shadow IT audit</a> often explains the folders nobody can source.</li>
+<li><strong>The export is also evidence.</strong> The <a href="cyber-insurance-requirements-checklist.html">cyber insurance application</a> asks about access controls; enterprise customers score it in the questionnaire. A dated permission report beats an assertion, and it is the same artifact both times.</li>
+<li><strong>One line per change, in the log.</strong> Who approved, what changed, why. The audit without a log is a snapshot; the log is what turns it into a control. Feed the trend line into the <a href="annual-security-review-checklist.html">annual security review</a> and the <a href="server-hardening-checklist-small-teams.html">server hardening</a> pass.</li>
+</ul>
+
+<p><em>Small-team honesty note: this audit will not make your file server perfectly locked &mdash; small teams run on hallway conversations, and some of that looseness is the cost of moving fast. What it buys is a map: one spreadsheet that answers "who can see this folder" in minutes instead of folklore, a quarterly diff that catches drift while it is still one folder instead of a rebuild, and the evidence artifact that insurance and enterprise customers both ask for. One afternoon, then thirty minutes a quarter. That is the whole program.</em></p>
+
+<p>Related: <a href="user-access-review-checklist.html">user access review</a> &middot; <a href="access-request-offboarding-checklist.html">access request and offboarding</a> &middot; <a href="employee-offboarding-checklist.html">employee offboarding</a> &middot; <a href="employee-onboarding-checklist-template.html">employee onboarding</a> &middot; <a href="microsoft-365-security-checklist.html">Microsoft 365 security</a> &middot; <a href="google-workspace-security-checklist.html">Google Workspace security</a> &middot; <a href="break-glass-account-checklist.html">break-glass accounts</a> &middot; <a href="cyber-insurance-requirements-checklist.html">cyber insurance requirements</a> &middot; <a href="customer-security-questionnaire-template.html">customer security questionnaire</a> &middot; <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a> &middot; <a href="shadow-it-audit-checklist.html">shadow IT audit</a> &middot; <a href="backup-encryption-checklist.html">backup encryption</a> &middot; <a href="server-hardening-checklist-small-teams.html">server hardening</a> &middot; <a href="power-failure-it-checklist.html">power failure IT checklist</a> &middot; <a href="admin-first-week-runbook.html">new admin's first week</a></p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>

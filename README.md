@@ -94,3 +94,4 @@ Incident response, on-call, and automation **checklists and templates** you can 
 - [Key inventory register template](https://hive80-lab.github.io/ops-notes/key-inventory-register.html)
 
 *Templates, not legal or regulatory advice. Site: <https://hive80-lab.github.io/ops-notes/>*
+- [File server permission audit](https://hive80-lab.github.io/ops-notes/file-share-permissions-audit.html)
