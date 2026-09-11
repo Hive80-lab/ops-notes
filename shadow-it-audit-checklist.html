@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shadow IT Audit Checklist for Small Teams (The 40 SaaS Tools Nobody Told IT About)</title>
+<meta name="description" content="A shadow IT audit for small teams: find the SaaS tools bought on company cards, score what data they hold, adopt or kill each one, close the door with an SSO-first policy, and run the quarterly pass that keeps the count honest.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Shadow IT audit checklist for small teams: the 40 SaaS tools nobody told IT about</h1>
+
+<p>Nobody in a five-person company is malicious. Somebody needed to send a contract for signature today, so a $12 subscription appeared on the company card. Somebody else wanted a nicer screenshot tool, a different project tracker, an AI assistant that summarizes meetings. Two years later the company card shows 40 charges for software that shares one admin login, holds customer data, and would survive the departure of exactly one person &mdash; the one with the password in their personal password manager. A shadow IT audit is not about punishing anybody. It is about turning an invisible sprawl into a short list you can defend in a customer security questionnaire.</p>
+
+<h2>1. Start with the spend, not the surveys</h2>
+<ul>
+<li><strong>Pull 24 months of card and bank lines.</strong> Every recurring software charge is a tool. Label each: known, forgotten, mystery. A survey asks people what they remember; the card statement remembers everything.</li>
+<li><strong>Check app-store and browser sync bills.</strong> Mobile tool subscriptions and browser-synced app purchases never show on the card. Ask for screenshots of active app subscriptions in one standing meeting &mdash; five minutes, no accusations.</li>
+<li><strong>Check your identity provider's app list.</strong> If you use Google Workspace or Microsoft 365, the admin console lists every third-party app employees granted OAuth access to. That list is the honest inventory, and it is already written for you. (The Google side of this is in the <a href="google-workspace-security-checklist.html">Google Workspace checklist</a>.)</li>
+</ul>
+
+<h2>2. Ask the browser and the inbox, not the people</h2>
+<ul>
+<li><strong>Review OAuth grants per account.</strong> Under each user, list third-party apps with mailbox, file, or calendar access. Anything reading mail that nobody can explain is either shadow IT or the start of an incident &mdash; both get removed today. The mailbox side pairs with the <a href="email-security-checklist.html">email security checklist</a>.</li>
+<li><strong>Search the shared inbox for confirmation emails.</strong> "Welcome to &mdash;, your account is ready" is the paper trail of unapproved signups. One person can grep a year of a shared mailbox in ten minutes.</li>
+<li><strong>Walk one shared laptop's history and extensions.</strong> Not to read anyone's business &mdash; to count tools. The browser extension angle deserves its own pass; use the <a href="browser-extension-security-audit.html">browser extension audit</a>.</li>
+</ul>
+
+<h2>3. Score every tool on two questions</h2>
+<ul>
+<li><strong>What data does it hold?</strong> Customer names, contracts, code, credentials, health or payment data. Rank: money and customer data first, convenience tools last.</li>
+<li><strong>Who can get in, and how?</strong> Shared admin password, one person's work email, or proper SSO. A tool holding customer contracts that logs in with a shared password is your top finding, every time.</li>
+<li><strong>Does it touch money or code?</strong> Invoicing tools, repos, deploy platforms. Those inherit the rules of the <a href="github-repository-security-checklist.html">repository checklist</a> and the payment path: MFA, named owners, no exceptions.</li>
+</ul>
+
+<h2>4. The AI-tools line item &mdash; new, and growing fast</h2>
+<ul>
+<li><strong>Count the AI assistants people actually use.</strong> Meeting notetakers, writing helpers, code assistants. Each one is a third party receiving your conversations, and sometimes customer data, on somebody's free plan.</li>
+<li><strong>Paste-test one thing you would not publish.</strong> If a teammate could paste a customer contract into a tool and nobody would notice until it is gone, the policy is missing, not the person.</li>
+<li><strong>Publish a sanctioned list with a green light.</strong> Two or three approved tools, paid on the company card, with data handling you have actually read. People do not stop using AI; they stop using it secretly only when a sanctioned option exists. This is a tooling decision, not a memo.</li>
+</ul>
+
+<h2>5. Decide: adopt, sandbox, or kill</h2>
+<ul>
+<li><strong>Adopt</strong> the tools that earn it: fold them into SSO with named owners, MFA, and a line in the asset list. An adopted tool stops being shadow IT the day it has an owner.</li>
+<li><strong>Kill</strong> the rest deliberately: export the data, cancel the subscription, then delete accounts and revoke OAuth grants. A cancelled card charge is not a deleted account &mdash; the data sits there until you ask. Offboarding mechanics are in the <a href="vendor-offboarding-data-deletion-checklist.html">offboarding checklist</a>.</li>
+<li><strong>Sandbox</strong> anything with real value but bad hygiene: keep it off customer data, set a review date, and write the exit condition. "Revisit in 90 days" beats an argument today.</li>
+</ul>
+
+<h2>6. Close the door behind the audit</h2>
+<ul>
+<li><strong>Make SSO the default and say it in one sentence.</strong> "New tools go through [email/SSO] first" &mdash; one line in the handbook beats a policy document nobody opens. The lightweight version lives with the <a href="employee-onboarding-checklist-template.html">acceptable-use template</a>.</li>
+<li><strong>Buy through one door.</strong> The card that pays for software should be the door software enters by. A two-line expense rule ("software purchases need an owner and a purpose") catches most of the next decade's sprawl.</li>
+<li><strong>Wire new tools into offboarding.</strong> The moment a tool is adopted, add it to the access-revocation list so the next departure does not leave an orphaned admin seat. The <a href="access-request-offboarding-checklist.html">access request/offboarding pair</a> is the mechanical home for this.</li>
+</ul>
+
+<h2>7. The quarterly 30-minute pass</h2>
+<ul>
+<li><strong>Recount from the card and the OAuth list.</strong> New charges, new grants, new AI tools. The delta since last quarter is small when the door is closed &mdash; that is the point.</li>
+<li><strong>Spot-check one adopted tool's login path.</strong> Still SSO? Still MFA? Owner still employed?</li>
+<li><strong>Write the three-line summary.</strong> Count before, count after, tools killed. It feeds the <a href="annual-security-review-checklist.html">annual review</a> and it is the exact evidence customer questionnaires ask for &mdash; the same folder the <a href="customer-security-questionnaire-template.html">questionnaire template</a> builds.</li>
+</ul>
+
+<p class="closing">A shadow IT audit for a small team is one afternoon: pull the card statement, list the OAuth grants, score each tool on data and access, adopt or kill, then make SSO the only door and run a 30-minute quarterly recount. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the vendor inventory sheet and the access log that make the recount mechanical, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> automates the recurring reviews so sprawl gets caught at one charge, not forty. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week code <strong>HIVE-LAUNCH30</strong> &mdash; 30% off any paid kit.</p></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="browser-extension-security-audit.html">Browser Extension Security Audit</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist</a></li>
+<li><a href="contractor-security-onboarding-checklist.html">Contractor Security Onboarding Checklist</a></li>
+<li><a href="api-key-rotation-checklist.html">API Key Rotation Checklist</a></li>
+<li><a href="google-workspace-security-checklist.html">Google Workspace Security Checklist</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>. Templates, not legal or security advice.</footer>
+</main>
+</body>
+</html>
