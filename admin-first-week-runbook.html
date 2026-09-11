@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The New Admin's First Week Runbook for Small Teams (Inheriting the Keys Without Breaking Them) — ops-notes</title>
+<meta name="description" content="A day-by-day runbook for the week you inherit the admin keys at a small team: the read-only day-zero inventory, the backup restore you prove before you promise anything, the access audit and break-glass account, the alerts that page versus the emails nobody reads, the bus-factor document, and the list of things you must NOT rip out in week one.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>The new admin's first week: inherit the keys without breaking anything</h1>
+<p>You just became the admin of a small company's entire digital estate &mdash; the passwords, the DNS, the backups, the billing logins, the Wi-Fi password on the whiteboard. Nobody hands you a map. The failure mode of the first week is not a hack; it is <em>ignorance wearing confidence</em>: changing things you do not yet understand, promising restore times you have never tested, and discovering in month three that the only backup is a hard drive in the founder's drawer. This runbook is the opposite of that: five days, one deliberate act per day, and a strict rule &mdash; <strong>in week one you learn and you prove, you do not rebuild</strong>. The <a href="oncall-onboarding-new-hires-checklist.html">on-call onboarding checklist</a> covers the new hire joining a rotation; this page covers the person who just inherited the whole castle.</p>
+
+<h2>1. Day zero: the read-only inventory</h2>
+<ul>
+<li><strong>Look before you touch; change nothing.</strong> Day zero has exactly one job: find out what exists. Walk the estate read-only: where are the admin credentials (password manager? spreadsheet? the founder's memory?), who owns the DNS registrar account, where do backups land, which card pays for which SaaS. Write it all down as you go. The <a href="asset-inventory-checklist.html">asset inventory checklist</a> and the <a href="key-inventory-register.html">key inventory register</a> are the two artifacts you build on day zero &mdash; not from memory, from <em>inspection</em>.</li>
+<li><strong>Follow the money first.</strong> The fastest complete map of a small team's stack is the last three months of card and bank statements: every recurring line item is a system with an owner, a login, and data. This catches the things nobody thought to mention &mdash; the invoice tool, the e-signature account, the marketing automation that emails customers nightly. Silence about a system is how it becomes a <a href="shadow-it-audit-checklist.html">shadow IT</a> finding later.</li>
+<li><strong>Interview the humans, not just the systems.</strong> Thirty minutes each with the founder, the finance person, and the most senior non-technical employee. Ask three questions: what breaks and ruins your week? what do you back up and where? what happens if I am unavailable tomorrow? Their answers are your risk register, and question three is a polite early warning about the bus-factor document in section 6.</li>
+</ul>
+
+<h2>2. Day one: prove one backup restores</h2>
+<ul>
+<li><strong>The single most important act of your first week.</strong> Pick the most business-critical dataset you found on day zero and perform a real restore: file, database, or mailbox, into an isolated location, with a stopwatch. A backup you have not restored is a rumor. If the restore works, you have earned the right to promise recovery &mdash; and if it does not, you have found the landmine in week one instead of during an outage. The <a href="backup-restore-test-checklist.html">backup restore test checklist</a> is the procedure.</li>
+<li><strong>Write down the restore time, not the backup time.</strong> Nobody cares how long the backup takes; they care how long the <em>comeback</em> takes. Record: which backup generation you restored, how long it took, what had to be re-created manually, and what data was lost between the last backup and the incident. That last number &mdash; the recovery point gap &mdash; is what leadership will quote back to you, so put it in writing while you control the wording.</li>
+<li><strong>Check the 3-2-1 shape while you are in there.</strong> Three copies, two media, one offsite. Small teams routinely have "a backup" that is a single copy on the same physical machine, or a cloud sync service that faithfully syncs ransomware along with everything else. Sync is not backup; replication is not backup; only a versioned, restorable, off-machine copy is backup.</li>
+</ul>
+
+<h2>3. Day two: the access audit and the break-glass account</h2>
+<ul>
+<li><strong>Diff the seat list against the people list.</strong> Pull the admin list on every system that matters (identity provider, email, code, finance, DNS, the production box) and cross it against today's org chart. Every former employee, former contractor, and "we made it admin temporarily in 2023" account is a door that no longer has a reason to be open. The <a href="user-access-review-checklist.html">user access review checklist</a> turns this from a one-time sweep into a quarterly habit.</li>
+<li><strong>Build the break-glass account before you need it.</strong> While you are the newest person with the keys, create the emergency admin identity: cloud-only where applicable, excluded from conditional-access policies, 20+ character password sealed offline, TOTP on a dedicated device, sign-in alerting on. Nobody is more motivated to do this than the admin who just discovered nobody else <em>can</em> get in. The <a href="break-glass-account-checklist.html">break-glass account checklist</a> is the full procedure.</li>
+<li><strong>MFA everywhere, but stage it.</strong> Enforce multi-factor on the crown jewels (email, identity, DNS, finance) this week; roll it out to the long tail over the coming month with a communication plan. Enforcing MFA on the entire company on day two is how the new admin becomes the villain of the week. Prioritize by blast radius: the mailbox that resets every other password is the first domino.</li>
+</ul>
+
+<h2>4. Day three: alerts that page versus emails nobody reads</h2>
+<ul>
+<li><strong>Audit what is currently alarming.</strong> Find every monitoring, logging, and alerting channel that exists (you found most of them on day zero), then check two things: does it actually deliver (send a test), and does anyone act on it (ask who read last week's alerts). A dead alerting channel is worse than none &mdash; it manufactures false confidence at 2am.</li>
+<li><strong>Define the paging threshold before the first page.</strong> Small teams drown either in silence or in noise. Write one page: what wakes a human (production down, backup failure, security alert on a crown-jewel account), what waits for morning (a slow disk, a single failed login), and what goes to a weekly digest. Tie the wake-up levels to the <a href="severity-matrix-3-levels.html">severity matrix</a> so the thresholds are already written down and someone else can apply them.</li>
+<li><strong>Build the escalation tree out loud.</strong> When you are unavailable, who is next? Put the on-call order, the vendor list with support tiers, and the "if all else fails" contact (usually the founder) on one page. The <a href="on-call-handoff-checklist.html">on-call handoff checklist</a> makes the tree survive shift changes; the <a href="the-2am-test-incident-handoff.html">2am handoff test</a> shows what happens when it does not.</li>
+</ul>
+
+<h2>5. Day four: DNS, domain, and the things that end businesses</h2>
+<ul>
+<li><strong>Find every domain the business depends on.</strong> Not just the website: email domains, API endpoints customers call, the domain the VoIP system registers to. Check registrar accounts (owner? expiry? auto-renew? registrar lock?), DNS hosting (who can edit records? is there a second admin?), and DNSSEC/2FA state. Domain hijack and expiry are business-ending failures that no server monitoring ever catches &mdash; they happen at the registrar, which is usually nobody's monitored system.</li>
+<li><strong>Document the DNS records you could rebuild from.</strong> Export or screenshot every record with its purpose: which record hosts mail, which points to production, which one the marketing agency set and nobody understands. The day a record is misconfigured, this list is the difference between a five-minute fix and an archaeology dig.</li>
+<li><strong>Calendar the silent killers.</strong> Domain expiry, SSL certificate expiry, insurance renewal, the annual <a href="annual-security-review-checklist.html">annual security review</a>, the next quarterly <a href="backup-restore-test-checklist.html">backup restore test</a>, the vendor contract auto-renewals you found in the statements. An admin's calendar is an ops system; the entries are cheaper than the incidents.</li>
+</ul>
+
+<h2>6. Day five: the bus-factor document</h2>
+<ul>
+<li><strong>Write the document that would save the company if you vanished.</strong> One page, plainly written, stored where leadership can reach it without you (not inside the password manager only you unlock): where the credentials live, how to reach the break-glass account, how to restore the backups and how long it takes, who the vendors are and how to escalate (the <a href="vendor-escalation-ladder.html">vendor escalation ladder</a> belongs in the appendix), and what to do in the first 30 minutes of a breach &mdash; the <a href="first-30-minutes-incident-response.html">first 30 minutes</a> page and the <a href="data-breach-first-24-hours.html">breach first-24-hours</a> checklist are the two links that matter most.</li>
+<li><strong>Do not confuse the bus-factor document with documentation.</strong> The bus-factor doc is for <em>your</em> absence; system documentation is for everyone else's daily work. Start with the bus-factor doc because it is one page and forces the right questions; the fuller documentation builds over the following month as you actually use each system.</li>
+<li><strong>Hand it over, in person, with a rehearsal.</strong> Walk leadership through the document once. "If I am unavailable, here is the sequence" said out loud once is worth ten emails. Update the document whenever the estate changes &mdash; an out-of-date bus-factor doc is a false map, and false maps are worse than none.</li>
+</ul>
+
+<h2>7. What NOT to do in week one</h2>
+<ul>
+<li><strong>Do not rip and replace.</strong> The backup that "looks bad," the email server that is "ancient," the Wi-Fi password "everyone knows" &mdash; in week one you do not have the context to judge them, and you certainly do not have the credibility to replace them. Every change you make before you understand the system is a change you cannot explain when it breaks something downstream. Month one is for plans; week one is for learning and proving.</li>
+<li><strong>Do not buy tools before you have inventoried what you own.</strong> The day-zero statements will show you how much of the stack is already paid for and unused. Most small teams do not have a tool gap; they have an <em>adoption</em> gap. New admin tool-shopping in week one is usually discomfort with the unknown dressed up as initiative.</li>
+<li><strong>Do not skip the boring days to chase the fun project.</strong> The AI assistant, the automation pipeline, the shiny monitoring stack &mdash; all of it is worth exactly zero if a former employee's account is still active and the backup does not restore. The order in this runbook is deliberate: proven recovery first, access control second, alerting third, domains fourth, the fun stuff after the foundations hold your weight.</li>
+</ul>
+
+<h2>8. The 30-day tail</h2>
+<ul>
+<li><strong>Week one proves; the month hardens.</strong> By day thirty: the <a href="password-manager-rollout-small-business.html">password manager rollout</a> finished or scheduled, MFA on the long tail complete, the <a href="patch-management-checklist.html">patch cadence</a> running with a named window, the first weekly <a href="weekly-status-report-template.html">ops report</a> delivered to leadership in their language (what held, what failed, what it cost, what changes next), and the quarterly calendar fully booked.</li>
+<li><strong>Report in the business's language, not yours.</strong> "I restored the finance database in 40 minutes" beats "RPO met." Your first-week artifacts &mdash; the inventory, the restore log, the access diff &mdash; are exactly the evidence a good report is made of, and they set the tone for every review that follows.</li>
+<li><strong>Give yourself a re-test.</strong> Book a day-30 self-drill: restore again, walk the bus-factor doc again, page yourself once on purpose. The <a href="incident-response-drill-schedule-template.html">drill schedule</a> you set up in week one should already contain this date &mdash; which is itself proof the week worked.</li>
+</ul>
+
+<p><em>Small-team honesty note: in a five-person company the "new admin" is often one person inheriting everything part-time, and this runbook is sized for that reality &mdash; one deliberate act per day, every artifact one page, no tooling purchases required. The trap this page exists to prevent is not incompetence; it is the competent admin's first-week instinct to fix everything at once. Inherit first. Prove the backup. Close the old doors. Then build.</em></p>
+
+<p>Related: <a href="asset-inventory-checklist.html">asset inventory checklist</a> &middot; <a href="key-inventory-register.html">key inventory register</a> &middot; <a href="backup-restore-test-checklist.html">backup restore test</a> &middot; <a href="break-glass-account-checklist.html">break-glass account</a> &middot; <a href="user-access-review-checklist.html">user access review</a> &middot; <a href="oncall-onboarding-new-hires-checklist.html">on-call onboarding</a> &middot; <a href="on-call-handoff-checklist.html">on-call handoff</a> &middot; <a href="password-manager-rollout-small-business.html">password manager rollout</a> &middot; <a href="patch-management-checklist.html">patch cadence</a> &middot; <a href="shadow-it-audit-checklist.html">shadow IT audit</a> &middot; <a href="vendor-escalation-ladder.html">vendor escalation ladder</a> &middot; <a href="data-breach-first-24-hours.html">breach first 24 hours</a> &middot; <a href="first-30-minutes-incident-response.html">first 30 minutes</a> &middot; <a href="incident-response-drill-schedule-template.html">drill schedule</a></p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">💬 Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
