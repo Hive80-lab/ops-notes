@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://hive80-lab.github.io/ops-notes/sla-slo-definition-template.html</loc><lastmod>2026-09-12</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/incident-response-drill-schedule-template.html</loc><lastmod>2026-09-12</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/backup-key-escrow-recovery.html</loc><lastmod>2026-09-12</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/oncall-onboarding-new-hires-checklist.html</loc><lastmod>2026-09-12</lastmod></url>
