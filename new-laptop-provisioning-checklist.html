@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Laptop Provisioning Checklist for Small Teams (The One Setup That Never Happens Twice) &mdash; ops-notes</title>
+<meta name="description" content="A new laptop provisioning checklist for small teams: write the build sheet before the machine arrives, turn on disk encryption before the first login and escrow the recovery key, separate the human account from the admin account, enroll the device for remote lock and wipe, install from an approved app list, finish the first-boot update and screen-lock pass, then name it, register it, and hand it over with a 20-minute acceptance test.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>New laptop provisioning: the one setup that never happens twice</h1>
+
+<p>Every new laptop in a small office gets set up by a different person, on a different day, with a different idea of what "ready" means &mdash; and then it serves for four years with whatever the first hour left out. The machine that never got disk encryption, the one where everyone knows the admin password because the admin account <em>is</em> the daily account, the one that was never enrolled for remote wipe and then went through an airport. Provisioning is the moment to fix all of it, because it is the only moment the machine is empty: one standard build, from a one-page sheet, before the new hire's first login. About ninety minutes for the first laptop, sixty for every one after.</p>
+
+<h2>1. Write the build sheet before the laptop arrives (30 minutes)</h2>
+<ul>
+<li><strong>The build sheet is the whole program: one page, versioned, dated.</strong> OS version you standardize on, the approved app list, the four non-negotiable settings (disk encryption, screen lock, firewall, automatic updates), the naming convention, and where the recovery key and asset row go. A laptop provisioned from the sheet matches the last one; a laptop provisioned from memory matches nothing.</li>
+<li><strong>Keep the app list boring and sourced.</strong> Every entry names its official download source &mdash; vendor site or the OS package manager, never "the installer Sarah has on her desktop". Browsers, office suite, video meetings, the password manager, the VPN client, the PDF reader. Everything else gets added to the list first, installed second; that list is the same one the <a href="software-license-register.html">software license register</a> counts seats from.</li>
+<li><strong>Decide the exceptions on paper too.</strong> Developers need a different build (dev tools, admin rights on a separate machine or a sanctioned exception), contractors get the <a href="contractor-security-onboarding-checklist.html">contractor build</a> with the extra line: nothing syncs to a personal account. The sheet has two variants or it has a lie.</li>
+</ul>
+
+<h2>2. Disk encryption on before the first login</h2>
+<ul>
+<li><strong>Enable FileVault or BitLocker before data exists, not "next week".</strong> Encryption on an empty machine takes minutes and no decisions; encryption on a laptop full of client files takes an afternoon and a migration. The moment of enablement is the one thing the build sheet gets to demand in capital letters.</li>
+<li><strong>Verify it from the console, not the checkbox.</strong> <code>fdesetup status</code> on the Mac, <code>manage-bde -status</code> on Windows &mdash; the setting that says "on" and the volume that says "encrypted" are different claims, and only the second one protects the disk. Screenshot the output into the asset row; the <a href="cyber-insurance-requirements-checklist.html">cyber insurance application</a> asks for exactly this and a dated screenshot answers it.</li>
+<li><strong>Escrow the recovery key the same hour.</strong> A recovery key that lives only on the laptop it unlocks is a decoration. It goes into the password manager vault or the <a href="backup-key-escrow-recovery.html">key escrow</a> routine, labeled with the asset name &mdash; and the escrow entry is what the <a href="lost-or-stolen-laptop-runbook.html">lost laptop runbook</a> and the "I forgot my password" morning both reach for.</li>
+</ul>
+
+<h2>3. Two accounts: the human and the admin</h2>
+<ul>
+<li><strong>Daily work runs on a standard account; the admin account exists but is not the daily one.</strong> The single-account laptop means every click-to-run installer, every browser extension, every "urgent update" runs with the keys to the machine. The build sheet creates <code>name</code> (standard) and <code>name-admin</code> (local admin, its own long password in the password manager), and the human enters the admin password a few times a month, not constantly.</li>
+<li><strong>This is the control auditors ask about by name.</strong> "Do end users run with local admin rights?" appears on the <a href="customer-security-questionnaire-template.html">enterprise security questionnaire</a> and in the <a href="annual-security-review-checklist.html">annual review</a>. "No, by default &mdash; here's the build sheet" is an answer; "usually, it's easier" is a finding.</li>
+<li><strong>The break-glass rule holds on laptops too.</strong> One documented local admin per machine, credentials in the vault, and a note of which three accounts are on the machine. The <a href="break-glass-account-checklist.html">break-glass checklist</a> covers the org-level account; the laptop's local admin is its small sibling and gets the same paper trail.</li>
+</ul>
+
+<h2>4. Enrollment is the wipe button &mdash; install it while the machine is open</h2>
+<ul>
+<li><strong>Enroll the laptop in whatever does remote lock and wipe.</strong> Apple Business/Finder's activation lock and Find My, Microsoft Intune or InTune-lite via Microsoft 365 Business, or a third-party MDM if that is what the tenant runs. The <a href="lost-or-stolen-laptop-runbook.html">lost laptop runbook</a> is a wish without it: the first hour of a lost laptop is "revoke sessions and mark it", and remote wipe is the only step that reaches the disk.</li>
+<li><strong>Test the enforcement, not the checkbox.</strong> Open the management console, find the machine, confirm it checks in (last-seen timestamp today), and confirm a screen-lock command actually reaches it. Enrollment that says "pending" is the same as absent; the console's last check-in line is the receipt.</li>
+<li><strong>Screen lock is a setting and a habit.</strong> Five minutes to lock, password required immediately on wake, and the owner's first-week note that closing the lid is the culture. The machine protects itself only when it is locked; the provisioning pass sets it so the habit has something to stand on.</li>
+</ul>
+
+<h2>5. First-boot pass: updates, restart, firewall, and the receipts</h2>
+<ul>
+<li><strong>Update to current before the handover, not the new hire's first morning.</strong> OS updates, the browser, the app set &mdash; a fresh machine is often one or two point releases behind the fixes. The update pass ends with one restart, because the update that says "restart required" never applied the patch it promised.</li>
+<li><strong>Firewall on, file sharing off, and the default apps chosen once.</strong> The laptop's firewall on (Windows it defaults on; macOS it defaults off &mdash; check), no shares, the password manager as the default password filler and the default browser set. Ten decisions made once, instead of ten people making them differently.</li>
+<li><strong>Back up the settings, not just the sheet.</strong> A screenshot of the finished settings pages into the asset row costs thirty seconds and settles every "was it ever on?" argument later &mdash; including the one the <a href="data-breach-first-24-hours.html">breach first-24-hours</a> review asks.</li>
+</ul>
+
+<h2>6. Name it, register it, hand it over</h2>
+<ul>
+<li><strong>Hostname convention, chosen once:</strong> something like <code>lap-initials-year</code> (lap-hq-26). The name appears in the MDM console, the Wi-Fi list, and the asset register, and a machine called "John's MacBook Air" is unfindable in all three. Rename before enrollment so the console shows the real name from day one.</li>
+<li><strong>The asset row is born with the machine, not remembered later.</strong> One line in the <a href="asset-inventory-checklist.html">asset inventory</a> on day one: make, serial, hostname, assignee, purchase date, build-sheet version, warranty end. Machines added at audit time are the ones nobody can say who has.</li>
+<li><strong>Handover is a 20-minute acceptance test with the new owner present.</strong> Walk the sheet together: encryption status on screen, the two accounts demonstrated, lock timeout shown, one app opened from the approved list, the password manager signed in. The new hire signs the row; the signature is what makes the next audit thirty minutes instead of an afternoon &mdash; the same receipt logic the <a href="file-share-permissions-audit.html">file permission audit</a> runs on.</li>
+</ul>
+
+<h2>7. Keep the build honest: quarterly drift check</h2>
+<ul>
+<li><strong>Once a quarter, diff the fleet against the sheet.</strong> The MDM or inventory console lists every laptop; the check asks three questions per machine: encrypted (verified, not assumed), enrolled and checking in, and still on the current build-sheet version. Anything that fails gets re-provisioned or explicitly accepted in writing.</li>
+<li><strong>The sheet itself gets versioned like code.</strong> When a real laptop needed something the sheet did not have, the sheet gains the line &mdash; otherwise the next machine repeats the exception and the exception becomes the standard. The <a href="change-management-checklist.html">change management checklist</a> is one row for this: what changed in the build, why, when.</li>
+<li><strong>Offboarding closes the loop the provisioning opened.</strong> The <a href="employee-offboarding-checklist.html">offboarding checklist</a> returns the machine; the provisioning row is what receives it: wipe or re-image against the current sheet, keys rotated where the machine held them, and back to available &mdash; not "in a drawer with everything still on it".</li>
+</ul>
+
+<p><em>Small-team honesty note: the first laptop you provision this way will take ninety minutes and feel like ceremony. The second takes an hour, the third forty minutes, and by the fourth the sheet is quietly paying for itself &mdash; in machines you can wipe remotely, disks you can prove were encrypted, and the day a new hire's laptop is ready before their coffee is. Write the sheet once. Let it earn the rest.</em></p>
+
+<p>Related: <a href="employee-onboarding-checklist-template.html">employee onboarding</a> &middot; <a href="contractor-security-onboarding-checklist.html">contractor security onboarding</a> &middot; <a href="lost-or-stolen-laptop-runbook.html">lost or stolen laptop</a> &middot; <a href="asset-inventory-checklist.html">IT asset inventory</a> &middot; <a href="software-license-register.html">software license register</a> &middot; <a href="backup-key-escrow-recovery.html">backup key escrow</a> &middot; <a href="break-glass-account-checklist.html">break-glass accounts</a> &middot; <a href="mfa-rollout-checklist-small-business.html">MFA rollout</a> &middot; <a href="cyber-insurance-requirements-checklist.html">cyber insurance requirements</a> &middot; <a href="customer-security-questionnaire-template.html">customer security questionnaire</a> &middot; <a href="travel-security-checklist.html">travel security</a> &middot; <a href="change-management-checklist.html">change management</a> &middot; <a href="employee-offboarding-checklist.html">employee offboarding</a> &middot; <a href="patch-management-checklist.html">patch management</a></p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
