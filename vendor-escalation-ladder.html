@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor Escalation Ladder for Small Teams (When the Support Ticket Goes Nowhere) &mdash; HIVE80lab Ops Notes</title>
+<meta name="robots" content="index, follow">
+<meta name="description" content="A written escalation ladder for small teams: a ticket written to be escalated, ask for the named human, the commercial lever, the executive-office letter, parallel workarounds, and the exit trigger that turns escalation into offboarding.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>When the ticket goes nowhere: the vendor escalation ladder</h1>
+<p>Every small team eventually meets the vendor whose support ticket is a black hole: critical system degraded, four exchanges of "our engineers are investigating," and the invoice was paid on time. The failure is not the vendor being bad &mdash; it is you escalating like a person instead of like a contract. The fix is a <em>ladder</em>: rungs you climb in order, each one with a defined ask, a defined owner, and a defined wait. Written down <em>before</em> you need it, when nobody is angry. The <a href="vendor-outage-runbook.html">vendor outage runbook</a> covers the hour the vendor is down and the world is watching; this page covers the slower, quieter failure &mdash; the vendor that is <em>responding</em>, just not <em>resolving</em>.</p>
+
+<h2>1. The ladder, one sentence per rung</h2>
+<ul>
+<li><strong>Rung 1 &mdash; the ticket, written to be escalated.</strong> Not a complaint: a case file. Precise subject, impact in the vendor's own product terms, timestamps, ticket IDs, what you already tried. A ticket that reads like evidence gets routed like evidence.</li>
+<li><strong>Rung 2 &mdash; the named human.</strong> Reply on the same ticket: "Please assign a named engineer or manager to this ticket and confirm their name." Queues move tickets; people move problems. If no name appears in one business cycle, climb.</li>
+<li><strong>Rung 3 &mdash; the commercial lever.</strong> Email the account or sales contact with one sentence: "Ticket #12345 has been open five days past the support tier we pay for; we need a resolution owner by Friday." Renewal conversations get answered faster than bug reports.</li>
+<li><strong>Rung 4 &mdash; the executive office.</strong> Every vendor above a certain size has an escalation or customer-care address. One paragraph, factual, with the ask and the deadline. This is the rung that sounds dramatic and usually works.</li>
+<li><strong>Rung 5 &mdash; the exit trigger.</strong> The rung that makes the others work: a written, board-visible line &mdash; "if no named owner and a dated remediation plan by [date], we begin offboarding." The <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding checklist</a> is what that looks like in practice.</li>
+</ul>
+
+<h2>2. Rung zero: know what you already bought</h2>
+<ul>
+<li><strong>Read the support entitlement once, calmly, before you need it.</strong> Response time by severity, escalation path, business hours &mdash; most vendors publish a tier table, and most small teams have never opened it. Your ticket's urgency is <em>your</em> opinion until you translate it into <em>their</em> severity vocabulary: "P1 per our support agreement" moves; "urgent!!!" does not. The <a href="vendor-security-review-checklist.html">vendor security review</a> is the moment to capture this &mdash; support tier, escalation contacts, and the contract's escalation clause go on the same card as the breach-notify terms.</li>
+<li><strong>Find the escalation clause.</strong> Contracts above a few thousand dollars a year almost always contain one: "customer may escalate to the office of the CTO" or "named account manager within 24 hours." It is free leverage you paid for and never used. Screenshot it, put it in the escalation note.</li>
+<li><strong>Know the mismatch you cannot escalate away.</strong> The support desk that answers in business hours while your <a href="sla-slo-definition-template.html">SLA to your customers</a> promises 24/7 is a structural gap: the ladder fixes <em>slow</em>, it cannot fix <em>closed on weekends</em>. If the gap is real, the fix is a plan (the <a href="disaster-recovery-plan-template-small-teams.html">DR plan</a> names which vendors you ride without for a day) &mdash; not an angrier ticket.</li>
+</ul>
+
+<h2>3. Rung 1: a ticket written to be escalated</h2>
+<ul>
+<li><strong>Subject as a summary line, not a mood.</strong> "Checkout API 5xx &mdash; 40% of orders failing since 09:40 UTC &mdash; ticket opened per P1 terms." The subject is the only line a routing human reads; make it carry the severity, the symptom, and the money.</li>
+<li><strong>Impact in their units, yours attached.</strong> "Order volume down 40% since 09:40 UTC" beats "this is really bad." Include what you already ruled out on your side &mdash; a vendor whose first three replies are your-logs-first questions is a vendor you can preempt: attach them up front.</li>
+<li><strong>One ticket, one problem, numbered like a case file.</strong> Open a fresh ticket per distinct failure, keep the running correspondence on the first one, and start a local log of ticket IDs, dates, and promises. The <a href="incident-timeline-template.html">incident timeline</a> you keep for your own incidents doubles as your evidence folder here &mdash; dates, tickets, promised times, and what actually happened.</li>
+</ul>
+
+<h2>4. Rung 2: the named human</h2>
+<ul>
+<li><strong>Ask for a name, then use it.</strong> "Who is the engineer assigned? I will address follow-ups to them." This single sentence converts you from queue item #4471 into a thread with a responsible party. When they answer, reply to the named person and summarize state each time &mdash; the fifteenth reply in a long thread should restate the facts, because the fifteenth reply is read by someone new.</li>
+<li><strong>Set the clock you will hold.</strong> "If I have no substantive update by Thursday 17:00 UTC, I will escalate to your management." Said politely, once, on the record. It is not a threat; it is a schedule. Vendors respect customers with calendars.</li>
+<li><strong>Time-zone the ladder.</strong> If the vendor is 12 hours ahead, your Tuesday afternoon is their dead of night &mdash; sequence your rungs so each lands at their start of day. Small-calendar tricks buy whole days on Rungs 1&ndash;3.</li>
+</ul>
+
+<h2>5. Rung 3: the commercial lever</h2>
+<ul>
+<li><strong>The account manager exists to be used.</strong> Sales signed you; sales can open doors support cannot. One paragraph, no emotion, cc'd to the ticket: what broke, how long, what tier you pay, what you need. Do not threaten renewal; mention it exists. "We are 90 days from renewal with this unresolved" is a fact, and facts move managers.</li>
+<li><strong>Escalation email template, five lines:</strong> (1) what you pay, (2) what broke, (3) how long the ticket has been open vs your tier, (4) the ask &mdash; named owner, dated plan, by when, (5) the fact of renewal. Send to the account contact, cc support, attach nothing you would not show a stranger. The tone that works is the tone of your <a href="weekly-status-report-template.html">weekly report</a> &mdash; measured, factual, slightly disappointed.</li>
+<li><strong>Bundle small vendors' weight.</strong> A two-hundred-dollar-a-month vendor will not fear you alone &mdash; but the same escalation letter sent through their partner, reseller, or the founder's LinkedIn sometimes bypasses the queue entirely. At small scale, the executive rung is often just... the founder.</li>
+</ul>
+
+<h2>6. Rung 4: the executive-office letter</h2>
+<ul>
+<li><strong>One paragraph, three sentences, no adjectives.</strong> "We run [critical workflow] on [product], paying for [tier]. Ticket #12345 has been open [N days] against a [tier] commitment of [X hours]; the last substantive update was [date]. We need a named resolution owner and a dated remediation plan by [date]; the escalation clause in our agreement is quoted below."</li>
+<li><strong>Where to send it:</strong> the vendor's published executive escalation address, the CTO or VP support's publicly listed contact, or the support portal's "escalate" flow if one exists. Bigger vendors have formal customer-care offices precisely because this path works &mdash; it routes to a human whose job is to make you stop climbing.</li>
+<li><strong>What executive escalation buys and what it does not.</strong> It buys attention and a named owner, usually within a day. It does not buy engineering hours the product does not have, and it does not fix a systemic issue &mdash; it moves you to the front of the queue that exists. That is exactly what the ladder promises: not a miracle, a front of the queue.</li>
+</ul>
+
+<h2>7. While the ladder climbs: parallel work, not parallel yelling</h2>
+<ul>
+<li><strong>Work around, don't wait around.</strong> If the degraded system has a workaround &mdash; a cache, a backup path, a manual step &mdash; implement it and tell the vendor what you did (it sharpens your severity claim: "we have degraded to manual processing; every hour costs N hours of staff time"). The <a href="first-30-minutes-incident-response.html">first-30-minutes runbook</a> logic applies to vendor failures too: stabilize first, escalate in parallel.</li>
+<li><strong>Alternative channels, same facts:</strong> status page (is the degradation acknowledged publicly? screenshot either way &mdash; the <a href="status-page-communication-template.html">status page template</a> you run works in reverse as evidence), vendor community forum, the GitHub issue tracker if it is a dev tool, your reseller. Post the <em>same</em> case-file summary in each; never a new, angrier version.</li>
+<li><strong>Receipts for the quarterly review.</strong> Every rung climb gets a dated line in the vendor's row on your review sheet: ticket IDs, promised vs delivered, outage minutes against any contractual SLA. The <a href="annual-security-review-checklist.html">annual review</a> and the <a href="incident-response-drill-schedule-template.html">drill schedule</a> both feed from this &mdash; a vendor that made you climb to Rung 4 twice in a year is a vendor carrying a named open item.</li>
+</ul>
+
+<h2>8. The exit trigger &mdash; when escalation becomes offboarding</h2>
+<ul>
+<li><strong>One bad week is weather; a pattern is a contract problem.</strong> Judge the ladder's outcome, not any single incident: did Rung 2&ndash;3 consistently produce a named human within a day? Then the vendor is slow but real, and the answer is patience plus plan B. If Rungs 3&ndash;4 are now routine and the same failure class keeps returning, the ladder has told you what it exists to tell you: the relationship is the outage.</li>
+<li><strong>The trigger is written, dated, and boring.</strong> At rung zero, before any incident, write one line: "If we climb to the executive rung twice in twelve months for the same failure class, we begin the offboarding process at the next renewal." When the line fires, follow it &mdash; the <a href="vendor-offboarding-data-deletion-checklist.html">offboarding checklist</a> covers data export, deletion confirmation, credential rotation, and the cutover window. An exit you designed on a calm day beats an exit you rage-quit on a bad one.</li>
+<li><strong>Tell the vendor the ladder exists.</strong> Counterintuitive and effective: vendors behave measurably better toward customers who visibly maintain an escalation ladder and an exit plan. It costs nothing to state it once, in writing, in a good month &mdash; "FYI, here is how we escalate, and here is the line that starts offboarding." The best vendor relationships are the ones where nobody ever has to climb past Rung 2, because everyone knows the stairs are there.</li>
+</ul>
+
+<p><em>Small-team honesty note: at five people you do not have a procurement department, and the ladder above is the whole department &mdash; five rungs, one template email, one log line per climb. The cheapest rung is Rung 2: most "vendor ignores us" stories end the day someone politely asks for a name. And the rung small teams skip &mdash; Rung 0, reading what you bought &mdash; is the one that makes every other rung legal: you cannot escalate to a tier you never confirmed you have.</em></p>
+
+<p>Related: <a href="vendor-outage-runbook.html">vendor outage runbook</a> &middot; <a href="vendor-security-review-checklist.html">vendor security review</a> &middot; <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding checklist</a> &middot; <a href="incident-timeline-template.html">incident timeline</a> &middot; <a href="sla-slo-definition-template.html">SLA/SLO definition</a> &middot; <a href="severity-matrix-3-levels.html">severity matrix</a> &middot; <a href="annual-security-review-checklist.html">annual security review</a> &middot; <a href="weekly-status-report-template.html">weekly status report</a> &middot; <a href="status-page-communication-template.html">status page template</a> &middot; <a href="first-30-minutes-incident-response.html">first 30 minutes</a></p>
+</main>
+</body>
+</html>
