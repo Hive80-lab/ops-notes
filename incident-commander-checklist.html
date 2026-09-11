@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Commander Checklist (One Name, One Voice, One Page)</title>
+<meta name="description" content="An incident commander checklist for small teams: the five-minute appointment (one name says 'I am IC' out loud), the first-ten-minutes card (declare, comms channel, scribe, stop-the-bleeding owner), the 15-minute update cadence, the six decisions the commander owns, the hands-off-the-keyboard rule, and the mitigated-vs-resolved close-out. Includes a worked payment-outage example and a paste-in incident log CSV.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Incident Commander Checklist</h1>
+
+<p class="lede">Most small-team incidents don't fail on skill. They fail on command. Five capable people ping-ponging a problem in one chat channel is a committee, and committees debug slowly, never decide, and talk to customers never. The fix is old and unglamorous: <strong>one name is the incident commander (IC), one voice talks to the business, one page runs the show</strong>. This checklist is that page &mdash; the appointment, the first ten minutes, the cadence, the decisions, and the close-out. It costs nothing and works on every incident you'll ever have.</p>
+
+<h2>The five-minute appointment: one name, out loud</h2>
+<p>The single most common small-team failure is that nobody is in charge <em>because everyone is competent</em>. Competent people dive into the problem. Command is what nobody picks up, because it looks like not helping. So make the appointment mechanical:</p>
+<ul>
+<li><strong>Within five minutes of a declared incident</strong> (a <a href="severity-matrix-3-levels.html">Sev-1 or Sev-2</a> per your severity matrix), exactly one person types in the war-room channel: <strong>"I am IC."</strong> Three words. Whoever says it first and means it, has it.</li>
+<li><strong>The IC is a role, not a rank.</strong> The most junior engineer can command the most senior. Choose by who has the clearest head right now, not the longest title. The CTO debugging a firewall does not also run the incident.</li>
+<li><strong>You can resign the role, once, cleanly.</strong> "Passing IC to Ana &mdash; she has the state" is allowed and encouraged when your tank hits empty. What's not allowed is command by erosion &mdash; three people half-commanding because nobody formally handed off.</li>
+<li><strong>The IC does not touch keyboards.</strong> This is the hardest rule and the whole point: the commander's job is to keep the picture whole, sequence the work, and talk to the humans. A commander elbow-deep in logs has stopped commanding and the incident now runs itself. Delegate the work; never perform it.</li>
+<li><strong>Everyone else is a role too.</strong> The IC assigns: one <em>comms owner</em> (talks to stakeholders, nobody else does), one <em>scribe</em> (timeline, every event timestamped), and N <em>hands</em> (the people debugging). Roles are named in the channel like "I am IC" &mdash; "I have comms", "I'm scribing".</li>
+</ul>
+
+<h2>First ten minutes: the card</h2>
+<p>The IC's opening moves, in order. Print this or paste it into the war-room template:</p>
+<ul>
+<li><strong>Declare once, in writing.</strong> One message: what's broken (from the customer's point of view), what severity, and that you're IC. If the incident isn't written down in one sentence, the team is fighting five different incidents.</li>
+<li><strong>Create the war room.</strong> One dedicated channel or call &mdash; <em>not</em> the channel where the alert fired. Name it like <code>inc-2026-09-26-checkout</code>. Everything about this incident happens there; the IC moves stragglers in.</li>
+<li><strong>Start the timeline.</strong> First row: when it started, how we found out (monitor vs customer tweet), what changed in the last 24 hours (deploys, config, vendor updates, volume). The <a href="incident-timeline-template.html">incident timeline template</a> is the format; the scribe owns the rows.</li>
+<li><strong>Name the stop-the-bleeding owner.</strong> One person's only job is to reduce harm <em>now</em> &mdash; the rollback, the failover, the toggle, the queue pause. Diagnosis is for later; mitigation is for the first hour. Make sure the two don't blur: the question for the first hour is not "why" but "how do we make it stop hurting".</li>
+<li><strong>Send the first stakeholder update inside 15 minutes</strong>, even if it says "we know, we're on it, next update at :45". Silence is read as "nobody is home".</li>
+<li><strong>Decide who is decision-money.</strong> If this incident might need spend (vendor escalation, hardware, overtime, a status-page provider), say now who can authorize it without hunting for the founder. Default: the IC, up to a pre-agreed cap.</li>
+</ul>
+
+<h2>The cadence: every fifteen minutes, out loud</h2>
+<p>Open-ended "working on it" stretches bend time; two hours vanish while everyone feels busy. The cadence is what keeps an incident honest:</p>
+<ul>
+<li><strong>Every 15 minutes the IC runs a round-robin, sixty seconds each:</strong> stop-the-bleeding owner says the current mitigation state; hands say what they're testing and what they've ruled out; comms owner says what stakeholders have been told.</li>
+<li><strong>Then the IC says the decision point:</strong> "If X isn't working by 4:00, we roll back." Write it in the channel. A decision point with a deadline is what separates command from watching.</li>
+<li><strong>Every 30&ndash;60 minutes (per severity), a stakeholder update goes out</strong> with three sections: what we know, what we're doing, next update time. The <a href="incident-communication-templates.html">incident communication templates</a> are pre-written for exactly this &mdash; don't draft from scratch at 2 a.m.</li>
+<li><strong>The IC watches the clock, not the logs.</strong> If two hands are doing the same thing, or nobody is doing the scariest thing, that's a command failure before it's a technical one.</li>
+</ul>
+
+<h2>Six decisions only the IC makes</h2>
+<p>Committees advise; the commander decides. The ones that must have exactly one owner:</p>
+<ul>
+<li><strong>1. Mitigate or diagnose.</strong> Rollback now with unknown cause, or keep digging for two more minutes? Default for small teams: mitigate first, diagnose after &mdash; a root cause without an outage is a Tuesday; an outage with a root cause is still an outage.</li>
+<li><strong>2. Talk to customers now or wait.</strong> Waiting is a choice too, but make it out loud: "no customer comms until we know if card data is affected." See the <a href="status-page-communication-template.html">status page communication template</a> for the pre-staged drafts.</li>
+<li><strong>3. Spend money.</strong> Vendor premium support line, emergency hardware, a taxi for the person with the only working laptop. The IC commits up to the pre-agreed cap; above it, one named founder.</li>
+<li><strong>4. Wake people up.</strong> Calling the person who owns the billing integration is an IC decision, made with the <a href="escalation-policy-template.html">escalation policy</a> in front of you &mdash; not a personal favor the night engineer has to dare to ask for.</li>
+<li><strong>5. Escalate outward.</strong> Open the vendor's Sev-1 line, page the MSP, engage the ISP's escalation ladder (with a ticket number and ETAs in writing, per the <a href="vendor-escalation-ladder.html">vendor escalation ladder</a>).</li>
+<li><strong>6. Upgrade or downgrade severity.</strong> Sev-2 that's about to breach a payment deadline becomes Sev-1; Sev-1 contained to one feature downgrades. Declare the change in the channel with one sentence of why.</li>
+</ul>
+
+<h2>The hands-off rule, defended</h2>
+<p>Every commander eventually wants to "just quickly check one log". Resist, because of what happens in the next ninety seconds: the picture goes dark. Nobody is sequencing, the stakeholder update is late, two people are editing the same config, and the customer tweet goes unanswered. In a five-person team the IC's attention is the scarcest resource in the incident &mdash; the debugging is parallel, the <em>commanding</em> is not. If there's genuinely nothing to command (one server, one person, an outage so small it fits in a head), then say so and be a single responder instead. The failure mode isn't "commanded too little", it's "commanded and debugged at once".</p>
+
+<h2>Closing the incident: mitigated is not resolved</h2>
+<p>Declare the end in two distinct words, because they trigger two different clocks:</p>
+<ul>
+<li><strong>Mitigated</strong> &mdash; harm is stopped; customers can transact; risk of recurrence is unknown. The IC's job ends at "mitigated" handoff: war room goes quiet, watchowner keeps an eye for 24 hours, and the <a href="after-action-report-template.html">after-action report</a> opens with a 48-hour deadline.</li>
+<li><strong>Resolved</strong> &mdash; root cause known, fix landed and verified, recurrence risk accepted or patched. That is the postmortem's ending, not the IC's. Don't blur them: "resolved" said too early is how the same fire returns in a new costume.</li>
+<li><strong>The IC writes the first timeline draft</strong> before the war room closes &mdash; not from memory the next day. Ten minutes, timestamps only, no blame. The scribe's rows make this a copy-paste, which is why the scribe exists.</li>
+<li><strong>Thank the roles by name</strong> in the closing message. It sounds soft; it's what makes people volunteer for IC next time, and volunteering is what makes the system work at 3 a.m.</li>
+</ul>
+
+<h2>Worked example: checkout dark at 14:03</h2>
+<p>A five-person team, payments failing. The alert fires at 14:03 in the monitoring channel. 14:05, Mo types <strong>"I am IC."</strong> He has run incidents twice; Ana debugs payments weekly &mdash; she is a hand, not the commander. 14:06, war room <code>inc-2026-09-26-checkout</code>; Ana named stop-the-bleeding, Priya scribe, Tom comms. 14:08 the declaration: <em>"Checkout is failing for ~100% of card payments since ~13:50, first found by customer tweet. Sev-1. I'm IC."</em> 14:10, timeline's first rows: yesterday's deploy (13:40), the tweet (13:52), the alert (14:03). 14:12, Ana's first move is the 13:40 rollback candidate &mdash; not a packet capture. 14:15, first stakeholder update from Tom: "known, on it, next update 14:45." 14:30 round-robin: rollback staged but the 13:40 build is identical to 13:39 &mdash; the deploy isn't the cause. Mo states the decision point: "If no mitigation by 15:00, we switch to manual invoicing mode." 14:44 Ana finds the PSP's maintenance window (13:45&ndash;14:40, unannounced) matching the failure perfectly; fail-forward is to hold traffic with a banner. 14:46 comms out to customers via the pre-staged banner; vendor Sev-1 ticket opened with ETAs in writing. 14:52 payments confirmed through; 15:00 <strong>mitigated</strong>, watchowner assigned, AAR due Monday 10:00 with the PSP gap as fix item #1 (their change-notification feed now monitored, not just their status page).</p>
+
+<h2>Make it durable: drills, laminated cards, and the volunteer bench</h2>
+<ul>
+<li><strong>Rotate the IC in drills.</strong> The person who always commands is a <a href="key-person-dependency-checklist.html">key-person dependency</a> with a pager. Every <a href="incident-response-drill-schedule-template.html">quarterly drill</a> gets a different commander; that's how the second and third ICs are born before they're needed.</li>
+<li><strong>Print the card.</strong> This page's two checklists fit one laminated sheet or a pinned channel message. At 3 a.m. nobody wants to skim a 4,000-word doc; the card is the doc.</li>
+<li><strong>Pre-agree the spend cap.</strong> The IC's money decision is only fast if the cap was set on a calm day. Put the number in the <a href="escalation-policy-template.html">escalation policy</a> and revisit it in the <a href="annual-ops-budget-template.html">annual ops budget</a>.</li>
+<li><strong>Log every command decision.</strong> The registry below is the paste-in tracker &mdash; one row per decision keeps the postmortem honest about <em>when</em> things were decided, not just what happened.</li>
+</ul>
+
+<p>Keep the log machine-readable so the postmortem imports it directly:</p>
+<pre>
+id,time_utc,role,holder,decision,reason,next_review
+1,14:05,IC,mo,"declared sev-1; self-assigned command","clear head; two prior drills",2026-09-30-aar
+2,14:06,comms,tom,"first stakeholder update by 14:15","silence reads as absent",2026-09-30-aar
+3,14:12,mitigation,ana,"rollback 13:40 candidate first","mitigate before diagnose",2026-09-30-aar
+4,14:30,IC,mo,"decision point 15:00 manual-invoicing","deadline forces honesty",2026-09-30-aar
+5,14:46,IC,mo,"vendor sev-1 ticket + hold-traffic banner","known vendor window",2026-09-30-aar
+</pre>
+
+<p>One CSV per incident, six lines, imported by the postmortem. The teams that look preternaturally calm during fires aren't calmer people &mdash; they've simply decided, on a quiet Tuesday, who speaks, who decides, and who types, so the loud Tuesday is just execution.</p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80-lab.gumroad.com/l/agent-ops">Agent-Ops Playbook (A$19)</a> &mdash; run a one-person ops team with agents and checklists like this one.</li>
+<li><a href="https://hive80-lab.gumroad.com/l/agent-ops-vol2">Agent-Ops Vol&nbsp;2 (A$27)</a> &mdash; advanced playbooks: incident drills, escalation, and the money path.</li>
+<li><a href="https://hive80-lab.gumroad.com/l/ops-kit">Ops Starter Kit ($14)</a> &mdash; the core templates bundled for a small team's first quarter.</li>
+<li><a href="https://hive80-lab.gumroad.com/l/greyscale">Greyscale Field Guide ($9)</a> &mdash; print-friendly ops sheets for the war-room wall.</li>
+<li><a href="https://hive80-lab.gumroad.com/">Store</a> &mdash; all current items.</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">Who commands your incidents today?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="severity-matrix-3-levels.html">Severity Matrix (3 Levels)</a> &mdash; the declaration that starts the five-minute IC clock.</li>
+<li><a href="first-30-minutes-incident-response.html">First 30 Minutes of Incident Response</a> &mdash; the responder-side playbook the IC sequences.</li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates</a> &mdash; the pre-written updates the comms owner sends.</li>
+<li><a href="status-page-communication-template.html">Status Page Communication Template</a> &mdash; customer-facing drafts, pre-staged.</li>
+<li><a href="incident-timeline-template.html">Incident Timeline Template</a> &mdash; what the scribe fills so the close-out is copy-paste.</li>
+<li><a href="escalation-policy-template.html">Escalation Policy Template</a> &mdash; who to wake, when, and the IC's spend cap.</li>
+<li><a href="after-action-report-template.html">After-Action Report Template</a> &mdash; the 48-hour debrief the IC hands to.</li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams</a> &mdash; the Sev-1 deep-dive that declares "resolved".</li>
+<li><a href="on-call-rotation-schedule-template.html">On-Call Rotation Schedule Template</a> &mdash; who is likely IC next; train them in drills.</li>
+<li><a href="on-call-handoff-checklist.html">On-Call Handoff Checklist</a> &mdash; clean handoffs make clean command.</li>
+<li><a href="incident-response-drill-schedule-template.html">Incident Response Drill Schedule</a> &mdash; where the second and third ICs are trained.</li>
+<li><a href="key-person-dependency-checklist.html">Key-Person Dependency Checklist</a> &mdash; the risk of one eternal commander.</li>
+<li><a href="internet-outage-runbook.html">Internet Outage Runbook</a> &mdash; a worked incident where command beats heroics.</li>
+<li><a href="payment-outage-playbook.html">Payment Outage Playbook</a> &mdash; the most common small-team Sev-1, IC-run.</li>
+<li><a href="vendor-escalation-ladder.html">Vendor Escalation Ladder</a> &mdash; decision 5, executed with ticket numbers.</li>
+<li><a href="runbook-template.html">Runbook Template</a> &mdash; where the postmortem's fix items land.</li>
+<li><a href="weekly-review-checklist.html">Weekly Review Checklist</a> &mdash; chases open incident fixes every Friday.</li>
+</ul>
+</aside>
+</main>
+</body>
+</html>
