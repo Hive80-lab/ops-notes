@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Key Leaked: the First-Hour Runbook for Small Teams</title>
+<meta name="description" content="A first-hour runbook for a leaked API key: scope the blast radius, rotate in the safe order (new key first, revoke second), check for real abuse, purge the copies that matter, and the prevention pass that stops the next leak.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>API Key Leaked: the First-Hour Runbook for Small Teams</h1>
+<p class="lede">A leaked API key is an incident with a timer &mdash; bots scrape public repos and paste sites within minutes, not hours. The order of operations decides whether you get a scare or an outage: <strong>scope the blast radius, rotate in the safe order (new key first, revoke second), check for real abuse, then purge the copies</strong>. Deleting the file is not the fix; revocation is.</p>
+
+<h2>1. Scope the blast radius (minutes 0&ndash;10)</h2>
+<p>Before touching anything, answer four questions &mdash; each one changes the play:</p>
+<table>
+<tr><th>Signal</th><th>What it means</th><th>First move</th></tr>
+<tr><td>Key in a public repo or paste site</td><td>Assume scraped already</td><td>Rotate immediately (section 2); history cleanup is hygiene, not the fix</td></tr>
+<tr><td>Key in a shipped client bundle (JS app, mobile app)</td><td>It is public by construction</td><td>Never ship secret keys client-side; move the call behind your backend, then rotate</td></tr>
+<tr><td>Key in CI logs, error tracker, or ticket</td><td>Every viewer and log archive holds a copy</td><td>Purge where you can, rotate regardless &mdash; log retention outlives the message</td></tr>
+<tr><td>Key works and has broad scopes (payments, email, cloud)</td><td>Real money and data at risk</td><td>Rotate first among all keys; check spend and audit logs for abuse</td></tr>
+</table>
+<p>Write down: <strong>which account, which scopes/permissions, when it was created, where it leaked, who has seen it</strong>. That list becomes your rotation checklist and, if abuse occurred, your evidence log (see the <a href="data-breach-first-24-hours.html">first-24-hours breach checklist</a> for the preserve-before-you-act rule).</p>
+
+<h2>2. Rotate in the safe order (minutes 10&ndash;30)</h2>
+<p>The classic self-inflicted outage is revoking first and discovering production was using the key. The safe dance:</p>
+<ul>
+<li><strong>Create the replacement key first</strong> &mdash; most providers allow two live keys during a rotation window.</li>
+<li><strong>Deploy the new key everywhere the old one is used</strong>: secrets manager, server config, CI variables, cron jobs, local dotfiles for the two engineers who run things by hand.</li>
+<li><strong>Verify the new key works</strong> with a real call in staging or a dry run, <em>then</em> revoke the old key. Revoke &mdash; don't just delete the file.</li>
+<li><strong>Can't stage it?</strong> For keys with no rotation window (single live key), accept the brief outage or pause the job: revoke, fix, restart. A 10-minute outage beats a drained cloud account.</li>
+<li><strong>Shrink while you're there:</strong> if the old key was all-scopes, issue the replacement with least privilege and an expiry or IP allowlist where the provider supports one.</li>
+</ul>
+
+<h2>3. Check for real abuse (in parallel, minutes 10&ndash;60)</h2>
+<ul>
+<li><strong>Usage dashboard:</strong> look for calls you didn't make &mdash; unfamiliar endpoints, regions, user agents, or a spike since the leak date.</li>
+<li><strong>Billing first, dispute second:</strong> if spend occurred, revoke the key, then contact the provider's abuse/fraud desk with your timeline. Providers generally treat scraped-key spend fairly <em>if you reported fast</em> &mdash; which is one more reason not to sit on it.</li>
+<li><strong>Cloud keys:</strong> check for new IAM keys, new resources in odd regions, and forwarded email rules. Assume persistence until proven otherwise.</li>
+<li><strong>OAuth client secrets:</strong> revoking the client secret kills refresh tokens &mdash; expect users to re-authenticate; that's correct behavior, not a bug.</li>
+<li><strong>Preserve the logs</strong> before you delete anything &mdash; export the audit trail first (see the <a href="log-retention-policy-small-teams.html">log retention policy</a> for how long to keep it).</li>
+</ul>
+
+<h2>4. Purge the copies that matter (minutes 30&ndash;60)</h2>
+<ul>
+<li><strong>Assume it was scraped.</strong> Secret-scanning bots hit public repos in minutes. History cleanup protects you from the <em>next</em> reader, not from whoever already has the string &mdash; revocation remains the real fix.</li>
+<li><strong>Rewrite or replace:</strong> if the repo is public and you can, purge the blob from history; if you can't, delete-and-rotate is acceptable when the key is confirmed revoked. Weigh a force-push rewrite against your team's reality before doing it.</li>
+<li><strong>Sweep the quiet copies:</strong> CI logs, error-tracker events, Slack messages, support tickets, screenshots, laptop dotfiles, and any "quick test" scripts. These outlive the repo.</li>
+<li><strong>Close the hole, not just the instance:</strong> the leak happened through a process &mdash; a missing <code>.gitignore</code>, a hardcoded default, a verbose logger. Fix that in the same hour, or next week it happens again.</li>
+</ul>
+
+<h2>5. The prevention pass (this week, 30 minutes)</h2>
+<ul>
+<li><strong>Secret-scanning in CI</strong> (provider-native scanning or an open-source pre-commit hook) &mdash; it catches the leak at push time, when it's cheap.</li>
+<li><strong><code>.env</code> files stay out of the repo</strong>, with a committed <code>.env.example</code> so onboarding still works.</li>
+<li><strong>Least-privilege scopes and expiries</strong> on every new key; an expired key can't leak next year.</li>
+<li><strong>CI variable masking</strong> so tokens print as <code>***</code> in logs &mdash; the second most common leak source.</li>
+<li><strong>A quarterly two-minute audit:</strong> grep the codebase and home directories for <code>sk_</code>, <code>AKIA</code>, <code>ghp_</code> and friends; list every live key with an owner and an expiry.</li>
+</ul>
+
+<h2>The mistakes that turn a leak into a crisis</h2>
+<ul>
+<li><strong>Revoking before deploying the replacement.</strong> You turn a security scare into a production outage and a rollback under pressure.</li>
+<li><strong>Deleting the file and calling it fixed.</strong> Git history, CI logs, and pasted messages all still have the key.</li>
+<li><strong>Trusting "private repo" as safety.</strong> Forks, CI logs, and misconfigured visibility turn private into public regularly.</li>
+<li><strong>Not checking spend.</strong> Crypto-mining on a leaked cloud key is a business model; the bill is the symptom you find last.</li>
+<li><strong>Rotating "everything" in a panic.</strong> Mass rotation without a written map breaks production twice in one night &mdash; rotate the leaked key's blast radius first, the rest on schedule (see the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a>).</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Scope, rotate in the safe order, check for abuse, purge</strong> &mdash; in that order, in one hour.</li>
+<li><strong>Revocation is the fix; history cleanup is hygiene.</strong></li>
+<li><strong>Fix the process that leaked it</strong> the same week, or the next leak is already scheduled.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the incident templates and evidence-log structure that make key-leak response survivable, and <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Vol. 2 ($27)</strong></a> adds the full DR plan and evidence log. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 DR plan + evidence log</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist (Rotate What Leaks, Not Everything)</a></li>
+<li><a href="data-breach-first-24-hours.html">Suspected Data Breach: the First 24 Hours for Small Teams</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes of an Incident</a></li>
+<li><a href="log-retention-policy-small-teams.html">Log Retention Policy for Small Teams</a></li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams (First 10 Servers)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
