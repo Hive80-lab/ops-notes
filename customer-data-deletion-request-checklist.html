@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Customer Data Deletion Request Checklist for Small Teams (The 30-Day Clock After "Delete My Data")</title>
+<meta name="description" content="A small-team playbook for customer deletion requests: the 48-hour acknowledge-and-verify sequence, a data inventory that finds the copies, what tax law won't let you delete, the processor relay, how backups change the meaning of &quot;deleted&quot;, and the confirmation letter that closes the request &mdash; so one email from a customer doesn't become a compliance incident.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Customer data deletion requests for small teams</h1>
+
+<p>The scariest email a small business can receive is short: <em>"Under GDPR/CCPA I'm requesting that you delete all personal data you hold about me."</em> Nothing is broken, nobody is angry &mdash; and yet most small teams freeze, because nobody knows whether deleting is required, allowed, or even possible across the nine systems that hold the customer's name. <strong>The deadline pressure is real (typically one month under GDPR, 45 days under CCPA), the penalty for a sloppy response is real, and &mdash; the part nobody advertises &mdash; fake deletion requests are also a social-engineering play.</strong></p>
+
+<p>This checklist turns the panic into a sequence: acknowledge, verify, inventory, delete what's deletable, keep what the law makes you keep, tell the processors, and close in writing. It costs one afternoon to prepare and about two hours per real request after that.</p>
+
+<h2>1. First 48 hours: acknowledge, then verify &mdash; in that order</h2>
+
+<p>Two moves, and the order matters:</p>
+
+<ul>
+<li><strong>Acknowledge receipt within days, not weeks.</strong> One paragraph: "We've received your request and will respond in full by [date within 30 days]." No admissions, no data listings, no promises beyond the deadline. This is also your defense exhibit that the clock was handled professionally.</li>
+<li><strong>Verify the requester is the data subject before touching anything.</strong> Ask for confirmation of identity via a channel you already have on file &mdash; reply to the email <em>they wrote from</em>, or confirm a detail only the real customer knows (last order number, not a full data dump). A deletion request arriving from a fresh address about "their" account is a known account-takeover play: the attacker wants you to list what data exists, or to lock a real customer out of their account.</li>
+<li><strong>Log the request the day it arrives.</strong> Received date, channel, requester, verification status, response due date, outcome. Regulators ask for the log, not for good intentions &mdash; and if you get three requests a year, a spreadsheet is your compliance program.</li>
+<li><strong>Never confirm or deny what data exists until identity is verified.</strong> "We can't discuss account details until you verify X" is both the safe answer and the polite one.</li>
+</ul>
+
+<p>The verification step costs one email. Skipping it is how a routine compliance request becomes the <a href="data-breach-first-24-hours.html">first hour of a data breach</a>.</p>
+
+<h2>2. Build the inventory: where the data actually lives</h2>
+
+<p>The request says "all personal data." Reality is a map of copies. Before deleting anything, list where the person exists:</p>
+
+<ul>
+<li><strong>The obvious systems.</strong> CRM or spreadsheet, email inbox and sent folders, support ticket tool, accounting records.</li>
+<li><strong>The quiet ones.</strong> Mailing list provider, analytics, chat tools (Slack threads mentioning the customer), calendar invites, shared drives, phone contact lists.</li>
+<li><strong>Other people's servers.</strong> Payment processor, shipping provider, cloud backups, and every SaaS tool the customer's data flowed into. This is the processor relay in section 4.</li>
+<li><strong>Free-text searches are your friend.</strong> Search by email address across every tool you own &mdash; it finds the ticket from 2023 that the CRM export missed. Search the support inbox, then the archive.</li>
+</ul>
+
+<p>If you can't produce this inventory in under an hour, that's the finding: the SaaS sprawl audit (<a href="saas-sprawl-audit-checklist.html">one hour, one owner per tool</a>) is the fix, and it's cheaper to do before the request than during it.</p>
+
+<h2>3. Delete what's deletable &mdash; and know what you must keep</h2>
+
+<p>Here's the part that surprises people: <strong>the right to erasure is not a right to erase your accounting records.</strong> Split the inventory into two piles:</p>
+
+<ul>
+<li><strong>Delete outright:</strong> marketing profile data, behavioral analytics tied to the person, notes, chat threads, mailing list subscription, non-transactional support history.</li>
+<li><strong>Keep, and say so:</strong> invoices and tax records (retention periods are set by tax law &mdash; commonly 5&ndash;7 years), fraud and chargeback records, records of consent (you need these to prove you had permission), and records of the deletion request itself. Retention rules for operational data belong in your <a href="log-retention-policy-small-teams.html">log retention policy</a>.</li>
+<li><strong>Restrict instead of delete where required.</strong> For kept records, remove the data from marketing use, suppress the email address from all sends, and mark the record "erasure requested, retained for tax purposes until [date]." The request is satisfied by the combination, not by pretending the invoice doesn't exist.</li>
+<li><strong>Delete everywhere, not just in the UI.</strong> The CRM "delete" button often leaves the record in exports, integrations, and caches. The standard is: if you know a copy exists and it's reasonably accessible, it goes too.</li>
+</ul>
+
+<h2>4. The processor relay: your vendors hold most of the data</h2>
+
+<p>A small team's honest inventory says the quiet part out loud: <strong>you don't hold most of the data &mdash; your SaaS vendors do.</strong> The deletion isn't done until it's done there:</p>
+
+<ul>
+<li><strong>Send the deletion request to each processor.</strong> Mailing list tool, support desk, payment processor, analytics. Most have a self-serve deletion or a documented DSAR channel &mdash; use it, and save the confirmation.</li>
+<li><strong>Check each vendor's role.</strong> Some act on your behalf (you instruct, they execute); a few are independent controllers for parts of the data (a payment processor keeps transaction records for financial law &mdash; that's their obligation, not your failure).</li>
+<li><strong>Track the relay.</strong> One row per vendor: requested date, confirmed date, exceptions claimed. The vendor page of the <a href="vendor-security-review-checklist.html">vendor security review</a> should already have a data-contact column &mdash; this is where it earns its keep.</li>
+<li><strong>Don't forget backups.</strong> See section 5 &mdash; this is where "deleted" gets its fine print.</li>
+</ul>
+
+<h2>5. What "deleted" means when you have backups</h2>
+
+<p>Nobody can surgically remove a person from last Tuesday's backup, and no regulator expects them to. What's expected is a defensible answer:</p>
+
+<ul>
+<li><strong>The standard position:</strong> data is deleted from live systems immediately; backup copies age out on the normal schedule (that's your <a href="backup-restore-test-checklist.html">backup retention window</a>), and if a backup is ever restored, the deletion request is re-applied to the restored data.</li>
+<li><strong>Write the rule down.</strong> One sentence in your response: "Personal data has been deleted from our active systems; backup copies are deleted on our standard 35-day rotation, and any restoration re-applies your request." That sentence is the difference between a compliance answer and an excuse.</li>
+<li><strong>Suppress before expiry.</strong> Keep the email address on a suppression list so a restored backup doesn't resurrect the person into a marketing send &mdash; that's the failure mode that turns a handled request into a complaint.</li>
+</ul>
+
+<h2>6. Close in writing: the confirmation that ends the clock</h2>
+
+<p>The request is complete when the requester knows it is. The closing letter is short:</p>
+
+<ul>
+<li><strong>What was deleted</strong> &mdash; named categories ("marketing profile, mailing list subscription, support history, analytics records"), not system dumps.</li>
+<li><strong>What was kept and why</strong> &mdash; "invoice records retained for [7] years as required by tax law; a record of this request kept to prove compliance." Specific exceptions pre-empt the follow-up email.</li>
+<li><strong>The backup sentence</strong> from section 5.</li>
+<li><strong>The processor note</strong> &mdash; "requests forwarded to [list], confirmations attached/available."</li>
+<li><strong>The date and a contact</strong> &mdash; so the next question has somewhere to go instead of a regulator.</li>
+<li><strong>Keep a copy of the letter with the log entry.</strong> Response letter + log row + vendor confirmations = your entire evidence file for this request, forever.</li>
+</ul>
+
+<h2>7. Make it a procedure, not an improvisation</h2>
+
+<p>One request handled well is luck; three handled well is a process. After the first real request, spend thirty minutes making it repeatable:</p>
+
+<ul>
+<li><strong>One page, named owner.</strong> Who receives the request, the 48-hour acknowledge step, the inventory template, the deletion/keep split, the closing letter. Store it with your other runbooks so it survives the person who wrote it.</li>
+<li><strong>Pre-build the two templates</strong> &mdash; acknowledgment and closing letter &mdash; so the writing is deletion-and-fill, not composition under a clock.</li>
+<li><strong>Run the inventory drill annually.</strong> The <a href="annual-security-review-checklist.html">annual security review</a> already inventories systems and access; add one line: "can we find one person's data everywhere in under an hour?" If not, the sprawl audit is due.</li>
+<li><strong>Prevention beats response.</strong> Every field you don't collect is a field you never have to delete. The "we'll need it someday" column is where deletion requests go to become week-long projects.</li>
+</ul>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="data-breach-first-24-hours.html">Suspected Data Breach: the First 24 Hours for Small Teams</a></li>
+<li><a href="vendor-offboarding-data-deletion-checklist.html">Vendor Offboarding &amp; Data Deletion Checklist</a></li>
+<li><a href="log-retention-policy-small-teams.html">Log Retention Policy for Small Teams</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review for Small Teams</a></li>
+<li><a href="saas-sprawl-audit-checklist.html">SaaS Sprawl Audit for Small Teams</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist for Small Business</a></li>
+<li><a href="email-security-checklist.html">Email Security Checklist for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>

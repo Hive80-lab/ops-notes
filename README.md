@@ -1,3 +1,4 @@
+- [Customer Data Deletion Requests](customer-data-deletion-request-checklist.html) — 48h acknowledge+verify, search-based inventory, delete/keep split, processor relay, backup sentence, closing letter.
 - [Domain Expiry & Hijack Protection](domain-hijack-protection-checklist.html) — transfer lock, billing alarms at 60/30/7, independent recovery email, quarterly RDAP drill, first-hour transfer response.
 - [Invoice Fraud & BEC Prevention](invoice-fraud-bec-prevention-checklist.html) — callback on ledger numbers, two-person payments, four fraud plays, first-hour wire recall, quarterly drill.
 - [Annual Security Review for Small Business](annual-security-review-checklist.html) — one morning: restore test, secrets, access, phish drill, one-page record.
