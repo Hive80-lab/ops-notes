@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Disk Full Incident Runbook for Small Teams (The 80% Line, the Usual Suspects, and the Safe Cleanup Order)</title>
+<meta name="description" content="A runbook for disk-full incidents: the safe cleanup order that frees space without deleting evidence, the usual suspects (logs, journal growth, Docker layers, snapshots), and the guardrails that stop it recurring.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Disk Full Incident Runbook for Small Teams</h1>
+<p class="lede">A full disk doesn't announce itself &mdash; it takes friends down with it: the database stops writing, logs vanish, backups silently fail, and the monitoring agent that would have told you can't write its own data. The runbook has four parts: <strong>breathing room first (safely), the usual suspects, the cleanup order that doesn't destroy evidence, and the guardrails that stop the sequel</strong>.</p>
+
+<h2>1. Buy breathing room &mdash; without deleting the evidence</h2>
+<p>You need space <em>now</em>, but the first deletions decide whether the post-incident review has data. Safe first moves:</p>
+<ul>
+<li><strong>Truncate, don't delete, active logs:</strong> <code>: &gt; big.log</code> (or <code>journalctl --vacuum-size=200M</code>) frees space while keeping the file handle valid &mdash; deleting a log a service holds open frees <em>zero</em> space and loses history.</li>
+<li><strong>Clear known-safe caches:</strong> package-manager caches, old build artifacts, /tmp older than a week. Not the database directory. Not the backup directory.</li>
+<li><strong>Check the WAL/transaction log:</strong> if the disk filled because the database stalled, the fastest fix is usually disk space &mdash; the database recovering is the incident ending.</li>
+</ul>
+<p>One rule above all: <strong>never <code>rm -rf</code> a directory you can't explain.</strong> Disk pressure plus improvisation is how backups die with the server.</p>
+
+<h2>2. The usual suspects</h2>
+<ul>
+<li><strong>Log growth without rotation</strong> &mdash; a debug level left on, a log shipper retrying into a local file, or rotation configured but never installed.</li>
+<li><strong>Journal and audit growth</strong> &mdash; systemd journal, auth logs after a brute-force wave, cron mail nobody reads.</li>
+<li><strong>Docker/container layers</strong> &mdash; dangling images, orphaned volumes, and build caches from every deploy since forever.</li>
+<li><strong>Backups colliding with backups</strong> &mdash; local snapshots never pruned, a dump job writing into the same disk it's dumping.</li>
+<li><strong>The core-dump surprise</strong> &mdash; a crash-looping service writing cores on every restart, multiply quickly.</li>
+</ul>
+
+<h2>3. The safe cleanup order</h2>
+<ol>
+<li><strong>Find the top offenders</strong> (<code>du -x --max-depth=2</code> or <code>ncdu</code>) &mdash; two minutes, and the tree usually explains itself.</li>
+<li><strong>Truncate active logs</strong> and vacuum journals. This alone typically buys the day.</li>
+<li><strong>Prune containers/layers</strong> with the tool's own commands (<code>docker system prune</code> and friends) &mdash; never by hand in /var/lib.</li>
+<li><strong>Move, don't delete, anything ambiguous</strong> to a quarantine directory (same filesystem is fine) &mdash; decide its fate in the review, with time pressure off.</li>
+<li><strong>Verify the service recovered</strong> before closing: the database writes, the cron runs, the backup completes <em>tonight</em> &mdash; not "next week".</li>
+</ol>
+
+<h2>4. The guardrails that stop the sequel</h2>
+<ul>
+<li><strong>The 80% alert is non-negotiable.</strong> One alert, one threshold, outside view. The disk that fills from 85% to 100% in an afternoon was always going to page somebody &mdash; the only question is whether it pages you at 80% or the database at 100%.</li>
+<li><strong>Rotation with size caps</strong> on every log: rotate + compress + delete after N days. Unbounded logging is a delayed incident.</li>
+<li><strong>Backups land off-box</strong> &mdash; a backup that fills the production disk isn't a backup, it's a second incident waiting for the first.</li>
+<li><strong>A weekly five-minute disk review</strong> (scripted, top-10 largest directories) catches the slow leaks that never trip the 80% line until they do.</li>
+</ul>
+
+<h2>5. The mistakes that turn disk-full into data-loss</h2>
+<ul>
+<li><strong>Deleting the backup directory to free space.</strong> Under pressure, "biggest folder first" logic does this. The backup is the one directory you never touch under pressure.</li>
+<li><strong>Deleting files a running service holds open</strong> &mdash; space doesn't free until the process restarts, and the log history is gone anyway. Truncate instead.</li>
+<li><strong>Fixing the disk but not the rotation.</strong> The next incident is already scheduled; it just needs a busy week to arrive.</li>
+<li><strong>No 80% alert anywhere</strong> &mdash; meaning the first sign was a database refusing writes. That's the expensive version.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Truncate active logs; delete only what you can explain.</strong> Under pressure, move ambiguous things aside instead of deleting them.</li>
+<li><strong>The usual suspects are boring:</strong> unrotated logs, journal growth, Docker layers, colliding backups, core dumps.</li>
+<li><strong>The 80% alert plus off-box backups</strong> turn this from a recurring emergency into a five-minute weekly review.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns the first-hour chaos of any incident &mdash; disk-full included &mdash; into a fillable plan, and <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> turns the disk review, log rotation, and backup sweeps into workflows that run by themselves. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule)</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup &amp; Restore Testing Checklist</a></li>
+<li><a href="cron-job-monitoring-checklist.html">Cron Job Monitoring Checklist (Heartbeats Catch Silent Failures)</a></li>
+<li><a href="log-retention-policy-small-teams.html">Log Retention Policy for Small Teams</a></li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams (First 10 Servers)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
