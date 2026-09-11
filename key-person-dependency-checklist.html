@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Key-Person Dependency Checklist for Small Teams: The Bus-Factor Audit That Survives a Resignation &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A key-person dependency checklist for small teams: the bus-factor audit that finds the people who hold everything in their heads, the five answers to capture before they leave, the quarterly two-people-per-task test, and the calm runbook for the morning notice lands.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Key-Person Dependency Checklist for Small Teams</h1>
+<p class="lede">Every small team has one: the person who <strong>knows how the invoices get sent, why the firewall is configured that way, and where the export script lives</strong> &mdash; all from memory. The bus-factor audit asks one honest question: <em>if this person got hit by a bus tomorrow, what stops?</em> The checklist has five parts: <strong>find the single points of failure, capture the five answers they hold, make the password manager carry the load, prove a second person can do the work, and write the runbook for the morning notice lands</strong>. An hour a quarter, done before you need it.</p>
+
+<h2>1. The audit: name the people, not the titles</h2>
+<p>Start with a one-page table. One row per <em>person whose absence would hurt</em> &mdash; not job titles, actual humans. Most ten-person teams find two or three:</p>
+<table>
+<tr><th>Person</th><th>What only they know</th><th>What breaks on day 1</th><th>Mitigation owner</th></tr>
+<tr><td>The ops/sysadmin</td><td>Firewall rules, server quirks, deploy steps, vendor logins</td><td>Remote access, deploys, the odd cable nobody knows the purpose of</td><td>Second admin (see the <a href="admin-first-week-runbook.html">admin first-week runbook</a>)</td></tr>
+<tr><td>The bookkeeper</td><td>Which autopays run off which account, who gets paid when</td><td>Payroll, a surprise charge, the audit question nobody can answer</td><td>Owner + shared finance vault</td></tr>
+<tr><td>The founder/sales lead</td><td>Which customer tolerates what, every unwritten promise</td><td>The renewal call, the escalation nobody else has context for</td><td>Shared CRM notes, not memory</td></tr>
+</table>
+<p>If your instinct is <em>"we're too small for this"</em> &mdash; that is exactly when it matters. Small teams have the fewest people to absorb a gap. Keep the table in the same place as the <a href="delegation-of-authority-template.html">delegation of authority</a> page, because they answer each other.</p>
+
+<h2>2. The five answers to capture while the person still works here</h2>
+<p>Knowledge capture fails when it is vague ("document everything"). It works when it is five named artifacts:</p>
+<ul>
+<li><strong>Credentials</strong> &mdash; every login they hold lives in the shared password manager vault, not their browser profile or a note on their desk. If you do nothing else on this page, do this one (see the <a href="password-manager-rollout-small-business.html">password manager rollout</a>).</li>
+<li><strong>Runbooks</strong> &mdash; the ten recurring procedures written as steps a stranger can follow: deploys, backups, the monthly close, the renewal run. Use the <a href="runbook-template.html">runbook template</a>; aim for ten, not a hundred.</li>
+<li><strong>Vendor relationships</strong> &mdash; for each critical vendor: the account, the escalation contact, the contract date, and the last promise made verbally. Memory-only vendor knowledge is the gap that shows up as a lapsed domain or an expired license (see the <a href="vendor-escalation-ladder.html">vendor escalation ladder</a> and the <a href="software-license-register.html">software license register</a>).</li>
+<li><strong>The "why" decisions</strong> &mdash; one page of <em>why we did it this way</em>: the firewall rule that looks wrong but is load-bearing, the vendor chosen after the cheaper one failed. Without this, the successor "fixes" the work-around and causes the outage.</li>
+<li><strong>The contact sheet</strong> &mdash; who to call at the ISP, the bank, the IT contractor, the landlord of the server closet. Personal relationships leave with the person; write the names down.</li>
+</ul>
+
+<h2>3. The password manager is the bus-factor fix you already own</h2>
+<ul>
+<li><strong>Shared vaults per role</strong>, not one person's personal vault: an ops vault, a finance vault. Ownership belongs to the role, and the role survives resignations.</li>
+<li><strong>The break-glass account</strong> covers the day the vault itself is unreachable (see the <a href="break-glass-account-checklist.html">break-glass account checklist</a>).</li>
+<li><strong>Rotate what the person owned after they leave</strong> &mdash; the keys, the API tokens, the vendor portal passwords. Departure is the scheduled moment for the <a href="secrets-rotation-checklist.html">secrets rotation</a>, not a someday task.</li>
+<li><strong>No exceptions for "temporary" logins</strong> &mdash; the trial account the sysadmin set up under their own email outlives them and owns the production integration. Hunt for those during the audit.</li>
+</ul>
+
+<h2>4. Prove it: the two-hour shadow test</h2>
+<p>Documentation that has never been used by a second person is a hope, not a control. Once a quarter, per critical person:</p>
+<table>
+<tr><th>Step</th><th>Pass condition</th></tr>
+<tr><td>Pick the top three recurring tasks from the runbook list</td><td>Two people named per task, written on the dependency table</td></tr>
+<tr><td>The second person does the task <em>alone</em>, docs only</td><td>Completed with zero questions to the primary</td></tr>
+<tr><td>Every question they had to ask</td><td>Answered <em>in the doc</em> the same day &mdash; that is the gap list</td></tr>
+<tr><td>Anything that lived only in the primary's head</td><td>Captured before the test ends, or it never happened</td></tr>
+</table>
+<p>The same logic drives the <a href="oncall-handoff-checklist.html">on-call handoff</a> and the <a href="incident-response-drill-schedule-template.html">drill schedule</a>: rehearsed is real, unread is decoration. Keep the docs findable &mdash; the <a href="process-documentation-best-practices.html">process documentation practices</a> page covers where they live so nobody has to ask where the wiki is.</p>
+
+<h2>5. The single-point-of-failure register</h2>
+<p>The audit output is one page, kept next to the dependency table:</p>
+<ul>
+<li><strong>Every critical task: at least two people</strong> who can do it and one named backup. "Primary is on holiday" should be a scheduling fact, not an emergency.</li>
+<li><strong>Every critical credential: in the vault</strong>, with the owner listed as the role.</li>
+<li><strong>Every critical vendor: two contacts</strong> &mdash; the account owner and the person who knows the contract (see the <a href="vendor-contract-checklist.html">vendor contract checklist</a>).</li>
+<li><strong>Every critical system: one line of "if this person leaves, do X first"</strong> &mdash; the X is usually <em>rotate credentials</em> plus <em>read the runbook</em>.</li>
+<li><strong>The quarterly diff</strong>: re-run the audit with the <a href="user-access-review-checklist.html">user access review</a> &mdash; the same quarter, the same meeting, ten extra minutes.</li>
+</ul>
+
+<h2>6. The morning notice lands &mdash; the departure runbook</h2>
+<p>The planned version and the 8 a.m. resignation version share one rule: <strong>the relationship stays warm and the knowledge capture gets scheduled, in that order</strong>.</p>
+<ul>
+<li><strong>Hour one</strong>: thank them, agree the last day, and book the capture sessions now &mdash; two 90-minute sessions this week beats "write everything down before you go."</li>
+<li><strong>Session one</strong>: the vault sweep &mdash; move every personal-held credential into the shared vault while they are present. This is the highest-value hour in the whole plan.</li>
+<li><strong>Session two</strong>: walk the runbooks &mdash; they narrate, the successor drives, the gaps get fixed live. Record the "why" decisions in the doc, not in a video nobody will re-watch.</li>
+<li><strong>Same week</strong>: rotate what they own (the <a href="secrets-rotation-checklist.html">rotation checklist</a>), transfer vendor contacts, and run the standard <a href="employee-offboarding-checklist.html">offboarding checklist</a> &mdash; the dependency work rides on top of it, never instead of it.</li>
+<li><strong>The two-week-after check</strong>: the successor runs one critical task end to end and reports what they had to guess. Fix the doc, close the file.</li>
+</ul>
+<p>If the exit is hostile or sudden, skip the warmth and go straight to the vault sweep, the rotation, and offboarding &mdash; the same order, minus the sessions that require cooperation.</p>
+
+<h2>7. The quarterly bus-factor card</h2>
+<table>
+<tr><th>Quarter</th><th>Do</th><th>Done when</th></tr>
+<tr><td>Q1</td><td>Re-run the dependency table; diff against staff changes</td><td>Every row has a second name</td></tr>
+<tr><td>Q2</td><td>Shadow test: two critical tasks, docs only</td><td>Zero questions to the primary</td></tr>
+<tr><td>Q3</td><td>Vault audit: no personal-held production credentials</td><td>Zero exceptions, break-glass still tested</td></tr>
+<tr><td>Q4</td><td>Full drill: primary is "away for two weeks," successor runs the week</td><td>Nothing escalated to the absent primary</td></tr>
+</table>
+<p>The score that matters: <strong>how many critical things stop if one person disappears?</strong> The first audit usually says "most of them." Two quarters of this checklist moves it toward zero &mdash; and the team gets calmer, because the knowledge stopped living in a head and started living in a place.</p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="runbook-template.html">Runbook Template for Small Teams</a> &mdash; the format the captured knowledge lives in.</li>
+<li><a href="process-documentation-best-practices.html">Process Documentation Best Practices</a> &mdash; where the docs live so nobody has to ask.</li>
+<li><a href="sop-checklist-template.html">SOP Checklist Template</a> &mdash; the recurring task version of the same idea.</li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout for Small Business</a> &mdash; the shared-vault fix this page leans on.</li>
+<li><a href="break-glass-account-checklist.html">Break-Glass Account Checklist</a> &mdash; the login that works when the vault does not.</li>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist</a> &mdash; the standard departure lane this runbook extends.</li>
+<li><a href="delegation-of-authority-template.html">Delegation of Authority Template</a> &mdash; who decides what while the primary is away.</li>
+<li><a href="admin-first-week-runbook.html">The New Admin's First Week Runbook</a> &mdash; the successor side of the handover.</li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a> &mdash; rotate what the leaving person owned.</li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a> &mdash; the quarterly meeting this audit rides with.</li>
+<li><a href="oncall-handoff-checklist.html">On-Call Handoff Checklist</a> &mdash; the weekly version of the knowledge transfer.</li>
+<li><a href="software-license-register.html">Software License Register</a> &mdash; every key and seat out of one person's head.</li>
+<li><a href="vendor-escalation-ladder.html">Vendor Escalation Ladder</a> &mdash; vendor knowledge written down, not remembered.</li>
+<li><a href="vendor-contract-checklist.html">Vendor Contract Checklist</a> &mdash; the clauses the second contact needs to know.</li>
+</ul>
+</aside>
+</main>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
