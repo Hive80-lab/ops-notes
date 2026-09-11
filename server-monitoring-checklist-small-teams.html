@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule) &mdash; Free Template</title>
+<meta name="description" content="A free server monitoring checklist for small teams: the 5 signals that catch 90% of outages, one alert rule that doesn't spam you, SSL/domain expiry checks, the weekly disk-space killer, and why alert fatigue kills faster than outages. Copy-paste ready.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main><article>
+<h1>Server Monitoring Checklist for Small Teams</h1>
+<p class="sub">Five signals, one alert rule, and a 10-minute weekly review. Written for teams of 2&ndash;30 who can't staff a NOC and don't need one &mdash; just a system that screams only when it should.</p>
+
+<p>Small teams fail at monitoring in one of two ways. The first is no monitoring at all: you find out from a customer tweet, four hours after the outage started. The second is the opposite &mdash; every metric alerts, all the time &mdash; and the team installs a mute on the whole channel. Muted alerting is worse than no alerting, because you <em>believe</em> you're covered. Both failures come from the same mistake: treating monitoring as a tooling purchase instead of a 30-minute checklist.</p>
+
+<p>Here's the whole checklist. It assumes nothing fancier than uptime checks and a free tier of whatever you already use.</p>
+
+<h2>The five signals that catch 90% of small-team outages</h2>
+
+<ol>
+<li><strong>Is the service up? (HTTPS check from outside.)</strong> One request per minute to your most important URL, from a box that isn't yours (UptimeRobot free tier, a cron job on another VPS, whatever). Must check the <em>status code and the page content</em>, not just TCP connect &mdash; a port that answers with a 500 stack trace is not up. Expect 10&ndash;20 false alarms a year; still cheaper than one four-hour silent outage.</li>
+<li><strong>Is the disk filling up?</strong> The #1 silent killer of small servers. A log rotation you never configured, a backup directory nobody prunes, a database that grew 3GB in a month. Alert at 80% disk. At 100%, everything fails at once: the database stops writing, your logs vanish, and the postmortem has no evidence.</li>
+<li><strong>Did the job actually run? (Heartbeat.)</strong> Every cron job or scheduled script that matters should ping a dead-man's-switch service (healthchecks.io free tier) when it finishes. Alert when the ping is late. "The backup failed silently on Tuesday and we noticed on Thursday" is the standard small-team horror story, and a heartbeat kills it dead.</li>
+<li><strong>Are the certificates and domains expiring?</strong> SSL cert expired, domain lapsed, payment card on the registrar expired. All three are 30-second fixes that produce full outages. Check expiry at 21 days out, and put the renewals on a calendar that isn't owned by one person.</li>
+<li><strong>Does the login path work?</strong> A synthetic "can a user actually log in and do the one action that pays us" check. This catches what the other four can't: the service is up, the ports are open, but the auth provider is rate-limiting you or the session store is dead. It's the difference between "nobody noticed" and "a user noticed."</li>
+</ol>
+
+<h2>The one alert rule that doesn't spam you</h2>
+
+<table>
+<tr><th>Signal</th><th>Condition</th><th>Channel</th></tr>
+<tr><td>Service up</td><td>2 consecutive failures (not 1)</td><td>Phone (SMS/call)</td></tr>
+<tr><td>Disk</td><td>&gt; 80% for 30 min</td><td>Phone</td></tr>
+<tr><td>Heartbeat</td><td>Expected ping late by 2 periods</td><td>Phone</td></tr>
+<tr><td>SSL / domain</td><td>&lt; 21 days remaining</td><td>Email, weekly digest</td></tr>
+<tr><td>Login path</td><td>2 consecutive failures</td><td>Phone</td></tr>
+</table>
+
+<p>Two rules follow from that table. First: <strong>every phone-channel alert has a runbook line attached</strong> &mdash; one sentence saying what to do. "Disk 82% &mdash; run du -x / | sort -h | tail, likely /var/log." If the alert fires and the reader's first thought is "so&hellip; what do I do?", the alert was misconfigured. Second: <strong>anything that can wait until morning goes to email, and email alerts get triaged in the weekly review</strong> &mdash; see the <a href="weekly-review-checklist.html">weekly ops review</a>. A phone channel with 5 alerts a week will be muted by Friday. A phone channel that fires once a month, with a fix attached, is the whole point.</p>
+
+<h2>Alert fatigue: the silent outage killer</h2>
+
+<p>When the phone channel starts chiming with non-actionable noise (single blips, CPU spikes that mean nothing), teams don't tune the alerts &mdash; they turn the channel down. Then the real alert lands in a channel that's been muted for weeks. The countermeasure is cheap and boring:</p>
+
+<ul>
+<li><strong>Any alert that pages someone and requires no action gets fixed or downgraded within a week.</strong> Log it in the alert channel. Non-actionable alerts are bugs in your configuration, not facts about your servers.</li>
+<li><strong>Consecutive-failure logic everywhere.</strong> One missed ping from a free-tier monitor is weather; two in a row is data. (Yes, this doubles detection time. From 1 minute to 2. Worth it.)</li>
+<li><strong>Weekly review: count the pages.</strong> More than ~5 phone alerts a week means thresholds are wrong. Fix the threshold, not the volume.</li>
+</ul>
+
+<h2>The 10-minute weekly monitoring review</h2>
+
+<p>Same slot as your patch review (or the <a href="weekly-review-checklist.html">weekly ops review</a>):</p>
+
+<ol>
+<li>Skim the week's alerts: every one should be either fixed, downgraded, or documented. Any orphan (fired, nobody acted) gets a line in the log.</li>
+<li>Check disk trend on every host. 80% is the alert line; the weekly review should notice the <em>curve</em>, not the threshold &mdash; a disk that grows 5% a week is a known incident waiting for its date.</li>
+<li>Heartbeat audit: every cron job that matters has a heartbeat, and every heartbeat has an owner.</li>
+<li>Expiry sweep: SSL certs, domains, and any paid API with a card on file. 21-day rule.</li>
+<li>One question: "If the phone fired tonight, would the on-call person know what to do?" If no &mdash; that's this week's fix. (The <a href="on-call-rotation-schedule-template.html">on-call rotation template</a> covers who gets the phone; the handover notes what they'll find.)</li>
+</ol>
+
+<h2>What you can skip (for now)</h2>
+
+<p>You do not need Prometheus, Grafana, ELK, or an observability engineer. Those are tools for teams with more servers than people. A checklist, a free uptime monitor, a dead-man's switch for your jobs, and one disciplined weekly review will outperform an abandoned Grafana dashboard on every metric that matters: time-to-detect, time-to-restore, and how much the team trusts the alerts. Migrate to real dashboards when (a) the five signals genuinely can't see a failure you've had, or (b) you have more than ~5 servers. Not before.</p>
+
+<p>The pattern behind this page is the same one behind the <a href="first-30-minutes-incident-response.html">first 30 minutes of an incident</a>: detection is only half the job &mdash; the alert has to land on a person who has a card in their hand telling them what to do next. Monitoring without runbooks just moves the panic from the outage to the alert.</p>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> includes the full monitoring pack &mdash; the 5-signal checklist, the alert-rule table, and the 10-minute weekly review card &mdash; plus the advanced incident response and continuity templates. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so heartbeats, health checks and log rotation run without a human remembering them</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="on-call-rotation-schedule-template.html">On-Call Rotation Template for Small Teams (2&ndash;6 People)</a></li>
+<li><a href="weekly-review-checklist.html">Weekly Review Checklist for Ops</a></li>
+<li><a href="disaster-recovery-plan-template-small-teams.html">Disaster Recovery Plan Template (The One-Page DR Plan)</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes: Incident Response for Small Teams</a></li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist for Small Teams</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+</main>
+</body>
+</html>
