@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Server Hardening Checklist for Small Teams (First 10 Servers) &mdash; Free Template</title>
+<meta name="description" content="A free server hardening checklist for small teams: the 10 controls that stop most break-ins (SSH keys, no root login, ufw default-deny, unattended security patches, 2FA on the control panel), what to skip, and the 30-minute first-server card. Copy-paste ready.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main><article>
+<h1>Server Hardening Checklist for Small Teams</h1>
+<p class="sub">Ten controls, one afternoon, no security engineer. Written for the first 1&ndash;10 production servers a small team runs &mdash; the window when you're visible on the internet and nobody owns security yet.</p>
+
+<p>Small teams don't get attacked by nation-states. They get scanned, continuously, by bots that find the server within hours of the first public IP. The scans look for the boring stuff: password SSH logins, open panels, unpatched CVEs, exposed databases. Almost all of it is stopped by an afternoon of unglamorous configuration &mdash; and almost none of it is done, because hardening guides are written for fleets of 500 servers and nobody with three servers reads them.</p>
+
+<p>Here is the small-team version. It assumes nothing about your stack beyond "a Linux box with SSH."</p>
+
+<h2>The ten controls that stop most of what's out there</h2>
+
+<ol>
+<li><strong>SSH keys only; no passwords; no root login.</strong> In <code>/etc/ssh/sshd_config</code>: <code>PasswordAuthentication no</code>, <code>PermitRootLogin no</code>, then <code>systemctl reload sshd</code>. Verify your key works <em>before</em> you close the old session. This one control eliminates the brute-force background noise entirely &mdash; check <code>/var/log/auth.log</code> after: it goes from hundreds of attempts a day to zero.</li>
+<li><strong>Firewall: default deny, allow only what's public.</strong> <code>ufw default deny incoming</code>, allow 22/80/443, allow your own IP for any admin port, <code>ufw enable</code>. Every database, cache, and admin panel stays unreachable from the internet. "But the port has a password" is not a defense; exposed ports are discovered by scanners within hours.</li>
+<li><strong>Security patches on autopilot.</strong> <code>unattended-upgrades</code> (Debian/Ubuntu) with the <code>-security</code> origin enabled. You still review the weekly log &mdash; pair it with the <a href="patch-management-checklist.html">patch management cadence</a> &mdash; but CVEs with public exploits should not wait for your monthly window.</li>
+<li><strong>Fail2ban on SSH.</strong> Not because you're still using passwords (you aren't &mdash; control 1), but because it also catches token-stuffing and brute-force on any admin surface you later expose, and it costs five minutes.</li>
+<li><strong>Least-privilege service users.</strong> Nothing that faces the internet runs as root or as your personal account. One system user per service, no shell, no shared accounts. When you review logs later, "which user did this" needs a one-word answer.</li>
+<li><strong>2FA everywhere a human logs in.</strong> Hosting console, registrar, DNS, cloud dashboard, version control with deploy keys. The most common small-team breach isn't the server &mdash; it's the *control plane*: a phished hosting password, a hijacked domain. The server is only as hard as the console that controls it.</li>
+<li><strong>Backups that are tested and off-box.</strong> A hardening checklist that doesn't include "the ransomware scenario" is a checklist about the last decade. Encrypted, off-site, versioned &mdash; and restored in a drill. The <a href="backup-restore-test-checklist.html">20-minute restore drill</a> is the version that fits on one page.</li>
+<li><strong>Minimal surface: uninstall what you don't run.</strong> Every installed package is future CVE homework. If nobody can name what a service is for, it goes &mdash; that's the same triage muscle as the <a href="what-to-automate-first.html">what-to-automate-first</a> question.</li>
+<li><strong>Logging that survives the incident.</strong> Ship auth and application logs off-box (even a nightly copy to object storage). Local-only logs die with the box, exactly when you need them. Retention: 90 days is a fine small-team number.</li>
+<li><strong>Expiry watch: certs, domains, cards.</strong> An expired certificate or lapsed domain takes everything down with no attacker involved. This is control 4 in the <a href="server-monitoring-checklist-small-teams.html">monitoring checklist</a> &mdash; if you only adopt one crossover, make it this one.</li>
+</ol>
+
+<h2>What you can skip (for now)</h2>
+
+<p>SELinux/AppArmor tuning, WAFs, SOC tooling, zero-trust mesh, HSMs &mdash; all real, all later. A team of 2&ndash;10 with a default-deny firewall, key-only SSH, automatic security patches, tested backups, and 2FA on the control plane is harder to breach than the median company that buys those tools. The gap between "hardened enough" and "compromised" is almost always an unpatched CVE, a reused password, or an exposed panel &mdash; not a missing advanced feature.</p>
+
+<h2>The 30-minute first-server card</h2>
+
+<p>New box? Before it takes traffic: create your user, paste your key, disable password/root SSH, enable ufw with default-deny, install unattended-upgrades, install fail2ban, create the service user, set up the off-box backup job, add the box to the expiry watch. One card, ten minutes, and every future server starts from safe instead of from "we'll harden it later." Later never comes; the scanner's clock starts in hours.</p>
+
+<p>The deeper pattern is the same one behind the <a href="incident-response-plan-template-small-teams.html">incident response plan</a>: decisions made now, written down, are what you'll execute under pressure. Hardening is incident response that happens in advance.</p>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> includes the full hardening pack &mdash; the ten-control checklist, the first-server card, and the patch log template &mdash; plus the advanced incident response and continuity templates. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so security patches, backups and log shipping run without a human remembering them</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="patch-management-checklist.html">Patch Management Checklist for Small Teams (Monthly Cadence That Ships)</a></li>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule)</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist (The 20-Minute Drill)</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="disaster-recovery-plan-template-small-teams.html">Disaster Recovery Plan Template (The One-Page DR Plan)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+</main>
+</body>
+</html>
