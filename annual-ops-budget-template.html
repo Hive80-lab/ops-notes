@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annual Ops Budget Template for Small Teams (Lines, Reforecast, Kill List)</title>
+<meta name="description" content="An annual ops budget template for small teams: the six budget lines that cover the real spend (SaaS renewals, hardware replacement fund, incident buffer, people-knowledge, security, connectivity), where every number comes from — the license register and asset inventory you already keep — the quarterly reforecast that catches the mid-year upgrade, the kill list that pays for the new tools, and the one-page format that fits on a laptop screen.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Annual Ops Budget Template</h1>
+<p class="lede">Most small teams don't have an ops budget. They have a credit card and a surprise. The invoices arrive scattered — a SaaS renewal here, a laptop there, a $400 emergency router the week the office floods — and each one is "small enough not to discuss." This template turns the scatter into <strong>six budget lines, one reforecast per quarter, and a kill list</strong>. Every number is pulled from records you already keep — the <a href="software-license-register.html">software license register</a> and the <a href="it-asset-inventory-template.html">IT asset inventory</a> — so the budget is an export, not an archaeology project. One page, no finance degree, and the mid-year "we need to buy what?" conversation becomes a fifteen-minute review instead of a crisis.</p>
+
+<h2>1. The six lines that cover real small-team ops spend</h2>
+<p>Budget categories fail when they're too abstract ("infrastructure") or too granular (one line per SaaS tool). Six lines hold the whole weight:</p>
+<table>
+<tr><th>Line</th><th>What lives in it</th><th>Where the number comes from</th></tr>
+<tr><td><strong>1. Software &amp; SaaS renewals</strong></td><td>Every recurring subscription, seat expansion, and annual plan</td><td>Sum the <a href="software-license-register.html">license register</a> — cost × seats × renewal period. This is the line with zero archaeology if the register is honest.</td></tr>
+<tr><td><strong>2. Hardware replacement fund</strong></td><td>Laptops past mid-life, the aging NAS, the router with no firmware since 2024</td><td>Filter the <a href="it-asset-inventory-template.html">asset inventory</a> by <em>warranty/support-ends</em> within 18 months × replacement cost. Divide by 2 so you don't buy everything in one year.</td></tr>
+<tr><td><strong>3. Incident buffer</strong></td><td>The bad day: emergency hardware, IR contractor hours, data-recovery service</td><td>One replacement laptop price + one day of contractor rate. Unspent rolls forward; spent quietly, you'll be glad it existed.</td></tr>
+<tr><td><strong>4. Security &amp; compliance</strong></td><td>Password manager seats, MDM, backups, the annual pen-test or audit hour</td><td>License register (security rows) + one audit line. Never the first line you cut.</td></tr>
+<tr><td><strong>5. People-knowledge</strong></td><td>Training, conference or course, the documentation hours that feed the <a href="key-person-dependency-checklist.html">dependency audit</a></td><td>One course + conference per person per year. Small line, huge return on the day someone resigns.</td></tr>
+<tr><td><strong>6. Contractors &amp; ad-hoc</strong></td><td>One-off projects, migrations, the specialist hour you can't hire</td><td>Last year's actuals × 1.2. If you had no actuals, start with line 3's contractor rate × 3.</td></tr>
+</table>
+<p>Everything else — office snacks, domain renewals, that $9/mo tool someone tried in March — is not a line. Domains and misc sub-$100/year go in line 1 as a "tail" row; snacks are not ops. The test for a line: <em>would its absence create an operational risk?</em> Snacks don't. Backups do.</p>
+
+<h2>2. Build it in one afternoon — the five sources</h2>
+<p>The first budget is a half-day of reading your own registers, not a forecasting exercise:</p>
+<ol>
+<li><strong>License register export.</strong> Every row with a renewal date in the next 14 months. Sum by month — you'll see the renewal spikes (that's where the annual plans cluster) and the seats creep (30 seats where 22 people work).</li>
+<li><strong>Asset inventory filter.</strong> Support-ends within 18 months. Multiply by today's replacement price, not the 2023 price. Divide by two — you're building a <em>replacement fund</em>, not buying everything at once.</li>
+<li><strong>Last year's card statement.</strong> Categorize into the six lines. The delta between "what I think we spend" and the statement is always a lesson; the tail is always bigger than expected.</li>
+<li><strong>The incidents of last year.</strong> What did the bad days actually cost? A dead drive recovered, a contractor weekend, a new router bought in a panic? That sum is the floor of line 3, not a guess.</li>
+<li><strong>Known next-year projects.</strong> The migration everyone's discussed, the vendor contract expiring (<a href="vendor-contract-checklist.html">contract checklist</a> has the dates). Named projects get named amounts; unnamed anxieties get nothing.</li>
+</ol>
+<p>Write the result on one page — the whole budget fits on a laptop screen. If it doesn't fit, you've built a finance department, and that's a different document.</p>
+
+<h2>3. The monthly ritual: fifteen minutes, three questions</h2>
+<p>A budget nobody reads is a spreadsheet. The ritual that keeps it alive:</p>
+<ul>
+<li><strong>What arrived this month that wasn't a line?</strong> A new $15/mo tool, a $90 surprise renewal, a seat upgrade someone self-served. Every surprise gets a decision: kill it, or amend a line. Untracked surprises are how lines rot.</li>
+<li><strong>Am I pacing?</strong> Lines 1 and 4 are near-fixed (compare to plan); lines 2, 3, 6 burn unevenly. Only two numbers matter monthly: <em>line 1 actual vs plan</em> and <em>cash left in lines 2+3+6</em>.</li>
+<li><strong>Did anything change upstream?</strong> New hire = +1 seat line and a laptop from the spare fund; a resignation = a <a href="employee-offboarding-checklist.html">offboarding</a> seat reclaim (seats you stop paying for <em>are</em> budget found). The <a href="weekly-review-checklist.html">weekly review</a> catches these; the monthly budget ritual prices them.</li>
+</ul>
+<p>Fifteen minutes, same day each month, calendar-blocked. The ritual's real job is killing surprises early enough that they're decisions instead of emergencies.</p>
+
+<h2>4. The quarterly reforecast: where budgets actually happen</h2>
+<p>Annual budgets set intentions; quarterly reforecasts make them true. One hour, four questions:</p>
+<ol>
+<li><strong>Which lines will blow through?</strong> Hardware fund too thin because two laptops aged early? Move money now, while it's still a choice. A reforecast that only documents the shortfall is a post-mortem, not a forecast.</li>
+<li><strong>Which renewals changed shape?</strong> The vendor moved from $9/user to $14/user, or annual-only with a 20% jump. That's a decision point — shop it, negotiate it, or kill it — and it's visible <em>only</em> if the license register's renewal dates are current. This is why line 1 and the register are the same source of truth.</li>
+<li><strong>What did the buffer absorb?</strong> Line 3 spent on a real incident? Good — that's what it's for. Refill it first from whatever's underspent. An empty incident buffer entering Q4 is a bet you don't want to be holding.</li>
+<li><strong>What moves to the kill list?</strong> (Section 5.) The reforecast's most valuable output isn't a new number — it's the tool you finally stop paying for.</li>
+</ol>
+<p>Sync the reforecast hour with the <a href="user-access-review-checklist.html">access review</a> and the asset drift check: same quarterly afternoon, three audits, one long coffee.</p>
+
+<h2>5. The kill list: how new tools get paid for</h2>
+<p>Every new tool someone wants gets one rule: <strong>name what dies to pay for it.</strong> A $40/mo addition with no donor is a budget leak with a nice landing page. The kill list works because it forces the comparison nobody makes naturally — the shiny candidate against the forgotten incumbent:</p>
+<ul>
+<li><strong>Zero-login tools.</strong> The license register shows last-login (or ask for SSO/audit access). A tool nobody has opened in 90 days is not a line, it's a refund. <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a> for the full method.</li>
+<li><strong>Duplicate tools.</strong> Two screenshot tools, two task boards, three "AI writing" subscriptions. Pick one, kill the rest, and reclaim the seats in the register the same day — cancellation without a register update just resurrects next quarter.</li>
+<li><strong>Trial ghosts.</strong> The annual-plan upsell taken during a trial, forgotten in month two. The register's "renewal date + notes" column catches these; the kill list executes them.</li>
+<li><strong>Insurance-by-tool.</strong> Tools kept "just in case" that duplicate a capability you already have in line 3's buffer. Sometimes the buffer replaces three niche subscriptions — and the buffer doesn't auto-renew.</li>
+</ul>
+<p>Publish the kill list with amounts. "Killed: 2 tools, $57/mo — funds the monitoring upgrade we actually needed" is the sentence that makes the whole budgeting exercise credible to the team. Without visible kills, "budget" reads as "no."</p>
+
+<h2>6. The worked example (solo operator, 6-person company)</h2>
+<table>
+<tr><th>Line</th><th>Plan</th><th>Basis</th></tr>
+<tr><td>1. Software &amp; SaaS</td><td>$4,200/yr (~$350/mo)</td><td>License register: 14 tools, 3 annual spikes (Mar, Jun, Nov), tail ~$40/mo. Includes reclaiming 8 zombie seats found in the register.</td></tr>
+<tr><td>2. Hardware fund</td><td>$3,000/yr</td><td>Inventory: 3 laptops hit warranty end within 18 months (~$1,400 each). Split across 2 years. NAS + router budgeted for next cycle.</td></tr>
+<tr><td>3. Incident buffer</td><td>$1,800/yr</td><td>One laptop price + one contractor day. Unspent rolls forward (last year's buffer absorbed a $600 drive recovery — kept the floor).</td></tr>
+<tr><td>4. Security &amp; compliance</td><td>$1,100/yr</td><td>Password manager (9 seats), MDM, offsite backups, 2 hours of external review. Protected line — never first cut.</td></tr>
+<tr><td>5. People-knowledge</td><td>$900/yr</td><td>One course + one conference ticket per person, staggered. Feeds the dependency audit's shadow-test time, too.</td></tr>
+<tr><td>6. Contractors &amp; ad-hoc</td><td>$2,400/yr</td><td>Last year actuals ($2,000) × 1.2. Known Q3 project: the CRM migration.</td></tr>
+</table>
+<p>Total: <strong>$13,400/yr ≈ $1,117/mo</strong> — roughly the price of one junior hire, covering the whole operational floor. The number itself matters less than the fact that every line has a source and a review cadence.</p>
+
+<h2>7. The paste-in starter (CSV)</h2>
+<p>Start ugly and honest. Columns first, rows second; the numbers get honest on their own once the ritual runs.</p>
+<pre>line,category,monthly_plan,annual_plan,source,owner,review_cadence,notes
+1,software_saas,350,4200,license_register,Ops,monthly,3 annual spikes: Mar/Jun/Nov
+1,software_tail,40,480,card_statement,Ops,monthly,domain + misc under $100/yr
+2,hardware_fund,250,3000,asset_inventory,Ops,quarterly,3 laptops EOL &lt;18mo; split 2yr
+3,incident_buffer,150,1800,last_year_incidents,Ops,quarterly,rolls forward; spent = refill first
+4,security_compliance,92,1100,license_register,Ops,quarterly,protected line — never first cut
+5,people_knowledge,75,900,per_head_policy,Ops,quarterly,course + conference per person
+6,contractors_adhoc,200,2400,last_year_actuals,Ops,quarterly,Q3 CRM migration project</pre>
+<p>One row per line (plus the tail), one owner, one cadence. If you add a "misc" row, it must have a monthly review or it becomes where unexamined spend hides.</p>
+
+<h2>8. What each line feeds on a bad day</h2>
+<ul>
+<li><strong>Line 3 → the stolen-laptop hour.</strong> The <a href="lost-or-stolen-laptop-runbook.html">lost-or-stolen runbook</a> ends with "replace the device." A funded line 2/3 turns that sentence into a same-week laptop instead of a quarterly debate.</li>
+<li><strong>Line 4 → the compromise cleanup.</strong> The <a href="company-card-compromised-runbook.html">company-card runbook</a> and any credential incident end with rotations, audits, sometimes external help. Security spend already budgeted means you buy the help instead of hoping.</li>
+<li><strong>Line 2 → the EOL walk.</strong> The <a href="patch-cadence-calendar.html">patch cadence</a> finds a device the vendor no longer supports. Budget already placed in line 2 means the replacement is a purchase, not an emergency.</li>
+<li><strong>Line 5 → the resignation morning.</strong> When notice lands, the <a href="key-person-dependency-checklist.html">dependency audit</a> assumes the backup person exists and the docs are current. That's line 5's money at work — the cheapest insurance in the whole budget.</li>
+</ul>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="software-license-register.html">Software License Register</a> &mdash; where line 1's numbers come from, and where seats die.</li>
+<li><a href="it-asset-inventory-template.html">IT Asset Inventory Template</a> &mdash; the twelve columns that price line 2's replacement fund.</li>
+<li><a href="saas-sprawl-audit-checklist.html">SaaS Sprawl Audit Checklist</a> &mdash; the zero-login sweep that fills the kill list.</li>
+<li><a href="vendor-contract-checklist.html">Vendor Contract Checklist</a> &mdash; renewal dates and auto-escalation clauses before you sign.</li>
+<li><a href="vendor-escalation-ladder.html">Vendor Escalation Ladder</a> &mdash; what line 6's contractor budget is actually for.</li>
+<li><a href="weekly-review-checklist.html">Weekly Review Checklist</a> &mdash; the cadence that catches seat changes before the monthly ritual.</li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a> &mdash; the quarterly hour this reforecast rides with.</li>
+<li><a href="key-person-dependency-checklist.html">Key-Person Dependency Checklist</a> &mdash; the audit line 5 quietly funds.</li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a> &mdash; the bad day lines 2+3 pay for.</li>
+<li><a href="company-card-compromised-runbook.html">Company Card Compromised Runbook</a> &mdash; the statement you'll re-read with new eyes.</li>
+<li><a href="patch-cadence-calendar.html">Patch Cadence Calendar</a> &mdash; the walk that flags EOL hardware into line 2.</li>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist</a> &mdash; where seats get reclaimed and budget gets found.</li>
+<li><a href="asset-inventory-checklist.html">Asset Inventory Checklist</a> &mdash; the discovery pass that keeps line 2 honest.</li>
+</ul>
+</aside>
+</main>
+</body>
+</html>
