@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alert Fatigue Checklist: Cut the Noise Before Someone Mutes the Pager &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="An alert fatigue checklist for small teams: the monthly noise audit, the 3-question test every alert must pass, the flaky-alert taming table, and the routing rules that keep the pager trustworthy at 3AM.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Alert Fatigue Checklist: Cut the Noise Before Someone Mutes the Pager</h1>
+<p>Alert fatigue isn't an annoyance &mdash; it's an outage waiting for an audience. The first time a tired on-call human mutes a noisy channel, your real next incident pages nobody. Teams that fix alert fatigue don't buy better tools; they audit the noise and delete it. Here's the monthly checklist that keeps the pager loud when it matters and quiet when it doesn't.</p>
+
+<h2>The monthly noise audit &mdash; copy this</h2>
+<ol>
+<li><strong>Count pages, not alerts.</strong> Pull last month's pager log and count: total pages, pages outside 9&ndash;5, pages that led to an action. If fewer than 1 in 3 pages caused an action, the system is spamming you &mdash; that ratio is your fatigue number, and it gets worse on its own.</li>
+<li><strong>Apply the 3-question test to every repeat offender.</strong> For each alert that fired more than 3 times last month: Is this actionable right now? Would a human act differently at 3AM than at 3PM? If this alert disappeared, would anything get worse? Two "no"s = the alert is demoted or deleted. Deleting an alert is allowed. Nobody misses the ones that never mattered.</li>
+<li><strong>Tame the flaky three.</strong> Every team has 2&ndash;3 alerts everyone ignores. For each, write the tell: "the disk alert double-fires after patching, it's real if it persists 15 min." Add that condition to the alert itself (a for/5m clause beats a mental note). The tell goes in the handoff doc until the fix lands.</li>
+<li><strong>Fix thresholds with data, not vibes.</strong> An alert at 80% CPU that fires every afternoon is a threshold that describes Tuesday, not danger. Look at the daily curve, set the line above the routine peak, and let the routine stay silent. A threshold you've never tuned is a guess wearing a pager.</li>
+<li><strong>Route by severity, not by curiosity.</strong> SEV1 pages a human at any hour. SEV2 pages business hours or queues in chat. SEV3 never pages &mdash; it waits in the morning digest. If your SEV3s are waking people, your severity matrix is decorative (see the 3-level matrix below and give the levels teeth).</li>
+<li><strong>Give every alert an owner and a runbook link.</strong> An alert that pages "nobody in particular" gets muted in exactly one incident. Each alert rule gets: an owner, a linked runbook, and a last-touched date. No owner + no runbook = the alert is a candidate for deletion, not tuning.</li>
+<li><strong>Report the trend, not the shame.</strong> One line in the monthly ops review: "pages: 31 &rarr; 14, action rate 28% &rarr; 61%." Declining noise is a maintenance win the team can see. Rising noise means the audit didn't run &mdash; run it again, not harder.</li>
+</ol>
+
+<h2>The flaky-alert taming table</h2>
+<table>
+<tr><th>Alert</th><th>Tell</th><th>Fix</th><th>Done?</th></tr>
+<tr><td>Disk 80% nightly spike</td><td>Fires 02:00, clears by 02:10 (logrotate)</td><td>for 15m condition + move threshold to 85%</td><td>yes</td></tr>
+<tr><td>API 5xx blip after deploys</td><td>30s during rollout only</td><td>suppress during deploy window tag</td><td>yes</td></tr>
+<tr><td>Cron heartbeat "late" on weekends</td><td>Batch job schedule differs Sat/Sun</td><td>per-day schedule in the check</td><td>no</td></tr>
+</table>
+
+<h2>Rules that keep the pager trustworthy</h2>
+<ul>
+<li><strong>The pager is sacred; chat is not.</strong> Anything that can wait 12 hours belongs in chat or the digest. The moment routine work pages a human, you've spent trust you can't mint back at 3AM.</li>
+<li><strong>Every page gets a disposition.</strong> Real, duplicate, tuning-needed, or junk &mdash; one tag at close time. The monthly audit is just sorting these tags; without them, tuning is folklore.</li>
+<li><strong>Delete in pairs.</strong> Every noisy alert you delete earns the right to add exactly one new, sharper alert. Noise grows back unless the budget stays fixed &mdash; 15 pages that all matter beat 40 that don't.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> includes the pick-first alert-routing workflows &mdash; severity routing, digest batching, and the flaky-alert tamer this checklist plugs into &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident pack for the on-call rotation</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule)</a></li>
+<li><a href="severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+<li><a href="escalation-policy-template.html">Escalation Policy Template (Who Gets Woken, and When)</a></li>
+<li><a href="on-call-rotation-schedule-template.html">On-Call Rotation Template for Small Teams (2&ndash;6 People)</a></li>
+<li><a href="runbook-template.html">Runbook Template (Free, Copy-Paste)</a></li>
+<li><a href="the-2am-test-incident-handoff.html">The 2AM Test: Will Your Handoff Survive Without Context?</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+</main>
+</body>
+</html>
