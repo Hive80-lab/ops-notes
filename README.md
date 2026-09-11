@@ -1,3 +1,5 @@
+- [Passkeys for Small Teams](passkeys-rollout-checklist.html) — break-glass recovery first, per-vendor support inventory, password removed last, offboarding revokes passkeys.
+- [Vendor Offboarding & Data Deletion Checklist](vendor-offboarding-data-deletion-checklist.html) — export, untangle, revoke, delete in writing, verify.
 - [Email Deliverability for Small Teams](email-deliverability-spf-dkim-dmarc-checklist.html) — SPF within 10 lookups, two DKIM selectors, DMARC p=none→reject, and the mail-stopped-arriving runbook.
 - [SaaS Sprawl Audit for Small Teams](saas-sprawl-audit-checklist.html) — one hour, one owner per tool, kill/keep/consolidate.
 - [Password Manager Rollout for Small Teams](password-manager-rollout-small-business.html) — break-glass first, pilot, enforce with a date.
