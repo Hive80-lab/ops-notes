@@ -1,3 +1,5 @@
+- **NEW: [Change Freeze Window Policy for Small Teams](https://hive80-lab.github.io/ops-notes/change-freeze-window-policy.html)** — when the right answer is no: frozen/allowed/emergency lanes, a dated freeze calendar with T-14/T-2 announcements, the five-line exception card and reversal test, the retroactive emergency escape hatch, and the thaw checklist that prevents the post-freeze stampede.
+
 - **NEW: [On-Call Compensation Policy Template for Small Teams](https://hive80-lab.github.io/ops-notes/on-call-compensation-policy.html)** — pay the pager, not just the person: the restriction test, three pay models with the formula written down, minimum-increment engagement rules, night-page multipliers, and the engagement log that makes payroll defensible.
 
 - **NEW: [IT Asset Inventory Checklist for Small Teams](https://hive80-lab.github.io/ops-notes/asset-inventory-checklist.html)** — a register the team keeps alive: eight fields per row, a discovery pass over the network and the SaaS inbox, lifecycle states wired into onboarding/offboarding, data-class tags, credentials as assets, and a 30-minute quarterly audit.

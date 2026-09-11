@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Change Freeze Window Policy for Small Teams (When the Right Answer Is No)</title>
+<meta name="description" content="A one-page change freeze policy for small teams: when to freeze, what a freeze actually blocks, the emergency-escape hatch, and how to end one without shipping a backlog of doom.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>When the right answer is no</h1>
+<p>A change freeze window policy is one page that says <em>when the team stops shipping</em> &mdash; and, just as important, what still ships anyway. Most small teams run freezes by vibes: someone declares &ldquo;no deploys before Black Friday,&rdquo; three exceptions get argued verbally, one of them breaks checkout, and nobody can say afterwards which rule was real. The fix is the same fix as everything else on this site: write it down before you need it, next to the <a href="change-management-checklist.html">change management checklist</a> it plugs into.</p>
+
+<h2>1. Freeze what actually needs freezing</h2>
+<ul>
+<li><strong>A freeze is a scope, not a mood.</strong> &ldquo;No changes&rdquo; is unenforceable and false &mdash; the day a freeze starts, an on-call engineer will still need to rotate an expiring API key (that is what the <a href="api-key-rotation-checklist.html">rotation checklist</a> is for). The policy names three lanes: <em>frozen</em> (feature deploys, schema changes, infrastructure upgrades), <em>allowed</em> (security patches, secret rotation, backups, monitoring changes), and <em>emergency</em> (anything that stops money or data loss, with the escape hatch in section 4). One line per lane, no debate at 5PM on the day before the freeze.</li>
+<li><strong>Freeze the pipeline, not the people.</strong> The point of a freeze is that the <a href="on-call-compensation-policy.html">people carrying the pager</a> are defending a known-good system, not reviewing a feature branch at midnight. Say it that way in the policy: during the freeze, engineering time shifts from shipping to watching &mdash; the <a href="on-call-handoff-checklist.html">handoff</a> gets shorter, the alerts get quieter, and the backlog waits.</li>
+<li><strong>Marketing launches are not engineering changes &mdash; until they are.</strong> The classic freeze violation is a landing-page copy change that ships with a tag-manager update and silently rewrites checkout. The policy rule: during a freeze, anything that touches the production domain goes through the same review as code, even if it &ldquo;is just text.&rdquo; That sentence alone prevents most freeze-season incidents.</li>
+</ul>
+
+<h2>2. Put the freeze calendar in the policy, not in someone&rsquo;s memory</h2>
+<ul>
+<li><strong>Name the recurring windows.</strong> For most small teams that is: the holiday window (mid-December to early January), major sales days (Black Friday, product launches), the payroll close, and the final week of any fiscal quarter if finance systems run on your stack. Write the exact dates each year in a five-minute ritual &mdash; a recurring calendar invite titled &ldquo;publish freeze windows&rdquo; is the whole system.</li>
+<li><strong>Announce at T-minus-14 and T-minus-2.</strong> Two weeks of warning lets teams merge and release what is ready; a 48-hour reminder with the lane rules attached catches the &ldquo;wait, does this count?&rdquo; questions before the freeze starts, not inside it. Post it where the <a href="incident-communication-templates.html">incident comms</a> go &mdash; same channel, same audience.</li>
+<li><strong>Every freeze has an owner and an end time.</strong> &ldquo;The freeze is over when someone feels like deploying again&rdquo; is how a two-week freeze becomes six. The policy line: the freeze ends on its stated date unless the owner extends it in writing, with a reason, at least 24 hours before it was due to end. Extensions are expensive by design.</li>
+</ul>
+
+<h2>3. Score every exception &mdash; the freeze request card</h2>
+<ul>
+<li><strong>Exceptions are requests with a score, not favors.</strong> The policy includes a five-line card: what changes, what it touches (from the <a href="asset-inventory-checklist.html">asset inventory</a>), what breaks if it is wrong, what breaks if it waits, and who is around to fix it during the freeze. If &ldquo;what breaks if it waits&rdquo; is smaller than &ldquo;what breaks if it is wrong,&rdquo; the answer is no &mdash; and the policy made the answer predictable, which is the entire value.</li>
+<li><strong>The reversal test decides borderline cases.</strong> A change may ship during a freeze only if it can be undone fast: feature-flagged, behind a toggle, or reversible with the <a href="deployment-rollback-checklist.html">rollback runbook</a> in under the response SLA your <a href="severity-matrix-3-levels.html">severity matrix</a> assumes. Schema migrations and data backfills almost never pass this test. That is why they almost never ship in a freeze.</li>
+<li><strong>Log the exceptions where the postmortems live.</strong> Every approved exception goes into the same log the <a href="incident-response-plan-template-small-teams.html">incident plan</a> uses. After the freeze, one line per exception: did it hold? The teams with the calmest freezes are the ones that can show, with data, that their exception bar works &mdash; and the ones that tighten it after a single bad exception.</li>
+</ul>
+
+<h2>4. The emergency escape hatch &mdash; write it before you need it</h2>
+<ul>
+<li><strong>A freeze that cannot bend will break.</strong> A genuine production fire during a freeze must not require anyone to consciously &ldquo;break policy&rdquo; at 3AM &mdash; that hesitation is exactly what the <a href="first-30-minutes-incident-response.html">first 30 minutes runbook</a> exists to prevent. The hatch is one sentence: <em>stopping active data loss or revenue loss overrides the freeze; declare it in the incident channel, fix it, and file the exception card after.</em> Retroactive, not blocked.</li>
+<li><strong>The hatch has a ceiling.</strong> The escape covers restoring the pre-freeze state &mdash; a rollback, a key rotation, disabling a broken integration. It does not cover &ldquo;and while we are in there, let&rsquo;s also ship the fix we&rsquo;ve been meaning to do.&rdquo; Scope discipline during emergencies is a rehearsed skill; the <a href="postmortem-template-small-teams.html">postmortem</a> of every freeze-season incident asks one question: did the emergency change stay in scope?</li>
+<li><strong>Test the hatch before the freeze starts.</strong> Once per freeze season, run the same rehearsal you use for <a href="backup-restore-test-checklist.html">backup restores</a>: pick a service, walk the emergency path end-to-end in staging &mdash; declare, decide, roll back, file. Twenty minutes. The freeze that has been rehearsed is the one where the 2AM decision is boring.</li>
+</ul>
+
+<h2>5. End the freeze on purpose &mdash; the thaw checklist</h2>
+<ul>
+<li><strong>The thaw is a scheduled event, not an absence of freeze.</strong> On the end date, the policy runs a 30-minute review: exceptions filed and their outcomes, incidents during the window (there should be near zero &mdash; if there were many, the freeze was protecting the wrong thing and the <a href="uptime-downtime-budget.html">uptime budget</a> needs a look), and the change backlog ranked by risk, not by who shouted first.</li>
+<li><strong>Unfreeze in waves, not all at once.</strong> The lowest-risk changes ship first (config, copy, flags), watched for a day; then the queued feature deploys, one per day with a normal <a href="website-maintenance-checklist-small-business.html">maintenance window</a> and rollback plan. The thaw stampede &mdash; everyone shipping their two weeks of work on the same afternoon &mdash; causes more incidents than the freeze itself.</li>
+<li><strong>Feed the lessons back into the next freeze.</strong> One paragraph, appended to the policy itself: what the exception bar got wrong, which lane leaked, whether the windows matched reality. This is the <a href="weekly-review-checklist.html">weekly review</a> habit applied seasonally &mdash; the policy gets sharper every cycle instead of fossilizing, which is what separates a policy from a document.</li>
+</ul>
+
+<h2>6. The one-page template</h2>
+<ul>
+<li><strong>Header:</strong> freeze windows for this year (dated), the freeze owner, and the channel where freeze notices are posted.</li>
+<li><strong>Lanes:</strong> frozen / allowed / emergency &mdash; with three named examples each, so nobody has to interpret during the window.</li>
+<li><strong>Exception card:</strong> the five lines from section 3, plus the reversal test, plus the single approver.</li>
+<li><strong>Escape hatch:</strong> the override sentence from section 4, verbatim, including the retroactive filing rule and the scope ceiling.</li>
+<li><strong>Thaw:</strong> the end date, the wave plan, and the owner of the 30-minute review.</li>
+</ul>
+<p><em>Small-team honesty note: a freeze policy is not bureaucracy &mdash; it is a pre-agreed &ldquo;no&rdquo; that protects the system your customers actually see. If your team is one person, this page still applies; it is just a note in your calendar that says what you refuse to touch in launch week, and why future-you should believe it.</em></p>
+
+<p>Related: <a href="change-management-checklist.html">change management checklist</a> &middot; <a href="deployment-rollback-checklist.html">deployment rollback</a> &middot; <a href="incident-communication-templates.html">incident communication templates</a> &middot; <a href="on-call-compensation-policy.html">on-call compensation policy</a> &middot; <a href="severity-matrix-3-levels.html">severity matrix</a> &middot; <a href="website-maintenance-checklist-small-business.html">maintenance windows</a></p>
+</main>
+</body>
+</html>
