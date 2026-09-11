@@ -22,6 +22,7 @@ Incident response, on-call, and automation **checklists and templates** you can 
 - **[Ops Starter Kit — Incident Response for Small Teams ($14)](https://hive80lab.gumroad.com/l/ops-starter-kit)** — fillable IR plan, severity matrix, tabletop scenarios, comms templates.
 - **[Agent Ops 24/7 ($19)](https://hive80lab.gumroad.com/l/agent-ops-24-7)** — run autonomous agents safely: budget caps, kill switches, watchdogs.
 - Launch coupon **HIVE-LAUNCH30** (30% off) ends Sep 11 2026, 23:30 ACST.
+- [SSL certificate expiry checklist](https://hive80-lab.github.io/ops-notes/ssl-certificate-expiry-checklist.html)
 - [Secrets rotation checklist](https://hive80-lab.github.io/ops-notes/secrets-rotation-checklist.html)
 
 *Templates, not legal or regulatory advice. Site: <https://hive80-lab.github.io/ops-notes/>*

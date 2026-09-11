@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSL Certificate Expiry Checklist for Small Teams: Expiry Alerts, Renewal Dry-Runs, and the Already-Expired Runbook &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="An SSL certificate expiry checklist for small teams: monitor every cert (not just the edge), automate renewal and then distrust it, run a quarterly renewal dry-run, and the runbook for when the certificate has already expired.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>SSL Certificate Expiry Checklist for Small Teams</h1>
+<p class="lede">The certificate expiry outage is the most predictable incident in small-team ops: the tooling existed to prevent it, the renewal "was automatic," and at 11pm on a Friday the browser warning page is standing between your customers and the checkout. The honest fix has four parts: <strong>inventory every cert, alert on what is actually served, rehearse the renewal, and write the runbook for when it's already too late</strong>.</p>
+
+<h2>1. Inventory first (the website is not the only cert you own)</h2>
+<p>Most teams monitor one certificate &mdash; the public site &mdash; and get surprised by the other four. Your inventory is a single table with one row per hostname that terminates TLS:</p>
+<table>
+<tr><th>Column</th><th>Examples</th></tr>
+<tr><td>Hostname</td><td>www, api, mail, vpn, internal admin panel, staging</td></tr>
+<tr><td>Expiry date</td><td>Pulled live, not from memory: <code>openssl s_client -connect host:443 -servername host 2&gt;/dev/null | openssl x509 -noout -enddate</code></td></tr>
+<tr><td>Renewal method</td><td>ACME bot / cert-manager / CDN-managed / manual (the manual ones are the incidents)</td></tr>
+<tr><td>Owner</td><td>A named person, not "ops"</td></tr>
+</table>
+<p>Include the unglamorous endpoints: the load balancer's own cert, SMTP/IMAP on the mail host, the VPN gateway, the billing portal someone bought separately in 2023. Internal certs nobody watches are the ones that take down the admin panel at the worst time.</p>
+
+<h2>2. Alert on what is <em>served</em>, not what is configured</h2>
+<ul>
+<li><strong>Turn on the expiry check for every hostname</strong> &mdash; nearly every monitoring product (including the one you already pay for) has a certificate-expiry toggle. It probes the live endpoint, so it catches the cert that renewal deployed-but-didn't-reload.</li>
+<li><strong>Alert at 30 / 14 / 7 / 3 / 1 days</strong> into the channel people actually read. A 30-day warning in an abandoned channel is the same as no warning.</li>
+<li><strong>Alert the "renewal failed" signal separately.</strong> ACME bots log failures before expiry; a renewal that failed twice deserves a louder ping than the expiry countdown itself.</li>
+</ul>
+
+<h2>3. Automate renewal, then distrust it</h2>
+<p>Automation is the right default: ACME/Let's Encrypt for public hosts, cert-manager on Kubernetes, managed certs at the CDN. But automated renewals fail in three silent ways, and all three look like "it's fine, it renews automatically":</p>
+<table>
+<tr><th>Silent failure</th><th>How it bites</th><th>The check</th></tr>
+<tr><td>DNS validation broke</td><td>DNS moved to a new provider, zone split, or the CNAME the ACME client uses was cleaned up "temporarily"</td><td>Quarterly dry-run (below), not a calendar promise</td></tr>
+<tr><td>Renewed but never reloaded</td><td>The bot renews the file; the web server keeps serving the old cert from memory until restart</td><td>Probe the served cert's <code>notBefore</code> after each renewal</td></tr>
+<tr><td>Bot account tied to a person</td><td>Renewal email goes to an ex-employee's inbox; nobody notices the failure mails</td><td>Bot registered to a shared alias you own</td></tr>
+</table>
+
+<h2>4. The quarterly dry-run (15 minutes that buy the year)</h2>
+<ol>
+<li>Force a renewal in staging &mdash; <code>certbot renew --dry-run</code>, or cert-manager's self-check, or the CDN's "renew now".</li>
+<li>Verify the <strong>full chain</strong> is served: a missing intermediate passes in the bot's logs and fails for a chunk of real browsers. <code>openssl s_client -connect host:443 -servername host</code> and read the chain, not just the leaf.</li>
+<li>Confirm the service actually reloaded &mdash; the served <code>notBefore</code> moved, not just the file on disk.</li>
+<li>Write down what broke. That note is next quarter's checklist.</li>
+</ol>
+
+<h2>5. The already-expired runbook</h2>
+<p>When the warning page is live, sequence matters less than speed, but do it in this order:</p>
+<ol>
+<li><strong>Renew and deploy now</strong> &mdash; the emergency path, not the elegant one. Manual renewal on the edge is fine at 11pm.</li>
+<li><strong>Verify from outside</strong> &mdash; phone hotspot, not office wifi: chain complete, hostname matches, stapling intact if you use it.</li>
+<li><strong>Assume hours, not seconds, of residual breakage</strong> &mdash; mobile carriers, DNS resolvers and browser caches hold the old cert; some clients keep failing after your check says green.</li>
+<li><strong>Tell customers before they tell you</strong> &mdash; a status note beats a support queue full of screenshots. The words you need are already in the <a href="incident-communication-templates.html">incident communication templates</a>.</li>
+<li><strong>Postmortem the silence</strong> &mdash; the cert expired, but the incident is that nobody knew for hours. Fix the monitoring, not just the cert.</li>
+</ol>
+
+<h2>6. The checklist</h2>
+<table>
+<tr><th>Control</th><th>Effort</th><th>Done looks like</th></tr>
+<tr><td>Cert inventory, one table</td><td>1 hr</td><td>Every TLS hostname has expiry, renewal method, owner</td></tr>
+<tr><td>Expiry alerts on every hostname</td><td>30 min</td><td>30/14/7/3/1-day alerts land in the on-call channel</td></tr>
+<tr><td>ACME automation for public hosts</td><td>half a day</td><td>No human renews the website cert</td></tr>
+<tr><td>Quarterly renewal dry-run</td><td>15 min/quarter</td><td>Staging renewed by robot; served cert's notBefore moved; chain verified</td></tr>
+<tr><td>Expired-cert runbook</td><td>30 min</td><td>One page: renew, deploy, verify from outside, tell customers, postmortem</td></tr>
+<tr><td>Manual certs on a named calendar</td><td>15 min</td><td>Mail/VPN/panel certs have an owner and a dated reminder that actually fires</td></tr>
+</table>
+
+<h2>The three rules that make the checklist work</h2>
+<ul>
+<li><strong>Monitor what's served, not what's configured.</strong> A renewed file behind an unreloaded server is an outage wearing a green dashboard. Probe the endpoint.</li>
+<li><strong>A renewal you haven't rehearsed hasn't happened.</strong> "It's automated" is a hypothesis; the quarterly dry-run is the experiment.</li>
+<li><strong>The dangerous cert is the one nobody watches.</strong> The public site has an expiry banner; the VPN gateway has nothing. Inventory is the whole point.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns the first-hour chaos of any outage &mdash; expired cert included &mdash; into a fillable plan, and <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Vol. 2 ($27)</strong></a> adds the DR plan and evidence log for the review after. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so the renewal dry-runs and expiry alerts stay on schedule by themselves</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule)</a></li>
+<li><a href="uptime-downtime-budget.html">The Uptime Budget: How Much Downtime 99.9% Actually Buys</a></li>
+<li><a href="first-30-minutes-incident-response.html">First 30 Minutes of Incident Response (What to Do, In Order)</a></li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates (Status Updates People Trust)</a></li>
+<li><a href="alert-fatigue-checklist.html">Alert Fatigue Checklist (Cut the Noise)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
