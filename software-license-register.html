@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software License Register Template for Small Teams (Every Key, Seat, and Renewal on One Page) &mdash; ops-notes</title>
+<meta name="description" content="A software license register for small teams: one row per thing you pay for (what it does, seats, cost, renewal date, owner, where the key lives), the 60-day renew/downgrade/cancel decision made before the invoice lands, the quarterly seat true-up, where licenses and serials actually live, and the annual prune that deletes the zombie rows.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Software license register: every key, seat, and renewal on one page</h1>
+<p>The licenses are the part of the estate nobody inventories until one fails. A seat count drifts quietly until payroll audit; a renewal fires silently until the card declines on the one tool the whole company runs on; a serial number lives in one ex-employee's email until the machine is rebuilt. This page is the register that makes all three boring &mdash; one spreadsheet, one owner column, one calendar feed, and a decision made sixty days before every invoice.</p>
+
+<h2>1. The register: one row per thing you pay for</h2>
+<ul>
+<li><strong>The register is a spreadsheet, not software.</strong> One row per paid product. Eight columns, all of them fillable in one sitting: product and vendor, <em>what breaks without it</em> (one sentence &mdash; this is also the delete-me test), plan and seat count, annual cost, renewal date with an auto-renew yes/no flag, one owner's name, where the license key or credential lives, and the support tier you actually bought. The <a href="asset-inventory-checklist.html">asset inventory</a> counts machines; this counts the money and the keys behind them.</li>
+<li><strong>Every blank is a future incident.</strong> The row with no owner is the tool nobody renews deliberately and nobody cancels either. The row with no key location is the outage that waits on a mailbox archaeology dig. The row with no renewal date is the surprise invoice &mdash; and surprise invoices are what the <a href="cloud-cost-spike-runbook.html">cloud cost spike runbook</a> exists for. Filling the register once is an afternoon; leaving it blank is a subscription to surprises.</li>
+<li><strong>Start from the card statements, not from memory.</strong> The fastest first pass: walk the last twelve months of card and bank statements, list every recurring charge, and make a row for each. Memory-based registers are missing exactly the tools bought in a hurry during an incident &mdash; which are the ones with the worst terms. Anything you cannot map to a row gets a row that says <em>unknown: investigate</em>.</li>
+<li><strong>One line per row in the log, same as changes.</strong> When a row changes &mdash; new tier, new seat count, new owner &mdash; that is a change like any other, and it gets the same one-line treatment the <a href="maintenance-window-policy.html">window log</a> uses: date, row, what changed, who decided. Eleven months of those lines is an answer, not a shrug, when the <a href="customer-security-questionnaire-template.html">customer security questionnaire</a> asks how you manage third-party software.</li>
+</ul>
+
+<h2>2. Renewals: the sixty-day decision</h2>
+<ul>
+<li><strong>Calendar every renewal 60 days out.</strong> The renewal date column feeds a recurring calendar reminder two months before each date. Sixty days is enough time to actually decide &mdash; renew, downgrade, or cancel &mdash; before the auto-renew makes the decision for you. The reminder is five minutes of setup that converts every renewal from a surprise into a decision.</li>
+<li><strong>The three-word decision gets written down.</strong> Sixty days out, the owner writes one line: "renew at current tier," "downgrade to X seats," or "cancel, alternative is Y." The written line is what stops the quiet default where everything renews forever because nobody was willing to spend an hour thinking about it. When the answer is <em>negotiate</em>, that is when you climb the <a href="vendor-escalation-ladder.html">escalation ladder</a> &mdash; not the week after you already paid the full invoice.</li>
+<li><strong>Trials are rows too, on a leash.</strong> A trial started on a company card is a row in the register with the trial-end date in the renewal column and auto-renew flagged in red. Trials that lapse into paid subscriptions are the classic zombie spend; the register is where you catch them, and the cancellation happens on trial-end day, not when the first real invoice arrives.</li>
+<li><strong>Report the year's renewals in one line per quarter.</strong> The <a href="weekly-status-report-template.html">weekly status report</a> carries the quarter's tally: "Q4 renewals: 7 due, 5 renewed, 1 downgraded (CRM, &minus;$960/yr), 1 cancelled (replaced by the OSS option)." That line is the whole business case for the register &mdash; visible savings, zero drama.</li>
+</ul>
+
+<h2>3. Seats: the count nobody reconciles</h2>
+<ul>
+<li><strong>Quarterly seat true-up, tied to the access review.</strong> Once a quarter, compare each register row's seat count against reality: headcount, active contractors, and the actual last-login list where the product shows one. The <a href="user-access-review-checklist.html">user access review</a> and this true-up are the same meeting; the register rows are just the licensed slice of it. Every seat you remove is budget you keep.</li>
+<li><strong>Offboarding removes the seat the same day it removes the account.</strong> The <a href="access-request-offboarding-checklist.html">offboarding checklist</a> should already deprovision accounts; add one line: revoke or reassign the licenses on the register rows too. A departed employee's seat that keeps renewing for six months is not a security hole &mdash; but it is money leaking, and sometimes it <em>is</em> still a login.</li>
+<li><strong>Contractors get named seats with expiry dates.</strong> The <a href="contractor-security-onboarding-checklist.html">contractor onboarding checklist</a> names the tools and the end date; the register row carries the same expiry. A contractor seat without an expiry is a permanent line item for a temporary person &mdash; the most common single line of recoverable spend in a small team's stack.</li>
+<li><strong>SSO converts seat hygiene from memory into mechanics.</strong> Where a product supports SAML or SSO through your identity provider, connect it. Deprovisioning the identity account then revokes the seat automatically, and the quarterly true-up becomes a five-minute confirmation instead of a forensic audit. Products you cannot connect are exactly the rows to watch at renewal time.</li>
+</ul>
+
+<h2>4. Keys: where the licenses and serials actually live</h2>
+<ul>
+<li><strong>The key column points to a place, not a person.</strong> "In Dana's head" or "in Dana's email" is a bus-factor incident waiting for its day. License keys, serial numbers, and account credentials live in the same vault pattern as the <a href="backup-key-escrow-recovery.html">backup key escrow card</a> &mdash; one shared, access-controlled location; the register row holds the pointer. The test: can a new admin, on day one, find every key without asking a human? The <a href="admin-first-week-runbook.html">first-week runbook</a> makes that test explicit.</li>
+<li><strong>API keys are register rows with a rotation habit.</strong> Any product row that involves an API credential gets its key location noted <em>and</em> its last rotation date; the <a href="api-key-rotation-checklist.html">key rotation checklist</a> owns the schedule. The register is where the two disciplines meet: if the rotation date column is blank, the credential is being treated as permanent, and permanent credentials are how leaks become breaches.</li>
+<li><strong>The license file rides the backup like everything else.</strong> Export the register and the key vault on the same schedule as the rest of the estate, encrypted before upload per the <a href="backup-encryption-checklist.html">backup encryption rules</a>. A register that survives a laptop loss but not a ransomware rebuild was never really a register &mdash; it was a note.</li>
+<li><strong>Break-glass access is a row with a red flag.</strong> The vendor support portal login that saves you during an outage belongs in the register with its own row and its own owner, next to the <a href="break-glass-account-checklist.html">break-glass accounts</a> it parallels. When the vendor's dashboard is the only way to check status during an incident, the person holding the phone needs the login in one hop, not one hunt.</li>
+</ul>
+
+<h2>5. The annual prune and the evidence it produces</h2>
+<ul>
+<li><strong>One annual review, every row gets a verdict.</strong> Once a year, alongside the <a href="annual-security-review-checklist.html">annual security review</a>, walk all rows and write one of three verdicts on each: <em>keep</em>, <em>watch</em> (renew once more, revisit next year), or <em>kill</em> (cancel and name the replacement). The delete-me test from column two does the work: if you cannot finish the sentence "without it, &hellip; breaks," the row is a candidate for <em>kill</em>.</li>
+<li><strong>Zombie rows are the prize.</strong> Every annual pass reliably finds one or two: the paid plan the free tier replaced, the seat block sized for a team that shrank, the backup tool duplicated by a feature the main vendor added. Kill them at renewal time and the register pays for its own upkeep many times over.</li>
+<li><strong>The register is insurance evidence.</strong> Cyber insurance applications and renewals ask what software you run and how you manage access; the register answers in one attachment. The <a href="cyber-insurance-requirements-checklist.html">cyber insurance checklist</a> lists the questions &mdash; the register is most of the answers, already written.</li>
+<li><strong>The verdict log is the year's one-line story.</strong> "2026 license review: 23 rows, 18 keep, 3 watch, 2 killed, &minus;$2,140/yr recurring." That sentence, in the annual report next to the security review, is what "we run a tight operation" looks like as evidence instead of adjectives.</li>
+</ul>
+
+<p><em>Small-team honesty note: a five-person company does not need license-management software; it needs one spreadsheet, one owner column, one calendar feed, and the habit of updating the row in the same five minutes as the renewal email. The trap this page exists to prevent is register drift &mdash; a beautiful register nobody updated since the quarter it was born, now an inventory of comfortable lies. A stale register is worse than none: none makes you look; stale makes you sure. Update the row when the email arrives, and the register stays an asset instead of becoming one more thing to distrust.</em></p>
+
+<p>Related: <a href="asset-inventory-checklist.html">asset inventory checklist</a> &middot; <a href="user-access-review-checklist.html">user access review</a> &middot; <a href="access-request-offboarding-checklist.html">offboarding checklist</a> &middot; <a href="contractor-security-onboarding-checklist.html">contractor onboarding</a> &middot; <a href="api-key-rotation-checklist.html">API key rotation</a> &middot; <a href="backup-key-escrow-recovery.html">backup key escrow</a> &middot; <a href="cloud-cost-spike-runbook.html">cloud cost spike runbook</a> &middot; <a href="vendor-escalation-ladder.html">vendor escalation ladder</a> &middot; <a href="customer-security-questionnaire-template.html">customer security questionnaire</a> &middot; <a href="cyber-insurance-requirements-checklist.html">cyber insurance requirements</a> &middot; <a href="annual-security-review-checklist.html">annual security review</a> &middot; <a href="weekly-status-report-template.html">weekly status report</a> &middot; <a href="admin-first-week-runbook.html">new admin's first week</a> &middot; <a href="maintenance-window-policy.html">maintenance window policy</a> &middot; <a href="break-glass-account-checklist.html">break-glass accounts</a></p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
