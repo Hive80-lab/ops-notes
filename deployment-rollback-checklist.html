@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deployment Rollback Checklist (Tested Before You Need It) &mdash; Free Template</title>
+<meta name="description" content="A free deployment rollback checklist for small teams: write rollbacks as commands not intentions, the 5-minute rollback drill, database migration gotchas, and the pre-deploy card that makes every deploy reversible. Copy-paste ready.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Deployment Rollback Checklist (Tested Before You Need It)</h1>
+<p>Most teams discover their rollback plan is fictional at 2am, mid-incident, when someone types the words "just roll it back" and nobody can say how. A rollback that has never been run is not a rollback &mdash; it's a hope. The fix isn't a bigger process. It's a one-page pre-deploy card that forces the rollback to be written as commands, tested, and timed. Here's the checklist.</p>
+
+<h2>The pre-deploy rollback card &mdash; copy this</h2>
+<ol>
+<li><strong>Write the rollback as exact commands.</strong> Not "revert the deployment" &mdash; <code>git revert 4f2c1a9 &amp;&amp; ./deploy.sh staging</code> or <code>kubectl rollout undo deploy/billing</code> or "restore snapshot pre-2026-09-11 from the panel". The version of you at 2am executes text, not judgment. If you can't write the commands, you don't have a rollback &mdash; you have an incident.</li>
+<li><strong>Time it, then halve your patience.</strong> Run the rollback once on staging and write the real number next to it: "measured 6m40s". Your rollback-the-moment threshold is roughly half that &mdash; if the new deploy looks bad at +3 minutes and the rollback takes 7, you're already behind. Slow rollbacks get executed too late to matter.</li>
+<li><strong>Check the blast radius of the rollback itself.</strong> Rolling back code is usually safe. Rolling back a <em>database migration</em> can destroy data written since. Rule: schema changes go forward-only (add nullable column, never drop in the same release), and the rollback note must say explicitly whether data written during the bad window survives.</li>
+<li><strong>Freeze the state you can revert to.</strong> Note the previous tag/commit/image digest, the config version, and (for schema) the migration number. If you deploy by "latest" tags and shared mutable config, there is no previous state to return to &mdash; pin versions before every deploy.</li>
+<li><strong>Decide rollback criteria <em>before</em> the deploy.</strong> Write the tripwire down: "rollback if error rate &gt;2% for 5 min, or checkout fails twice, or p95 latency &gt;800ms". Judging by vibes means arguing with yourself during an outage and losing.</li>
+<li><strong>Verify the rollback the way you'd verify a deploy.</strong> Hitting the rollback button is not success. Run the same smoke checks as the deploy: login works, a test order completes, error rate back under baseline. A half-rolled-back system is a new incident wearing a costume.</li>
+<li><strong>Announce it.</strong> One line to the channel: "Rolling back billing to 4.1 &mdash; cause, ETA 5m." If you use a <a href="status-page-communication-template.html">status page</a>, the customer line goes out before the commands do. Silence during a rollback reads as "nobody is driving".</li>
+</ol>
+
+<h2>The one-page rollback record</h2>
+<table>
+<tr><th>Field</th><th>Record</th></tr>
+<tr><td>Deploy</td><td>billing v4.2.0 &rarr; prod, tag pinned, config v117</td></tr>
+<tr><td>Rollback (commands)</td><td><code>kubectl rollout undo deploy/billing --to-revision=41</code>; config: re-pin v116</td></tr>
+<tr><td>Measured rollback time</td><td>6m40s on staging Sep 9 &mdash; decision point +3m</td></tr>
+<tr><td>Migration safety</td><td>Forward-only (added nullable column); rollback keeps new data</td></tr>
+<tr><td>Tripwires</td><td>errors &gt;2% / 5m &middot; checkout fail &times;2 &middot; p95 &gt;800ms</td></tr>
+<tr><td>Smoke checks</td><td>login, test order, error dashboard at +10m</td></tr>
+<tr><td>Outcome</td><td>Shipped 14:22, tripwires quiet, closed 15:00</td></tr>
+</table>
+
+<h2>The rules that make rollbacks real</h2>
+<ul>
+<li><strong>Test rollbacks on slow weeks.</strong> The <a href="change-management-checklist.html">change record</a> already asks "has anyone actually run the rollback?" &mdash; the answer should be yes, on staging, within the last quarter. A rollback drill costs ten minutes; an untested rollback during an outage costs the weekend.</li>
+<li><strong>Feature flags beat redeploys.</strong> The fastest rollback is a toggle. Put risky behavior behind a flag, and "roll back" becomes a config flip measured in seconds, not a redeploy measured in minutes. Reserve the deploy-revert path for actual code defects.</li>
+<li><strong>Forward-only schemas, always.</strong> Every classic rollback disaster is a migration that ate data on the way back. Two-phase migrations (expand, then contract in the next release) make every deploy reversible by default &mdash; that's the <a href="the-2am-test-incident-handoff.html">2am test</a> applied to databases.</li>
+<li><strong>Rollbacks are deploys too.</strong> They get a watcher, a smoke check, and a note in the same <a href="runbook-template.html">runbook</a>. "It's just a rollback" is how a recovery becomes a second outage.</li>
+<li><strong>Keep the last-known-good deployable.</strong> If your previous good build only exists as a commit hash that no longer builds (deps moved, images pruned), pin and archive it. Last-known-good that can't be built is a memory, not a rollback.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> includes the change-control pack with the rollback log and freeze calendar this card plugs into &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so bad deploys page nobody at 2am</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="change-management-checklist.html">Change Management Checklist for Small Teams (No CAB Required)</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes of an Incident</a></li>
+<li><a href="runbook-template.html">Runbook Template: The Docs That Get Opened at 2am</a></li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams (Blameless)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
