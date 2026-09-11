@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch Cadence Calendar for Small Teams (What Patches When, on One Page) &mdash; ops-notes</title>
+<meta name="description" content="A patch cadence calendar for small teams: four patch lanes (emergency, high, monthly wave, quarterly sweep), calendar anchors that survive busy weeks, the written deferral card that keeps skipping honest, the vendor EOL watch item nobody schedules, and the one-page evidence report.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Patch cadence calendar: what patches when, on one page</h1>
+<p>Patching fails at small teams not because anyone disagrees with it, but because it has no <em>when</em>. "We patch when we get to it" means the scary updates happen during incidents and the boring ones never happen at all. The <a href="patch-management-checklist.html">patch management checklist</a> covers <em>what</em> to patch; this page covers the cadence &mdash; the four lanes that sort every patch by urgency, the calendar anchors that survive busy weeks, the deferral card that keeps skipping honest, and the one-page report that proves the machine is running. The whole system fits on one calendar page and costs nothing but a recurring block of an afternoon.</p>
+
+<h2>1. The four lanes: every patch lands in exactly one</h2>
+<ul>
+<li><strong>Lane 0 &mdash; emergency (24 hours).</strong> Actively exploited vulnerabilities (CISA KEV list hits), exposed-service CVEs with public exploits, and anything touching internet-facing auth. The rule: patch inside 24 hours, outside business hours if needed, and note in the log that you did it hot. Emergency patches are allowed to be messy; they are not allowed to be skipped. The <a href="first-30-minutes-incident-response.html">first 30 minutes runbook</a> takes over if the patch is a response to something already on fire.</li>
+<li><strong>Lane 1 &mdash; high (7 days).</strong> CVSS 9+ on internal systems, any CVE in your identity provider, remote code execution on machines with user data. These ride the next scheduled maintenance window, never the one after that. If two lanes collide, Lane 1 pre-empts the monthly wave &mdash; the wave simply starts with them.</li>
+<li><strong>Lane 2 &mdash; the monthly wave (scheduled).</strong> Everything else: routine OS updates, application releases, firmware you've been meaning to do. One wave per month, all machines, one afternoon, every machine through the same reboot-and-verify pass. The wave is the heartbeat &mdash; when the wave is reliable, Lanes 0 and 1 stay rare.</li>
+<li><strong>Lane 3 &mdash; the quarterly sweep (scheduled).</strong> The things too big or too scary for the wave: the hypervisor hosts, the NAS firmware, the firewall OS, the backup server nobody dares reboot. One per quarter, with a tested snapshot or backup first &mdash; the <a href="backup-restore-test-checklist.html">restore test</a> is the rehearsal for exactly this afternoon.</li>
+</ul>
+
+<h2>2. Calendar anchors that survive busy weeks</h2>
+<ul>
+<li><strong>Anchor to Patch Tuesday, not to memory.</strong> Microsoft ships the second Tuesday of the month; most vendors you care about follow within days. Your monthly wave lives on the <em>third</em> Tuesday: seven days of vendor dust-settling, then you sweep everything in one pass. Put it in the shared calendar as a recurring all-day event named "PATCH WAVE" &mdash; boring, visible, unmovable.</li>
+<li><strong>Give the wave a window, and give the window a name.</strong> Same afternoon every month, e.g. 14:00&ndash;18:00. Named windows do two things: the team plans around them, and the <a href="change-freeze-window-policy.html">change freeze policy</a> can treat them as protected time &mdash; during the wave window, nothing else competes for the admin's hands.</li>
+<li><strong>Attach the wave to existing rhythm, not to willpower.</strong> Wave Wednesday follows the <a href="weekly-review-checklist.html">weekly review</a>; the quarterly sweep follows the quarter's <a href="incident-response-drill-schedule-template.html">drill day</a> so the "prove you can recover" muscle is already warm. Cadence stacked on cadence survives; cadence floating alone dies in the first busy sprint.</li>
+<li><strong>The 24-hour pre-wave check.</strong> The day before: read the vendor advisories, list the machines in scope, confirm you have console/physical access for the two that always need it. Fifteen minutes of prep converts wave day from archaeology into execution.</li>
+</ul>
+
+<h2>3. The deferral card: skipping is legal, silent skipping is not</h2>
+<ul>
+<li><strong>Every deferral gets four lines.</strong> What is being deferred, why (the concrete risk of patching now &mdash; vendor bug, business hours, staging test pending), when it <em>will</em> be patched (a date, not "soon"), and who accepted it. Written into the patch log next to the machine's name. A deferral without a date is not a decision; it is a deletion.</li>
+<li><strong>Deferrals expire loudly.</strong> The card's date is a calendar entry, not a hope. On expiry the patch goes to the front of the next wave automatically, and if the deferral was Lane 1, the expiry fires the emergency lane instead. The system's integrity is the point: one honest deferral with a date is discipline; three quiet ones is a spreadsheet of lies.</li>
+<li><strong>CAP the deferrals.</strong> Any machine with two live deferrals stops receiving new ones &mdash; it becomes the next wave's first target regardless of what its owner prefers. This is the rule that keeps the calendar honest on the machine everyone is scared of.</li>
+</ul>
+
+<h2>4. The vendor EOL watch: the calendar item nobody schedules</h2>
+<ul>
+<li><strong>Patching cannot save software that stopped shipping patches.</strong> The quiet catastrophe at small teams is the EOL system &mdash; the old NAS firmware, the abandoned wiki app, the printer with a 2017 codebase &mdash; that receives no updates at all. It is unpatchable, which makes it a permanent Lane 0, permanently unfixable by the cadence you just built.</li>
+<li><strong>Quarterly, list it.</strong> One calendar item per quarter: walk the <a href="asset-inventory-checklist.html">asset inventory</a> and mark every system whose vendor support ends within twelve months. Each gets a written fate: replace, migrate, or accept-with-compensation (network isolation, no internet exposure). "Accept" is allowed; "ignore" is not. The <a href="vendor-outage-runbook.html">vendor outage runbook</a> and the <a href="vendor-escalation-ladder.html">escalation ladder</a> are what you use when the vendor is still alive but barely.</li>
+</ul>
+
+<h2>5. The one-page evidence report</h2>
+<ul>
+<li><strong>Log every wave in three columns: machine, patches applied, result.</strong> Same one-page format every month &mdash; the log is the evidence. When an auditor, an insurer, or a customer security questionnaire asks "do you patch regularly?", you will have eleven consecutive wave reports instead of a shrug. The <a href="sla-slo-definition-template.html">SLA template</a> crowd call this evidence; your insurer calls it a discount.</li>
+<li><strong>Report misses with the same calm as hits.</strong> The monthly line in the <a href="weekly-status-report-template.html">status report</a> reads: "September wave: 14/15 patched, 1 deferral (billing server, vendor regression, expires 15 Oct)." A cadence that sometimes misses and always says so is more credible than one that claims perfection and hides three EOL boxes.</li>
+<li><strong>Tie the misses to severity, not to guilt.</strong> A missed Lane 2 wave is a scheduling conversation; a missed Lane 0 is an incident, and the <a href="postmortem-template-small-teams.html">postmortem template</a> applies. The <a href="severity-matrix-3-levels.html">severity matrix</a> decides which conversations happen &mdash; the calendar just needs to keep its promises or say why not. The <a href="status-page-communication-template.html">status page template</a> covers what you tell humans when the patching itself breaks something.</li>
+</ul>
+
+<p><em>Small-team honesty note: a five-person company does not need a patch management platform; it needs a recurring calendar event and a log file. This page's entire system is four lanes, three anchors, a four-line deferral card, and one evidence page. The trap this page exists to prevent is cadence theater &mdash; a beautiful policy document with no calendar entry behind it. If the PATCH WAVE event is not in your calendar as you read this, the cadence does not exist yet. Put the event in, run the first wave ugly, and let the system make itself real.</em></p>
+
+<p>Related: <a href="patch-management-checklist.html">patch management checklist</a> &middot; <a href="change-freeze-window-policy.html">change freeze window policy</a> &middot; <a href="asset-inventory-checklist.html">asset inventory checklist</a> &middot; <a href="backup-restore-test-checklist.html">backup restore test</a> &middot; <a href="severity-matrix-3-levels.html">severity matrix</a> &middot; <a href="weekly-status-report-template.html">weekly status report</a> &middot; <a href="vendor-outage-runbook.html">vendor outage runbook</a> &middot; <a href="vendor-escalation-ladder.html">vendor escalation ladder</a> &middot; <a href="sla-slo-definition-template.html">SLA/SLO definition</a> &middot; <a href="postmortem-template-small-teams.html">postmortem template</a> &middot; <a href="status-page-communication-template.html">status page template</a> &middot; <a href="first-30-minutes-incident-response.html">first 30 minutes</a> &middot; <a href="admin-first-week-runbook.html">new admin's first week</a></p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">💬 Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
