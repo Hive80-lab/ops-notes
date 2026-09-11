@@ -38,4 +38,5 @@ Incident response, on-call, and automation **checklists and templates** you can 
 - [SSL certificate expiry checklist](https://hive80-lab.github.io/ops-notes/ssl-certificate-expiry-checklist.html)
 - [Secrets rotation checklist](https://hive80-lab.github.io/ops-notes/secrets-rotation-checklist.html)
 
+- [Website maintenance checklist](https://hive80-lab.github.io/ops-notes/website-maintenance-checklist-small-business.html)
 *Templates, not legal or regulatory advice. Site: <https://hive80-lab.github.io/ops-notes/>*

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website Maintenance Checklist for Small Businesses: The 30-Minute Monthly Routine &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A 30-minute monthly website maintenance routine for small businesses: catch expired certificates and domains before customers do, test the contact form like a real lead, update on a copy first, and prove your backup actually restores.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Website Maintenance Checklist for Small Businesses</h1>
+<p class="lede">A small-business website doesn't die in a crash &mdash; it dies quietly: the certificate lapses, the domain auto-renew fails on a dead card, the contact form has been eating leads for three weeks, and the backup everyone assumed was running stopped when a plugin updated. None of those announce themselves. The fix isn't a redesign or a retainer &mdash; it's <strong>a 30-minute routine, once a month, that checks the four things that actually fail</strong>.</p>
+
+<h2>1. The four quiet failures</h2>
+<p>Everything on your site can break, but only four failures are common <em>and</em> silent. Each has a check that takes minutes:</p>
+<table>
+<tr><th>Quiet failure</th><th>How it announces itself (if you do nothing)</th><th>The check</th></tr>
+<tr><td><strong>Certificate expires</strong></td><td>Browsers show a warning page; half your visitors just leave. Often a non-renewed ACME challenge or a lapsed plan.</td><td>Cert expiry date checked monthly, alerts set at 30 days &mdash; see the <a href="ssl-certificate-expiry-checklist.html">SSL expiry checklist</a>.</td></tr>
+<tr><td><strong>Domain expires</strong></td><td>Site resolves for cached users, then vanishes entirely. Resellers send renewal mail to an inbox nobody reads.</td><td>Expiry date + registrar account reachable, monthly &mdash; see <a href="domain-hijack-protection-checklist.html">domain hijack protection</a>.</td></tr>
+<tr><td><strong>Contact/checkout form breaks</strong></td><td>Nothing. The page looks perfect. Leads vanish into a misconfigured mailer or a spam folder, for weeks.</td><td>Submit a real test lead monthly and confirm it <em>arrives</em> in an inbox a human reads.</td></tr>
+<tr><td><strong>Backup stopped (or never restored)</strong></td><td>You find out the day you need it &mdash; usually during a hack or a bad update.</td><td>Restore test quarterly, spot-check the backup ran <em>this</em> month &mdash; see the <a href="backup-restore-test-checklist.html">backup restore test checklist</a>.</td></tr>
+</table>
+
+<h2>2. The 30-minute monthly routine</h2>
+<p>Same day every month (pick one &mdash; the 1st, invoicing day, whenever), one cup of coffee, in this order:</p>
+<ol>
+<li><strong>Browse like a customer (5 min):</strong> homepage on your phone, top product or service page, the booking or checkout path, then the contact page. If a page looks broken, it's been broken for weeks &mdash; the monthly cadence catches what daily life normalizes.</li>
+<li><strong>Submit a real test lead (5 min):</strong> fill the contact form from your phone and confirm the message lands in an inbox someone actually reads &mdash; not the owner's personal address that forwards to a mailbox that was decommissioned in March. This is the highest-value five minutes on this page.</li>
+<li><strong>Check the two expiries (5 min):</strong> certificate expiry and domain expiry. Both take under a minute to read off the site and the registrar. Set the calendar reminder at 30 days out, not at expiry.</li>
+<li><strong>Updates, on a copy, one at a time (10 min):</strong> apply pending CMS/plugin updates to a staging copy first, screenshot after each, then promote. If you must update live, do it at your quietest hour, one item at a time, with yesterday's backup confirmed &mdash; never bundle ten plugin updates at 5pm Friday.</li>
+<li><strong>Glance at the two graphs (5 min):</strong> traffic and errors. A sudden traffic drop usually means indexing or a plugin, not "marketing is failing." An error-log spike means something changed &mdash; look at what shipped that week. If you only watch uptime, see the <a href="server-monitoring-checklist-small-teams.html">five signals worth monitoring</a>.</li>
+</ol>
+
+<h2>3. The quarterly pass (the 30-minute routine isn't the whole job)</h2>
+<ul>
+<li><strong>Restore test:</strong> actually restore a backup to a scratch location and click around. An untested backup is a rumor &mdash; this is the quarterly half-hour that decides whether a hack is an afternoon or a disaster.</li>
+<li><strong>Owner and access audit:</strong> who can log into the CMS, the host, the domain, the DNS? Remove anyone who left. "The person who set it up in 2022" is not an owner.</li>
+<li><strong>Mobile speed check:</strong> run one page through a speed test on a phone connection. Slow homepages are silent revenue leaks that no uptime monitor will ever catch.</li>
+<li><strong>Legal and contact details:</strong> prices, opening hours, the privacy page, the address. Stale hours on the contact page cost real customers and take four minutes to fix.</li>
+</ul>
+
+<h2>4. The mistakes that turn maintenance into an outage</h2>
+<ul>
+<li><strong>Updating live at 5pm Friday.</strong> Plugin updates are the #1 self-inflicted outage on small sites. Copy first, one at a time, quiet hour, backup confirmed.</li>
+<li><strong>The bus factor of one.</strong> The site only "the web guy" can touch. Export an admin login and a note on where things are hosted into your password manager &mdash; ownership is a fact you can hand over, not a person you can call.</li>
+<li><strong>Testing the form with your own session.</strong> Logged-in admins bypass half the failure modes (caching, bot protection, mail routing). Test from a phone, logged out, like a stranger.</li>
+<li><strong>Never checking where the form mail goes.</strong> A form that sends to a mailbox nobody opened since 2023 has been eating leads the whole time &mdash; and no dashboard will tell you.</li>
+<li><strong>"It's just a brochure site."</strong> Brochure sites still collect leads, still get hacked, still expire. The 30-minute routine is the same; only the stakes differ. When the site <em>is</em> revenue, add an uptime budget so you know what your targets actually buy &mdash; see <a href="uptime-downtime-budget.html">the uptime budget</a>.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Websites fail quietly, in four known places</strong> &mdash; certificate, domain, form, backup. Thirty minutes a month checks all four before customers do.</li>
+<li><strong>The test lead is the highest-value five minutes.</strong> A broken form is invisible in every dashboard and expensive in every pipeline.</li>
+<li><strong>Updates on a copy, one at a time</strong> &mdash; and a restore test every quarter, because an untested backup doesn't exist.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns this routine into a fillable monthly plan &mdash; and when something on the site <em>does</em> break anyway, <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Vol. 2 ($27)</strong></a> adds the DR plan and evidence log for the review after. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so the expiry checks and monthly routine stay current by themselves</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="ssl-certificate-expiry-checklist.html">SSL Certificate Expiry Checklist (Expiry Alerts, Renewal Dry-Runs, and the Already-Expired Runbook)</a></li>
+<li><a href="dns-outage-runbook.html">DNS Outage Runbook for Small Teams (TTLs, the Second Nameserver, the 10-Minute Restore)</a></li>
+<li><a href="domain-hijack-protection-checklist.html">Domain Expiry &amp; Hijack Protection (Locks, Recovery Codes, and the Alert Chain That Works)</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist (Prove the Backup Before You Need It)</a></li>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule)</a></li>
+<li><a href="uptime-downtime-budget.html">The Uptime Budget (How Much Downtime 99.9% Actually Buys)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
