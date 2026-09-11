@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backup Key Escrow for Small Teams (The Card That Opens the Backup When You Cannot)</title>
+<meta name="description" content="A one-page backup key escrow runbook for small teams: why the passphrase is the single point of failure, two-path escrow that never sits next to the archive, the quarterly restore-with-escrowed-key drill, offboarding the key-holder without burning the archive, and the escrow card template.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>The backup is fine. The passphrase is the single point of failure</h1>
+<p>You did the hard part: the backups are encrypted, tested, and sitting in two locations. Then the founder who set the archive passphrase goes on holiday, gets sick, or resigns, and the entire <a href="backup-encryption-checklist.html">encrypted backup estate</a> becomes a pile of unreadable bytes. Escrow is the antidote, and for a team of five it fits on one card. This page is that card: what to escrow, where it may and may not live, the drill that proves it works, and the offboarding step everyone forgets.</p>
+
+<h2>1. What escrow actually means for a team your size</h2>
+<ul>
+<li><strong>Escrow is a second, independent way to open the backup.</strong> Not a copy of the password taped under the keyboard &mdash; an intentionally stored, findable, dated secret whose only reader is a documented emergency. If <a href="backup-encryption-checklist.html">your backup encryption checklist</a> says "two-path key storage," escrow is the paperwork that makes the second path real instead of theoretical.</li>
+<li><strong>The test is brutal and simple: can a second person restore the backup while the first person is unreachable?</strong> Not "can they eventually," and not "do we think so." The <a href="backup-restore-test-checklist.html">restore test</a> answers for data; the escrow drill answers for the key. One without the other is half a plan.</li>
+<li><strong>You already run escrow somewhere.</strong> The <a href="break-glass-account-checklist.html">break-glass admin account</a> is escrow for identity. The printed TOTP backup codes are escrow for MFA. Backup keys deserve the same treatment: deliberately stored, deliberately restricted, deliberately tested.</li>
+</ul>
+
+<h2>2. The three escrow patterns that actually work at small scale</h2>
+<ul>
+<li><strong>Pattern A &mdash; the sealed offline kit (the default for most teams).</strong> The passphrase and the key-file hash, printed, inside a sealed envelope in a safe or with the trusted third party. Two envelopes in two locations. Cheap, offline, impossible to phish. The failure mode is honest: an envelope is a point-in-time copy, so it must be re-sealed every time the key rotates &mdash; which the <a href="api-key-rotation-checklist.html">rotation schedule</a> should trigger, not a person's memory.</li>
+<li><strong>Pattern B &mdash; the shared vault item (for teams already living in a password manager).</strong> A restricted shared item in the manager the team already uses, visible to two named people plus an emergency recovery path &mdash; mirroring the <a href="password-manager-rollout-small-business.html">password manager rollout</a> rules rather than fighting them. The failure mode is also honest: whoever can see the vault item can see the backup. That is why the item's access list is two people, not "admins."</li>
+<li><strong>Pattern C &mdash; split knowledge (for the paranoid or the regulated).</strong> The passphrase is split into two halves, each half escrowed separately, so no single person can reconstruct it alone. This is the pattern auditors and <a href="cyber-insurance-requirements-checklist.html">cyber-insurance questionnaires</a> love. The failure mode: reconstruction needs two people, so the drill must rehearse the handoff, and the reconstruction step must be written down or the split becomes a riddle.</li>
+<li><strong>What does not work:</strong> the key in the same cloud account as the backup (one compromised credential opens both), the key in the founder's head only, the key in a chat message from 2023, or the key in the runbook itself. If the escrow location is reachable by whoever stole the <a href="data-breach-first-24-hours.html">first breached laptop</a>, it is not escrow &mdash; it is storage.</li>
+</ul>
+
+<h2>3. The escrow card template</h2>
+<ul>
+<li><strong>Header:</strong> backup job name, archive format + encryption tool + version, the passphrase or a pointer to it (escrow means few copies, zero copies in logs and tickets).</li>
+<li><strong>Paths line:</strong> the two escrow locations, the two people allowed to open them, and the date the card was last re-sealed.</li>
+<li><strong>Drill line:</strong> the date of the last restore performed <em>using only the escrowed key</em>, the machine it was run on, and who witnessed it.</li>
+<li><strong>Rotation line:</strong> when the key last rotated, when it rotates next, and the rule that a rotation re-seals every envelope &mdash; the same review that checks <a href="annual-security-review-checklist.html">who still has access</a>.</li>
+<li><strong>Breach line:</strong> one sentence: "if this card is exposed, treat the archive as exposed" and the link to the <a href="api-key-leak-response-runbook.html">key-leak runbook</a>.</li>
+</ul>
+
+<h2>4. The quarterly escrow drill (fifteen minutes, saves the company)</h2>
+<ul>
+<li><strong>The drill: restore one file from the encrypted backup using only the escrowed key &mdash; without asking the key-holder.</strong> Pick the person least likely to know the passphrase by heart. If the restore works, the escrow is real; log the result next to the archive, the same ledger the <a href="backup-restore-test-checklist.html">restore test</a> uses. If it does not, you have found the flaw while it is still cheap.</li>
+<li><strong>Drill the handoff, not just the typing.</strong> Pattern C teams: the two halves meet for the first time during the drill. New hires on their <a href="oncall-onboarding-new-hires-checklist.html">on-call onboarding</a> path: the escrow walkthrough belongs next to the break-glass walkthrough &mdash; both are "the thing you hope never to run, rehearsed until it is boring."</li>
+<li><strong>Rotate the driller, keep the date.</strong> A drill always run by the same person drifts into ritual. Rotate who runs it each quarter; the calendar slot itself can piggyback the quarterly restore test so it is one meeting, not two.</li>
+</ul>
+
+<h2>5. Offboarding the key-holder without burning the archive</h2>
+<ul>
+<li><strong>Offboarding day has a key step, not just an account step.</strong> When the person who held the key leaves: rotate the backup key first, re-encrypt or verify the archives under the new key, re-seal every envelope, then walk the leaver through <a href="vendor-offboarding-data-deletion-checklist.html">the deletion checklist</a> for any personal copies they made. The <a href="server-decommissioning-checklist.html">decommissioning discipline</a> applies to people's heads too: wipe, then verify the wipe.</li>
+<li><strong>Nobody resigns with the only key.</strong> The escrow card exists precisely so no single exit &mdash; graceful or angry &mdash; can hold production history hostage. If today that is not true for your team, the fastest fix in this entire page is: pick a second person, open the escrow, run the drill this week.</li>
+<li><strong>The exit that already happened is not the risk; the next one is.</strong> Put "escrow verified post-exit" as a line in the offboarding checklist, so the rotation and re-seal cannot be skipped in the rush of someone's last day.</li>
+</ul>
+
+<h2>6. When escrow goes wrong, and how it ends</h2>
+<ul>
+<li><strong>Lost key + encrypted archive = gone.</strong> Not "recoverable with effort." Brute-forcing a modern passphrase is a rounding error against eternity; the only realistic recovery is the escrowed copy. This is why the <a href="ransomware-recovery-checklist.html">ransomware runbook</a> asks for encryption status early: an encrypted backup you cannot open converts a bad week into a permanent loss.</li>
+<li><strong>Exposed escrow = rotate, don't argue.</strong> The moment an escrowed secret is suspected leaked &mdash; the laptop with the vault session, the mis-sent email, the photograph of the whiteboard &mdash; rotate the key and re-seal, then run the <a href="lost-or-stolen-laptop-runbook.html">lost-laptop math</a> on what the exposure touched. Rotation is hours; hope is not a control.</li>
+<li><strong>Escrow that is never tested is a story you tell yourself.</strong> The fifteen-minute quarterly drill is the difference between a plan and a decoration. The <a href="first-30-minutes-incident-response.html">first-30-minutes runbook</a> logic applies: rehearsals are cheap, the real 2AM version is not.</li>
+</ul>
+
+<p><em>Small-team honesty note: if you are a team of two, this is one envelope in a safe and one shared vault item, re-sealed whenever the key rotates, proven by a one-file restore every quarter. Fifteen minutes a quarter is the entire price of never being locked out of your own history. That is the best deal in this whole site.</em></p>
+
+<p>Related: <a href="backup-encryption-checklist.html">backup encryption checklist</a> &middot; <a href="backup-restore-test-checklist.html">backup restore test checklist</a> &middot; <a href="break-glass-account-checklist.html">break-glass account checklist</a> &middot; <a href="api-key-rotation-checklist.html">API key rotation</a> &middot; <a href="api-key-leak-response-runbook.html">API key leak response</a> &middot; <a href="password-manager-rollout-small-business.html">password manager rollout</a> &middot; <a href="oncall-onboarding-new-hires-checklist.html">on-call onboarding for new hires</a> &middot; <a href="ransomware-recovery-checklist.html">ransomware recovery</a> &middot; <a href="cyber-insurance-requirements-checklist.html">cyber-insurance requirements</a> &middot; <a href="data-breach-first-24-hours.html">data breach first 24 hours</a> &middot; <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding &amp; data deletion</a> &middot; <a href="annual-security-review-checklist.html">annual security review</a></p>
+</main>
+</body>
+</html>
