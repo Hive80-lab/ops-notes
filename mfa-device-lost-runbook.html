@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MFA Device Lost Runbook for Small Teams (The Only Second Factor Just Walked Out of Your Life)</title>
+<meta name="description" content="What to do when an employee loses their only MFA device: the out-of-band identity verification, the admin reset order, the break-glass account, the lockout-window phishing risk, backup codes that were never printed, and the recovery hardening pass that makes the next loss a two-minute job instead of a two-day incident.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>MFA Device Lost Runbook</h1>
+<p><em>A lost phone with your only authenticator isn't an IT ticket &mdash; it's a lockout with a deadline, and the deadline is whenever the phone turns up in someone else's pocket. This is the runbook for the hour it happens: verify the human out-of-band before anything is reset, reset in the right order, keep the business running through the lockout window, and harden the setup so the next lost phone is a two-minute job.</em></p>
+
+<h2>1. The real risk isn't the lockout &mdash; it's the window</h2>
+<ul>
+<li><strong>The phone and the account are still paired.</strong> Lost does not mean wiped: the TOTP app or push prompt on that device can still approve logins until someone acts. Treat "MFA device lost" as "second factor compromised until proven otherwise" &mdash; the same assumption as the <a href="api-key-leak-response-runbook.html">API key leak runbook</a>: you don't wait to find out.</li>
+<li><strong>Lockout is when people get phished.</strong> A locked-out employee who "just needs back in" is exactly the state attackers exploit &mdash; and exactly when your help desk instincts are weakest. The verification step below exists as much for the phisher who calls two hours later claiming to be the same employee as for the real one.</li>
+<li><strong>Announce it internally, briefly.</strong> One line to the team: "Alex's phone is lost, MFA resets are in progress, expect verification calls." Social-engineering attacks ride on the gap between what happened and what people know happened.</li>
+</ul>
+
+<h2>2. Verify the human before you touch anything</h2>
+<ul>
+<li><strong>Out-of-band, live, and not the lost channel.</strong> Video call with a face you know, or a call to a number on file that is not the lost phone. Never verify over the same channel that was lost &mdash; email to the address reachable from the lost device is not verification, it's theater.</li>
+<li><strong>Two checkpoints minimum.</strong> Face-to-name (a live camera), plus a knowledge check your HR data can confirm (start date, last expense report, the manager who interviewed them). This is the same discipline the <a href="first-30-minutes-incident-response.html">first 30 minutes runbook</a> applies to an incident: confirm the reality before you start changing state.</li>
+<li><strong>Write down who verified whom, and when.</strong> The reset log entry: verifier, requester, channel, timestamp. If the phone later surfaces in a fraud attempt, this line is the difference between an audit note and an incident with no timeline.</li>
+</ul>
+
+<h2>3. Reset in the right order</h2>
+<ul>
+<li><strong>Kill the old factor first, then enroll the new one.</strong> Admin console: revoke the lost device's MFA registration (not "reset password" &mdash; the password was never lost). In most consoles this is "revoke MFA methods" or "require re-enrollment"; the lost factor dies the moment you do it, which closes the compromise window. Enroll the replacement &mdash; a new TOTP app on a device the employee still holds &mdash; immediately after.</li>
+<li><strong>Session revocation is part of the reset.</strong> Sign the account out everywhere and revoke refresh tokens: the old phone may hold active sessions that survive an MFA change. The <a href="slack-workspace-security-checklist.html">Slack checklist</a>'s session-revocation drill, applied to the whole account.</li>
+<li><strong>Sweep what the lost phone could reach beyond login.</strong> If it held the password manager app, rotate the master password and check for exports; if it was the backup email's second factor, that chain breaks too. The lost device is a keyring, not a key &mdash; inventory what hung off it before you call it done.</li>
+</ul>
+
+<h2>4. Keep the business running through the lockout</h2>
+<ul>
+<li><strong>The shared mailbox trick for the dead hours.</strong> If the account is the one customers email, forward to a live teammate while the reset completes &mdash; then turn the forwarding OFF (the <a href="employee-offboarding-checklist.html">employee offboarding checklist</a> explains why silent forwarding is the classic hole; same rule, different trigger).</li>
+<li><strong>Admin work doesn't wait for one phone.</strong> A second admin (or the break-glass account, below) covers the console actions the locked-out person owned. If the lost phone belonged to your only admin &mdash; that is the scenario this runbook exists for, and the reason every small team needs a second admin seat with MFA enrolled.</li>
+<li><strong>Print the waiting-room rule.</strong> During the lockout window, the employee changes nothing else: no new passwords, no device re-pairing from the lost phone if it pings back, no "helpful" workarounds someone emails them. One incident at a time.</li>
+</ul>
+
+<h2>5. The break-glass account (build it the day after, not the day of)</h2>
+<ul>
+<li><strong>One admin account that exists only for disasters.</strong> A cloud-only admin identity, excluded from conditional access, with a long generated password in a sealed envelope or offline vault, no SMS, and TOTP you can afford to lose &mdash; documented in the <a href="microsoft-365-security-checklist.html">Microsoft 365 checklist</a> and the <a href="google-workspace-security-checklist.html">Google Workspace checklist</a>. It exists so that "the admin lost their phone" is an annoyance, not a hostage situation.</li>
+<li><strong>Test it quarterly and log every use.</strong> An untested break-glass account is a myth with a password. Sign in with it once a quarter, from the documented runbook, and record the test. Every real use gets the incident-timeline treatment &mdash; who used it, why, when it was re-sealed.</li>
+</ul>
+
+<h2>6. Recovery codes: the ten-minute fix everyone skips</h2>
+<ul>
+<li><strong>Backup codes exist precisely for this day.</strong> Every provider that offers one-time backup codes should have them generated, printed or stored in the password manager's secure notes, and inventoried at rollout &mdash; the <a href="mfa-rollout-checklist-small-business.html">MFA rollout checklist</a> should have made this a gate. If your team skipped it, run it now: one hour, every employee, codes generated and filed.</li>
+<li><strong>Codes are single-use, and that's the audit.</strong> A used backup code should be replaced the same week; a "I used my backup code" event is a small flag worth logging &mdash; lost device, or just cleared browser? Either answer is a note in the same register.</li>
+<li><strong>The second factor is a pair, not a hero.</strong> Two enrolled factors (phone TOTP + a hardware key or the manager's TOTP) means a lost phone is a five-minute re-enroll. The <a href="passkeys-rollout-checklist.html">passkeys rollout</a> changes the shape &mdash; passkeys sync across devices &mdash; but the principle is identical: never exactly one factor.</li>
+</ul>
+
+<h2>7. Harden before the next phone goes missing</h2>
+<ul>
+<li><strong>The quarterly 15-minute pass:</strong> every employee has at least two working factors, backup codes exist and are current, at least two admins exist with independent factors, the break-glass account has been tested, and the password manager master password recovery path is documented. This is the same cadence as the <a href="annual-security-review-checklist.html">annual security review</a>, scoped to factors.</li>
+<li><strong>Rehearse it once, for real.</strong> Pick a quiet Friday afternoon: an admin revokes a volunteer's MFA, the runbook runs end to end &mdash; verification, reset, re-enroll, forwarding cleanup. Twenty minutes, once. The first real loss should be the second time you've done this, not the first.</li>
+<li><strong>And when the lost phone is a lost laptop instead</strong> &mdash; the <a href="lost-or-stolen-laptop-runbook.html">lost laptop runbook</a> is the device-loss sibling of this page: same verification reflex, bigger blast radius.</li>
+</ul>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+<li><a href="passkeys-rollout-checklist.html">Passkeys Rollout Checklist</a></li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout for Small Business</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes: Incident Response</a></li>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
