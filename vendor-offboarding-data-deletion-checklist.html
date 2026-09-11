@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor Offboarding &amp; Data Deletion Checklist for Small Teams (Exit Without the Exposure)</title>
+<meta name="description" content="A vendor offboarding checklist for small businesses: check the exit clause before you cancel, export what you own, untangle SSO and API keys, revoke every door, request deletion in writing with a date, and verify instead of trusting &mdash; so a fired vendor doesn't stay a silent liability.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Vendor offboarding for small teams: the data deletion checklist</h1>
+
+<p>Cancelling a SaaS subscription is a two-click operation. <strong>Offboarding the vendor</strong> &mdash; making sure they stop holding your customer list, your documents, your API access, and your billing card &mdash; is a different job, and almost nobody does it. The result shows up a year later as a surprise: the "cancelled" tool still appears in your SSO dashboard, its API key still works, and its privacy policy still says it retains customer data. If you passed the <a href="cyber-insurance-requirements-checklist.html">cyber insurance application</a> questions about third parties, that ghost vendor is exactly the exposure the underwriter was asking about.</p>
+
+<p>This checklist takes one afternoon per vendor and leaves you with three artifacts: an export, a written deletion confirmation request, and a dated record that the door is closed. Run it before the renewal date &mdash; the order matters.</p>
+
+<h2>1. Read the exit clause before you send the cancellation email</h2>
+
+<p>Every lever you have was agreed at signing, in the contract and the data processing agreement (DPA). Before cancelling, find and note:</p>
+
+<ul>
+<li><strong>Notice period.</strong> 30 days is common. Cancel inside the window and the contract auto-renews &mdash; now the offboarding runs against a contract that just extended itself. The renewal prompt (like the one in the <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a>) is the moment to act, not the day after.</li>
+<li><strong>Data return.</strong> What format, what fields, how long the vendor keeps the export available after termination. Some platforms let you export yourself; some make you request it. Learn which <em>before</em> your admin access ends.</li>
+<li><strong>Deletion timeline.</strong> Most DPAs say primary data is deleted "within 30-90 days of termination" and backups "in the normal course of business" (90-180 days). That's fine &mdash; but it means deletion is a <em>date in the future</em>, not a switch. Write the date down.</li>
+<li><strong>The auto-renew trap.</strong> Some contracts renew unless cancelled 60+ days out. If you're inside that window, your first task isn't deletion &mdash; it's deciding whether one more term is cheaper than fighting the renewal. That's a <a href="change-management-checklist.html">recorded decision</a>, not an inbox mood.</li>
+</ul>
+
+<h2>2. Export what you own, while you still have admin</h2>
+
+<p>The day admin access ends, so does your leverage to get data out. Export on your schedule, not the vendor's:</p>
+
+<ul>
+<li><strong>Primary data</strong> &mdash; the customers, tickets, documents, or records you'd need if a dispute or an audit shows up in six months.</li>
+<li><strong>User and access list</strong> &mdash; who had accounts in the tool. This becomes your input for revoking their side door later.</li>
+<li><strong>Configuration and audit logs</strong> &mdash; if the vendor holds settings or logs that a future <a href="postmortem-template-small-teams.html">postmortem</a> would need, export them now. Logs are almost never included in "your data" exports unless you ask.</li>
+<li><strong>Anything you paid to produce</strong> &mdash; templates, automations, custom fields. This is the part teams regret losing, because recreating it costs more than the subscription ever did.</li>
+</ul>
+
+<p>Store the export where your <a href="backup-restore-test-checklist.html">backups actually run</a> &mdash; an export sitting inside the same vendor's cloud is not a backup, it's a copy with the same failure mode.</p>
+
+<h2>3. The untangle list: everything that connects you to them</h2>
+
+<p>Vendors don't connect by password alone. Walk this list before you cancel, because half of it breaks silently:</p>
+
+<ul>
+<li><strong>SSO/SAML app entry.</strong> If the tool is in your identity provider, it's a working door until you remove it &mdash; cancelled billing does not revoke login. Remove the app <em>after</em> the user list is exported, and note who was assigned.</li>
+<li><strong>API keys and tokens.</strong> Every integration script, every webhook, every "connect" you clicked in another tool. These outlive cancellations for years. Treat this as a pass of the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a>: find them, then kill them.</li>
+<li><strong>Inbound webhooks.</strong> Other systems may still POST to the vendor's endpoints. A dead webhook is usually a silent failure in a job you forgot you had &mdash; the same failure class as the <a href="cron-job-monitoring-checklist.html">cron job nobody watches</a>.</li>
+<li><strong>DNS records and MX changes.</strong> If the vendor ever touched your domain (email routing, verification TXT records), remove those entries deliberately. Left-behind DNS is both a security hole and a future mystery outage.</li>
+<li><strong>The billing card.</strong> If the vendor has your card on file, cancel via the billing settings <em>and</em> confirm the subscription shows cancelled in writing (screenshot). "I emailed them" is not a cancellation record.</li>
+</ul>
+
+<h2>4. Revoke everything that opens a door</h2>
+
+<p>Access offboarding follows the same logic as employee offboarding &mdash; <a href="access-request-offboarding-checklist.html">same order as a leaver</a>, but the account is the vendor's:</p>
+
+<ul>
+<li>Disable vendor admin accounts from your side where the integration allows it.</li>
+<li>Rotate any shared credentials the vendor ever saw &mdash; SMTP passwords, database users, cloud keys. If a vendor engineer ever connected to your systems, assume that credential is theirs until rotated.</li>
+<li>Remove vendor service accounts from your identity provider, and check for OAuth grants ("sign in with Google") that users granted individually &mdash; those don't appear in admin consoles and survive everything else.</li>
+</ul>
+
+<h2>5. The deletion request, in writing, with a date</h2>
+
+<p>Don't assume cancellation deletes data. Send a short deletion request referencing the contract, and ask for specifics:</p>
+
+<ul>
+<li><strong>Name the data.</strong> "All customer personal data and documents associated with account [id]" beats "our data".</li>
+<li><strong>Include backups.</strong> Ask them to confirm the backup deletion timeline from the DPA, in days. If the answer is "90 days", your verification date is 90 days out &mdash; put it in the calendar.</li>
+<li><strong>Ask for written confirmation.</strong> A named reply, not a help-center article. This email is your evidence artifact for the next <a href="cyber-insurance-requirements-checklist.html">insurance renewal</a> and the next <a href="vendor-security-review-checklist.html">vendor review</a>.</li>
+<li><strong>Sub-processors.</strong> If your data flowed to the vendor's own vendors, ask how deletion propagates. You don't need to audit their chain &mdash; you need the question answered in writing.</li>
+</ul>
+
+<h2>6. Verify instead of trusting</h2>
+
+<p>Offboarding fails at the verification step because it happens after everyone stopped caring. Three cheap checks:</p>
+
+<ul>
+<li><strong>Try the old login.</strong> SSO app removed + password login rejected = the door is actually closed. Two minutes.</li>
+<li><strong>Confirm billing stopped.</strong> Next statement: the charge is gone and nothing auto-converted to a free tier with your card still on file.</li>
+<li><strong>The 30/60-day follow-up.</strong> One calendar entry: "vendor X &mdash; deletion confirmation received? yes/no." If no, one follow-up email. Vendors answer the second email.</li>
+</ul>
+
+<h2>7. The paperwork (ten minutes, saves the next argument)</h2>
+
+<p>Keep one record per vendor exit: who approved it, the cancellation date, the export location, the deletion request, and the confirmation (or the follow-up you still owe). This is the same discipline as the <a href="incident-response-changelog-automation.html">incident changelog</a> &mdash; the record exists so a future you doesn't re-litigate a decision from memory.</p>
+
+<h2>The failure modes this checklist exists for</h2>
+
+<ul>
+<li><strong>The ghost login.</strong> The SSO app entry survives the cancellation. Six months later, an audit finds a "tool we don't use" that still authenticates users. Doors get closed by action, not by invoices stopping.</li>
+<li><strong>The living API key.</strong> A cron job in another tool still holds the vendor's token. It fails silently when the vendor purges data &mdash; and you find out from a broken report, not an alert. Secrets rotation isn't just for leaks.</li>
+<li><strong>The auto-renew you meant to kill.</strong> The offboarding intent was real; the notice window wasn't. Renewal prompts are the leverage point &mdash; that's where the <a href="saas-sprawl-audit-checklist.html">sprawl audit</a> earns its hour.</li>
+<li><strong>"Deletion" that meant cancellation.</strong> No written request, no date, no confirmation. The vendor keeps your data under their retention policy indefinitely, and nobody notices until it's <em>their</em> breach notification in your inbox.</li>
+</ul>
+
+<p>The pattern: <strong>an exit is complete when access, data, and billing are all three verifiably closed</strong> &mdash; not when the subscription stops charging. Vendors you keep get an annual review; vendors you fire get an exit record. The only bad vendor relationship is the one you can't prove is over.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist for Small Teams</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="api-key-leak-response-runbook.html">API Key Leak Response Runbook</a></li>
+<li><a href="saas-sprawl-audit-checklist.html">SaaS Sprawl Audit for Small Teams</a></li>
+<li><a href="change-management-checklist.html">Change Management Checklist (No CAB Required)</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
