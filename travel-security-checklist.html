@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Travel Security Checklist for Small Teams (The Laptop That Goes Through Airports)</title>
+<meta name="description" content="A travel security checklist for small teams: strip the travel laptop of production secrets before you leave, sort out MFA and offline backup codes, bring data you can re-download instead of copies you can lose, treat hotel and conference WiFi as hostile, keep devices physically attended in transit and hotel rooms, run the re-entry check when you get home, and rehearse the whole pass in ten minutes each quarter.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Travel security checklist for small teams: the laptop that goes through airports</h1>
+
+<p>The week a laptop leaves the office, it changes threat model twice. At the conference it sits on a WiFi network shared with five hundred strangers and one of them is having a bad week; in the hotel room it sits in a drawer while the owner eats dinner downstairs. Nothing about travel security is expensive &mdash; it is mostly decisions made at home, the evening before the flight, when there is still time to act on them. Decisions made in the departure lounge are rushed, and decisions made after the loss are grief. This checklist is the evening-before pass.</p>
+
+<h2>1. The pre-trip device pass: strip what you cannot afford to lose</h2>
+<ul>
+<li><strong>Ask the one-question test for every file on the machine: if this laptop is seized, stolen or imaged at a border, what does it cost us?</strong> Production API keys in <code>.env</code>, a browser logged into the admin panel, an SSH agent holding unlocked keys, the customer export you downloaded "just to work on the plane" &mdash; each of these turns a two-thousand-dollar hardware loss into an incident. The fix is boring: move secrets to the manager they already live in per the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a>, sign out of admin panels, and flush the SSH agent before you leave.</li>
+<li><strong>Travel with the boring laptop, not the important one.</strong> If the team has a spare or an older machine, wipe it, update it, put the manager and the editor on it, and travel on that. If it does not come home, the post-trip work is a supermarket purchase, not a <a href="lost-or-stolen-laptop-runbook.html">lost-laptop runbook</a> at 2am.</li>
+<li><strong>Full-disk encryption on, verified, not assumed.</strong> FileVault or BitLocker takes minutes and means a stolen powered-off laptop is a paperweight. Verify it is actually enabled &mdash; "I think I turned that on" is not a control; the toggle screen is.</li>
+</ul>
+
+<h2>2. Sort out the second factor before there is no office to text</h2>
+<ul>
+<li><strong>Take the second factor with you &mdash; deliberately.</strong> An authenticator app on the phone travels fine; the office desk phone that receives fallback SMS does not. Check each critical account's MFA method before the trip and move anything SMS-only to an app or a hardware key where the <a href="mfa-rollout-checklist-small-business.html">MFA rollout checklist</a> already made room for it.</li>
+<li><strong>Print the backup codes and put them in the passport wallet.</strong> A dead phone battery in another country is the classic lockout, and account-recovery-by-SMS to a number you cannot receive is the classic incident. Paper codes in the same pocket as the passport survive both.</li>
+<li><strong>Decide who is on call at home, and say it out loud.</strong> The traveller who holds the only admin credentials is a single point of failure at 30,000 feet. Hand the break-glass credentials to the person who is staying home, using the same access model as the office &mdash; this is a one-line add to the on-call arrangement the <a href="escalation-policy-template.html">escalation policy</a> already defines.</li>
+</ul>
+
+<h2>3. The road data rule: bring nothing you cannot re-download</h2>
+<ul>
+<li><strong>Cloud fetch, not local copies.</strong> Anything you need on the road should be reachable through an account you can log into, not sitting in a folder on the laptop. The customer list you might need is one sign-in away; the customer list you copied to the desktop is one theft away. This is the same "data lives in one place" discipline as the <a href="remote-work-security-checklist.html">remote work checklist</a>, just with worse coffee.</li>
+<li><strong>Do the plane work on throwaway material.</strong> Slide decks, drafts, reading lists &mdash; fine. Exports, databases, credential spreadsheets &mdash; those stay home and get pulled over a tethered connection when actually needed.</li>
+<li><strong>Assume the device will be inspected, not just lost.</strong> Border and customs searches are legal in many jurisdictions and are not a "how likely" question for the devices that cross borders monthly. If a machine or a phone regularly travels internationally, it should hold nothing whose disclosure would be an incident &mdash; that rule costs nothing to follow and everything to break.</li>
+</ul>
+
+<h2>4. Hotel and conference WiFi: assume hostile, act accordingly</h2>
+<ul>
+<li><strong>Prefer the phone hotspot to the venue network, always.</strong> A personal hotspot on cellular is one tap and puts you on a network of exactly one device. The conference WiFi that requires the room number and surname is a shared network with unknown neighbours and a captive portal you cannot audit. Hotspot first; venue WiFi only when the hotspot cannot carry the load.</li>
+<li><strong>On the VPN every session, before the first login.</strong> The always-on discipline from the <a href="remote-work-security-checklist.html">remote work checklist</a> matters more in a hotel than at home, because the coffee-shop threat model is the hotel's too. The rule is not "VPN for sensitive things"; it is "VPN up before the browser opens", because sensitive things do not announce themselves.</li>
+<li><strong>No admin panels on venue networks, full stop.</strong> Shipping a production config change over conference WiFi is a choice that can wait four hours. If it genuinely cannot wait, it goes over the hotspot, through the VPN, by the person whose turn it is &mdash; and the emergency that "cannot wait" gets logged like any other exception.</li>
+<li><strong>Watch the captive portal for the bait.</strong> Venue portals are where evil-twin APs live: the network named "Hotel_Guest_Free" one signal-bar stronger than the real one. The defense is boring: ask the front desk the exact SSID once, save it, and refuse the prompt to trust new certificates. A portal that asks you to install anything is not a portal.</li>
+</ul>
+
+<h2>5. Physical: transit, the hotel room, and the conference floor</h2>
+<ul>
+<li><strong>The device never leaves your sight in transit, and never sleeps in a car.</strong> Overhead bins, taxi boots and "I'll just leave it while I grab coffee" are the top three disappearance venues. On the plane it goes under the seat in front of you, not the overhead &mdash; the same crown-jewel logic as the <a href="physical-security-office-checklist.html">office physical checklist</a>: the things that cannot be re-issued travel on your body or in front of your knees.</li>
+<li><strong>In the hotel room, the laptop goes in the safe or it stays out of sight and locked down.</strong> A room safe beats a drawer; if there is no safe, the laptop sleeps closed, locked, out of sight, with the screen lock on a short timer. The hallway housekeeping staff are not a threat model you get to choose &mdash; they are a fact, like weather.</li>
+<li><strong>The conference floor is a phishing venue with lanyards.</strong> Badge scanners, "sponsors" running lunchtime prize draws, and USB sticks in the swag bag are all collection devices. A USB stick from a vendor booth gets plugged into nothing you care about; the free charging kiosk is a cable you did not buy; the QR code on the poster goes where the poster says, not where the poster's printer was told. When in doubt, the same reflexes as the <a href="phishing-response-checklist-small-teams.html">phishing checklist</a> apply, just outdoors.</li>
+</ul>
+
+<h2>6. The re-entry check: the trip is not over when you land</h2>
+<ul>
+<li><strong>Review sign-in activity for the accounts you touched on the road.</strong> Ten minutes in the admin panels on the day of return: new sessions, new devices, impossible locations. The point is not paranoia; it is closing the loop while the trip is still recent enough to interpret.</li>
+<li><strong>Rotate anything that lived on the travel device.</strong> If the travel laptop held session tokens, API keys or saved logins, rotate them on return per the <a href="api-key-rotation-checklist.html">API key rotation checklist</a>. "It came home, so nothing happened" is an assumption; the rotation converts it into a fact.</li>
+<li><strong>Run the ordinary update-and-scan pass once, then unpack.</strong> The travel machine re-joins the office network after it has patched &mdash; not before. Airports and hotels are where machines meet networks you would never connect to at home; the first act back on trusted WiFi is updates, not file sharing.</li>
+</ul>
+
+<h2>7. The ten-minute quarterly rehearsal</h2>
+<ul>
+<li><strong>Rehearse the evening-before pass before there is a flight.</strong> Once a quarter, whoever travels next walks the checklist against their actual laptop: what is in .env, what is signed in, what is on the desktop, is encryption verified, where are the backup codes. The first time you do this should not be the night before a client visit.</li>
+<li><strong>Do the walkthrough of the lost-laptop drill while you are at it.</strong> Who gets called, what gets wiped, what gets rotated, in what order &mdash; the <a href="lost-or-stolen-laptop-runbook.html">runbook</a> on paper is worth nothing until one person has read it with their own machine in their hands.</li>
+<li><strong>Write the three-line travel pass into the quarterly folder.</strong> Device stripped yes/no, MFA checked yes/no, re-entry done yes/no &mdash; it slots next to the WiFi walk test and the DNS filter re-check in the same quarterly folder, so the whole "people moving around" layer gets reviewed in one sitting.</li>
+</ul>
+
+<p class="closing">Travel security for a small team is one calm evening before the flight: strip the travel laptop of anything you could not afford to explain losing, put the second factor and its paper backup codes in the passport wallet, bring data you can re-download instead of copies you can lose, hotspot over venue WiFi with the VPN up before the browser opens, keep the device on your body in transit and locked down in the room, review sign-ins and rotate keys on the day you land, and rehearse the whole pass once a quarter. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns the pre-trip and re-entry passes into fill-in-the-blank sheets, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the quarterly rehearsal so it happens before the booking, not after the loss.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist</a></li>
+<li><a href="wifi-security-checklist.html">WiFi Security Checklist</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="api-key-rotation-checklist.html">API Key Rotation Checklist</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+<li><a href="dns-filtering-checklist.html">DNS Filtering Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
