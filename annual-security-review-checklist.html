@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annual Security Review Checklist for Small Business (One Morning, Before the Insurance Renewal)</title>
+<meta name="description" content="An annual security review a small team can actually finish in one morning: recoveries tested, secrets rotated, access audited, backups restored, phish simulated, vendors re-screened, and the whole thing written down &mdash; so the insurance renewal, the audit, and the next incident all find a business that already knows its own state.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>The annual security review for small teams</h1>
+
+<p>Big companies do security reviews because an auditor demands one. Small companies skip them because nobody demands one &mdash; and then the one moment the answer matters arrives anyway: the <a href="cyber-insurance-requirements-checklist.html">insurance renewal application</a>, a customer's security questionnaire, or the morning of an incident, when "how long since we tested our backups?" becomes the most expensive question nobody wrote down. An annual review is just the habit of answering those questions <em>before</em> someone asks under deadline.</p>
+
+<p>This is a one-morning exercise, not a project. Block half a day once a year &mdash; a fixed date you'll remember (the insurance renewal, fiscal year end, the week after the holidays) works better than a floating intention. You finish with a one-page summary of what you checked, what you fixed, and what you're consciously accepting. That page is the deliverable: it satisfies the underwriter, briefs the next hire, and becomes exhibit A in your own defense if something breaks anyway.</p>
+
+<h2>1. Prove the recoveries, not just the backups</h2>
+
+<p>Start with the question that ends businesses: can you actually get your data back? Not "do backups exist" &mdash; <em>does a restore work</em>:</p>
+
+<ul>
+<li><strong>Run one live restore.</strong> Pull a file, a mailbox, or a database from backup onto a different machine. Time it. If it takes three hours and a support ticket, that's your real RTO &mdash; write down the number, not the brochure number. Full ritual in the <a href="backup-restore-test-checklist.html">backup restore test</a>.</li>
+<li><strong>Test the human recovery paths too.</strong> One person "loses" their phone and recovers every critical account. This is where passkey and MFA rollouts quietly break &mdash; see the <a href="passkeys-rollout-checklist.html">passkeys rollout</a> recovery step.</li>
+<li><strong>Check the break-glass account.</strong> The admin recovery account: does it work, does it have a strong unique credential, and does exactly one person know where its backup factor physically lives?</li>
+</ul>
+
+<h2>2. Rotate the things that rotate</h2>
+
+<p>Secrets age like milk, not wine. Once a year, walk the <a href="secrets-rotation-checklist.html">secrets rotation schedule</a> end to end:</p>
+
+<ul>
+<li><strong>API keys and tokens.</strong> Every integration, webhook, and script &mdash; including the ones a departed employee set up. Anything unused gets killed, not rotated; a dead key is the only truly safe key.</li>
+<li><strong>Shared passwords and Wi-Fi.</strong> The shared inbox password, the router, the printer admin panel. Rotate, then push the new values through the password manager &mdash; never email.</li>
+<li><strong>Recovery and backup codes.</strong> Printouts from three years ago in a drawer are a liability, not a backup. Regenerate, re-vault.</li>
+</ul>
+
+<h2>3. Audit who can get in &mdash; and who still could</h2>
+
+<p>Access drifts. People join, leave, change roles; vendors come and go; the exception granted during a crunch becomes permanent. The annual pass:</p>
+
+<ul>
+<li><strong>Active accounts vs actual people.</strong> Every admin account maps to a current employee. Anything else is disabled today &mdash; the <a href="access-request-offboarding-checklist.html">offboarding checklist</a> catches leavers; the annual review catches everyone the checklist missed.</li>
+<li><strong>Privileged roles.</strong> Who is admin on each system, and do they need to be? Every account you demote from admin is an account a phisher can't use to destroy your week.</li>
+<li><strong>Vendor doors.</strong> Re-screen the critical vendors with the <a href="vendor-security-review-checklist.html">vendor security review</a> questions. Verify the ones you <a href="vendor-offboarding-data-deletion-checklist.html">fired last year</a> are still actually gone.</li>
+<li><strong>Authentication strength.</strong> MFA on everything that supports it, passkeys where the vendor allows, SMS-only recovery eliminated where a stronger option exists. The <a href="mfa-rollout-checklist-small-business.html">MFA rollout</a> page has the order.</li>
+</ul>
+
+<h2>4. Test the humans before the phishers do</h2>
+
+<p>The cheapest security control you own is a staff that recognizes a fake invoice. Once a year, deliberately:</p>
+
+<ul>
+<li><strong>Send one internal phish.</strong> A fake "invoice overdue" or "MFA code" email to the team. Not to punish anyone &mdash; to measure. Report rate matters more than click rate: did anyone flag it, and did anyone forward it to finance?</li>
+<li><strong>Walk the response once.</strong> If a click had happened, who gets called in what order? Rehearse the first hour of the <a href="phishing-response-checklist-small-teams.html">phishing response runbook</a> on paper. Ten minutes of table talk now beats improvising it during the real thing.</li>
+<li><strong>Refresh the one-page rules.</strong> "We pay invoices only after the callback number is verified from the website." One page, six rules, everyone initials it. If it doesn't fit on one page it won't be remembered.</li>
+</ul>
+
+<h2>5. Check the machinery nobody looks at</h2>
+
+<ul>
+<li><strong>Patches and updates.</strong> One pass of the <a href="patch-management-checklist.html">patch management checklist</a>: laptops, phones, router firmware, the NAS in the cupboard. Reboot the things that "have been running fine."</li>
+<li><strong>Certificates and domains.</strong> Expiry dates for SSL certs and domain registrations &mdash; both belong on the renewal calendar, because an expired certificate looks identical to a hack from the customer's side. The <a href="ssl-certificate-expiry-checklist.html">SSL expiry checklist</a> covers the mechanics.</li>
+<li><strong>Logs and retention.</strong> Confirm the <a href="log-retention-policy-small-teams.html">log retention policy</a> matches reality: are logs actually kept for as long as you claim, and would they answer "who logged in?" six months ago?</li>
+<li><strong>The incident plan itself.</strong> Phone numbers change, people leave. Verify every contact in the <a href="incident-response-plan-template-small-teams.html">incident response plan</a> is still reachable &mdash; including the external ones (IT support, insurance broker, lawyer).</li>
+</ul>
+
+<h2>6. Write the one page, accept the rest</h2>
+
+<p>A review that produces no record is a conversation. Close it out with a single page:</p>
+
+<ul>
+<li><strong>Tested:</strong> what was verified working this year (restore test date, recovery drill date, phish exercise date).</li>
+<li><strong>Fixed:</strong> what changed because of this review (keys rotated, accounts demoted, vendor doors closed).</li>
+<li><strong>Accepted:</strong> the risks you know about and are choosing not to fix this year &mdash; named, owned, with a revisit date. "We accept the shared printer admin password until March" written down is a decision; the same thing unwritten is a surprise.</li>
+</ul>
+
+<p>Then put next year's date in the calendar before you close the laptop. The review that gets scheduled recurs; the one that "we should do this again sometime" doesn't. Twelve months from now, the underwriter's renewal form, the customer's security questionnaire, or an incident at 2AM will ask these questions &mdash; and you'll have a page with answers dated, signed, and boring. That's the whole point: <strong>security that is documented and dull is the kind that works.</strong></p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="cyber-insurance-requirements-checklist.html">Cyber Insurance Requirements Checklist</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup &amp; Restore Test Checklist</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="passkeys-rollout-checklist.html">Passkeys Rollout Checklist for Small Business</a></li>
+<li><a href="phishing-response-checklist-small-teams.html">Phishing Response Checklist for Small Teams</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist for Small Teams</a></li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist</a></li>
+<li><a href="log-retention-policy-small-teams.html">Log Retention Policy for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
