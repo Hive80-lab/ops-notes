@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hot-Spare Loaner Laptop Checklist for Small Teams (The Machine That Saves the Morning) &mdash; ops-notes</title>
+<meta name="description" content="A hot-spare loaner laptop checklist for small teams: keep one spare built to the same build sheet and charged on a shelf, run the fifteen-minute quarterly keep-it-ready pass, swap a dead laptop in forty minutes on loaner day, keep a one-line loaner log, re-seal the spare the day it comes back, and trigger the replacement order the same morning &mdash; so hardware failure costs an hour, not a week.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Hot-spare loaner laptop: the machine that saves the morning</h1>
+
+<p>Tuesday, 9:10. The sales lead's laptop will not power on, and she has a client call at eleven. In the office without a spare, the morning becomes a procurement conversation: quotes, shipping days, a borrowed machine that half-works. In the office with a hot spare, it is forty quiet minutes: hand over the machine that is already built, encrypted, enrolled, and charged, sign the user in, and order the replacement while the coffee is still warm. A hot spare is not an old laptop someone kept. It is a <a href="new-laptop-provisioning-checklist.html">provisioned to the same build sheet</a> machine whose only difference is that nobody owns it yet &mdash; and keeping it ready costs fifteen minutes a quarter.</p>
+
+<h2>1. What a hot spare is &mdash; and what it is not</h2>
+<ul>
+<li><strong>Built to the same build sheet, not to a lower standard.</strong> The spare gets exactly what a new hire's laptop gets: disk encryption on and console-verified, the local-admin split, remote lock-and-wipe enrollment, the approved app list, the first-boot update pass. A machine that missed any of the non-negotiables is not a spare; it is a liability with a "loaner" sticker &mdash; the unencrypted loaner that walks out the door and becomes a <a href="lost-or-stolen-laptop-runbook.html">lost laptop</a> with your client files on it.</li>
+<li><strong>Its only special property is that nobody owns it.</strong> No personal mail, no sticky notes, no browser history, no "just for now" files. The moment anything personal lands on it, it has silently become someone's second laptop, and the shelf is empty without anyone saying so.</li>
+<li><strong>It appears in the <a href="asset-inventory-checklist.html">asset register</a> as itself.</strong> A row for the spare, hostname per convention, status <em>hot spare &mdash; shelf</em>, last keep-it-ready date. An asset the register doesn't know about is the machine everyone forgets to patch until the week it is needed.</li>
+</ul>
+
+<h2>2. How many, and where it lives</h2>
+<ul>
+<li><strong>One spare per roughly ten laptops, minimum one per site.</strong> A five-person office keeps one; a thirty-person team keeps three and rotates which shelf they sit on. The spare exists to cover the days between failure and replacement, not to let the fleet run lean forever &mdash; a team borrowing the spare monthly has a lifecycle problem, not a spare problem.</li>
+<li><strong>On the shelf, charged, with its adapter &mdash; not in someone's backpack.</strong> The spare that lives in the IT admin's car or backpack is a spare with a different failure rate. It lives where anyone in the office can reach it at 9:10, and its charging cable stays with it, because a flat spare converts the forty-minute swap into an afternoon.</li>
+<li><strong>Known and reachable.</strong> The shelf, the hostname, and the one-line borrowing instruction live in the same place as the <a href="mfa-device-lost-runbook.html">MFA lost device runbook</a> &mdash; the small family of "when it goes wrong this morning" notes that a new admin finds in week one.</li>
+</ul>
+
+<h2>3. The quarterly keep-it-ready pass (fifteen minutes)</h2>
+<ul>
+<li><strong>Boot it, let it update, leave it charging to full.</strong> The spare's main occupational disease is staleness: three months of accumulated OS updates, app updates, and a battery that sat at 20%. The pass is the same <a href="patch-cadence-calendar.html">patch wave</a> the fleet gets, just applied to one machine with nobody waiting on it.</li>
+<li><strong>Re-verify the three non-negotiables from the console, not from memory.</strong> Disk encryption reported <em>on</em>, management enrollment showing a check-in within the last day, and a screen-lock policy that actually reaches the machine. The <a href="new-laptop-provisioning-checklist.html">provisioning checks</a> are the same ones; the spare just takes them quarterly instead of once.</li>
+<li><strong>Confirm the cloud sync profile is signed in and current.</strong> On loaner day the user's files arrive by sync; a spare whose sync client has been signed out since last quarter turns the forty-minute swap into a credentials hunt. Then shut it down, put it back, and write the date in the asset row.</li>
+</ul>
+
+<h2>4. Loaner day: the forty-minute swap</h2>
+<ul>
+<li><strong>Hand over the spare, not the dead machine's problems.</strong> The swap starts with the same three console checks as the quarterly pass &mdash; encryption on, enrolled and checking in, sync client current &mdash; because the machine was ready yesterday or it wasn't. If the user's account exists in the tenant, their data arrives via the sync profile; the first login proves it the way the <a href="backup-restore-test-checklist.html">restore test</a> proves backups: by opening the actual files.</li>
+<li><strong>Move the session-critical items first.</strong> Mail and calendar (usually instant via tenant sign-in), the second-factor situation (the <a href="mfa-device-lost-runbook.html">MFA runbook</a> covers re-enrollment when the authenticator died with the laptop), the two or three apps that sync rather than stream. Everything else waits for the replacement.</li>
+<li><strong>Write the loan down before the client call.</strong> One line in the loaner log &mdash; date, machine, loaner user, previous status <em>hot spare</em> &mdash; and the register's status flips to <em>loaned</em>. The line takes ten seconds and is the difference between "where is the spare?" being answerable and being a mystery in three weeks.</li>
+</ul>
+
+<h2>5. Re-seal the same day it comes back</h2>
+<ul>
+<li><strong>The spare returns to shelf-state the day the replacement arrives.</strong> Wipe or reset the profile, re-run the first-boot pass from the build sheet, re-verify encryption and enrollment, clear the loaner log entry, and put it back charged. A spare that comes back full of its loaner user's files is a personal laptop wearing a misleading name &mdash; and the next borrower inherits someone else's history.</li>
+<li><strong>Same ritual as any retirement, just smaller.</strong> The machine that gets wiped on return goes through the same "no data leaves with it" check the <a href="server-decommissioning-checklist.html">decommissioning runbook</a> applies to servers: no local-only files, credentials out of the browser, the recovery key escrow entry updated if the drive was re-encrypted.</li>
+<li><strong>If nobody re-seals it, the shelf is empty again.</strong> The most common hot-spare failure mode is not the first loan &mdash; it is the second. The first swap works beautifully; the return is forgotten; the next failure reveals a machine that is half-personal, half-stale, and exactly when it is needed most.</li>
+</ul>
+
+<h2>6. The same-morning replacement trigger</h2>
+<ul>
+<li><strong>The loan is a bridge; the order is the fix.</strong> The moment the spare is deployed, the replacement order goes in the same morning &mdash; same model as the build sheet's approved list, standard procurement path. The spare buying time is the point; the spare becoming the permanent answer means the fleet quietly shrank by one, and the next failure has no spare at all.</li>
+<li><strong>Repair or replace, decided by a rule, not a mood.</strong> Battery cycle count, screen damage, age over three years, and repair cost over roughly forty percent of a new unit push toward replace. The rule is written on the <a href="vendor-contract-checklist.html">vendor paperwork</a> side of the purchase or in the register note &mdash; the same spirit as the <a href="change-management-checklist.html">change log</a>: the decision and its reason, one line, findable later.</li>
+<li><strong>The old machine gets a dignified exit.</strong> Once the replacement lands, the failed laptop goes to the e-waste or vendor trade-in path with the drive wiped and the asset row closed &mdash; the register stays truthful about what is on the shelf and what is gone.</li>
+</ul>
+
+<h2>7. No spare yet? The interim plan</h2>
+<ul>
+<li><strong>Cloud-first gets the person working today.</strong> A tenant-licensed browser on any machine that exists &mdash; the front desk's old desktop, the founder's second laptop &mdash; signed into the same accounts reaches mail, docs, and the CRM. It is not comfortable, but it is a working day; the <a href="remote-work-security-checklist.html">remote work baseline</a> is the minimum bar for whatever machine becomes the loaner.</li>
+<li><strong>Protect the interim machine like a real loaner.</strong> Standard account, screen lock, no client data copied onto it locally &mdash; the swap-in machine is exactly where corner-cutting hurts, because it is handling the work while everyone is distracted.</li>
+<li><strong>Buy the spare the same week, not "next quarter".</strong> The interim plan works once. The morning it didn't work is the budget conversation already won: one machine, on the shelf, is the cheapest insurance the fleet can carry.</li>
+</ul>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="new-laptop-provisioning-checklist.html">New Laptop Provisioning Checklist</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="asset-inventory-checklist.html">Asset Inventory Checklist</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist</a></li>
+<li><a href="mfa-device-lost-runbook.html">MFA Device Lost Runbook</a></li>
+<li><a href="patch-cadence-calendar.html">Patch Cadence Calendar</a></li>
+<li><a href="server-decommissioning-checklist.html">Server Decommissioning Checklist</a></li>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+<li><a href="vendor-contract-checklist.html">Vendor Contract Checklist</a></li>
+<li><a href="backup-key-escrow-recovery.html">Backup Key Escrow &amp; Recovery</a></li>
+<li><a href="change-management-checklist.html">Change Management Checklist</a></li>
+</ul>
+</aside>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
