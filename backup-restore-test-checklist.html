@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backup Restore Test Checklist (The 20-Minute Drill) &mdash; Free Template</title>
+<meta name="description" content="A free backup restore test checklist for small teams: the quarterly 20-minute restore drill, pass/fail criteria, the checksum rule, and the document that turns 'we have backups' into 'we can recover'. Copy-paste ready.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Backup Restore Test Checklist: Untested Backups Are Lost Backups</h1>
+<p>Every team has backups. Almost no team has <em>restores</em>. The backup job has been green in the dashboard for three years, so everyone believes recovery is a solved problem &mdash; until the restore drill runs and the archive turns out to be unreadable, the credentials were rotated, or the only person who knew the restore order left in March. A backup you have never restored is a rumor. Here's the 20-minute quarterly drill that converts the rumor into a capability.</p>
+
+<h2>The restore drill &mdash; copy this</h2>
+<ol>
+<li><strong>Pick the target before the clock starts.</strong> One service, one dataset &mdash; the one whose loss would hurt most. Announce the drill window, then restore into a sandbox, never into production.</li>
+<li><strong>Pull the backup from the source of truth, not a cached copy.</strong> Download the archive from where the job actually writes it. Restoring from a copy on someone's laptop proves nothing about the pipeline.</li>
+<li><strong>Record the wall-clock time before touching anything.</strong> The drill's output is a number: minutes from "disaster declared" to "data usable". Everything else in this list feeds that number.</li>
+<li><strong>Restore with the documented procedure only.</strong> If the runbook's steps fail, that is a finding &mdash; do not improvise past the doc, because the person doing a real 2am restore will only have the doc.</li>
+<li><strong>Verify the data, not just the process.</strong> Row counts, checksums, a spot-check of the newest records, and one end-to-end action (log in, place an order, send the query). Green job + corrupt data is the most common failure mode.</li>
+<li><strong>Time the whole thing and write it down.</strong> The pass/fail number is the <a href="on-call-handover-template.html">handover</a>-grade fact: "restore drill Sep 11: 23 minutes, 2 defects". No number, no drill.</li>
+</ol>
+
+<h2>The one-page drill log</h2>
+<table>
+<tr><th>Field</th><th>Record</th></tr>
+<tr><td>Date / operator</td><td>Sep 11 &mdash; on-call engineer (quarterly drill)</td></tr>
+<tr><td>Backup tested</td><td>prod-db nightly, Sep 10 archive</td></tr>
+<tr><td>Declare &rarr; usable</td><td>23 min (target &lt; 60 min)</td></tr>
+<tr><td>Defects found</td><td>1 &mdash; creds in runbook were rotated in July; doc now points to vault path</td></tr>
+<tr><td>Fix owner / due</td><td>Ops lead &mdash; before next drill (Dec 11)</td></tr>
+</table>
+<p>That's the whole document. If the log doesn't exist after the drill, the drill didn't happen &mdash; and the next audit will agree.</p>
+
+<h2>Pass/fail criteria that keep the drill honest</h2>
+<ul>
+<li><strong>Time budget is a product decision.</strong> Restore-under-60-minutes is a promise to customers; measure against it, not against "it eventually worked".</li>
+<li><strong>The checksum rule:</strong> an archive whose checksum can't be verified is a failed backup regardless of size. Checksums are checked <em>during</em> the drill, not in the backup job's own logs.</li>
+<li><strong>Credential decay is finding #1.</strong> Most first drills fail on credentials or paths, not on data corruption &mdash; rotate-runbook-then-restore is the fix, and it belongs in the <a href="access-request-offboarding-checklist.html">offboarding checklist</a>.</li>
+<li><strong>Untested backup retention is a trap.</strong> Fourteen copies of an unreadable archive cost more than three verified ones. Prune after each drill, not before.</li>
+<li><strong>Paid kits pay for themselves in one prevented unrecoverable restore.</strong> The drill is the cheapest insurance audit you will ever run.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the full disaster-recovery pack &mdash; restore drill log, backup policy one-pager, and the incident plan this drill plugs into &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; comms</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so the routine never needs a human at 2am</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams</a></li>
+<li><a href="tabletop-exercise-failure-points.html">Tabletop Exercises: 5 Failure Points (and How to Fix Them)</a></li>
+<li><a href="runbook-template.html">Runbook Template (Free, Copy-Paste)</a></li>
+<li><a href="on-call-handover-template.html">On-Call Handover Template (Copy-Paste, 10 Minutes)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
