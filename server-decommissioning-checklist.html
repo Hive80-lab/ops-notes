@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Server Decommissioning Checklist for Small Teams (The Server That Leaves With Its Secrets Inside)</title>
+<meta name="description" content="A checklist for retiring a server without leaving secrets behind: the discovery pass that finds what still quietly depends on it, the data and secret evacuation before power-off, the cold-storage waiting period, a wipe that matches what the disks actually are, and the paperwork that closes the decommission for good.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>The most dangerous server in your fleet is the one nobody uses anymore</h1>
+
+<p>Decommissions never happen on a calm day. The box is old, something migrated off it months ago, and it gets powered down between two other emergencies &mdash; and then it sits in the rack, or on a shelf, still holding its SSH keys, its <code>.env</code> file, its database dump, and its root password, for years. A server you stopped using but never retired is the breach that needs no attacker skill: it still has valid credentials, it stopped getting patches, and nobody watches its logs. A decommission is a project with a checklist &mdash; the same <a href="first-30-minutes-incident-response.html">first-30-minutes</a> discipline, run in reverse: instead of restoring a service, you take one apart without leaving a key in the door.</p>
+
+<h2>1. Discovery: find out what the server is still doing</h2>
+<ul>
+<li><strong>Assume something still depends on it, then prove otherwise.</strong> The week before power-off, run the quiet inventory: <code>last</code> to see who logs in, <code>crontab -l</code> and the system cron directories to see what runs unattended, <code>ss -tlnp</code> to see what still listens, <code>docker ps</code> or the service list for what still runs. The <a href="cron-job-monitoring-checklist.html">cron monitoring checklist</a> exists because forgotten jobs are normal; on a dying server they are the norm, not the exception.</li>
+<li><strong>Search the rest of the fleet for references.</strong> Grep other machines' crontabs and scripts for the hostname and IP, check the DNS zone for records that point at it, and look in the monitoring dashboard for checks that would start screaming &mdash; or, worse, that stopped screaming months ago because someone silenced them. The <a href="dns-outage-runbook.html">DNS runbook</a> habit applies: every record pointing at a dead server is a future support ticket or a hijackable name.</li>
+<li><strong>Ask the humans what they think it does.</strong> One message to the team &mdash; &quot;this box powers down on Friday; what do you believe it does?&quot; &mdash; catches the load-report CSV one manager pulls monthly and the CI runner one developer swore was deleted. Answers that contradict the technical inventory are the finding; resolve them before the plug moves, not after.</li>
+<li><strong>Write the dependency list down before anything is off.</strong> A decommission log entry (what it was, what pointed at it, what was migrated where, date) turns the next decommission into a copy-paste exercise and answers the auditor's &quot;where did that system go?&quot; years later.</li>
+</ul>
+
+<h2>2. Evacuate the data before the power goes off</h2>
+<ul>
+<li><strong>Export first, power off second &mdash; never the reverse.</strong> Dump the databases, rsync the document shares, export the configs and the logs the business still needs. Then prove the copy works: the <a href="backup-restore-test-checklist.html">restore test</a> applies to decommission backups more than any other &mdash; a backup of a server you just wiped that nobody can restore is the same as no backup, with more confidence.</li>
+<li><strong>Check the retention clock before you keep anything.</strong> Customer data may have a deletion promise attached, logs have their own <a href="log-retention-policy-small-teams.html">retention policy</a>, and an open legal or dispute hold beats every plan. Keeping data &quot;just in case&quot; beyond its policy is how a retired server becomes a liability: the <a href="customer-data-deletion-request-checklist.html">deletion request checklist</a> does not stop applying because the box is under a desk instead of in a rack.</li>
+<li><strong>Move the job, not just the data.</strong> Every cron entry and service found in step 1 gets a documented new home &mdash; migrated to the new host with an owner, or explicitly killed in writing. &quot;We'll re-create it if anyone misses it&quot; without a written owner is how the monthly billing export silently dies for a quarter.</li>
+<li><strong>Mind the copies nobody centralizes.</strong> Local Maildirs, git working directories on someone's home path, one-off database dumps in <code>/tmp</code>, and the export the last admin made &quot;temporarily&quot; &mdash; a decommission sweep that only checks the documented paths keeps exactly the files nobody documented.</li>
+</ul>
+
+<h2>3. Evacuate the secrets &mdash; then rotate everything that lived there</h2>
+<ul>
+<li><strong>The server is a keyring.</strong> Its disks hold SSH private keys and <code>authorized_keys</code>, API tokens in <code>.env</code> files, database passwords in cron one-liners, VPN and monitoring agent configs, TLS keys, and half a service account's credentials you forgot the service account had. Inventory them before shutdown: the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> gets a new column that week &mdash; &quot;what lived on the decommissioned box.&quot;</li>
+<li><strong>Rotate, do not just hope the wipe got it.</strong> Any token, key, or password that existed on that machine gets replaced after the wipe, on the assumption the wipe was imperfect. That is the whole point of the <a href="api-key-rotation-checklist.html">API key rotation checklist</a>: credentials die on a schedule and on events, and &quot;we wiped the disk&quot; is an event. Crosslink pass: update the <a href="key-inventory-register.html">key inventory register</a> so the register stops listing credentials that no longer exist.</li>
+<li><strong>Retire the access you provisioned for it.</strong> Its SSH key from the bastion, its service account, its firewall allow-rule, its backup-agent identity, its entry in the monitoring system &mdash; a decommissioned server whose credentials still work everywhere is a ghost employee with root.</li>
+<li><strong>Say the quiet part: the disk holds your customers' data.</strong> A server leaving your control with intact disks is a data breach that has not happened yet. If the wipe in step 5 cannot be verified, the disks do not leave the building intact &mdash; the <a href="vendor-offboarding-data-deletion-checklist.html">vendor data-deletion rule</a> applies to hardware as much as to SaaS accounts.</li>
+</ul>
+
+<h2>4. Power off in the right order &mdash; and keep a parachute</h2>
+<ul>
+<li><strong>Graceful shutdown is a checklist item, not a reflex.</strong> Stop the services in dependency order, flush queues, take a final backup, then shut down &mdash; the same discipline the <a href="deployment-rollback-checklist.html">rollback checklist</a> brings to releases. A hard-pulled power cable on a database mid-write turns a clean retirement into a corrupted-format mystery.</li>
+<li><strong>Keep a cold parachute for thirty days.</strong> One final disk image or VM snapshot, stored offline and labeled with the date, plus a one-paragraph resurrection note (what it was, what the image contains, how to boot it) in the password manager or runbook vault. The month-long window is where &quot;we still need that one file from the old server&quot; surfaces; the <a href="ops-starter-kit-landing.html">starter kit habit</a> is that no decommission deletes its own ability to be undone.</li>
+<li><strong>Name who may resurrect it.</strong> One owner, one decision, and a calendar end-date for the snapshot &mdash; after which the image itself is deleted like any other copy. A shelf of &quot;just in case&quot; images is a shadow backup estate that no retention policy covers and every future breach will be blamed on.</li>
+<li><strong>Announce the retirement date internally.</strong> A one-line message &mdash; &quot;old-db goes dark Friday; speak now&quot; &mdash; converts the last silent dependency into a reply instead of a post-mortem finding. Silence after the announcement is the evidence that nothing depended on it.</li>
+</ul>
+
+<h2>5. The wipe must match what the disks actually are</h2>
+<ul>
+<li><strong>Match the method to the medium.</strong> Spinning HDDs take a full overwrite pass or two; most SSDs are better served by the drive's own <em>crypto erase</em> (sanitize/secure-erase) than by overwrite utilities that wear-leveling can quietly circumvent. Self-encrypting drives make the erase one command; a Raspberry Pi's SD card and a USB stick are simply destroyed. If you cannot verify the wipe &mdash; pull the disks and keep or destroy them; hardware is cheaper than a breach.</li>
+<li><strong>Cloud is a wipe too, just with different buttons.</strong> Terminating a VM does not delete its disks, snapshots, machine images, or the object-storage copies the backup job made &mdash; and unattached volumes keep billing and keep holding data. Delete the block devices, snapshots, and images deliberately, then verify in the console that nothing with the instance's name remains; the <a href="cloud-cost-spike-runbook.html">cloud cost runbook</a> exists partly because nobody did.</li>
+<li><strong>Chase the copies: backups and replicas.</strong> The backup server still holds months of this machine's data, the DR copy has it, the monitoring archive may hold logs with secrets in them. The decommission is not done until every backup set that includes the server has aged out or been pruned &mdash; note the date the last copy expires, and let the calendar enforce it.</li>
+<li><strong>Verify, then write down that you verified.</strong> A wipe is complete when someone confirms it &mdash; the disk reads empty, the crypto-erase report says done, the drive is physically destroyed &mdash; and that confirmation lands in the decommission log with a name and date. &quot;We wiped it&quot; without a line in the log is a claim, not a control; the <a href="annual-security-review-checklist.html">annual review</a> will ask exactly this question.</li>
+</ul>
+
+<h2>6. Close the paper trail &mdash; a server is not retired until the map says so</h2>
+<ul>
+<li><strong>Update every map that still shows it.</strong> The asset register, the network diagram, the monitoring dashboard, the DNS zone, the on-call runbook that mentions its hostname, and the <a href="log-retention-policy-small-teams.html">log inventory</a> if it fed a central log. Stale maps are how the next incident wastes twenty minutes on a server that has been gone for a year.</li>
+<li><strong>Cancel the money and the renewals deliberately.</strong> Its support contract, its licenses, its monitoring seat, its certificate renewals &mdash; cancel in writing and keep the confirmation, the same discipline as the <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding checklist</a>. A renewal charge for a server that no longer exists is the smallest kind of leak; an auto-renewed SSL cert nobody watches is the <a href="ssl-certificate-expiry-checklist.html">certificate expiry checklist</a> finding in reverse.</li>
+<li><strong>Two weeks later, run the quiet check.</strong> No alerts mentioning it, no DNS queries hitting its old records, no logins attempted against its accounts, no invoice arriving for it. Anything that still references the dead box is a leftover from steps 1&ndash;6 &mdash; fix the map, then close the log entry for good.</li>
+<li><strong>Log the whole thing on one page.</strong> Date, discovery findings, what was migrated where, what was rotated, wipe method and verification, copies and their expiry, cancellations. The <a href="postmortem-template-small-teams.html">postmortem template</a> fits at half size &mdash; and the next decommission starts from a checklist that already knows your environment instead of from memory at 2AM.</li>
+</ul>
+
+<p class="closing">A decommission is the reverse of an incident: discovery of what depends on it, export and verified restore of what matters, rotation of everything that lived on it, a graceful shutdown with a thirty-day cold parachute, a wipe matched to the actual disks &mdash; cloud disks and snapshots included &mdash; and a paper trail closed with a two-week-after check. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the runbooks that structure retirements like this one, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> schedules the follow-ups (rotation passes, snapshot expiry, the two-week check) so the retired server stays retired.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="api-key-rotation-checklist.html">API Key Rotation Checklist</a></li>
+<li><a href="vendor-offboarding-data-deletion-checklist.html">Vendor Offboarding &amp; Data Deletion Checklist</a></li>
+<li><a href="cron-job-monitoring-checklist.html">Cron Job Monitoring Checklist</a></li>
+<li><a href="cloud-cost-spike-runbook.html">Cloud Cost Spike Runbook</a></li>
+<li><a href="ssl-certificate-expiry-checklist.html">SSL Certificate Expiry Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>. No analytics, no tracking &mdash; just notes that work at 2AM.</footer>
+</main>
+</body>
+</html>

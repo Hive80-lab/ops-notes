@@ -1,3 +1,5 @@
+- **NEW: [Server Decommissioning Checklist for Small Teams](https://hive80lab.github.io/ops-notes/server-decommissioning-checklist.html)** — retire a server without leaving keys in the door: discovery pass, data export with a verified restore, rotation of everything that lived on its disks, a thirty-day cold parachute, a wipe matched to the disks (and the cloud’s), paper trail closed with a two-week check.
+
 - **NEW: [Break-Glass Account Checklist for Small Business](https://hive80-lab.github.io/ops-notes/break-glass-account-checklist.html)** — build the emergency admin login before the lockout: cloud-only, CA-exempt, sealed offline, alerted, quarterly-tested, used with a paper trail.
 
 - **NEW: [MFA Device Lost Runbook for Small Teams](https://hive80-lab.github.io/ops-notes/mfa-device-lost-runbook.html)** — verify the human out-of-band, revoke the lost factor before enrolling the new one, keep business running through the lockout window, the break-glass account, and the backup codes everyone skipped.
