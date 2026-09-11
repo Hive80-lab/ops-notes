@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Remote Work Security Checklist for Small Teams (When the Office Is a Laptop in a Café)</title>
+<meta name="description" content="A remote work security checklist for small teams: the home-network pre-flight, the separate admin lane, coffee-shop rules that actually matter, and the BYOD decisions to make before someone's personal laptop touches production.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Remote work security checklist for small teams: when the office is a laptop in a café</h1>
+
+<p>Your security perimeter used to be the office network. Now it's a laptop on a home router shared with a smart TV, a phone on cellular, and a spare afternoon in a café with open Wi-Fi. Remote work didn't make small teams less secure &mdash; it removed the single place where "we have a firewall" used to count as a plan. This checklist replaces it with habits that travel with the laptop.</p>
+
+<h2>1. The home-network pre-flight (once per person, one afternoon)</h2>
+
+<p>Do this when someone goes remote and re-run it once a year. It's fifteen settings, not a project:</p>
+
+<ul>
+<li><strong>Router admin password changed</strong> from the factory default, admin interface not reachable from the internet. The default password is printed on the physical router &mdash; anyone who has ever visited the house can read it.</li>
+<li><strong>WPA2 or WPA3 with a real password</strong>, not the ISP's sticker. If the router is older than the person's laptop, say so in writing &mdash; old firmware with known CVEs is the actual entry point.</li>
+<li><strong>Guest network for everything that isn't work.</strong> The smart TV, the doorbell camera, the kids' consoles live on the guest SSID. If a camera gets owned, it shouldn't be able to see the laptop's file share.</li>
+<li><strong>Full-disk encryption on</strong> (FileVault / BitLocker). This is the one setting that turns "laptop left in a car" from a breach into a hardware loss. Verify it &mdash; don't ask.</li>
+<li><strong>Automatic OS and browser updates on</strong>, with a reboot cadence. A remote laptop that hasn't rebooted in 60 days is running a different threat model than the office fleet.</li>
+<li><strong>Screen lock at 5 minutes or less</strong>, password on wake. The home "office" has housemates, partners, and toddlers.</li>
+</ul>
+
+<p>Write the result down per person &mdash; a five-line note in the shared doc. The note is what makes the next audit take ten minutes instead of a week of "I think mine's fine."</p>
+
+<h2>2. The separate admin lane</h2>
+
+<p>Not every remote session deserves the same trust. The mistake isn't that people work from cafés; it's that the same browser profile opens the invoice dashboard and the news site:</p>
+
+<ul>
+<li><strong>Admin and money paths get their own browser profile</strong> &mdash; or better, their own user account. No casual browsing, no extensions beyond the password manager, in the admin profile.</li>
+<li><strong>Hardware security keys for admins</strong> where the platform supports them. A yubikey-style key doesn't care what network you're on, which is exactly why it's the remote-work factor.</li>
+<li><strong>Access to production and payment systems goes through VPN or a zero-trust proxy</strong> &mdash; not "port 22 open to the world because the office had a static IP once." The <a href="server-hardening-checklist-small-teams.html">server hardening checklist</a> covers the server half; the laptop half is this line.</li>
+<li><strong>No shared logins on personal devices.</strong> A shared mailbox is delegated access or scoped app passwords, never "just log in as me on your iPad." When someone leaves, shared-device logins are the ones nobody can revoke.</li>
+</ul>
+
+<h2>3. The BYOD decision (make it before the personal laptop shows up)</h2>
+
+<p>Someone's personal MacBook will touch company data. It happens in month one at every small company, and the only choice is whether it happens with rules:</p>
+
+<ul>
+<li><strong>Decide what personal devices may touch what.</strong> A sane default: email and chat yes with MFA, code repos no, production and payment systems never.</li>
+<li><strong>Inventory them anyway.</strong> A one-row table per device &mdash; owner, OS version, disk encryption, MFA status &mdash; is the difference between a manageable incident and "we have no idea which laptops had access."</li>
+<li><strong>Personal devices get the same hygiene bar</strong> as company ones: encryption on, updates on, screen lock, password manager. If a device can't meet it, it doesn't get access &mdash; and that's a conversation you have before the data is on it.</li>
+<li><strong>MDM-lite is fine.</strong> Full device management on someone's personal phone breeds resentment; a workspace app or managed browser profile gets 90% of the control for 10% of the friction.</li>
+</ul>
+
+<h2>4. Coffee-shop rules (the four that matter)</h2>
+
+<ul>
+<li><strong>Treat every network as hostile</strong> &mdash; including the café's. With MFA everywhere, admin on a separate profile, and no plaintext services, the network being untrusted stops mattering much. That's the design goal.</li>
+<li><strong>Privacy screen when facing the room.</strong> Shoulder-surfing is the cheapest attack on the board, and it works best in exactly the places remote work happens.</li>
+<li><strong>No confidential calls within earshot</strong> &mdash; customer names, invoices, incident details. The headset fixes half of it; the other half is choosing the table.</li>
+<li><strong>The laptop never leaves sight.</strong> Not "for one minute, getting a refill." The <a href="lost-or-stolen-laptop-runbook.html">lost-laptop runbook</a> exists for the day this rule is broken; the rule exists so the day is rare.</li>
+</ul>
+
+<h2>5. The mistakes that turn remote work into an incident</h2>
+
+<ul>
+<li><strong>"VPN optional."</strong> Optional security settings are read as "nobody checks," and the people who most need them are the ones most likely to skip them. Pick the systems where VPN or zero-trust is mandatory, and make it mandatory.</li>
+<li><strong>MFA on office accounts but not remote paths.</strong> Email that's reachable from anywhere is reachable from anywhere. The <a href="mfa-rollout-checklist-small-business.html">MFA rollout</a> should treat remote access as the main case, not the exception.</li>
+<li><strong>Phishing surface grows quietly.</strong> Remote teams live in chat and email; a rushed Friday click happens at the kitchen table, not behind the office firewall. Keep the <a href="phishing-response-checklist-small-teams.html">phishing first-hour checklist</a> where people actually work &mdash; the chat pin, not the wiki.</li>
+<li><strong>Nobody knows the lost-device drill.</strong> Every remote worker should know, without looking it up: who to tell, in what order, and that the laptop gets wiped remotely before it gets searched for. Rehearse it like the <a href="backup-restore-test-checklist.html">restore drill</a> &mdash; once a quarter, twenty minutes.</li>
+</ul>
+
+<h2>Takeaways</h2>
+
+<ul>
+<li><strong>Per-person pre-flight, written down</strong>: router password changed, guest SSID, disk encryption verified, updates and screen lock on. Fifteen settings per person, once.</li>
+<li><strong>Admin and money paths get a separate lane</strong> &mdash; own profile, hardware keys, no casual browsing &mdash; so the café news site and the invoice dashboard never share a browser.</li>
+<li><strong>Make the BYOD decision on purpose</strong>, inventory the devices, and hold them to the same hygiene bar. The personal laptop arrives in month one either way.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the access-inventory and onboarding sheets that make the pre-flight list a five-minute per-person pass, and <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> turns the annual re-run &mdash; encryption status, firmware age, update cadence &mdash; into a recurring workflow instead of a promise. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Teams</a></li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout for Small Business</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="phishing-response-checklist-small-teams.html">Phishing Response Checklist for Small Teams</a></li>
+<li><a href="email-security-checklist.html">Email Security Checklist (SPF, DKIM, DMARC)</a></li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
