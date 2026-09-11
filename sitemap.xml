@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://hive80-lab.github.io/ops-notes/email-security-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/ransomware-recovery-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/uptime-downtime-budget.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/on-call-rotation-schedule-template.html</loc><lastmod>2026-09-11</lastmod></url>
@@ -36,7 +37,7 @@
 <url><loc>https://hive80-lab.github.io/ops-notes/runbook-template.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/backup-restore-test-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/change-management-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
-<url><loc>https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html</loc><lastmod>2026-09-11</loc></url>
+<url><loc>https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/on-call-handoff-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/patch-management-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/disaster-recovery-plan-template-small-teams.html</loc><lastmod>2026-09-11</lastmod></url>

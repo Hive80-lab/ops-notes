@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Security Checklist for Small Teams: SPF, DKIM, DMARC, and the Human Layer &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="An email security checklist for small teams: publish SPF/DKIM/DMARC, enforce MFA, spot the phishing patterns that beat filters, handle the compromise sequence, and keep the human layer from being the way in.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Email Security Checklist for Small Teams</h1>
+<p class="lede">Email is still the front door. Attackers do not need a zero-day when they have your receptionist's inbox and a well-spoofed invoice. This checklist covers the two layers that matter: the <strong>authentication layer</strong> you fix in an afternoon (SPF, DKIM, DMARC) and the <strong>human layer</strong> you maintain forever. Both are checklistable; neither is optional.</p>
+
+<h2>The technical checklist &mdash; one afternoon of work</h2>
+<ol>
+<li><strong>Publish SPF, but end with -all.</strong> A TXT record listing every service allowed to send as your domain, ending in <code>-all</code> (or <code>~all</code> while you observe). Most small-team domains are either blank or end in <code>+all</code>, which is the DNS equivalent of leaving the door open with a sign saying "spoof us freely". Audit every SaaS that sends email for you first &mdash; a missing helpdesk in SPF means bounce-backs, and bounces make people quietly delete the hard fail.</li>
+<li><strong>Turn on DKIM and keep the key rotated.</strong> One 2048-bit selector per sending service, published in DNS, verified by sending a test message to a check service and reading the <code>d=</code> signature. DKIM survives forwarding; SPF does not &mdash; that alone justifies the extra fifteen minutes.</li>
+<li><strong>Ship DMARC in stages: none &rarr; quarantine &rarr; reject.</strong> Start with <code>p=none</code> and aggregate reports for two weeks so you catch the marketing tool nobody remembered, then move to <code>p=quarantine</code>, then <code>p=reject</code> with <code>aspf/s=r</code> to start. DMARC is the only one of the three that tells receivers what to do with failures; without it the other two are decoration.</li>
+<li><strong>Read the DMARC reports for a month, then set a calendar reminder.</strong> The XML is ugly; load it into a viewer or a spreadsheet. Every sender you do not recognize in the report is either a forgotten vendor or someone testing your spoofing posture. This is the highest-signal half hour in email security.</li>
+<li><strong>Enforce MFA on every mailbox, and app passwords do not count.</strong> The credential-stuffing lists are tens of billions of records deep, and password reuse does the rest. MFA on email is worth more than MFA anywhere else, because email is the recovery path for everything else &mdash; "reset my password" links land there.</li>
+<li><strong>Set a forwarding and auto-forward audit alarm.</strong> The classic business-email-compromise persistence trick is a hidden auto-forward to an attacker address. Google Workspace and Microsoft 365 can both alert on new forwarding rules; turn that alert on before you need it.</li>
+<li><strong>Make sender display names meaningless as a trust signal.</strong> Turn off display-name-only previews, and teach staff that the display name is attacker-controlled free text. The real identity is the address behind it &mdash; and if you have DMARC at <code>p=reject</code>, the identity is the address plus the pass.</li>
+</ol>
+
+<h2>The human checklist &mdash; the patterns that beat filters</h2>
+<ol start="8">
+<li><strong>Train on the four shapes, not on fear.</strong> Nearly every phishing email worth falling for is one of: (1) urgency with authority ("the CEO needs this paid before 5"), (2) an unexpected login or MFA prompt, (3) a payment-detail change on an existing relationship, (4) a document that demands a sign-in to view. Run a fifteen-minute demo of each, not a fear seminar.</li>
+<li><strong>Verbal-verify every payment-change request.</strong> A rule with no exceptions: new bank details are confirmed by phone, on a number already on file, not one from the email. Vendor email compromise is the most profitable phish in the world precisely because teams skip this one call.</li>
+<li><strong>Report-one-click beats report-twenty-emails.</strong> A "report phishing" button that forwards to the security mailbox (or just IT) turns every employee into a sensor. Track the report count going up after training &mdash; rising reports with no incidents is winning, not failing.</li>
+<li><strong>No MFA prompts to approve what you did not start.</strong> If an MFA prompt appears, the password is already burned. Deny it, then change the password, then check the forwarding rules. Push-bombing works because people tap "approve" to make it stop; deny-and-rotate is the drill.</li>
+<li><strong>Compromise sequence, memorized: revoke &rarr; audit &rarr; rotate &rarr; recover.</strong> On a confirmed mailbox compromise: revoke all sessions and app passwords, audit sent items and rules (especially delete-after-read rules), rotate the password and every credential that mailbox could reset, then recover any money or data in flight. Do not reply to the attacker, ever &mdash; even to buy time, it tells them you are live.</li>
+</ol>
+
+<h2>One-page scorecard</h2>
+<table>
+<tr><th>Layer</th><th>Control</th><th>Effort</th><th>Done when</th></tr>
+<tr><td>DNS</td><td>SPF with -all</td><td>30 min</td><td>SPF passes on a checker for every sender</td></tr>
+<tr><td>DNS</td><td>DKIM per service</td><td>1 hr</td><td>Signatures verify on real messages</td></tr>
+<tr><td>DNS</td><td>DMARC p=reject</td><td>2 hrs + 2 wks</td><td>Reports show no unknown senders</td></tr>
+<tr><td>Identity</td><td>MFA everywhere</td><td>1 day</td><td>Zero mailboxes without a second factor</td></tr>
+<tr><td>Identity</td><td>Forwarding alerts</td><td>15 min</td><td>Alert fires on test rule</td></tr>
+<tr><td>People</td><td>Four-pattern training</td><td>30 min/qtr</td><td>Report button usage trending up</td></tr>
+<tr><td>People</td><td>Payment-change callback</td><td>Policy only</td><td>Written rule, zero exceptions</td></tr>
+</table>
+
+<h2>The three rules that make the checklist work</h2>
+<ul>
+<li><strong>Email is the recovery path for everything &mdash; so it gets the strongest lock.</strong> Every other account can be reset through the mail; the mail cannot be reset through anything. MFA, forwarding alerts, and session revocation on email are worth ten of the same on any other system.</li>
+<li><strong>Authentication failures should be rejected, not filed.</strong> SPF, DKIM, and DMARC only work at <code>p=reject</code>. A DMARC policy stuck at <code>none</code> forever is a security survey, not a control.</li>
+<li><strong>The human layer is a cadence, not an event.</strong> One training session decays in weeks; a quarterly fifteen-minute drill plus a one-click report button keeps the sensors warm. Small teams win here by being small: everyone hears about the latest attempt within the hour.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> is the advanced incident-management pack &mdash; the DR plan, evidence log, comms templates, and the tabletop scenarios that turn this checklist into muscle memory &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so SPF report reviews and quarterly drills stay on schedule by themselves</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams (First 10 Servers)</a></li>
+<li><a href="ransomware-recovery-checklist.html">Ransomware Recovery Checklist for Small Teams (The First 48 Hours)</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes of Any Incident</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup &amp; Restore Test Checklist (Because Untested Backups Are Hope, Not Backups)</a></li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates (Copy, Fill, Send)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</body>
+</html>
