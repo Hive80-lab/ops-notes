@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passkeys for Small Teams: A Rollout That Doesn't Lock Anyone Out</title>
+<meta name="description" content="A passkeys rollout for small teams that avoids the 2am lockout: break-glass recovery before the first passkey, a vendor support inventory, the password removed last, shared-login decisions written down, and the offboarding hook most teams wire too late.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Passkeys for small teams: a rollout that doesn't lock anyone out</h1>
+
+<p>Passkeys are the first login technology that is genuinely hard to phish: the private key never leaves the device, the credential is bound to your domain, and a fake login page has nothing to steal. That's the pitch, and it's true. The part the pitch skips is what happens at 2am when the one laptop holding the credential is at the bottom of a lake, or when the person who just resigned is the only human registered on the billing portal. Passkeys trade one failure mode (stolen passwords) for another if you roll them out carelessly (unrecoverable accounts). This is the rollout order that keeps every step safe even if the project dies there &mdash; the same rule that makes a <a href="password-manager-rollout-small-business.html">password manager rollout</a> survivable.</p>
+
+<h2>1. Why this is an ops decision, not an IT flavor-of-the-month</h2>
+<ul>
+<li><strong>Passwords are your biggest unpatched attack surface.</strong> Reused passwords, phished credentials, Post-it notes: every <a href="data-breach-first-24-hours.html">breach you'd spend 24 hours cleaning up</a> starts with a login. Passkeys remove the reusable secret entirely &mdash; there is no password for an employee to reuse across the SaaS tool they also use at their other job.</li>
+<li><strong>But recovery is the product, not the login.</strong> A login method is only as good as its recovery path, because recovery always happens under stress, at night, to the person least technical on the team. Any rollout that registers passkeys before it has tested account recovery is building a faster way to lose access, not a safer one.</li>
+<li><strong>Vendors are wildly uneven.</strong> One tool supports passkeys natively; the next offers "passkey" but recovery falls back to SMS to a phone number nobody has updated since 2021; the third only takes passwords and TOTP. Treating passkeys as a single switch is the mistake; they're a per-vendor <a href="change-management-checklist.html">change</a>, decided tool by tool.</li>
+</ul>
+
+<h2>2. Thirty seconds of theory, so the decisions make sense</h2>
+<ul>
+<li><strong>A passkey is a key pair per site.</strong> The public key sits with the vendor; the private key stays in the device's secure storage (iCloud Keychain, Google Password Manager, or a hardware key like a YubiKey). Nothing to type, nothing to phish: the browser only offers the credential to the exact domain it was created for.</li>
+<li><strong>Synced vs device-bound is the fork in the road.</strong> Platform passkeys sync through iCloud or Google across a person's devices &mdash; convenient, and a lost laptop is survivable. Hardware keys are device-bound: nothing syncs, but you can hold a spare in a drawer. Small teams usually want both: synced passkeys for daily humans, hardware keys for the accounts that can't be allowed to break.</li>
+<li><strong>The account is still the unit of failure.</strong> If the only registered credential belongs to one device and that device dies, the account isn't "less secure" &mdash; it's bricked. Every step below exists to keep a second live path to every account that matters.</li>
+</ul>
+
+<h2>3. The rollout order</h2>
+<ol>
+<li><strong>Break-glass recovery first, before a single passkey exists.</strong> Pick one admin account that will <em>never</em> hold only a passkey: password in the shared vault (the same vault your <a href="password-manager-rollout-small-business.html">password manager rollout</a> maintains), TOTP codes from an authenticator whose backup lives in that vault, and &mdash; where the vendor allows it &mdash; two hardware keys, one in a safe, one off-site. Test logging in with it the same day. If this account can't get you into every critical SaaS, fix that before anything else.</li>
+<li><strong>Inventory the accounts and their vendor support.</strong> The same list discipline as the email audit: billing, hosting, registrar, DNS, payroll, helpdesk, the CRM. Three columns: passkeys fully supported / passkey plus weak recovery fallback / password-only. Column one is your rollout list; column two needs the fallback fixed <em>first</em> (update the phone number, kill SMS-only recovery); column three keeps TOTP, which is still a large step up from a reused password.</li>
+<li><strong>Fix the platform substrate before registering anything.</strong> iCloud Keychain sync requires two-factor authentication on the Apple ID; Google Password Manager requires 2FA on the Google account. If the team's platform accounts are themselves protected by SMS or a shared password, you're stacking a strong lock on a cardboard door. Turn on platform 2FA with an authenticator app first &mdash; the <a href="email-security-checklist.html">MFA-everywhere pass</a> is where that's already written down.</li>
+<li><strong>Pilot with two or three people on one real system.</strong> Not the CEO's account &mdash; the person who will document what broke. Register the passkey, log out, log back in on a second device, then <em>remove the second device's network</em> and log in again. The pilot's output is a one-page note: what worked, what the vendor's recovery actually does, how long a lockout took to resolve.</li>
+<li><strong>Remove the password last, and only per person.</strong> The transition state is passkey <em>plus</em> password-plus-TOTP, for a defined window. Once a person has lived on the passkey for a couple of weeks, disable their password login if the vendor allows it ("passwordless"), or rotate the password into the vault and freeze it. The password is never removed from the <em>team</em> until every human has a tested second path.</li>
+<li><strong>Enforce with a date, not a nag.</strong> Like every rollout in these notes: a date in the calendar converts "we should all do this" into "done." Pick the date when you finish the pilot; the date is what keeps passkeys from becoming the security project everyone started and nobody finished.</li>
+</ol>
+
+<h2>4. The shared-login decision nobody wants to make</h2>
+<ul>
+<li><strong>Passkeys are personal by design.</strong> A credential lives in one human's platform account. Your shared vendor logins &mdash; the ones already living in a shared collection &mdash; can't become passkeys without breaking the sharing model, and pretending otherwise is how a team ends up with three people registered on one account and no idea who can still get in.</li>
+<li><strong>Write the decision down per tool.</strong> For each shared login, choose: keep the shared password in the vault (fine for low-value tools), or promote the account to individually-licensed seats with personal passkeys (right for anything that touches money or customer data). An undocumented shared login after a passkey rollout is an <a href="access-request-offboarding-checklist.html">offboarding</a> landmine: the departure checklist says "revoke their access," but the access was never theirs.</li>
+</ul>
+
+<h2>5. Monday-morning runbook: someone is locked out</h2>
+<ol>
+<li><strong>Establish which path died.</strong> Device lost? Platform sync broken (Apple ID or Google account issue)? Vendor wiped credentials after a security event? The fix is different for each, and guessing burns your one cool-headed hour. Same opening move as any <a href="first-30-minutes-incident-response.html">incident</a>: measure before you change.</li>
+<li><strong>Recovery ladder, in order.</strong> (1) Second synced device &mdash; iCloud and Google both offer "sign in with the passkey on your other device" via QR code. (2) The vendor's own recovery flow &mdash; this is where you discover it's an email code, which makes the mailbox the new crown jewel (see the <a href="email-deliverability-spf-dkim-dmarc-checklist.html">mail-stopped-arriving runbook</a> if <em>that</em> is what failed). (3) The break-glass admin account from step one &mdash; admin console, user, "reset credentials," then the person re-registers on a healthy device.</li>
+<li><strong>After recovery, close the gap that made it possible.</strong> If the lockout happened because one human held the only credential, register the second path the same day. If it happened because a vendor's recovery falls back to SMS, fix the fallback or move the vendor down a tier in the next <a href="vendor-security-review-checklist.html">vendor review</a>.</li>
+</ol>
+
+<h2>6. Offboarding is where passkeys bite</h2>
+<ul>
+<li><strong>A departing person's passkeys die with their platform account.</strong> That's good news if they were the only registered human on an account &mdash; except when the account also holds the recovery phone or the billing card. The <a href="access-request-offboarding-checklist.html">offboarding checklist</a> needs one new line: "for each shared/vendor account, list every registered passkey holder; there must be at least two, and neither may be leaving today."</li>
+<li><strong>Admins: revoke passkeys, not just passwords.</strong> A password reset doesn't remove a passkey the departed employee registered from their personal laptop. On offboarding day, an admin clears the person's passkeys in each vendor console &mdash; thirty seconds per tool, and the only part of the process that actually cuts the cord.</li>
+</ul>
+
+<h2>7. Keep it from drifting back</h2>
+<ul>
+<li><strong>One passkey question in every vendor review.</strong> "Do you support passkeys, and what does your recovery flow fall back to?" goes into the standing <a href="vendor-security-review-checklist.html">vendor security review</a>. The answer changes over time; the review is where the change gets noticed.</li>
+<li><strong>Quarterly: two live paths per critical account.</strong> Ten-minute pass: for each account on the critical list, confirm two humans (or one human plus break-glass) can currently authenticate. Dead credentials get pruned with the same discipline as the <a href="secrets-rotation-checklist.html">secrets rotation</a> &mdash; a stale passkey on a departed employee's laptop is a live credential you forgot you owned.</li>
+<li><strong>New-tool gate.</strong> The same line as every rollout: no new critical tool goes live without its login model decided &mdash; passkey where supported, TOTP where not, and the recovery path tested before the first real customer data lands in it.</li>
+</ul>
+
+<p>The whole discipline fits one line: <strong>a passkey rollout is a recovery-path rollout that happens to remove passwords along the way.</strong> Register the second path before the first, keep one account no vendor can lock you out of, and the phishing-resistant future arrives without a single 2am rescue mission.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout for Small Teams (the Order That Avoids the 2AM Lockout)</a></li>
+<li><a href="email-security-checklist.html">Email Security Checklist for Small Teams</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist for Small Teams</a></li>
+<li><a href="data-breach-first-24-hours.html">Data Breach: the First 24 Hours</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes of an Incident</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>. No analytics, no tracking &mdash; just notes that work at 2AM.</footer>
+</main>
+</body>
+</html>
