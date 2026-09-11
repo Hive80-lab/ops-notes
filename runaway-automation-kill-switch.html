@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Runaway Automation Runbook for Small Teams (Kill Switches for Cron, Agents, and Integrations Gone Wrong)</title>
+<meta name="description" content="A runbook for automation that misbehaves: the kill switch patterns that stop cron loops, AI agents, and integrations in seconds, the guardrails that keep them bounded, and the post-incident checklist.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Runaway Automation Runbook for Small Teams</h1>
+<p class="lede">Automation fails differently from people: a confused teammate stops and asks, a confused script <strong>keeps going</strong> &mdash; retries multiplying, emails cascading, an AI agent re-running a task in a loop with your API budget. The runbook has four parts: <strong>a kill switch you can reach in one command, bounds that make loops self-limiting, idempotency so re-runs can't double-charge, and the post-incident checklist</strong>.</p>
+
+<h2>1. The kill switch you can reach in one command</h2>
+<p>Every scheduled job, queue consumer, and autonomous agent needs a pre-agreed way to stop <em>everything at once</em> &mdash; not one process at a time, hunted down by name at 2am:</p>
+<table>
+<tr><th>Layer</th><th>Kill switch</th><th>Notes</th></tr>
+<tr><td>Cron / timers</td><td>Flag file the wrapper checks (<code>[ -f /etc/job.pause ] &amp;&amp; exit 0</code>)</td><td>One <code>touch</code> stops every wrapped job; no crontab surgery under pressure</td></tr>
+<tr><td>Queues / schedulers</td><td>Pause-the-queue command or env flag + redeploy</td><td>Pausing intake stops the multiplier without losing queued work</td></tr>
+<tr><td>Agents / LLM loops</td><td>Max-run budget + hard iteration cap in the wrapper</td><td>The cap must live <em>outside</em> the agent &mdash; it can't be reasoned with by the thing it bounds</td></tr>
+<tr><td>Third-party integrations</td><td>Revoke the API key / pause the webhook</td><td>The nuclear option works; know the path before the incident</td></tr>
+</table>
+<p>The test that matters: a new teammate can stop the automation in <strong>under a minute</strong> using only the runbook. If stopping requires memory, it doesn't exist.</p>
+
+<h2>2. Bounds that make loops self-limiting</h2>
+<ul>
+<li><strong>Max runs per window</strong> &mdash; enforced by the scheduler wrapper, not the script. A job that ran 14,000 times in an hour had no ceiling above it.</li>
+<li><strong>Max spend per day</strong> on anything that bills per call (APIs, LLMs, egress). The budget alert from the cost runbook is this rule's alarm.</li>
+<li><strong>Backoff with a cap, then dead-letter</strong> &mdash; after N failures a job must stop trying and park the work somewhere a human sees. Infinite retry is how one outage becomes a retry storm.</li>
+<li><strong>Circuit breakers on dependencies</strong> &mdash; when the downstream is slow, stop calling it. politeness is also self-preservation: the slow dependency gets slower under load.</li>
+</ul>
+
+<h2>3. Idempotency: the reason re-runs don't double-charge</h2>
+<p>The scariest runaway incidents do real work twice: two invoices per customer, two shipments, two identical customer emails. The fix is boring and architectural:</p>
+<ul>
+<li><strong>Job ID + idempotency key</strong> on every external side effect; the downstream deduplicates.</li>
+<li><strong>Check-before-act for stateful steps</strong> ("has this already been sent?") &mdash; a one-line guard that prevents every duplicate story in this genre.</li>
+<li><strong>Dry-run mode by default for anything destructive</strong> &mdash; the flag that turns "oops" into "log line".</li>
+</ul>
+
+<h2>4. The post-incident checklist (one page, five lines)</h2>
+<ol>
+<li><strong>What guardrail was missing?</strong> Every runaway has one absent ceiling: no max-runs, no max-spend, no dead-letter. Install exactly that one this week.</li>
+<li><strong>What did it cost?</strong> Dollars, customer trust, and the data it duplicated &mdash; written down while fresh.</li>
+<li><strong>Who got spammed / double-charged?</strong> Outbound apologies beat inbound complaints. Have the list before the customers do.</li>
+<li><strong>Did the kill switch actually work?</strong> If stopping it required tribal knowledge, that's the fix list.</li>
+<li><strong>Re-test the kill switch quarterly.</strong> An unrehearsed stop button is a wish with a label.</li>
+</ol>
+
+<h2>5. The mistakes that make runaway automation worse</h2>
+<ul>
+<li><strong>Reasoning with the agent.</strong> Telling a looping LLM agent "please stop" via prompt is not a control. Kill it from the outside, then fix the loop.</li>
+<li><strong>Retries without dead-letters.</strong> Infinite retry is a second automation, and nobody agreed to run it.</li>
+<li><strong>Manual crontab surgery under pressure.</strong> Editing schedules one-by-one during an incident is how the second outage is born (see the <a href="cron-job-monitoring-checklist.html">cron monitoring checklist</a>).</li>
+<li><strong>No cost ceiling anywhere.</strong> The runaway that costs money should hit a wall, not a month-end invoice surprise (see the <a href="cloud-cost-spike-runbook.html">cost spike runbook</a>).</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>One-command stop for every layer</strong> &mdash; flag files, queue pauses, external caps, key revocation.</li>
+<li><strong>Ceilings live outside the automation:</strong> max runs, max spend, dead-letters, breakers.</li>
+<li><strong>Idempotency makes re-runs boring</strong> &mdash; and boring is the goal.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> is built around pick-first workflows with these bounds installed &mdash; flag-file wrappers, max-run ceilings, and the weekly automation review. Running autonomous agents? The <a href="https://hive80lab.gumroad.com/l/agent-ops-24-7"><strong>Agent Ops 24/7 ($19)</strong></a> playbook covers keepalives, watchdogs, and graceful shutdowns for 24/7 operation. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows with guardrails included</li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 the solo operator's playbook for autonomous agents</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="cron-job-monitoring-checklist.html">Cron Job Monitoring Checklist (Heartbeats Catch Silent Failures)</a></li>
+<li><a href="ai-agent-ops-playbook.html">AI Agent Ops Playbook</a></li>
+<li><a href="cloud-cost-spike-runbook.html">Cloud Cost Spike Runbook (Top Movers, the Usual Suspects, Free Guardrails)</a></li>
+<li><a href="vendor-outage-runbook.html">Vendor Outage Runbook (When the Outage Isn't Yours)</a></li>
+<li><a href="disk-full-incident-runbook.html">Disk Full Incident Runbook (Safe Cleanup Order)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
