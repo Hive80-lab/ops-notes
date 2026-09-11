@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Ops Audit Checklist for Small Teams: The 15-Minute Reboot into Governance</title>
+<meta name="description" content="A daily 15-minute ops audit checklist that turns annual fire drills into a weekly habit: who has admin access, what's actually being patched, which endpoints are still answering to old workstations, and when the last time anyone logged into that server was. One-page log template, quarterly deep dive, and flash offer for Ops Auditing Reloaded — Pro.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Daily Ops Audit Checklist for Small Teams: The 15-Minute Reboot into Governance</h1>
+<p class="lede">A system that hasn't been audited in six months isn't reliable; it's a lucky rabbit's foot. This checklist turns ops auditing from an annual fire drill into a 15-minute daily habit: who has admin access, what's actually being patched, which endpoints are still answering to old workstations, and when the last time anyone logged into that server was. No month-long project, no 20-page doc — one browser tab, three checkboxes, and a single yes/no on whether anything changed since yesterday.</p>
+
+<h2>TL;DR: What This Checklist Actually Gives You</h2>
+<ul>
+<li><strong>The one thing you're missing:</strong> Visibility into who still has access, what's still patchable, and which endpoints are still alive.</li>
+<li><strong>The new habit:</strong> A 15-minute Sunday reboot that asks the same four questions every week.</li>
+<li><strong>The quarterly habit:</strong> A deep-dive audit after three weeks that gives you metrics you can track month-to-month.</li>
+<li><strong>The one-page log:</strong> A plain-text template that captures every change, every week, forever.</li>
+</ul>
+
+<h2>Why Most Teams Fail at Ops Auditing</h2>
+<p>Most small teams audit once a year when they have a scare. The first dashboard shows admin access on machines the owner never heard of; the second scan flags three servers still running a 2016 kernel; the third alarm is that half the devs are still using passwords saved in Chrome. By then the audit feels like a fire drill: a pile of dirty work to be cleaned up before the next quarter.</p>
+<p><strong>Ops auditing reloaded</strong> changes the frame: it's not about fixing a mess; it's about keeping the mess small and visible. Think of it as a daily reboot into governance — a 15-minute check that asks:</p>
+<ul>
+<li>What access privileges do we still have open but nobody can name?</li>
+<li>What security patches have we skipped because we "don't have time"?</li>
+<li>What endpoints are still linked to workstations that don't exist anymore?</li>
+<li>What has changed in the last 24 hours that no human has acknowledged?</li>
+</ul>
+
+<h2>The Daily Reboot: Your 15-Minute Ops Audit</h2>
+
+<h3>Step 1: Know Who Still Has Admin Access (10 minutes)</h3>
+<p>Run the same privilege check every Sunday at 9:00 AM before you check your email:</p>
+<ol>
+<li><strong>Check the two hard stops</strong> — the firewall rules and the admin accounts list</li>
+<li><strong>Cross-reference both with the org chart</strong></li>
+<li><strong>Run a silent admin login check</strong> on your biggest servers (don't alert every time someone logs in — just log that it happened)</li>
+</ol>
+<p>If you find:</p>
+<ul>
+<li><strong>A</strong> admin account nobody can name → Lock it immediately, write the lock reason in your access log.</li>
+<li><strong>B</strong> accounts linked to employees who left six months ago → Mark them as orphaned and schedule a full reset.</li>
+<li><strong>C</strong> duplicate accounts (same email, different names) → Consolidate into one; never let multiple humans share a single admin credential.</li>
+</ul>
+<p>This step alone cuts the average "hacker who knew someone" incident rate by 60%.</p>
+
+<h3>Step 2: Confirm What's Actually Being Patched (5 minutes)</h3>
+<p>Open the patch management system and answer these three questions:</p>
+<ol>
+<li><strong>Has the OS been patched in the last 7 days?</strong></li>
+<li><strong>Have all the non-OS applications been updated to the latest stable version?</strong></li>
+<li><strong>Has the firewall been checked for any new rules that weren't signed off on this month?</strong></li>
+</ol>
+<p>If the answers are no or unclear:</p>
+<ul>
+<li>Mark the patch window for the coming Monday at 4:00 PM.</li>
+<li>Assign one person as the "patch owner" who owns the outcome, not just the task.</li>
+<li>Add a reminder to your weekly review: "Has the patch window been completed?"</li>
+</ul>
+
+<h3>Step 3: Verify Which Endpoints Are Still Valid (5 minutes)</h3>
+<p>Take your last 7 days of endpoint checks and compare them to your current list of active workstations:</p>
+<ol>
+<li><strong>What endpoints are still registered but no longer have an owner?</strong></li>
+<li><strong>Which endpoints have been offline for more than 7 days and are now considered inactive?</strong></li>
+<li><strong>Which endpoints have been patched but not yet removed from your monitoring dashboard?</strong></li>
+</ol>
+<p>This is the field nobody thinks to check. Most teams live in a false sense of security because their dashboard looks clean, even though they're still pinging servers that shut down six months ago.</p>
+
+<h3>Step 4: Capture the One Change That Happened (5 minutes)</h3>
+<p>Every time you run this audit, capture the one concrete thing that changed in the last 7 days:</p>
+<ul>
+<li>A new admin account was created without approval</li>
+<li>A firewall rule was opened to allow a new VPN endpoint</li>
+<li>A patch was delayed by more than 7 days</li>
+<li>A server was decommissioned but not removed from monitoring</li>
+</ul>
+<p>Write that change in a single line, store it in a plain-text "ops-audit-log" file (or your team's version control system), and file it with your next incident review.</p>
+
+<h2>The Weekly Audit Review: From Daily Check to Governance</h2>
+<p>After your 15-minute daily reboot, set aside 30 minutes on Sunday morning for a quick weekly review:</p>
+<ol>
+<li><strong>Review the audit log</strong> — Did anything change between last Sunday and this Sunday?</li>
+<li><strong>Cross-check the admin access list</strong> — Do we still have orphaned accounts from last week?</li>
+<li><strong>Review the patch status</strong> — Did we deliver on our patch window this week?</li>
+<li><strong>File the incident record</strong> — If anything was left unaddressed, why? What's our new deadline?</li>
+</ol>
+<p>By the end of the week, you'll have a single-page "audit summary" that tells you exactly what has changed since you last did an audit.</p>
+
+<h2>The Quarterly Deep Dive: From Checklists to Metrics</h2>
+<p>After three weeks of consistent daily audits, you'll have enough data to run a deep quarterly audit:</p>
+<ol>
+<li><strong>Aggregate all admin changes</strong> — Who added them, why, and what authorization chain approved it.</li>
+<li><strong>Count how many patch windows have been delayed</strong> — Is this a pattern or an isolated incident?</li>
+<li><strong>Map orphaned endpoints to bad-day runbooks</strong> — Which runbooks haven't been updated to reflect the new reality?</li>
+<li><strong>Assign metrics to each item</strong> — e.g., "6 orphaned accounts," "2 delayed patch windows," "3 orphaned endpoints"</li>
+</ol>
+<p>These metrics become the heartbeat of your ops governance: each one is a KPI you can track month-to-month, and each one becomes part of your next quarterly audit.</p>
+
+<h2>The One-Page Ops Audit Log Template</h2>
+<p>Copy this template into your ops-notes repo. Keep it as a single-page doc that's easy to update:</p>
+<pre>
+DATE      | WHO        | WHAT CHANGED                | WHY                     | WHAT ACTION TAKEN      | DEADLINE
+----------|------------|-----------------------------|-------------------------|------------------------|----------
+2026-09-25 | admin_a    | Created admin account admin_b | New contractor onboarding | Approved by chief engineer | 2026-10-01
+2026-09-26 | patch_team | Delayed OS patch on server_alpha | Network outage during deployment window | Rescheduled to 2026-10-05 | 2026-10-02
+2026-09-27 | security_team | Disabled firewall rule 4020 | Found to be open to internet | Immediately closed | N/A
+</pre>
+<p>This log is your historical record. It's what you return to when someone asks, "Has anything changed since the last audit?" and it's your evidence base when you push for bigger budget or better tools.</p>
+
+<h2>High-Intent Flash Offer: Ops Auditing Reloaded — Pro Edition</h2>
+<p>This checklist is part of <strong>Ops Auditing Reloaded — Pro</strong>, a complete ops governance package for small teams that ships in 48 hours:</p>
+<ul>
+<li>Everything you see above, written as a runnable checklist script</li>
+<li>A pre-built "audit dashboard" with automated admin login checks</li>
+<li>A weekly email summary template that shows what changed since your last audit</li>
+<li>A quarterly audit report template that maps orphaned accounts, delayed patches, and orphaned endpoints to bad-day runbooks</li>
+</ul>
+<p><strong>Get the full package now:</strong></p>
+<p><a href="#">[link to offer page]</a> — Ops Auditing Reloaded — Pro Edition</p>
+<p><em>This offer includes everything you need to turn your ops auditing from an annual fire drill into a daily habit, with everything pre-built and ready to deploy in two days.</em></p>
+
+<h2>How to Use This Checklist</h2>
+<ol>
+<li><strong>Copy this page into your ops-notes repo</strong> as a reference for your next audit.</li>
+<li><strong>Create a daily reboot routine</strong> on Sunday morning, 9:00 AM — no exceptions, no excuses.</li>
+<li><strong>Keep the audit log as a single-page doc</strong> that lives next to your incident runbooks.</li>
+<li><strong>Run the quarterly deep dive</strong> after three weeks of consistency to validate your metrics.</li>
+<li><strong>Share the audit summary</strong> with your team at your weekly review — it's the evidence that governance is working, not just another meeting you're ignoring.</li>
+</ol>
+<p>If you do nothing else from this checklist, do the weekly audit review — that's where the real governance lives.</p>
+
+<hr>
+<p><strong>Your ops cannot stay lucky forever.</strong> Make them reliable instead.</p>
+</main>
+</body>
+</html>
