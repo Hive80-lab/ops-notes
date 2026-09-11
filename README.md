@@ -1,3 +1,4 @@
+- [Email Deliverability for Small Teams](email-deliverability-spf-dkim-dmarc-checklist.html) — SPF within 10 lookups, two DKIM selectors, DMARC p=none→reject, and the mail-stopped-arriving runbook.
 - [SaaS Sprawl Audit for Small Teams](saas-sprawl-audit-checklist.html) — one hour, one owner per tool, kill/keep/consolidate.
 - [Password Manager Rollout for Small Teams](password-manager-rollout-small-business.html) — break-glass first, pilot, enforce with a date.
 - [Vendor Security Review Checklist for Small Teams](vendor-security-review-checklist.html) — 12 questions before you sign, red-flag answers, tiering.

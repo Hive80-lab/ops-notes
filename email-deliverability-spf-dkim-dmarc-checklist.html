@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Deliverability Checklist for Small Teams: SPF, DKIM &amp; DMARC Without Breaking Mail</title>
+<meta name="description" content="A 45-minute email deliverability audit for small teams: parallel SPF lookups, 2048-bit DKIM with two selectors, DMARC p=none to reject, and the Monday-morning runbook when invoices stop arriving.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Email deliverability for small teams: SPF, DKIM and DMARC without breaking mail</h1>
+
+<p>Deliverability sounds like a marketing problem, which is why small teams never check it until it's an operations problem. Then the pattern is always the same: a customer says "I never got the invoice," a password reset goes to spam, a two-factor code doesn't arrive, and someone spends a day blaming the mail provider when the real issue is a DNS record nobody has read since the company was three people. This is the 45-minute audit that keeps your mail landing &mdash; and the runbook for the morning it stops.</p>
+
+<h2>1. Why this is an ops problem, not a marketing problem</h2>
+<ul>
+<li><strong>Money and access both ride on email.</strong> Invoices, payment receipts, password resets, MFA codes, <a href="incident-communication-templates.html">incident notifications</a>. If your domain's mail silently starts landing in spam, you don't see a dashboard turn red &mdash; you see customers pay late, lock themselves out, and assume you've gone quiet during an outage.</li>
+<li><strong>Silent failure is the default.</strong> Nothing bounces. The receiving server quietly scores your mail down, and the only symptoms arrive through humans: "didn't get it," "check your spam folder." That makes deliverability a monitoring problem like any other silent failure &mdash; you put a check on it, you don't wait for someone to notice.</li>
+<li><strong>Every new tool is a new sender.</strong> The CRM, the helpdesk, the e-sign tool, the newsletter platform, the CI server &mdash; each one wants to send email <em>as your domain</em>. Each addition is a <a href="change-management-checklist.html">change</a> to your DNS, whether or not anyone treated it like one. Deliverability usually breaks the week a new tool goes live, not the week DNS expires.</li>
+</ul>
+
+<h2>2. The 45-minute audit, step by step</h2>
+<ol>
+<li><strong>Inventory every service that sends as your domain.</strong> One list: mail provider (Google Workspace, Microsoft 365, Fastmail), billing (Stripe, QuickBooks), helpdesk, newsletter, CRM, e-sign, CI. Ask "who emailed a customer last week?" &mdash; every answer is a sender. If a tool isn't on the list, its mail is either failing or about to.</li>
+<li><strong>Look up all three records in parallel.</strong> From any terminal: <code>dig +short TXT yourdomain.com</code> (SPF lives here), <code>dig +short TXT _dmarc.yourdomain.com</code>, and <code>dig +short TXT s1._domainkey.yourdomain.com</code> (DKIM selectors vary: <code>google</code>, <code>selector1</code>/<code>selector2</code>, <code>k1</code>, <code>fm1</code>). Five minutes, no admin panel required &mdash; DNS is the ground truth, not the vendor's dashboard.</li>
+<li><strong>Count your SPF lookups.</strong> SPF has a hard limit of <strong>10 DNS lookups</strong> per evaluation, counting every <code>include:</code>, <code>a</code>, <code>mx</code>, and <code>exists</code> mechanism &mdash; including the nested ones inside your vendors' own includes. Over 10, some receivers treat the whole record as broken. If you're at 7+, pruning is a this-quarter task, not a someday task.</li>
+<li><strong>Verify DKIM validates for every sender, not just mail.</strong> Send yourself a message from each system (billing test invoice, helpdesk ticket reply, newsletter proof) and view the original headers: <code>Authentication-Results</code> should read <code>spf=pass dkim=pass dmarc=pass</code>. A tool sending unsigned mail has been coasting on SPF alone &mdash; that's a finding.</li>
+<li><strong>Check where DMARC reports go &mdash; if anywhere.</strong> A DMARC record with no <code>rua=</code> address means you published a policy but blinded yourself: you'll never see who's spoofing you or which legitimate tool is misfiring. A free aggregate-report parser turns the XML into "these four services send as you; one fails alignment."</li>
+</ol>
+
+<h2>3. SPF: one record, ten lookups, and the -all question</h2>
+<ul>
+<li><strong>Exactly one SPF record per domain.</strong> Two <code>v=spf1</code> records is the most common self-inflicted wound &mdash; usually someone "adding a tool" by creating a second record instead of merging into the existing one. Receivers treat duplicate SPF records as a permanent fail. Merge everything into one <code>TXT</code> record; delete the strays the same day.</li>
+<li><strong>Every sender gets an <code>include:</code> in that one record.</strong> A sane small-team record looks like <code>v=spf1 include:_spf.google.com include:sendgrid.net ~all</code>. Removing a churned tool's include is the sending-domain version of the <a href="access-request-offboarding-checklist.html">offboarding checklist</a>: when the login is revoked, the right to send as you is revoked too.</li>
+<li><strong>The 10-lookup budget is shared with your vendors.</strong> Your mail provider's include may itself cost 2&ndash;3 lookups; the newsletter tool's can cost 5. Two or three "innocent" vendor includes and you're near the ceiling before the helpdesk asks to be added. At 8 lookups, stop adding and start consolidating senders &mdash; or move to a provider with SPF flattening and verify after every vendor change.</li>
+<li><strong><code>~all</code> now; <code>-all</code> only after DMARC proves the sender list.</strong> <code>-all</code> (hardfail) punishes every tool you forgot to add, and the punishment lands on customers waiting for invoices. The honest sequence: <code>~all</code> while you're still discovering senders, then tighten once a month of DMARC reports proves the list is complete.</li>
+</ul>
+
+<h2>4. DKIM: 2048-bit keys and two live selectors</h2>
+<ul>
+<li><strong>Enable DKIM everywhere, not just on the mail provider.</strong> Google and Microsoft sign by default; billing, helpdesk, and marketing tools often don't. Every unsigned message from your domain is scored on SPF alone &mdash; one legacy vendor with a broken signing setup is enough to drag the whole domain's reputation down.</li>
+<li><strong>Generate 2048-bit keys.</strong> 1024-bit DKIM keys are practical to attack and several receivers score them down. Any admin panel that offers a key-size dropdown: take the largest. It costs nothing at setup and saves one migration later.</li>
+<li><strong>Run two selectors at all times.</strong> The part nobody does and everyone eventually needs: publish selector 1 and selector 2, sign with one, and when you rotate, sign with the second for a week of clean headers before deleting the first. Rotation without downtime is the entire point &mdash; the same new-live-before-old-dead logic as <a href="secrets-rotation-checklist.html">secrets rotation</a>.</li>
+<li><strong>Put rotation on the calendar anyway.</strong> DKIM keys never expire, which is exactly why they never rotate &mdash; until an admin screenshot leaks a private key into a ticket, or a departed contractor still has access to the signing system. Quarterly selector rotation rides along with the <a href="secrets-rotation-checklist.html">secrets pass</a>: ten minutes with two selectors, a crisis without them.</li>
+</ul>
+
+<h2>5. DMARC: the road from p=none to p=reject</h2>
+<ol>
+<li><strong>Day 0 &mdash; publish <code>v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com</code>.</strong> <code>p=none</code> changes nothing about delivery; it only switches on the reporting firehose. It costs nothing and blocks nothing &mdash; publish it today even if you do nothing else from this checklist.</li>
+<li><strong>Weeks 1&ndash;4 &mdash; read the aggregate reports.</strong> Raw XML is unreadable; free parsers aren't. You're looking for three things: legitimate senders you forgot (add them to SPF/DKIM), services failing alignment (fix or kill them), and volume you don't recognize (someone is spoofing you &mdash; the reason DMARC matters even if you never send marketing mail).</li>
+<li><strong>Week 5 &mdash; <code>p=quarantine; pct=25</code>, only after a clean month.</strong> <code>pct=25</code> sends a quarter of failing mail to spam: a controlled burn instead of a bonfire. Bump 50 &rarr; 100 over two weeks while watching your own inbox and one friendly customer's.</li>
+<li><strong>Then <code>p=reject</code>, and set <code>sp=</code> for subdomains.</strong> Reject makes spoofed mail from your domain die on arrival. While you're there: subdomains inherit the policy unless <code>sp=</code> says otherwise, and attackers love subdomains precisely because nobody configured them.</li>
+<li><strong>The one place tighter is worse: mailing lists and forwarders.</strong> Old-school forwarding and lists break DKIM signatures, and strict DMARC then bounces mail your customers asked for. If your audience lives on lists, hold at <code>quarantine</code> or relax alignment (<code>adkim=s</code>/<code>aspf=s</code>). "Tighter" is not automatically "better."</li>
+</ol>
+
+<h2>6. Monday-morning runbook: mail stopped arriving</h2>
+<ol>
+<li><strong>Scope the blast radius first.</strong> Test mail from your domain to Gmail, Outlook, and one small provider &mdash; and check the spam folders, not just the inbox. All receivers failing = your domain or provider. One receiver failing = reputation with that receiver. Same rule as the opening minutes of any <a href="first-30-minutes-incident-response.html">incident</a>: measure before you change.</li>
+<li><strong>Diff DNS against last-known-good.</strong> What changed in 7 days? New marketing tool, new billing provider, a second SPF record someone added to "fix" things, a lapsed domain renewal (<code>whois</code> &mdash; expired domains stop sending permanently). Keep a copy of your records in your ops docs so the diff is one <code>dig</code> apart; the record-saving habit belongs in your <a href="dns-outage-runbook.html">DNS runbook</a>.</li>
+<li><strong>Check blacklists &mdash; then hunt the reason you're on them.</strong> Spamhaus, Barracuda, Microsoft SNDS. The listing is a symptom; the disease is usually a compromised mailbox, an open relay, or a script sending through your domain. Delist without fixing the source and you're back by Thursday &mdash; and if the source is a stolen credential, that's an <a href="api-key-leak-response-runbook.html">exposed-key incident</a>, not a deliverability problem.</li>
+<li><strong>Check the provider's status page before touching anything.</strong> Gmail, Outlook, and bulk-mail vendors all publish sender-facing incidents. If the <a href="vendor-outage-runbook.html">vendor</a> is degraded, your job is to delay the send and tell the team &mdash; every DNS edit made during someone else's outage is a second incident queued behind the first.</li>
+<li><strong>Tell the humans early, with the template.</strong> "Invoice delivery is degraded for some recipients; today's invoices are being re-sent manually; next update 2pm" beats silence. Use the <a href="status-page-communication-template.html">status update template</a>: customers forgive delivery problems, not discovering them from their own bank statement.</li>
+</ol>
+
+<h2>7. Keep it from drifting back</h2>
+<ul>
+<li><strong>One 20-minute quarterly review.</strong> Re-run the parallel lookups, diff against the saved records, parse the last month of DMARC reports. The review stays short because the reports did the watching all quarter &mdash; which is the same reason the <a href="backup-restore-test-checklist.html">restore test</a> stays short: the check is scheduled, so the panic isn't.</li>
+<li><strong>The new-sender gate.</strong> No tool sends as your domain until SPF/DKIM are updated &mdash; one line in the <a href="cron-job-monitoring-checklist.html">weekly ops check</a>: "new tool sending email this week?" Trials convert into senders the same way they convert into invoices, silently; the gate is what makes the conversion visible.</li>
+<li><strong>Alert on the 2am failure modes.</strong> DMARC reports dropping to zero (DNS broke or the report address died), your own monitoring notifications failing (the thing watching the mail can't use the mail), and a monthly seed-inbox test for spam placement. Cron handles all three; keeping it quiet is the craft in the <a href="cron-job-monitoring-checklist.html">cron monitoring checklist</a>.</li>
+<li><strong>Senders are vendors: review them annually.</strong> Every service allowed to send as your domain can also impersonate it. They belong in the annual <a href="vendor-security-review-checklist.html">vendor security review</a> &mdash; what data they hold, who can log in, and what happens when their SMTP credentials leak.</li>
+</ul>
+
+<p>The whole discipline fits one line: <strong>your domain's right to send mail is maintained, not owned.</strong> Every new tool spends it, every DMARC report shows the balance, and the 45 minutes a quarter you spend reading both is the cheapest insurance your invoices will ever be seen.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="email-security-checklist.html">Email Security Checklist for Small Teams</a></li>
+<li><a href="dns-outage-runbook.html">DNS Outage Runbook for Small Teams</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist (Actually Doing It)</a></li>
+<li><a href="api-key-leak-response-runbook.html">API Key Leaked: the First-Hour Runbook</a></li>
+<li><a href="vendor-outage-runbook.html">Vendor Outage Runbook (When Someone Else Is Down)</a></li>
+<li><a href="status-page-communication-template.html">Status Page &amp; Customer Communication Template</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>. No analytics, no tracking &mdash; just notes that work at 2AM.</footer>
+</main>
+</body>
+</html>
