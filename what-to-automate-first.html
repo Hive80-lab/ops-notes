@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What to Automate First: the 4-Question Filter for Small Teams</title>
+<meta name="description" content="A 20-minute decision filter for small teams and solo operators: 4 questions that pick which recurring task to automate first, 3 red flags that mean don't, and a fill-in scoring worksheet. Free, copy-paste.">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/what-to-automate-first.html">
+</head>
+<body>
+<main>
+<article>
+<h1>What to Automate First: the 4-Question Filter for Small Teams</h1>
+<p>The first automation a small team builds is usually the wrong one &mdash; the exciting
+one, not the valuable one. A chatbot nobody asked for beats an invoice reminder nobody
+has to send, in excitement. In value, it's not close. This page is the 20-minute filter
+that decides for you, before you spend a weekend building the wrong thing.</p>
+
+<h2>The 4 questions (in order)</h2>
+<ol>
+<li><strong>Does this happen at least weekly?</strong> Automation pays back through repetition.
+A once-a-quarter task that takes 10 minutes isn't worth the build, however fun the build is.</li>
+<li><strong>Is the task's rule writable in one sentence?</strong> "Every completed order gets a
+confirmation email" &mdash; writable. "Review whether this lead looks promising" &mdash; not yet.
+If you can't state the rule in one sentence, you don't understand the task well enough to
+delegate it to a machine.</li>
+<li><strong>Is failure visible within a day?</strong> Good candidates fail loudly or observably
+(email didn't send, invoice missing). Bad candidates fail silently for weeks (data
+enrichment &mdash; wrong output looks like right output).</li>
+<li><strong>Can a human check the output in under a minute?</strong> If verification is expensive,
+you've automated the task and manualized the review &mdash; the worst trade in automation.</li>
+</ol>
+<p><strong>Scoring:</strong> four yeses = automate next sprint. Two or fewer = leave it alone for
+now. Three = fix the weak answer first &mdash; usually #2: write the rule sentence until it's
+actually true.</p>
+
+<h2>The 3 red flags (any one means don't automate yet)</h2>
+<ul>
+<li><strong>The process changed in the last month.</strong> You'd be automating a snapshot of a
+moving process. Stabilize first.</li>
+<li><strong>Nobody currently does the task end-to-end.</strong> Automation needs a reference human;
+without one there's no ground truth to check against.</li>
+<li><strong>The task exists to catch rare, expensive errors.</strong> Human review IS the control
+here. Automate the <em>logging</em> of those errors, never the judgment.</li>
+</ul>
+
+<h2>Worked examples</h2>
+<table>
+<tr><th>Candidate</th><th>Weekly?</th><th>Rule?</th><th>Fails loudly?</th><th>&lt;1min check?</th><th>Verdict</th></tr>
+<tr><td>Invoice overdue reminders</td><td>Y</td><td>Y</td><td>Y (email log)</td><td>Y</td><td><strong>Automate</strong></td></tr>
+<tr><td>Backup verification alert</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td><strong>Automate</strong></td></tr>
+<tr><td>Lead scoring</td><td>Y</td><td>N</td><td>N (silent)</td><td>N</td><td>Leave alone</td></tr>
+<tr><td>Refund approvals</td><td>N</td><td>N</td><td>N</td><td>N</td><td>Leave alone &mdash; judgment is the control</td></tr>
+</table>
+
+<h2>What stays human, always</h2>
+<p>Anything involving judgment about people &mdash; hiring, pricing decisions, escalating an
+angry customer. Automate the <em>paperwork around</em> those, never the decision. And once a
+winner is picked, the boring part is the part that matters: run it in shadow mode for a
+week, give it a kill switch, and put a monthly review on the calendar. Automations don't
+die loudly; they rot quietly until someone notices the wrong invoices went out in March.</p>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a>
+ships this filter as a fill-in worksheet, plus 12 workflows ranked by payback, the one-page
+automation spec (shadow mode, kill switch, run log), the 2am incident-log automation, 5 AI
+workflow templates with human checkpoints, and the 10-minute monthly review &mdash; launch
+month: <strong>30% off with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation pack for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li></ul><p class="hint">Launch month: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2>
+<ul>
+<li><a href="workflow-automation-checklist.html">Workflow Automation Checklist for Small Teams</a></li>
+<li><a href="small-business-automation-ideas.html">Small Business Automation Ideas (ranked by payback)</a></li>
+<li><a href="ai-automation-templates-solo-founders.html">AI Automation Templates for Solo Founders</a></li>
+<li><a href="incident-response-changelog-automation.html">Incident Response Changelog Automation</a></li>
+</ul>
+</aside>
+</article>
+</main>
+<p style="text-align:center"><a href="index.html">&larr; All ops notes</a></p>
+</body>
+</html>
