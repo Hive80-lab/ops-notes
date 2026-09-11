@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IoT Device Security Checklist for Small Offices (Printers, Cameras, and the Forgotten Attack Surface)</title>
+<meta name="description" content="A small-office checklist for the devices nobody owns: a 60-minute inventory walk, killing default credentials, quarterly firmware, a segregated device network, an internet-exposure audit (UPnP, port forwards, admin panels), printer scan-to-email credentials, and camera/NVR hygiene &mdash; so the forgotten attack surface stops being the easy way in.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>IoT device security for small offices</h1>
+
+<p>Every small office has a shadow IT fleet that appears on no asset list: the multifunction printer that scans to email, the front-desk camera with its own app, the smart TV in the meeting room, the delivery-door buzzer with a web login, the label printer someone port-forwarded "for the vendor." <strong>Nobody patched them, nobody inventoried them, and their admin logins are usually the ones printed on a sticker on the box.</strong></p>
+
+<p>This is not a hypothetical. Printers hold PDFs in spool files and SMTP credentials in settings. Cameras are watched from the internet. TVs ship with admin panels reachable from the office LAN. A breach that starts on a $300 device ends up in the same <a href="data-breach-first-24-hours.html">first 24 hours</a> as one that starts on your laptop &mdash; except nobody logged into that device, ever, so nobody will notice for weeks. This checklist makes the forgotten fleet survivable in one 90-minute session plus a quarterly 30-minute recheck.</p>
+
+<h2>1. Name an owner (5 minutes, changes everything)</h2>
+
+<p>The reason the printer has a 2019 firmware and the camera password is "admin123" is not budget &mdash; it's that the devices belong to nobody. Whoever fixes the coffee machine is not the same person who manages the laptop fleet, so the fleet simply rots:</p>
+
+<ul>
+<li><strong>Assign one named owner for "non-computer devices."</strong> Office manager, ops lead, whoever. The title matters less than the fact that patching, password changes, and firmware bulletins now land in someone's queue instead of the air.</li>
+<li><strong>Add the fleet to the asset list.</strong> If you already run an <a href="annual-security-review-checklist.html">annual security review</a> or a SaaS sprawl audit, add a section: hardware that has an IP address but no patch policy. That line is where the risk lives.</li>
+<li><strong>Track the two facts that matter per device:</strong> when was it last updated, and can it reach the internet. Everything else is secondary.</li>
+<li><strong>Treat new purchases as intake events.</strong> Any new device enters through the checklist below before it enters the office network. A five-minute ritual at purchase prevents five-hour incidents later.</li>
+</ul>
+
+<h2>2. Walk the office: build the inventory (60 minutes, once)</h2>
+
+<p>You cannot secure what you cannot list. One walking pass with your phone notes app:</p>
+
+<ul>
+<li><strong>What to count:</strong> printers/scanners, cameras and DVR/NVR boxes, smart TVs and casting sticks, conference-room booking tablets, door access panels, buzzer/intercom systems, smart speakers, Roombas, network switches, the ISP's own router/modem box, any Raspberry Pi or mini-PC someone left running.</li>
+<li><strong>For each device, record four fields:</strong> what it is, where it lives, its IP (check the router's device list &mdash; faster than touching each box), and who set it up. "Who set it up" is the call you make when it turns out the camera streams to a cloud account belonging to an ex-employee.</li>
+<li><strong>Check the router's device list against your walk.</strong> Devices you find on the network but not in the office are either remote, borrowed, forgotten &mdash; or someone else's. That reconciliation is the actual audit.</li>
+<li><strong>Mark the cloud-connected ones.</strong> Anything with a vendor app or an account (cameras, TVs, thermostats, doorbells) is also a vendor relationship. Those vendors belong on your <a href="vendor-security-review-checklist.html">vendor security review</a> list &mdash; an IoT device that phones home is a subprocessor with a speaker.</li>
+</ul>
+
+<h2>3. Default credentials: the highest-yield 30 minutes in this whole checklist</h2>
+
+<p>Most small-office intrusions into this device class use the password printed on the bottom of the box. One session fixes the whole class:</p>
+
+<ul>
+<li><strong>Log in to each device's admin panel once.</strong> Browser to its IP. If admin/admin, admin/password, or the sticker code works &mdash; change it now. Use a long passphrase from your <a href="password-manager-rollout-small-business.html">password manager</a>, and store it in a shared "devices" collection.</li>
+<li><strong>Change default admin <em>usernames</em> too where the device allows it.</strong> "admin" is the login every automated scanner tries first; a non-default username is free brute-force resistance.</li>
+<li><strong>Turn off or lock down remote/wireless admin panels.</strong> "Allow management from WAN" and "Allow configuration over Wi-Fi" are checkboxes whose only purpose is to make someone else's day easier.</li>
+<li><strong>Set strong passwords on the Wi-Fi the devices use, and rotate the guest password on a schedule.</strong> The printer that shares a password with the office Wi-Fi means compromising one is compromising both &mdash; see section 5.</li>
+<li><strong>Where a device cannot take a real password (cheap intercoms, old DVRs), it gets network segregation instead</strong> &mdash; that's the next section, and it's how you make an unpatchable device mostly harmless.</li>
+</ul>
+
+<h2>4. Firmware: a quarterly 30-minute ritual, not a crisis</h2>
+
+<p>Device firmware never auto-updates the way laptops do, so the fleet's software is effectively frozen at purchase date. Make the update a calendar event, like tax deadlines:</p>
+
+<ul>
+<li><strong>Quarterly: check each device for a firmware update.</strong> Most vendor sites have a support page per model; some devices self-update if you enable it. Enable auto-update wherever it exists, even if you distrust it &mdash; vendor updates beat frozen 2023 code.</li>
+<li><strong>Keep a one-line bulletin list.</strong> Vendor security bulletins for the models you own, checked quarterly. The <a href="patch-management-checklist.html">patch management habit</a> you built for computers extends here with a different cadence, not a different discipline.</li>
+<li><strong>Replace what's unpatchable.</strong> A network device whose vendor is out of business, or whose last firmware is five years old, is not an asset &mdash; it's a liability with a power adapter. Budget to replace it; until then, segregate it hard (section 5).</li>
+<li><strong>Update before deployment, not after.</strong> Every new device gets firmware-current + password-changed <em>before</em> joining the office network. "Update it later" is how later becomes never.</li>
+</ul>
+
+<h2>5. Segregate the device network (the fix that beats patching)</h2>
+
+<p>You cannot count on updating everything forever. You can control what a compromised device can <em>reach</em>:</p>
+
+<ul>
+<li><strong>Put IoT devices on a separate SSID/VLAN.</strong> Nearly every business-grade router (and many consumer ones) offers a guest network or VLAN support. Laptops and phones on the main network; printers, cameras, TVs, doorbells on the device network. A compromised TV can no longer browse the file server.</li>
+<li><strong>Block device-to-device talk by default.</strong> On the device VLAN, enable client isolation (devices can reach the internet, not each other) and allow only the specific ports they need out. The printer needs SMTP; the TV needs streaming; neither needs SMB or RDP.</li>
+<li><strong>Give the device network its own password.</strong> When a visitor gets the guest Wi-Fi, they get the guest network &mdash; not the VLAN with your label printer and door controller on it.</li>
+<li><strong>One cable rule: unknown device, untrusted port.</strong> A device someone plugged into an office wall port lands on the isolated VLAN or gets unplugged until it's inventoried. This is the physical-world version of not opening attachments.</li>
+<li><strong>If the router can't do VLANs, a $60 second router in front of the devices is an acceptable improvised DMZ</strong> &mdash; imperfect, but strictly better than one flat network for humans and cameras alike.</li>
+</ul>
+
+<h2>6. The internet-exposure audit: what's actually reachable from outside (30 minutes)</h2>
+
+<p>This is where device fleets leak. Someone port-forwarded the camera "to check the office while traveling" in 2022 and nobody removed the rule:</p>
+
+<ul>
+<li><strong>List every port-forward and UPnP rule on the router.</strong> One login to the router admin panel, one screenshot, one decision per rule: needed or deleted. Delete the rest. UPnP enabled on a router means any infected device on the LAN can open the router for you &mdash; turn it off unless something breaks loudly.</li>
+<li><strong>Ask "would I be comfortable with this login page on the open internet?"</strong> A camera DVR login, a printer admin page, a Pi-hole dashboard &mdash; each is a login form the whole internet can brute-force. Remote access belongs behind a VPN or at minimum a non-forwarded path.</li>
+<li><strong>Test from the outside.</strong> From your phone on cellular, try to reach the office IP and the forwarded ports. What answers from outside is your real attack surface &mdash; whatever answers and isn't deliberate is a misconfiguration.</li>
+<li><strong>Disable cloud "remote access" features you don't actively use.</strong> Many devices ship with cloud relay access enabled by default. If nobody uses the app, turn the relay off &mdash; it's one less third-party server holding credentials to your office.</li>
+<li><strong>The <a href="ssl-certificate-expiry-checklist.html">certificate and domain</a> disciplines apply here too:</strong> any device you expose on purpose should sit behind a real certificate and a hostname you control, not a raw IP with a self-signed warning everyone clicks through.</li>
+</ul>
+
+<h2>7. Printers: computers pretending to be furniture</h2>
+
+<p>The office printer deserves its own section because it's the device most likely to hold <em>data</em>, not just firmware:</p>
+
+<ul>
+<li><strong>Spool files are documents.</strong> Printers with local storage keep copies of what was printed &mdash; contracts, invoices, HR letters. On decommission, factory-reset and, where the vendor offers it, wipe storage. The <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding data-deletion rules</a> apply to the printer on its way to the dump.</li>
+<li><strong>Scan-to-email and scan-to-folder hold live credentials.</strong> The printer's SMTP password is a real mailbox password, and scan-to-folder is a file-server login. Check it: it's often a former employee's account, or worse, a domain admin's. Rotate these like any other secret; the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> covers the habit.</li>
+<li><strong>Turn off features nobody uses:</strong> web-push printing, cloud print connectors, remote admin from the internet, and anonymous USB printing where it isn't needed.</li>
+<li><strong>Print-release for sensitive documents.</strong> Even without fancy hardware, "walk to the printer and press OK" kills the pile of uncollected contracts by the tray &mdash; which is also a <a href="lost-or-stolen-laptop-runbook.html">physical security</a> problem wearing a different hat.</li>
+</ul>
+
+<h2>8. Cameras and NVRs: the embarrassing breach</h2>
+
+<p>Cameras are the device class most likely to be both internet-connected and catastrophically neglected. A camera breach isn't just trespass &mdash; it's surveillance of your team, and it becomes a trust event faster than any server breach:</p>
+
+<ul>
+<li><strong>Segment first.</strong> Cameras and their recorder go on the device VLAN, no exceptions. A camera that can only reach the internet and its NVR cannot reposition itself to watch your file server.</li>
+<li><strong>Kill default cloud accounts and rebind to a company email.</strong> If the camera app is tied to the installer's or a founder's personal email, you've inherited a data relationship with a person who left. Rebind to a role mailbox, enable 2FA, store recovery codes with the device passwords.</li>
+<li><strong>Check where recordings live and who can export them.</strong> Cloud-recording subscriptions are a subprocessor; local NVR storage is a disk with a retention rule. Either way, the <a href="log-retention-policy-small-teams.html">retention policy</a> should say how long footage is kept &mdash; forever is a liability, not a feature.</li>
+<li><strong>Disable audio and internet streaming you don't use.</strong> Fewer sensors and channels, fewer leaks. An office camera that needs no sound needs no microphone.</li>
+<li><strong>Physical cameras, digital locks:</strong> the NVR's admin port-forwarded to the internet is the most common small-office camera failure in existence. Section 6 exists because of this paragraph.</li>
+</ul>
+
+<h2>9. Close the loop: ownership, calendar, and the next review</h2>
+
+<p>The checklist only holds if the fleet re-enters the routine machinery you already have:</p>
+
+<ul>
+<li><strong>Calendar entries:</strong> quarterly firmware pass (30 min), quarterly exposure re-audit (15 min), and "update+password before any new device joins" as a standing rule on the <a href="employee-onboarding-checklist-template.html">onboarding/procurement checklist</a>.</li>
+<li><strong>Log the session.</strong> Devices checked, passwords rotated, rules deleted, exceptions accepted. The log is what turns this from a good weekend into a control &mdash; and it feeds the <a href="annual-security-review-checklist.html">annual review</a> one section for free.</li>
+<li><strong>Accept documented exceptions, not silent gaps.</strong> "DVR is unpatchable, segregated on VLAN 3, exposure checked quarterly" is a professional answer. An unexamined DVR on the flat LAN is a <a href="postmortem-template-small-teams.html">future postmortem's</a> opening paragraph.</li>
+<li><strong>Remember what these devices are:</strong> sensors with credentials. If one is compromised, treat it like a compromised laptop &mdash; isolate, change what it could reach, rotate every credential it held, and run the <a href="data-breach-first-24-hours.html">first-24-hours drill</a> without waiting for proof that data left.</li>
+</ul>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams</a></li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist for Small Teams</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist for Small Teams</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review for Small Teams</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist for Small Business</a></li>
+<li><a href="data-breach-first-24-hours.html">Suspected Data Breach: the First 24 Hours for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>

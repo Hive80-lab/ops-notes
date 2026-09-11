@@ -1,3 +1,4 @@
+- [IoT Device Security Checklist](iot-device-security-checklist.html) — inventory walk, default creds, quarterly firmware, device VLAN, exposure audit, printers, cameras/NVR, ownership loop.
 - [Customer Security Questionnaire Response](customer-security-questionnaire-template.html) — evidence folder, the twelve repeatable answers, honest-not-yet answers, buyer-form red flags, quarterly refresh + reuse rule.
 - [Customer Data Deletion Requests](customer-data-deletion-request-checklist.html) — 48h acknowledge+verify, search-based inventory, delete/keep split, processor relay, backup sentence, closing letter.
 - [Domain Expiry & Hijack Protection](domain-hijack-protection-checklist.html) — transfer lock, billing alarms at 60/30/7, independent recovery email, quarterly RDAP drill, first-hour transfer response.
