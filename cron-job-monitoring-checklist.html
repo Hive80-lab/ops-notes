@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cron Job Monitoring Checklist for Small Teams (Silent Failures, Dead Jobs, and the Heartbeat Pattern)</title>
+<meta name="description" content="A practical checklist for cron and scheduled-job monitoring: why cron silences are worse than cron errors, the heartbeat pattern that catches dead schedules, runtime alerting that catches hangs, and the 15-minute setup.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Cron Job Monitoring Checklist for Small Teams</h1>
+<p class="lede">Cron fails in two ways and teams only notice one of them. The job that <strong>errors</strong> writes logs; the job that <strong>silently stops running</strong> &mdash; disabled during an incident and never re-enabled, renamed by a refactor, killed by a timezone change &mdash; writes nothing at all. The checklist has four parts: <strong>heartbeat every critical job, alert on runtime, alert on silence, and keep the schedule owned</strong>.</p>
+
+<h2>1. Heartbeat every critical job (the part that catches silence)</h2>
+<p>The only reliable way to know a scheduled job <em>ran</em> is for the job to say so. A heartbeat is one line at the end of a successful run:</p>
+<table>
+<tr><th>Job class</th><th>Heartbeat</th><th>Alert condition</th></tr>
+<tr><td>Backups</td><td>Touch a timestamp file, or ping a monitor URL</td><td>No heartbeat in &gt;25h (daily job)</td></tr>
+<tr><td>Sync / ingest jobs</td><td>Ping a monitor URL on success</td><td>No heartbeat within 1&ndash;2 expected intervals</td></tr>
+<tr><td>Reports / digests</td><td>Ping + record row count</td><td>No heartbeat, or zero rows</td></tr>
+</table>
+<p>Free heartbeat monitors (healthchecks-style services, or a 10-line script + your existing alerting) are enough. The rule: <strong>a job without a heartbeat is a job you're not allowed to trust</strong>.</p>
+
+<h2>2. Alert on runtime, not just exit codes</h2>
+<p>Exit code 0 covers less than you think:</p>
+<ul>
+<li><strong>The job that hangs.</strong> No error, no exit &mdash; the backup is stuck on an NFS mount since Tuesday. Wrap critical jobs with a timeout, and alert when runtime exceeds 2&times; the historical median.</li>
+<li><strong>The job that succeeds uselessly.</strong> Zero rows processed, zero files found &mdash; exit 0, nothing done. Log the counts and alert on the zero.</li>
+<li><strong>The job that succeeds at the wrong time.</strong> A schedule that drifted (DST, edited crontab) is a finding even when the run is green &mdash; heartbeats with timestamps catch it.</li>
+</ul>
+
+<h2>3. Own the schedule (the part cron doesn't give you)</h2>
+<ul>
+<li><strong>One inventory of every schedule</strong> &mdash; system crontabs, systemd timers, CI cron, provider-side schedulers, and the "temporary" scripts in someone's home directory. If it fires on a clock, it's on the list.</li>
+<li><strong>Each entry has an owner and a "what breaks if this doesn't run" line.</strong> The inventory nobody can explain is the inventory you'll disable by accident.</li>
+<li><strong>Changes to schedules go through review.</strong> Most silent deaths are self-inflicted: a deploy that rewrote crontab, a rename that missed one host.</li>
+</ul>
+
+<h2>4. The 15-minute setup (do it today)</h2>
+<ol>
+<li><strong>List your critical jobs</strong> (5 min): backups, syncs, alerts, digests. Everything else waits.</li>
+<li><strong>Add a heartbeat line</strong> to each: append a timestamp ping at the end of a successful run (curl to a monitor URL, or <code>touch /var/lib/jobcheck/backup.last</code>).</li>
+<li><strong>Add the silence check</strong>: one cron that verifies every heartbeat file is younger than its threshold &mdash; and alerts you when it isn't.</li>
+<li><strong>Test it once:</strong> disable one job for an hour on purpose and confirm the silence alert fires. An untested silence alert is a wish.</li>
+</ol>
+
+<h2>5. The mistakes that keep cron silent</h2>
+<ul>
+<li><strong>Monitoring the server, not the job.</strong> The box is up; the job died three days ago. Uptime and schedules are different facts.</li>
+<li><strong>Trusting exit codes alone.</strong> A hung job has no exit code. A useless job exits 0.</li>
+<li><strong>Heartbeats that fire even when the job did nothing.</strong> Ping success only, and record the counts.</li>
+<li><strong>The untested silence alert.</strong> Simulate a dead job once a quarter; otherwise the first real test is the outage.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Cron silence is worse than cron errors</strong> &mdash; and only heartbeats catch it.</li>
+<li><strong>Alert on runtime and output, not just exit codes</strong>: hangs, zeros, and drift are all green-on-the-outside failures.</li>
+<li><strong>Every schedule has an owner and a consequence line</strong> &mdash; or it's one refactor away from disappearing.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> includes pick-first workflows for exactly this layer &mdash; heartbeat checks, retention sweeps, and the weekly schedule review &mdash; pre-assembled so the boring checks run by themselves. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> covers what happens when a check does fire. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: heartbeats, retention, shutdowns, cost reviews</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams (5 Signals, 1 Alert Rule)</a></li>
+<li><a href="cloud-cost-spike-runbook.html">Cloud Cost Spike Runbook (Top Movers, the Usual Suspects, Free Guardrails)</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup &amp; Restore Testing Checklist</a></li>
+<li><a href="alert-fatigue-checklist.html">Alert Fatigue Checklist (Cut the Noise)</a></li>
+<li><a href="oncall-handoff-checklist.html">On-Call Handoff Checklist (Nothing Lost Between Shifts)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
