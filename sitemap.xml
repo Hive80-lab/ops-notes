@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://hive80-lab.github.io/ops-notes/on-call-rotation-schedule-template.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/weekly-status-report-template.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/access-request-offboarding-checklist.html</loc><lastmod>2026-09-11</lastmod></url>
 <url><loc>https://hive80-lab.github.io/ops-notes/ai-agent-failure-postmortem.html</loc><lastmod>2026-09-11</lastmod></url>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-Call Rotation Template for Small Teams (2&ndash;6 People, Fair) &mdash; Free</title>
+<meta name="description" content="A free on-call rotation template for small teams: the fair-rotation math for 2 to 6 people, the handover ritual, the post-incident recovery rule, and the swap protocol that keeps the schedule honest. Copy-paste ready.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>On-Call Rotation Template for Small Teams (2&ndash;6 People, Fair)</h1>
+<p>On-call breaks small teams in a specific way: not with one brutal weekend, but with quiet unfairness. One person ends up with every second shift, nobody says anything for three months, and then they resign during a release freeze. A rotation isn't a schedule &mdash; it's a fairness contract everyone can see. Here's the template that keeps 2-to-6-person teams intact.</p>
+
+<h2>The rotation math &mdash; copy this</h2>
+<ol>
+<li><strong>Shift length: one week, Monday 10:00 to Monday 10:00.</strong> Shorter shifts (daily) burn people out with context-switching; longer (two weeks) make the burden visible and personal. One week is the largest unit a person volunteers for without resentment.</li>
+<li><strong>2 people:</strong> alternate weekly, no exceptions, and both accept that paged incidents are shared by definition &mdash; the primary handles, the secondary shadows. <strong>3&ndash;4 people:</strong> strict cycle A&rarr;B&rarr;C(&rarr;D) with one "flex" slot for swaps. <strong>5&ndash;6:</strong> cycle plus a permanent secondary who takes escalations only.</li>
+<li><strong>The count-back rule.</strong> Whoever took the last production incident skips the next rotation slot. This single line prevents the "Dave had three outages this month" drift that kills morale.</li>
+<li><strong>Post-incident recovery.</strong> If you were on call for an incident that ran past midnight, you get the next business day's morning off &mdash; automatic, no negotiation. A rotation that doesn't budget for recovery is a rotation that produces false positives at 3pm.</li>
+<li><strong>Swap protocol.</strong> Swaps are direct person-to-person with a message in the ops channel ("I take your Sep 22&ndash;29, you take my Oct 6&ndash;13"). The schedule document gets updated the same hour. No silent swaps &mdash; an undocumented swap is a gap in the pager chain, and gaps page nobody.</li>
+</ol>
+
+<h2>The one-page schedule table</h2>
+<table>
+<tr><th>Week</th><th>Primary (pages first)</th><th>Secondary (escalations)</th></tr>
+<tr><td>Sep 15&ndash;22</td><td>A (had 2 incidents Aug &mdash; count-back: B takes handover load)</td><td>B</td></tr>
+<tr><td>Sep 22&ndash;29</td><td>B</td><td>C</td></tr>
+<tr><td>Sep 29&ndash;Oct 6</td><td>C</td><td>A</td></tr>
+</table>
+<p>That's the whole document. Add a column only if it changes behavior at 2am. The schedule lives where the pager lives &mdash; next to the <a href="on-call-handover-template.html">handover template</a>, not in a calendar nobody opens.</p>
+
+<h2>The handover ritual that makes it work</h2>
+<p>Rotation is 10% schedule and 90% handover. Monday 10:00, 15 minutes, five lines: what's paging right now, what's flapping, what changed last week, what to watch, who to call. The outgoing engineer speaks for four of those minutes. If handover is skipped, the rotation degrades into "everyone is on call all the time" &mdash; the exact state the rotation exists to prevent.</p>
+
+<h2>Rules that save small teams</h2>
+<ul>
+<li><strong>No permanent primary.</strong> The moment one person is primary more than 50% of weeks across two months, the rotation is broken &mdash; fix the roster, not the person.</li>
+<li><strong>The 2am test applies to the schedule too:</strong> can any team member, at any hour, name who is primary right now without checking? If not, the schedule is decoration.</li>
+<li><strong>Paid kits pay for themselves in one prevented 2am hour.</strong> Volume isn't the enemy of fair on-call &mdash; silent ownership is.</li>
+<li><strong>Holidays are pre-assigned a quarter ahead.</strong> Volunteering for holiday shifts works once; assigned-and-traded works forever.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> builds on this rotation with advanced escalation chains, incident communications, and the postmortem loop that turns rotation pain into process &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 unattended-agent ops &amp; escalation kit</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="on-call-handover-template.html">On-Call Handover Template (Copy-Paste, 10 Minutes)</a></li>
+<li><a href="escalation-policy-template.html">Escalation Policy Template for Small Teams</a></li>
+<li><a href="runbook-template.html">Runbook Template (Free, Copy-Paste)</a></li>
+<li><a href="severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid kits at github.com/Hive80-lab/hive80-toolkit</footer>
+</article>
+</main>
+</body>
+</html>
