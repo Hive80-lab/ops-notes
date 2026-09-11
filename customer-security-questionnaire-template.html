@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Customer Security Questionnaire Response Template for Small Teams (Answer Enterprise Buyers in One Afternoon)</title>
+<meta name="description" content="A small-team playbook for customer security questionnaires: the evidence folder that backs every answer, the twelve repeatable answers enterprise buyers actually score, the honest &quot;we don't have that&quot; answers that don't kill the deal, and the reuse rule that turns each new questionnaire into find-and-replace &mdash; so a big customer's security review becomes a deal accelerator, not a two-week stall.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Customer security questionnaire response template for small teams</h1>
+
+<p>It usually arrives the week the deal is supposed to close: a spreadsheet from the big customer's procurement or security team, forty to ninety questions about your MFA policy, your backups, your incident response plan, your subprocessors &mdash; with a note that <em>processing can't begin until this is returned.</em> Most small teams do one of two things and both are bad: they panic-send half-true one-word answers ("yes", "yes", "N/A"), or they let it sit for two weeks because every question feels like a homework assignment. <strong>The questionnaire is not a test of whether you're a security giant &mdash; it's a test of whether you know your own operations. A small team that knows its controls answers faster than a large one that has to convene a meeting.</strong></p>
+
+<p>This playbook turns the questionnaire into an afternoon: build the evidence folder once, write the twelve answers that repeat on every form, learn the honest answers that don't kill the deal, and set the reuse rule so questionnaire #2 costs ninety minutes, not two weeks.</p>
+
+<h2>1. What the questionnaire is actually scoring</h2>
+
+<p>Buyer-side security teams aren't looking for enterprise-grade everything. They're applying a vendor tier &mdash; you're a small vendor with limited data access &mdash; and scoring four things:</p>
+
+<ul>
+<li><strong>Do the controls exist and does someone own them?</strong> "Yes" from a named person with a date beats "yes" alone. Anonymous yeses read as copy-paste.</li>
+<li><strong>Are the answers consistent?</strong> Questionnaires are graded by people who read dozens of them. A "yes" to MFA in question 4 and a "we don't track" in question 31 gets flagged as an inconsistency &mdash; and inconsistency is what moves a vendor into the "request a call" pile.</li>
+<li><strong>Can you prove the basics?</strong> Not a certificate &mdash; a screenshot of the MFA enforcement page, a copy of the incident response plan, the backup restore test log. Evidence folders win questionnaires.</li>
+<li><strong>Do you know your own limits?</strong> The rarest and most persuasive answer in a small-vendor questionnaire is an honest one. Security reviewers trust vendors who say "not yet, here's the compensating control" &mdash; they've seen a thousand vendors who say "yes" to everything and mean nothing.</li>
+</ul>
+
+<h2>2. Build the evidence folder once (two hours, reused forever)</h2>
+
+<p>Before answering a single question, create a folder &mdash; literally <code>security-evidence/</code> &mdash; with these files. Almost every questionnaire answer maps to one of them:</p>
+
+<ul>
+<li><strong>controls.md</strong> &mdash; a one-page inventory: what you run, where it's hosted, who has admin access, what's encrypted where, what MFA covers. This is the master document; the questionnaire is a reading-comprehension test against it. If your inventory is stale, run the <a href="annual-security-review-checklist.html">annual security review</a> first &mdash; it produces most of this page.</li>
+<li><strong>evidence/</strong> &mdash; screenshots: MFA enforcement toggle, backup dashboard, password manager policy, EDR status. Screenshots dated within the last quarter.</li>
+<li><strong>plans/</strong> &mdash; the incident response plan (one page is enough &mdash; the <a href="incident-response-plan-template-small-teams.html">small-team IR plan template</a> is exactly this), the <a href="data-breach-first-24-hours.html">breach notification sequence</a>, and the severity matrix.</li>
+<li><strong>subprocessors.md</strong> &mdash; every third party that touches customer data, what it receives, and where it's hosted. This one question kills more small-vendor deals than any other, because "I'd have to check" is the answer reviewers can't write down.</li>
+<li><strong>log.md</strong> &mdash; a running record of the controls you've tested this year: the backup restore test, the offboarding drill, the tabletop exercise. Dated entries. "We tested it in March and here's the log" outranks "we have a policy."</li>
+</ul>
+
+<h2>3. The twelve answers that repeat on every questionnaire</h2>
+
+<p>Eighty percent of every security questionnaire is the same twelve questions in different clothes. Write each answer once, in full sentences, and reuse verbatim:</p>
+
+<ul>
+<li><strong>MFA:</strong> "MFA is enforced for all employees on email, cloud storage, source control, and all administrative access." (If it isn't yet, the <a href="mfa-rollout-checklist-small-business.html">MFA rollout checklist</a> is a weekend's work &mdash; do that before returning the questionnaire, not after.)</li>
+<li><strong>Passwords:</strong> "A password manager is mandatory; unique credentials per system; no shared personal-vault logins."</li>
+<li><strong>Backups:</strong> "Daily automated backups; restore tested [month/year] with results logged." Untested backup answers are the ones reviewers flag &mdash; <a href="backup-restore-test-checklist.html">test once</a> and the answer becomes evidence-backed.</li>
+<li><strong>Incident response:</strong> "A written IR plan with severity levels, on-call rotation, and customer notification sequence exists and was exercised [date]."</li>
+<li><strong>Breach notification:</strong> "Affected customers are notified within [72 hours / agreed SLA] of confirmed breach involving their data, with what happened, what data, and what we're doing." Commit to a number you can actually meet.</li>
+<li><strong>Encryption:</strong> "Data encrypted in transit (TLS) and at rest (disk encryption on all endpoints; cloud provider default AES-256)."</li>
+<li><strong>Access control:</strong> "Least-privilege access; admin access limited to named roles; access reviewed [quarterly]."</li>
+<li><strong>Offboarding:</strong> "Access revoked within one business day of departure; a checklist covers accounts, devices, and shared credentials."</li>
+<li><strong>Data deletion:</strong> "Customer data is deleted on request within [30] days, including from backups per our retention schedule" &mdash; which assumes you've actually thought about the <a href="customer-data-deletion-request-checklist.html">deletion-request clock</a>.</li>
+<li><strong>Vendor management:</strong> "Third-party tools that handle customer data are reviewed before adoption and annually" &mdash; this is the mirror of your buyer's questionnaire: you answer theirs better if you run a <a href="vendor-security-review-checklist.html">vendor security review</a> yourself.</li>
+<li><strong>Patching:</strong> "OS and application updates applied within [30 days]; critical vulnerabilities within [7 days]." A simple <a href="patch-management-checklist.html">patch cadence</a> answers this honestly.</li>
+<li><strong>Personnel:</strong> "Security responsibilities are assigned to [founder / named role]; all staff complete security training at onboarding." For a five-person team this is true and acceptable &mdash; say it plainly.</li>
+</ul>
+
+<h2>4. The honest answers that don't kill the deal</h2>
+
+<p>Some questions will ask for things a small team genuinely doesn't have: SOC 2, penetration tests, ISO 27001, dedicated security staff. The failure modes are lying (fatal when discovered) and ghosting the question (reads as hiding something). The honest answer has a three-part shape:</p>
+
+<ul>
+<li><strong>State the status plainly.</strong> "Not yet" is a complete sentence. Reviewers score evasion worse than absence.</li>
+<li><strong>Name the compensating control.</strong> "We don't hold SOC 2; as a team of 6 with no direct production data access, we complete this questionnaire and provide the evidence folder instead. Our next control investment is [X]."</li>
+<li><strong>Give the date if one exists.</strong> "SOC 2 Type I is planned for [quarter/year]" only if it's real. A date you invent becomes a procurement record &mdash; reviewers check back.</li>
+</ul>
+
+<p>Answers of this shape survive review because they're verifiable. The vendors who stall deals are the ones whose answers can't survive one follow-up question.</p>
+
+<h2>5. Red flags on your side: when the questionnaire is telling you something</h2>
+
+<p>Read the form as intelligence about the buyer before you answer it:</p>
+
+<ul>
+<li><strong>A mandatory SSO question</strong> ("Do you support SAML SSO?") means their IT team plans to manage your app. If you can't, answer honestly and expect it to surface later &mdash; better to price it into the deal now than discover it in rollout.</li>
+<li><strong>A 100-question form for a $5k/year deal</strong> is a proportionality mismatch. It's fair to answer it all &mdash; but also fair to note in the cover note that you've tiered your answers so their security team can focus on the sections that matter for your data access level.</li>
+<li><strong>Questions about your subprocessors' subprocessors</strong> mean their legal team is involved. Slow, careful, committee-driven. Set the deal timeline accordingly: questionnaire review at big companies takes weeks and you won't accelerate it by answering in an hour.</li>
+<li><strong>A requirement for a penetration test report</strong> you don't have: "not yet" plus compensating controls works for the pilot tier; it will not survive a production rollout of regulated data. Know which one this deal is.</li>
+</ul>
+
+<h2>6. Close in writing, and version everything</h2>
+
+<ul>
+<li><strong>Cover note with the return.</strong> Three sentences: what's attached, what's changed since the last version, who to contact for follow-ups. Reviewers process dozens of returns; the readable one gets processed first.</li>
+<li><strong>Version the answer set.</strong> Questionnaire answers are a living document with a version and date. Next quarter's customer asks overlapping questions; you answer from the file, not from memory. Keep answers in a plain table: question text, your answer, evidence link, last reviewed.</li>
+<li><strong>Log what you promised.</strong> Every date and number in a questionnaire is now a commitment. If you wrote "access reviews quarterly," that belongs in the <a href="annual-security-review-checklist.html">annual review</a> checklist as a standing item. A questionnaire answer is a small, written contract with the buyer.</li>
+</ul>
+
+<h2>7. Make the second questionnaire cost ninety minutes</h2>
+
+<ul>
+<li><strong>The reuse rule:</strong> before answering anything new, search the answer file first. In practice 70&ndash;90% of any new questionnaire is already written. The afternoon version of this playbook happens once; after that it's find-and-replace.</li>
+<li><strong>Refresh quarterly:</strong> the answers rot quietly &mdash; a tool added, an admin changed, a backup window moved. Tie the refresh to the same quarterly pass that reviews vendor access, so the evidence folder stays truthful without a special project.</li>
+<li><strong>Feed wins back into operations:</strong> every question you answered badly in round one is a gap a real customer has already surfaced. Fixing them is cheaper now than during the next deal &mdash; and the fixes (MFA, tested backups, a written IR plan) are the same controls the <a href="cyber-insurance-requirements-checklist.html">cyber insurance application</a> and every future buyer will check.</li>
+</ul>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist for Small Teams (the mirror: reviewing the vendors who'd answer YOUR questionnaire)</a></li>
+<li><a href="cyber-insurance-requirements-checklist.html">Cyber Insurance for Small Teams (the same twelve controls, scored by an underwriter)</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist for Small Business</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Teams</a></li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout for Small Teams</a></li>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams</a></li>
+<li><a href="data-breach-first-24-hours.html">Suspected Data Breach: the First 24 Hours for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
