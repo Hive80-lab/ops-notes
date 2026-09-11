@@ -1,3 +1,5 @@
+
+- **NEW: [Employee Offboarding Checklist for Small Teams](https://hive80-lab.github.io/ops-notes/employee-offboarding-checklist.html)** — offboarding that starts the day notice lands: day-zero access pull, blast-radius revocation, devices/keys/badges back, mailbox cutover, the only-they-know list, hostile-exit variant, and the two-week-after seat diff.
 - **NEW: [Door Code Rotation Policy for Small Teams](https://hive80-lab.github.io/ops-notes/door-code-rotation-policy.html)** — quarterly + event-triggered rotation, tiered codes, the leak runbook.
 - **NEW: [Printer Security Checklist for Small Teams](https://hive80-lab.github.io/ops-notes/printer-security-checklist.html)** — the unpatched computer that copies everything: admin plane, VLAN placement, firmware calendar, lease-return disk wipes.
 - [Travel Security Checklist](travel-security-checklist.html) - pre-trip device strip, MFA + paper backup codes, cloud-fetch not local copies, hotspot-first WiFi discipline with VPN up, physical rules for transit and hotel rooms, conference-floor phishing reflexes, re-entry rotation and sign-in review, quarterly rehearsal.

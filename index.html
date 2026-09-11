@@ -9,11 +9,12 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><a href="index.html">HIVE80lab — Ops notes</a></header>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
 <main>
 <h1>Ops notes</h1>
 <p>Practical notes on SOPs, checklists, AI workflows, and honest ops.</p>
-<ul class="index">
+<ul>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist for Small Teams (The Last Day Is When Everything Breaks)</a><div class="desc">The offboarding that starts the day notice lands, not the last day: the day-zero access pull, revocation in blast-radius order (SSO first, then the apps outside it, forwarding rules and OAuth grants, shared logins rotated same-day), devices and keys back before the farewell coffee with badges deactivated and door codes rotated, mailbox cutover with silent forwarding killed and meetings reassigned, the "only they know" list written while it is cheap, the money and vendor-contact loose ends that surface in month two, the hostile-exit variant (revoke before the meeting, preserve before you delete), and the two-week-after check that re-diffs seats against the people list and counts the relics.</div></li>
 <li><a href="door-code-rotation-policy.html">Door Code Rotation Policy for Small Teams (The Code Every Ex-Employee Still Knows)</a><div class="desc">Door codes are credentials: the walk-and-inventory into the password manager, quarterly rotation for shared codes plus same-day event rotation on every departure (after the walk-through, not during), tiered codes by least privilege (cleaner vs server room), alarm codes as their own tier, vault-only distribution — never chat, keypad realities (lockout, power-cycle defaults), the four-column change log, and the rotate-within-the-hour leak runbook.</div></li>
 <li><a href="key-inventory-register.html">Key Inventory Register Template for Small Offices (Who Holds Which Key, and What To Do When One Doesn't Come Back)</a><div class="desc">The list that answers who can open what right now and what is exposed when a key goes missing: one numbered row per physical copy (ID, what it opens and what sits behind it, holder, role, issued, returned, signature), the master-key rule (two copies, one custodian, one lockbox), the offboarding ritual where keys come back in the same pass as laptops and badges, contractor and cleaning-crew keys with end dates, the exposure test and rekey economics for when one doesn't come back, door codes as keys without metal, guarding the register itself as a map of every gap, and the quarterly metal-vs-rows count next to the badge and visitor logs.</div></li>
 <li><a href="printer-security-checklist.html">Printer Security Checklist for Small Teams (The Unpatched Computer That Copies Everything)</a><div class="desc">The device treated as furniture that is actually a computer with stored credentials and years of copied documents: admin plane before WiFi password, device-VLAN placement, firmware on a calendar (and what updates silently switch on), scan-to-email credentials that outlive their owners, secure print release, the disk wipe before the lease truck arrives, and the quarterly ten-minute walk that keeps it all true.</div></li>
@@ -25,19 +26,6 @@
 <li><a href="physical-security-office-checklist.html">Physical Security Checklist for Small Offices (The Server Closet Nobody Locks)</a><div class="desc">The one-afternoon pass for the perimeter behind the perimeter: the crown-jewel inventory that counts paper as data, two locked rooms with named keyholders, keys issued and revoked like accounts, the ten-line visitor log, the unattended-desk rule where most incidents start, offsite backup media and shredded drives, proportionate cameras and alarms, and the 15-minute quarterly walk &mdash; because most breaches don't need the internet.</div></li>
 <li><a href="wifi-security-checklist.html">WiFi Security Checklist for Small Teams (The Office Router Nobody Has Logged Into Since Install Day)</a><div class="desc">The one-hour router fix, then a ten-minute quarterly pass: log in once and baseline firmware/SSIDs/client count, unique admin password in the manager, remote admin and WPS off, WPA3-or-WPA2-AES, staff vs guest vs IoT split with a one-time reachability test, a rotation trigger tied to offboarding, and the carpark walk test that reads the client list before the coffee goes cold.</div></li>
 <li><a href="shadow-it-audit-checklist.html">Shadow IT Audit Checklist for Small Teams (The 40 SaaS Tools Nobody Told IT About)</a><div class="desc">The one-afternoon audit that turns invisible software sprawl into a defensible list: the card-statement inventory (statements remember what surveys forget), the OAuth-grant walk, the data-and-access score, the AI-tools line item, adopt/sandbox/kill decisions, and the SSO-only door with a 30-minute quarterly recount.</div></li>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>HIVE80lab — Ops notes</title>
-<meta name="robots" content="index, follow">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header><a href="index.html">HIVE80lab — Ops notes</a></header>
-<main>
-<h1>Ops notes</h1>
-<p>Practical notes on SOPs, checklists, AI workflows, and honest ops.</p>
 x">
 <li
 <li><a href="ops-mega-bundle.html">The Ops Mega Bundle — All 5 Kits, One Download (NEW)</a></li>><a href="microsoft-365-security-checklist.html">Microsoft 365 Security Checklist for Small Business (The Admin Center Walk)</a><div class="desc">The one-sitting admin center walk that tightens a default tenant: Secure Score as a pre-written to-do list, the admin handshake and break-glass account, MFA plus the legacy-auth door closed, mailbox forwarding rules as the Business Email Compromise hole, app consents gated to admins, external sharing chosen on purpose, Defender's free tier switched on, device enrollment without an IT department, the audit log pointed at a human, and the 45-minute quarterly pass that trims the four lists that accrete &mdash; so the tenant stops running on the defaults nobody chose.</div></li>
@@ -124,7 +112,7 @@ x">
 <li><a href="workflow-automation-checklist.html">Workflow Automation Checklist: What to Automate First (and What to Leave Alone)</a><div class="desc">A decision checklist for small-team workflow automation: the 4 questions that pick your first candidate, the 3 red flags that mean don&#x27;t automate yet, and how to keep a human in the loop.</div></li>
 <li><a href="status-page-communication-template.html">Status Page Template: What to Say When You Don't Know What's Broken Yet</a><div class="desc">What to publish ten minutes into an outage, the one-hour update cadence, and the phrasing that keeps customers calm while you debug.</div></li>
 <li><a href="ai-agent-failure-postmortem.html">AI Agent Failure Postmortem: The 6-Line Checklist</a><div class="desc">When an autonomous agent breaks something: scope the damage, kill the trigger, preserve the log, name the missing guardrail, replay in dry-run.</div></li>
-
+</ul>
 <aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li></ul><p class="hint">💬 Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p><p class="hint">Store links are live.</p></aside>
 </main>
 </body>

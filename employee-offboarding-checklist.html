@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employee Offboarding Checklist for Small Teams (The Last Day Is When Everything Breaks)</title>
+<meta name="description" content="Employee offboarding for small teams without an HR department: the kickoff the day notice lands, access revocation ordered by blast radius, devices and keys back before the farewell coffee, mailbox and calendar cutover, the on-call handover, money loose ends, and the two-week-after check that catches what day zero missed.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Employee Offboarding Checklist for Small Teams</h1>
+<p><em>The last day is when everything breaks &mdash; because at a small company, offboarding is an event with no owner. Big companies have HR run a process; a five-person team has whoever remembers. This is the checklist that makes the leaving boring: start it the day notice lands, revoke in blast-radius order, get the hardware and the keys back before the cake, cut the mailbox over before the farewell email, and re-check two weeks later when you find out what only they knew.</em></p>
+
+<h2>1. Day zero: the kickoff happens when notice lands, not on the last day</h2>
+<ul>
+<li><strong>Two weeks of notice is two weeks of runway &mdash; spend it on paperwork, not awkwardness.</strong> The day the resignation lands, open the offboarding ticket and date-stamp it. Pull the access inventory while you can still ask them what they have: the SSO list, the apps that don't sit behind SSO (the <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a> output if you've run one), the devices assigned, the badge, the keys on the ring, the vendors where they're the named contact. The <a href="access-request-offboarding-checklist.html">access request &amp; offboarding checklist</a> owns the revocation tickets; this page owns the event.</li>
+<li><strong>Name one owner and one date.</strong> Not "HR will handle it" &mdash; at small size there is no HR, so write a name next to each item and a date next to each name. The checklist fails the same way every ops checklist fails: nobody was responsible. If the leaving person is the one who would have run it, the kickoff is the manager's job, in writing, the same day.</li>
+<li><strong>Announce the last day to the systems, not just the team.</strong> Calendar hold on their meetings after the end date, a freeze on new standing access grants (no new repo, no new vendor portal in the final fortnight), and the customer-facing handover list started early enough that the successor &mdash; or you, if there is no successor &mdash; can shadow before, not after.</li>
+</ul>
+
+<h2>2. Access revocation, ordered by blast radius</h2>
+<ul>
+<li><strong>SSO first, because it is the master switch.</strong> One toggle in the identity provider kills email, calendar, and every SaaS behind it at once. Do that at the hour the employment ends &mdash; not end of day, not "when we get to it." Then walk the apps that do NOT sit behind SSO: the subscription tools someone made an account for directly, the contractor portals, the social logins. The <a href="saas-sprawl-audit-checklist.html">shadow IT audit</a> list is where those hide.</li>
+<li><strong>Forwarding rules and OAuth grants are the quiet hole.</strong> The classic business email compromise: a forwarding rule set months ago keeps mailing your invoices to a personal address. Check and kill mail forwarding, delegation, and app passwords; revoke the OAuth grants (the <a href="email-security-checklist.html">email security checklist</a> walks the forwarding-rule audit that catches this).</li>
+<li><strong>Shared logins rotate the day they leave.</strong> The shared analytics login, the vendor portal everyone uses, the department password in a doc somewhere &mdash; every shared credential they knew changes the same day. The <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> is the drill; the <a href="password-manager-rollout-small-business.html">password manager rollout</a> is the fix that makes it a two-minute job instead of a scavenger hunt. Personal API keys and deploy tokens they minted get revoked too &mdash; tokens outlive people.</li>
+<li><strong>Prove the revocation with the account itself.</strong> The test is not "we clicked the button." Try the old password from a personal machine. Check the SaaS admin panel for the seat count going down. The <a href="user-access-review-checklist.html">user access review</a> exists because revocation systems have a way of quietly not revoking.</li>
+</ul>
+
+<h2>3. Devices, keys, and badges come back before the farewell coffee</h2>
+<ul>
+<li><strong>Hardware returns are a signed list, not a shrug.</strong> Laptop, phone, monitor, dongles, the Yubikey, the parking fob: one line each, condition noted, signature taken. The laptop gets wiped and reimaged the same week &mdash; a departed employee's MacBook in a drawer is an unpatched machine holding your source code. The <a href="lost-or-stolen-laptop-runbook.html">lost laptop runbook</a> covers the exposure when it never comes back; this line covers the one that does.</li>
+<li><strong>Keys and badges ride the same pass.</strong> Front door, server closet, cabinet keys &mdash; mark them returned on the <a href="key-inventory-register.html">key inventory register</a> the same hour, rotate any door codes they knew (<a href="door-code-rotation-policy.html">door code rotation policy</a>), deactivate the badge the day the employment ends, not the end of the month (<a href="badge-access-control-checklist.html">badge access control</a>). Physical access is the offboarding item most often forgotten, because there's no admin console reminding you.</li>
+<li><strong>The personal-data download rule, decided before it's needed.</strong> Decide in advance what a leaving employee may export (their own sent mail, their personal files) and how (a supervised export, not a full mailbox download the night before). The rule written on day zero prevents the argument on the last day.</li>
+</ul>
+
+<h2>4. Mailbox and calendar cutover on day zero, not day minus-one</h2>
+<ul>
+<li><strong>Forward-with-notice, never silent forwarding.</strong> The mailbox either converts to a shared/reply-access archive or gets a graceful alias &mdash; but the auto-forward to a personal address goes off the same day the account locks. Set the out-of-office with a real human's name and a real address: "For X, contact Y." An OOO pointing back at the departed mailbox is the ops equivalent of a door with no handle.</li>
+<li><strong>Meetings have owners, and owners leave.</strong> Recurring meetings the person owned die the day their calendar does. Reassign the recurring series, transfer the calendar ownership, and sweep the team's calendars for the graveyard of declined-after-the-fact meetings. Same for mailing lists: the address that only they moderated now moderates nobody.</li>
+<li><strong>The farewell email is a security decision.</strong> It announces to the world &mdash; customers, vendors, anyone on the thread &mdash; that a person with knowledge of your systems is no longer there, and it tells those people who to re-establish contact with. Write it deliberately: who inherits the relationship, from what address, effective when. The <a href="customer-support-escalation-checklist.html">escalation checklist</a> logic applies: every relationship gets a named next stop.</li>
+</ul>
+
+<h2>5. The knowledge that doesn't stop being needed</h2>
+<ul>
+<li><strong>The on-call handoff is a transfer of load, not a calendar invite.</strong> Rotations, escalation paths, the runbook locations, the pending incidents &mdash; the <a href="on-call-handoff-checklist.html">on-call handoff checklist</a> covers the mechanics; the offboarding part is making sure the load moves to named people with time to absorb it, not to the queue.</li>
+<li><strong>Write the "only they know" list before they leave, not after.</strong> One hour of "walk me through the things not written down anywhere" beats two weeks of archaeology after. Where the deploy script actually lives, which vendor rep answers emails, why the payment webhook has that weird retry setting. The <a href="process-documentation-best-practices.html">process documentation practices</a> page is the long-term fix; the list is this week's.</li>
+<li><strong>Post-mortem the departure like a small incident.</strong> Two weeks later: what broke because they left? What did the team rediscover the hard way? The answer is your onboarding checklist for the next hire &mdash; and the honest input to the <a href="annual-security-review-checklist.html">annual security review</a>.</li>
+</ul>
+
+<h2>6. Money and admin loose ends (the ones that surface in month two)</h2>
+<ul>
+<li><strong>Final pay, benefits, and the card they still hold.</strong> Final payroll through the actual last day, benefits end date, pension/401(k) paperwork, insurance certificates, and the company card: cancel or transfer it, and sweep the card statement for subscriptions they personally signed up for &mdash; the <a href="saas-sprawl-audit-checklist.html">shadow IT audit</a>'s card-statement trick, applied to a specific human.</li>
+<li><strong>Vendors where they were the account contact.</strong> Every vendor portal where they're the named admin or billing contact needs a successor &mdash; especially the ones holding your data. The <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding &amp; data deletion checklist</a> covers the vendors you're leaving; this is the vendors you're keeping, minus their email address on the account.</li>
+<li><strong>The registrar and the owner records.</strong> If they held the domain registrar login, the GitHub org owner seat, or the "admin contact" on anything &mdash; transfer it before day zero. Owner-of-record left unassigned is how a company discovers it doesn't own its own domain. The <a href="domain-hijack-protection-checklist.html">domain hijack protection checklist</a> is the standing defense.</li>
+</ul>
+
+<h2>7. When the exit is not amicable: the hostile-variant sequence</h2>
+<ul>
+<li><strong>Revoke first, meet second.</strong> If the termination is involuntary or trust is broken, the sequence inverts: lock the accounts and collect the hardware before the conversation, not after. The polite fiction of "we'll sort access next week" is how disgruntled-exit incidents happen. The <a href="first-30-minutes-incident-response.html">first 30 minutes runbook</a> is what you fall back to if the exit goes wrong anyway.</li>
+<li><strong>Preserve before you delete.</strong> Legal hold beats the wipe: export the mailbox and the device state before reimage if there's any dispute risk, then revoke. A deleted mailbox is evidence you can't un-delete. Document the timeline &mdash; what was revoked, by whom, when &mdash; in the same format the <a href="incident-timeline-template.html">incident timeline template</a> uses, because if it ever becomes a dispute, that timeline is your record.</li>
+</ul>
+
+<h2>8. The two-week-after check (where offboardings actually get verified)</h2>
+<ul>
+<li><strong>Re-run the access inventory against the people list.</strong> Two weeks after the last day, diff your SSO/SaaS admin seats against the current team list. Orphaned seats, still-enabled accounts, the vendor login you meant to rotate &mdash; this is the check that catches them. It feeds the <a href="user-access-review-checklist.html">quarterly user access review</a>, which is the same sweep on a schedule.</li>
+<li><strong>Watch the audit logs for the departed account.</strong> Sign-in attempts from the old account, API calls from keys you missed, the odd "password reset for deleted user" &mdash; two weeks of logs tells you whether the revocation was real or theatrical.</li>
+<li><strong>Count the relics.</strong> The badge that wasn't returned, the key still on the register, the calendar that still has their name, the customer replying to an address nobody reads. Every relic is a process gap, and the fix is one line added to this checklist &mdash; which is how it stays alive.</li>
+</ul>
+
+<h2>9. The one-page version (print it, tape it inside the offboarding folder)</h2>
+<ul>
+<li><strong>The nine-line version:</strong> (1) notice lands &rarr; open this checklist, date it, name an owner; (2) pull access + device + key inventory same day; (3) last day: SSO off &rarr; non-SSO apps off &rarr; shared logins rotated &rarr; keys/badges in &rarr; devices wiped; (4) mailbox: forwarding off, OOO with a human, meetings reassigned; (5) on-call and customer handover confirmed to named people; (6) money: final pay, card, subscriptions, vendor contacts; (7) registrar/org-owner seats transferred; (8) hostile variant: revoke before the meeting, preserve before you delete; (9) +2 weeks: re-run the seat diff, watch the logs, count the relics.</li>
+<li><strong>Small teams have no HR to catch the drift &mdash; so give the checklist a heartbeat.</strong> The moment notice lands is a trigger, not a mood: open the checklist, start the clock, work the list. The <a href="employee-onboarding-checklist-template.html">employee onboarding template</a> is the mirror image &mdash; every revoke step here should have a matching grant step there, which is how you catch both halves of the access ledger.</li>
+</ul>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="employee-onboarding-checklist-template.html">Employee Onboarding Checklist Template</a></li>
+<li><a href="contractor-security-onboarding-checklist.html">Contractor Security Onboarding Checklist</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="key-inventory-register.html">Key Inventory Register Template</a></li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
