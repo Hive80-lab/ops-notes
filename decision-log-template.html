@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decision Log Template for Small Teams (One Line per Decision, Revisit Dates)</title>
+<meta name="description" content="A decision log template small teams actually keep: one line per decision — what was decided, by whom, on what date, why, and when to revisit — the five fields that make a log useful instead of a diary, the five decision types that always get logged (spend over threshold, policy changes, tool adopt/reject, deferrals, accepted risks), how revisit dates turn old decisions into scheduled questions, where the log plugs into the weekly review, postmortems, and the budget reforecast, the two failure modes (museum and diary) and their fixes, and a paste-in CSV starter.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Decision Log Template</h1>
+<p class="lede">Small teams don't suffer from making too few decisions. They suffer from making the <em>same</em> decisions three times, because nobody remembers the first two. Someone proposes switching backup vendors; the team debates for an hour; the answer is "not now, we'll look at it in Q3." Six months later the same debate starts from zero, because <strong>the decision and its reasoning lived in a chat thread that everyone scrolled past</strong>. A decision log fixes this with one line per decision: what was decided, who decided it, why, and &mdash; the field everyone skips &mdash; <strong>when to revisit it</strong>. The template is deliberately small: if logging a decision takes more than two minutes, the log becomes a museum and everyone stops feeding it. It pairs naturally with the <a href="delegation-of-authority-template.html">delegation of authority</a> (which says who may decide what) and the <a href="weekly-review-checklist.html">weekly review</a> (which is where revisit dates get checked).</p>
+
+<h2>1. The five fields &mdash; and the one that does the real work</h2>
+<table>
+<tr><th>Field</th><th>What goes in it</th><th>Why it exists</th></tr>
+<tr><td><strong>Date</strong></td><td>The day it was decided, not the day someone got around to writing it down</td><td>Lets you answer "did we already decide this?" in one search, and shows decision velocity over time.</td></tr>
+<tr><td><strong>Decision</strong></td><td>One sentence in the past tense: <em>"We switched backups to X."</em> Not "discussed backups."</td><td>A log entry that isn't a decision is a diary entry. If it can't be phrased as something that <em>happened</em>, it's not logged yet.</td></tr>
+<tr><td><strong>Owner</strong></td><td>One name &mdash; the person who made the call, per the <a href="delegation-of-authority-template.html">authority matrix</a>, not whoever argued longest</td><td>Ownerless decisions get re-litigated; owned decisions get executed.</td></tr>
+<tr><td><strong>Why</strong></td><td>One clause, the <em>decisive</em> reason. "Vendor B costs 40% less per seat" beats "we compared options."</td><td>Six months later the price has changed and the reason matters more than the conclusion.</td></tr>
+<tr><td><strong>Revisit</strong></td><td>A date or a trigger: <em>"2027-03-01"</em> or "when headcount passes 10"</td><td>The field that turns a log from a graveyard into a calendar. Revisit dates are what the weekly review checks.</td></tr>
+</table>
+<p>The <strong>Revisit</strong> field is the one that does the real work. "We decided to defer X" without a revisit date is a polite no &mdash; the topic resurfaces later as a fresh debate. "We decided to defer X, revisit 2027-03-01" is a scheduled decision: the debate is pre-paid, and whoever picks it up starts from the recorded reason instead of zero. A log with empty revisit dates is half a log.</p>
+
+<h2>2. Which decisions get logged (and which don't)</h2>
+<p>Log <em>reversible-but-expensive</em> decisions, not everything. Five triggers always earn a line:</p>
+<ol>
+<li><strong>Spend above the threshold.</strong> Whatever your <a href="delegation-of-authority-template.html">authority matrix</a> sets &mdash; $200, $500 &mdash; every purchase above it gets a line with the reason. This is also what the <a href="annual-ops-budget-template.html">ops budget</a> quarterly reforecast reads.</li>
+<li><strong>Policy changes.</strong> Password rules changed, a <a href="maintenance-window-policy.html">maintenance window</a> moved, the on-call rotation restructured. Policies that change silently breed "that's not how we did it" conflicts.</li>
+<li><strong>Tool decisions.</strong> Adopt, reject, or defer &mdash; especially the rejects. "We evaluated X in March and rejected it over the missing SSO" kills the same proposal coming back in October. This is the <a href="saas-sprawl-audit-checklist.html">sprawl audit's</a> memory.</li>
+<li><strong>"We'll revisit later."</strong> Every deferral gets a revisit date, or it doesn't count as decided.</li>
+<li><strong>Anything you'd want to read after an incident.</strong> "We knew the printer VLAN was flat and accepted the risk" is the exact sentence a <a href="postmortem-template-small-teams.html">postmortem</a> needs to find &mdash; and the one nobody can produce from memory.</li>
+</ol>
+<p>What <em>doesn't</em> get logged: who's covering the phone on Friday, the color of the new chairs, every bug triage call. The test is the same one the budget uses for its lines: <em>would someone plausibly re-ask this in six months?</em> If yes, one line. If no, it lives in the task tracker like everything else.</p>
+
+<h2>3. The format: one file, newest first</h2>
+<p>The whole log lives in one file &mdash; markdown table, spreadsheet, or the CSV below. Newest entries at the top: the log is read for recent decisions; old ones exist for search. One line per decision; if the "why" needs a paragraph, link the paragraph. Keep it boring:</p>
+<pre>date,decision,owner,why,revisit
+2026-09-12,Backups stay on vendor A,Ops,A restore test proved RPO under 1h; B migration saves $9/mo,2027-03-01
+2026-09-08,Rejected status-page SaaS,Ops,$29/mo for 4 incidents a year; template page + DNS works,when incidents pass 6/quarter
+2026-08-30,Printer VLAN stays flat until Q4,Ops,Segmenting breaks the scan-to-email the office runs on,2026-10-15
+2026-08-21,Contractor onboarding via contractor checklist,Ops,3 vendors failed background checks in Q2,review at next contract renewal</pre>
+<p>That last column does double duty &mdash; and here is the habit that makes the log pay: <strong>when a revisit date arrives and the answer is still "keep as is," log a new line saying so</strong>. "Revisited VLAN decision 2026-10-15: still flat, scan-to-email still load-bearing, next look Q2" is a ten-second entry that prevents the eleventh re-debate. Decisions that survive their own review become decisions you stop paying attention to &mdash; which is the point.</p>
+
+<h2>4. Where the log plugs into the rituals you already run</h2>
+<ul>
+<li><strong>The weekly review (two minutes).</strong> The <a href="weekly-review-checklist.html">weekly review</a> already scans calendars and incidents; it also scans the log's revisit column: <em>any revisit date that fell due this week gets answered or rescheduled &mdash; on the spot.</em> A revisit date that slips silently twice is a decision that never really happened.</li>
+<li><strong>The postmortem (the evidence shelf).</strong> After an incident, the <a href="postmortem-template-small-teams.html">postmortem</a> asks "what did we know and decide before this?" The log is where that answer lives &mdash; with dates, owners, and reasoning. It turns hindsight from archaeology into a lookup.</li>
+<li><strong>The budget reforecast (the receipts).</strong> The <a href="annual-ops-budget-template.html">budget's</a> quarterly reforecast asks what changed: the log's tool decisions and spend lines are the change history, already written down.</li>
+<li><strong>New-hire onboarding (the twenty-minute read).</strong> A new ops hire reading the log learns in twenty minutes why the backup vendor, the flat VLAN, and the rejected status page are the way they are &mdash; instead of re-opening each fight from scratch. Pair it with the <a href="employee-onboarding-checklist-template.html">onboarding checklist</a>.</li>
+</ul>
+
+<h2>5. The two failure modes (and the fixes)</h2>
+<ul>
+<li><strong>The museum.</strong> The log starts rich, entries take ten minutes each, and it dies by November. Fix: cap the format at five fields and one sentence each. If an entry needs more, link the document &mdash; the log is an index, not the archive. The <a href="process-documentation-best-practices.html">documentation habits</a> page has the general rule: build the smallest artifact someone will actually maintain.</li>
+<li><strong>The diary.</strong> Entries like "discussed backups, good meeting." Not decisions &mdash; no owner, no date, nothing to re-read. Fix: reject entries that can't be phrased in the past tense with an owner. "Discussed X" gets re-logged as "Decided X" or dropped; the debate itself was not the artifact.</li>
+</ul>
+<p>There's a third, quieter failure: the log only one person writes. If the recorder is always the same name, decisions made in hallway conversations never land. Fix: anyone may add a line, but the <a href="delegation-of-authority-template.html">authority matrix</a> still names the decision owner &mdash; the log records who decided, not who typed.</p>
+
+<h2>6. The paste-in starter (CSV)</h2>
+<p>Start with the five decisions from the last quarter you can still remember &mdash; reconstructing them is the fastest way to feel the value, and the fastest way to notice which ones you <em>can't</em> reconstruct:</p>
+<pre>date,decision,owner,why,revisit
+2026-09-01,Backup vendor stays A,Ops,restore test passed at RPO 45m,2027-03-01
+2026-08-28,MDM enrollment becomes day-1 for all laptops,Ops,2 unmanaged devices found in asset drift check,2026-12-01
+2026-08-15,Deferred SSO rollout to accounting tool,Ops,vendor SSO tier costs $40/user/mo,revisit when team passes 8
+2026-07-30,Accepted flat printer VLAN risk until Q4,Ops,segmenting breaks scan-to-email workflow,2026-10-15
+2026-07-10,On-call comp stays flat $150/week,Ops,rotation is 1-in-3; revisit at 1-in-2,when rotation tightens</pre>
+<p>Five rows is a working log. The habit matters more than the tool &mdash; a decision log in a text file that's updated beats an empty notes-app database that's beautiful. If you later want structure and automation around it, the <a href="what-to-automate-first.html">what-to-automate-first</a> pass will tell you it isn't the bottleneck; the ritual is.</p>
+
+<h2>7. What a year of logging buys you</h2>
+<ul>
+<li><strong>The "did we decide this?" answer in seconds.</strong> The same vendor debate arrives four times a year; the log ends it in one search. The saved hours are the visible return; the <a href="key-person-dependency-checklist.html">key-person risk</a> reduction is the invisible one &mdash; decisions stop living in one person's head.</li>
+<li><strong>Accepted risks with dates on them.</strong> Every "we know and accept this risk" line gets a revisit date, so accepted risks expire instead of fossilizing. That's also what a <a href="cyber-insurance-requirements-checklist.html">cyber-insurance</a> questionnaire means when it asks whether risks are "documented and managed."</li>
+<li><strong>A postmortem that starts from facts.</strong> The "what did we know before?" section fills from the log in minutes &mdash; compare with the <a href="incident-timeline-template.html">incident timeline</a>, which captures the day of, not the months before.</li>
+<li><strong>A record for the day you're not there.</strong> When the solo operator takes two weeks off, the log plus the <a href="delegation-of-authority-template.html">authority matrix</a> lets the person covering make the small calls and hold the big ones &mdash; without re-deciding forty things from scratch.</li>
+</ul>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="delegation-of-authority-template.html">Delegation of Authority Template</a> &mdash; who may decide what; the log records which name exercised it.</li>
+<li><a href="weekly-review-checklist.html">Weekly Review Checklist</a> &mdash; the two-minute pass that answers due revisit dates.</li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams</a> &mdash; where pre-incident decisions become evidence.</li>
+<li><a href="annual-ops-budget-template.html">Annual Ops Budget Template</a> &mdash; the reforecast reads this log's spend lines.</li>
+<li><a href="software-license-register.html">Software License Register</a> &mdash; tool adopt/reject decisions pair with the register's rows.</li>
+<li><a href="saas-sprawl-audit-checklist.html">SaaS Sprawl Audit Checklist</a> &mdash; the audit that needs the log's "rejected in March" memory.</li>
+<li><a href="maintenance-window-policy.html">Maintenance Window Policy</a> &mdash; a classic logged policy change.</li>
+<li><a href="employee-onboarding-checklist-template.html">Employee Onboarding Checklist</a> &mdash; the new hire who reads the log and skips the re-fights.</li>
+<li><a href="key-person-dependency-checklist.html">Key-Person Dependency Checklist</a> &mdash; decisions in one head are the dependency this log diffuses.</li>
+<li><a href="process-documentation-best-practices.html">Process Documentation Best Practices</a> &mdash; the smallest-artifact rule the log obeys.</li>
+<li><a href="what-to-automate-first.html">What to Automate First</a> &mdash; why the log stays a text file for now.</li>
+<li><a href="cyber-insurance-requirements-checklist.html">Cyber Insurance Requirements</a> &mdash; documented, dated risks are what the questionnaire wants.</li>
+<li><a href="incident-timeline-template.html">Incident Timeline Template</a> &mdash; the lookup that fills the "what did we know" section.</li>
+<li><a href="weekly-status-report-template.html">Weekly Status Report Template</a> &mdash; the log's week-old entries are its raw material.</li>
+</ul>
+</aside>
+</main>
+</body>
+</html>
