@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VPN Security Checklist for Small Teams: MFA, Patching, and Least Privilege &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A VPN security checklist for small teams: MFA on every VPN account including the vendor one, patch the concentrator like a server, full-tunnel vs split-tunnel decided in writing, least-privilege access by group, no forgotten contractor logins, and the quarterly review that retires zombie accounts.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>VPN Security Checklist for Small Teams</h1>
+<p class="lede">A VPN is one gate, not a wall &mdash; and the breaches that start at VPNs are almost never about the encryption. They are <strong>a stolen password without MFA, an unpatched appliance, or a contractor account nobody turned off</strong>. The honest checklist has five parts: <strong>MFA on every account, patch the concentrator like a server, decide the tunnel mode in writing, give each group the least access that works, and retire every account that no longer has a human</strong>.</p>
+
+<h2>1. What the VPN actually protects (say it honestly)</h2>
+<p>The VPN encrypts traffic and puts remote people on the office network. It does <em>not</em> fix a compromised laptop, a phished admin, or an appliance running last year's firmware:</p>
+<table>
+<tr><th>It protects</th><th>It does not protect</th></tr>
+<tr><td>Traffic on hostile Wi-Fi (cafes, airports, home routers with old firmware)</td><td>A laptop that is already owned by malware</td></tr>
+<tr><td>Internal services that should not face the internet (file shares, printers, admin panels)</td><td>Accounts without MFA &mdash; the password is the perimeter then</td></tr>
+<tr><td>The office network from direct exposure</td><td>The VPN appliance itself &mdash; that is a server with a target on it</td></tr>
+</table>
+<p>Say the honest version out loud once: the VPN moves your perimeter from the office wall to <em>every laptop and every credential</em>. The rest of the checklist lives there.</p>
+
+<h2>2. MFA on every VPN account &mdash; including the one you forgot</h2>
+<ul>
+<li><strong>MFA on every human login</strong> &mdash; TOTP app or passkeys; SMS-only is a pass for nobody, and a hard no for admins.</li>
+<li><strong>The vendor/support account counts.</strong> Most VPN appliances ship with a support or maintenance login. It gets MFA, a renamed ID, and a password in the password manager &mdash; or it gets disabled in writing.</li>
+<li><strong>Shared accounts do not exist</strong> on the VPN. One credential per human; the shared "office" login is the account that outlives every employee who knew the password.</li>
+<li><strong>Alert on new-device logins</strong> and lock out after repeated failures. The alert nobody reads is the MFA you already paid for.</li>
+</ul>
+
+<h2>3. Patch the concentrator like a server, not like a toaster</h2>
+<p>VPN gateways are the single most profitable class of breach entry point of recent years &mdash; the same four vendors appear in every headline, and the cause is almost always a patch that sat for weeks. Three rules:</p>
+<ul>
+<li><strong>It is a server.</strong> Enroll the appliance in the patch cadence (emergency lane within 24 hours for a CVE that is being exploited in the wild &mdash; see the <a href="patch-cadence-calendar.html">patch cadence calendar</a>).</li>
+<li><strong>The management interface does not face the internet.</strong> Not even "temporarily". Admin UI exposed is the lock on the outside of the door.</li>
+<li><strong>Check end-of-life once a year.</strong> An appliance past EOL is an unpatchable risk wearing a badge &mdash; budget the replacement before it becomes the incident.</li>
+</ul>
+
+<h2>4. Full tunnel vs split tunnel &mdash; decided in writing, not by default</h2>
+<p>The default answer changes per role, and the reasoning should be one sentence per group:</p>
+<table>
+<tr><th>Group</th><th>Mode</th><th>Why (write it down)</th></tr>
+<tr><td>Admins, finance, contractors</td><td>Full tunnel</td><td>High-privilege traffic never rides a network you do not control</td></tr>
+<tr><td>General staff</td><td>Split tunnel or full</td><td>Split is fine if devices are managed and MFA is on the SSO &mdash; revisit if you cannot say why</td></tr>
+<tr><td>Vendor/contractor accounts</td><td>Split, restricted</td><td>One host, one port, time-boxed &mdash; a vendor does not need your whole network</td></tr>
+</table>
+<p>Verify the setting, not the intention: run one route check per group each quarter and confirm the client routes what you think it routes.</p>
+
+<h2>5. Least privilege: the network behind the VPN is not all yours to give</h2>
+<ul>
+<li><strong>Group-based access</strong>: finance gets the finance systems, not the prod servers. Map each VPN group to firewall rules or VLANs &mdash; one page, four groups is enough for most small teams.</li>
+<li><strong>Vendor accounts get one destination.</strong> The printer vendor reaches the printer management port and nothing else, and the account expires on a date you chose.</li>
+<li><strong>No standing admin access</strong> for anyone who does not administer that system weekly.</li>
+<li><strong>The quarterly check</strong>: export the VPN user list, match it against current staff, and delete the delta the same day (see the <a href="user-access-review-checklist.html">user access review</a>).</li>
+</ul>
+
+<h2>6. The accounts you forgot are the breach</h2>
+<p>The accounts that cause incidents are rarely new ones. Hunt for: <strong>vendor support logins</strong>, <strong>ex-contractor accounts</strong>, <strong>ex-employee phones still enrolled in TOTP</strong>, <strong>service accounts that authenticate to the VPN</strong> (why does a backup job need a tunnel?), and the <strong>"office" shared login</strong> from before you knew better. Offboarding revokes VPN access in the same hour it revokes email &mdash; it is the first credential a disgruntled ex-colleague tries.</p>
+
+<h2>7. Client-side basics (what the user's laptop owes you)</h2>
+<ul>
+<li><strong>Kill switch on</strong>: no traffic outside the tunnel when it drops &mdash; silent fail-open turns your VPN into a decoration.</li>
+<li><strong>Auto-connect on untrusted Wi-Fi</strong>; managed devices get it enforced by policy, not by memory.</li>
+<li><strong>Client updates ride the normal patch wave</strong> &mdash; a VPN client two versions behind is the same risk as the appliance.</li>
+<li><strong>Travel devices</strong> follow the travel rules (see the <a href="travel-security-checklist.html">travel security checklist</a>) &mdash; the VPN is one layer of that bag.</li>
+</ul>
+
+<h2>8. The five signals worth alerting on</h2>
+<ul>
+<li><strong>Auth failures per user</strong> above normal &mdash; password guessing shows here first.</li>
+<li><strong>New device or new geo</strong> on any account &mdash; verify once, then trust the device.</li>
+<li><strong>Appliance config changes</strong> outside the maintenance window.</li>
+<li><strong>Concurrent sessions from different countries</strong> &mdash; usually a shared account confessing.</li>
+<li><strong>Login by a dormant account</strong> (90+ days silent) &mdash; dormant then active is the classic takeover signature.</li>
+</ul>
+
+<h2>9. The quarterly VPN review card</h2>
+<table>
+<tr><th>Check</th><th>Cadence</th><th>Owner</th></tr>
+<tr><td>VPN user list matches staff (delete the delta)</td><td>Quarterly</td><td>Owner + ops</td></tr>
+<tr><td>MFA coverage = 100% of logins (vendor account included)</td><td>Quarterly</td><td>Owner</td></tr>
+<tr><td>Appliance patched; EOL status checked</td><td>Quarterly</td><td>Ops</td></tr>
+<tr><td>Group &rarr; network access map still true</td><td>Quarterly</td><td>Ops</td></tr>
+<tr><td>Route check per tunnel mode (verify, not assume)</td><td>Quarterly</td><td>Ops</td></tr>
+</table>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist</a> &mdash; the laptop side of the tunnel.</li>
+<li><a href="wifi-security-checklist.html">Wi-Fi Security Checklist</a> &mdash; the network the VPN replaces on hostile ground.</li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+<li><a href="passkeys-rollout-checklist.html">Passkeys Rollout Checklist</a></li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a> &mdash; where the quarterly VPN list lives.</li>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist</a> &mdash; revoke the VPN in the same hour as email.</li>
+<li><a href="iot-device-security-checklist.html">IoT Device Security Checklist</a> &mdash; the vendor devices your tunnel reaches.</li>
+<li><a href="physical-security-office-checklist.html">Physical Security &amp; Office Checklist</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a> &mdash; rotate the appliance credentials too.</li>
+<li><a href="log-retention-policy-small-teams.html">Log Retention Policy for Small Teams</a> &mdash; how long to keep the auth logs.</li>
+<li><a href="patch-cadence-calendar.html">Patch Cadence Calendar for Small Teams</a> &mdash; the lane the appliance rides.</li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+</ul>
+</aside>
+</main>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
