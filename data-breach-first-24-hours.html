@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Suspected Data Breach: the First 24 Hours for Small Teams</title>
+<meta name="description" content="A first-24-hours checklist for suspected data breaches: confirm before you announce, contain without destroying evidence, notify regulators and customers correctly, and the preservation list that keeps you out of secondary trouble.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Suspected Data Breach: the First 24 Hours for Small Teams</h1>
+<p class="lede">A breach response has two clocks: the technical one (hours) and the legal one (days, and it starts whether or not you feel ready). The first 24 hours decide both. The checklist: <strong>confirm scope before you announce, contain without destroying evidence, preserve first, notify per your actual obligations &mdash; and write everything down with timestamps</strong>.</p>
+
+<h2>1. Confirm before you announce (hours 0&ndash;2)</h2>
+<p>"We think we were breached" and "we were breached" are different statements, and each one triggers different duties:</p>
+<table>
+<tr><th>Signal</th><th>What it means</th><th>First move</th></tr>
+<tr><td>Creds for sale / dump posted</td><td>Assume breach; verify which system the dump matches</td><td>Scope: which data, which dates, which systems</td></tr>
+<tr><td>Anomalous access in audit logs</td><td>Possible intrusion or misconfiguration</td><td>Preserve logs FIRST (see below), then investigate</td></tr>
+<tr><td>Security researcher contacts you</td><td>Verify researcher, then scope</td><td>Respond within their window; document everything</td></tr>
+</table>
+<p>Scope before announcements: <strong>what data (rows and fields), when (first/last access), and how many people</strong>. You will need all three for every notification you send.</p>
+
+<h2>2. Contain &mdash; without destroying evidence (hours 0&ndash;4)</h2>
+<ul>
+<li><strong>Rotate every credential in the blast radius</strong> (see the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a>) &mdash; but <strong>export and preserve logs first</strong>: auth logs, access logs, and the affected service's audit trail. Rotation without preservation deletes your own alibi.</li>
+<li><strong>Isolate the affected system</strong> rather than wiping it. A rebuild destroys forensics; an isolation (firewall off-box, revoke tokens) stops the bleeding and keeps the trail.</li>
+<li><strong>Snapshot before you fix.</strong> Disk images and log exports to somewhere the attacker can't reach.</li>
+</ul>
+
+<h2>3. The notification clocks (hours 2&ndash;24)</h2>
+<p>Notification duties vary by jurisdiction and industry &mdash; the small-team reality is that most breaches fall under at least one of these:</p>
+<ul>
+<li><strong>GDPR-style rules:</strong> report to the supervisory authority within <strong>72 hours</strong> of becoming aware, unless the breach is unlikely to risk rights; notify individuals if the risk is high.</li>
+<li><strong>US state laws:</strong> most trigger "without unreasonable delay," some with specific deadlines; check the states your customers live in, not just your HQ.</li>
+<li><strong>Contract clocks:</strong> enterprise customers' DPAs often require notification in 24&ndash;72h <em>regardless of materiality thresholds</em>. Read the contract now, not later.</li>
+</ul>
+<p>When in doubt, get counsel involved early &mdash; the cost of an hour of advice is trivial next to a mis-filed notification. This checklist is operational, not legal advice.</p>
+
+<h2>4. Tell customers the true shape, not the comfortable shape</h2>
+<ul>
+<li><strong>What happened, what data, what you did, what they should do.</strong> Four sections, plain language, no adjectives.</li>
+<li><strong>Specific beats reassuring:</strong> "email addresses and hashed passwords, not payment data" is worth more than "sophisticated attack." If hash types matter to their risk, say so.</li>
+<li><strong>Individual notifications for personal-data exposure</strong> &mdash; even where the law wouldn't force it, churn and trust math usually favor the honest note.</li>
+<li><strong>One channel of truth:</strong> a status-page post plus direct emails; keep every version timestamped (see the <a href="incident-communication-templates.html">communication templates</a>).</li>
+</ul>
+
+<h2>5. The mistakes that turn a breach into a crisis</h2>
+<ul>
+<li><strong>Announcing scope you haven't confirmed.</strong> Walking back an over-broad statement is worse than a slower, accurate one.</li>
+<li><strong>Rotating logs off the compromised system before exporting them.</strong> The logs are your scope evidence.</li>
+<li><strong>Waiting for certainty on the notification clock.</strong> "Becoming aware" starts timers; legal advice on day 3 is cheaper than an unexcused late notice.</li>
+<li><strong>No written timeline.</strong> Regulators, insurers, and customers all eventually ask the same question: when did you know what? Timestamps are the answer.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Scope before you speak;</strong> confirm before you announce.</li>
+<li><strong>Preserve logs, isolate instead of wipe,</strong> and put counsel on the notification clocks early.</li>
+<li><strong>Tell customers the true shape</strong> &mdash; data categories, risk, and the exact steps they should take.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the incident templates and evidence-log structure that make a breach response survivable, and <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Vol. 2 ($27)</strong></a> adds the full DR plan and evidence log. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 DR plan + evidence log</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="ransomware-recovery-checklist.html">Ransomware Recovery Checklist for Small Teams (The First 48 Hours)</a></li>
+<li><a href="email-security-checklist.html">Email Security Checklist for Small Teams (SPF, DKIM, DMARC, and the Human Layer)</a></li>
+<li><a href="phishing-response-checklist-small-teams.html">Phishing Response Checklist for Small Teams</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist (Rotate What Leaks, Not Everything)</a></li>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
