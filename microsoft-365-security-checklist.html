@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microsoft 365 Security Checklist for Small Business (The Admin Center Walk)</title>
+<meta name="description" content="A Microsoft 365 security checklist for small business: the admin center walk, Secure Score as your to-do list, MFA and conditional access, the default-sharing fixes, app consents, mailbox forwarding rules, external sharing, and the quarterly pass that keeps your tenant tight.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Microsoft 365 security checklist for small business: the admin center walk</h1>
+
+<p>Half the small businesses reading this run on Microsoft 365, and most of those tenants are held together by one admin who opened the portal twice. That's the honest version, and it's also the risk version: the tenant defaults were written for a world where every user sat behind an office firewall, and the settings that quietly leak &mdash; external sharing, app consents, forwarding rules, legacy authentication &mdash; are all still at their defaults in a typical small tenant. Google Workspace gets the security content and Microsoft 365 gets told "enable MFA" as if that were the whole story. This checklist is the missing half: one sitting in the admin center, an hour to run, and a quarterly repeat. If you're on Google instead, the <a href="google-workspace-security-checklist.html">Google Workspace security checklist</a> is its twin; the settings differ, the discipline doesn't.</p>
+
+<h2>1. Start with Secure Score (it's a to-do list someone else wrote)</h2>
+
+<ul>
+<li><strong>Open the Secure Score in the Defender or admin portal and screenshot it.</strong> That number is your baseline. The point isn't the score itself &mdash; it's that Microsoft has already ranked the improvements for your tenant, worst-gap first. You're reading your homework, not doing research.</li>
+<li><strong>Do the top five before anything else.</strong> In a default small tenant they're almost always the same: MFA for all users, legacy authentication off, mailbox forwarding alerts, the "user can consent to apps" toggle, and admin MFA. This page walks all five in the sections below.</li>
+<li><strong>Re-check the score quarterly.</strong> The number should ratchet up as you close items. A score that's flat for two quarters is a checklist that stopped being run &mdash; the same drift the <a href="annual-security-review-checklist.html">annual security review</a> is designed to catch.</li>
+<li><strong>Ignore the items that don't fit your size.</strong> Some recommendations assume E5 licenses, Sentinel, and a SOC. Mark them "reviewed, not applicable" and move on &mdash; don't let enterprise noise stall the small-tenant wins.</li>
+</ul>
+
+<h2>2. The admin handshake (who owns the tenant)</h2>
+
+<ul>
+<li><strong>Confirm who holds Global Admin.</strong> Admin centers &rarr; Roles &rarr; Global Administrator. A tenant created five years ago often has the founder's personal Microsoft account as its only admin &mdash; an account nobody at the company can reset. Fix the ownership now; this is the Microsoft version of the <a href="domain-hijack-protection-checklist.html">domain hijack</a> problem, and the recovery path is slower.</li>
+<li><strong>Keep two to three Global Admins, no more.</strong> One primary, one backup, both with MFA and dedicated admin accounts if you can manage it. Every other admin role should be scoped &mdash; Exchange Admin for the mail person, User Admin for onboarding.</li>
+<li><strong>Use a break-glass account.</strong> One cloud-only admin account, long password in the <a href="password-manager-rollout-small-business.html">password manager</a>, MFA via a hardware key or authenticator app (not SMS to a phone that changes), used only when federation or normal MFA fails. Write the storage location into your ops notes; a break-glass account nobody can find is the same as none.</li>
+<li><strong>Check the admin list against the org chart.</strong> Former employees holding admin roles is the default state of unreviewed tenants. Demote with confidence &mdash; it's reversible, and the audit log will thank you.</li>
+</ul>
+
+<h2>3. MFA and conditional access (the two settings that stop most takeovers)</h2>
+
+<ul>
+<li><strong>Turn on the Entra ID "security defaults" or build one real Conditional Access policy.</strong> Small tenant with no special needs: security defaults (MFA for everyone, blocked legacy auth) is a ten-minute win. If you have any licensing beyond free, one Conditional Access policy &mdash; "all users, require MFA, exclude the break-glass account" &mdash; is the grown-up version and scales better.</li>
+<li><strong>Kill legacy authentication explicitly.</strong> POP, IMAP, and old ActiveSync clients can't do MFA, which makes them the tunnel around every other control. If someone still uses a 2012 email client, that's a project; until it's fixed, a conditional access rule blocking legacy auth is the difference between "we have MFA" and "we have MFA with a door open."</li>
+<li><strong>Push authenticator app over SMS.</strong> SMS MFA still beats nothing, but SIM-swap attacks make the app version the default. Entra's Authentication Methods policy lets you allow app-based and de-prioritize SMS in one screen.</li>
+<li><strong>Roll out with the same discipline as any MFA project.</strong> The <a href="mfa-rollout-checklist-small-business.html">MFA rollout checklist</a> covers the human side: break-glass first, champions, the Friday-afternoon lockout trap. The tenant switch is ten minutes; the people part is the project.</li>
+</ul>
+
+<h2>4. Mailbox rules and forwarding (where Business Email Compromise lives)</h2>
+
+<ul>
+<li><strong>Ban or alert on automatic forwarding to external addresses.</strong> Exchange admin center &rarr; mail flow &rarr; remote domains, and the anti-spam outbound policy. A forwarding rule is the classic move after an account takeover: mail keeps arriving, the owner notices nothing, the attacker reads everything &mdash; including the invoice emails that become <a href="invoice-fraud-bec-prevention-checklist.html">wire fraud</a>.</li>
+<li><strong>Review existing transport rules and inbox rules.</strong> Attackers who got in once leave delete-forward rules named "&hellip;" hiding in mailboxes. Admin center &rarr; mail flow &rarr; rules: anything you can't explain gets read in full or deleted.</li>
+<li><strong>Turn on mailbox forwarding alerts (or read them).</strong> Defender alerts on suspicious forwarding activity in most tenants. If alerts exist and nobody reads them, set one forwarding rule to a distribution list that actually has people on it.</li>
+<li><strong>Check the "sent items" delegation on finance mailboxes.</strong> Full-access permissions granted years ago to a former bookkeeper's account are the quiet version of the same hole. Exchange &rarr; mailbox &rarr; mailbox delegation: trim to current, named people.</li>
+</ul>
+
+<h2>5. App consents and integrations (the OAuth sprawl nobody reviews)</h2>
+
+<ul>
+<li><strong>Set "users can consent to apps" to off (admin consent required).</strong> Entra &rarr; Enterprise applications &rarr; Consent and permissions. The default lets any user approve any app &mdash; which is how one convincing "Allow Access" click hands an attacker a mailbox-reading token. With admin consent on, a malicious app request becomes a helpdesk ticket instead of a breach.</li>
+<li><strong>Audit the consents already granted.</strong> Enterprise applications, sort by permissions, look for Mail.Read, Mail.ReadWrite, Files.ReadWrite.All, and anything with "impersonation." For each: who approved it, does anyone still use it? Revoke boldly &mdash; if a tool matters, someone will ask for it back within a week.</li>
+<li><strong>Apply the same rule you use for Slack apps.</strong> The <a href="slack-workspace-security-checklist.html">Slack app audit</a> and this are the same discipline in two buildings: one approval gate, one inventory, one quarterly purge.</li>
+<li><strong>Watch for consent phishing in the wild.</strong> The lure looks like a normal login and ends on a Microsoft consent screen. "Why is this app asking to read my mail?" belongs in your <a href="phishing-response-checklist-small-teams.html">phishing training</a> deck &mdash; it's the 2020s version of the fake invoice attachment.</li>
+</ul>
+
+<h2>6. External sharing (OneDrive, SharePoint, Teams files)</h2>
+
+<ul>
+<li><strong>Pick your sharing defaults on purpose.</strong> SharePoint admin center &rarr; Sharing. "Anyone with the link" is convenient for the same reason it's dangerous: the link outruns the recipient list. Most small tenants are fine with "specific people" as the default and "anyone" allowed but expiring.</li>
+<li><strong>Turn on link expiry and passcodes for anyone-links.</strong> If you keep anonymous links at all, 30-day expiry and optional passcode make them contracts instead of land grants.</li>
+<li><strong>Review guest access in Teams and SharePoint quarterly.</strong> Guests accrete like everything else; the project's over, the consultant's gone, the files still live in a channel they can read. One admin pass, downgrade or remove &mdash; it's the <a href="access-request-offboarding-checklist.html">offboarding checklist</a> applied to Microsoft land.</li>
+<li><strong>Decide where customer data lives and say so.</strong> One SharePoint site for customer material with tighter sharing settings beats five Teams channels with three wikis and a shared OneDrive folder. Structure is a security control.</li>
+</ul>
+
+<h2>7. Email security settings (Defender's free tier is better than its reputation)</h2>
+
+<ul>
+<li><strong>Confirm SPF, DKIM, and DMARC are actually set.</strong> The <a href="email-deliverability-spf-dkim-dmarc-checklist.html">SPF/DKIM/DMARC checklist</a> walks the DNS side; in the tenant, Defender &rarr; the DKIM panel per custom domain is where signing gets switched on. Microsoft 365 adds a default SPF include, but custom domains routinely ship without DMARC at all.</li>
+<li><strong>Turn on anti-phishing protections in Defender.</strong> Safe Links and Safe Attachments are included in Business Premium and cheap elsewhere. Default thresholds are fine for a small tenant; the wins are impersonation protection for your executives and domain names.</li>
+<li><strong>Set up the quarantine digest so users self-release.</strong> A weekly digest with "review, release, block" buttons keeps legit mail moving without giving everyone the admin password. Mail sitting in quarantine for a week is the #1 reason small teams disable protections.</li>
+<li><strong>Report-phish button on, review the submissions.</strong> The built-in Report button feeds your own tenant's filtering. Fifteen minutes a week reading what users report tells you which lure is current in your industry.</li>
+</ul>
+
+<h2>8. Devices (Intune or the honest alternative)</h2>
+
+<ul>
+<li><strong>If you have Business Premium, use Intune &mdash; even minimally.</strong> Enrollment of company laptops plus one compliance policy ("disk encrypted, screen lock, OS not ancient") turns lost laptops from an incident into a wipe command. The <a href="lost-or-stolen-laptop-runbook.html">lost laptop runbook</a> gets shorter the day devices are enrolled.</li>
+<li><strong>Enforce BitLocker/FileVault encryption.</strong> Intune can require it; if you're not using Intune, check it manually per machine and record it in the inventory. An unencrypted laptop is a data breach waiting for a parking lot.</li>
+<li><strong>Set a screen-lock and password policy users can live with.</strong> Five minutes idle, lock on lid close, minimum password length handled by the identity side. Security policies that fight daily workflow get silently disabled; design them to survive contact with real work.</li>
+<li><strong>Windows Update rings beat per-machine hope.</strong> The <a href="patch-management-checklist.html">patch management checklist</a> applies; Intune update rings are just its Microsoft-flavored implementation &mdash; canary first, fleet second, restarts scheduled not surprised.</li>
+</ul>
+
+<h2>9. Audit logs and alerts (the tenant's black box)</h2>
+
+<ul>
+<li><strong>Confirm audit logging is on (it is by default &mdash; confirm anyway).</strong> Purview &rarr; Audit. The unified audit log is what answers "who did what" after an incident; discovering it was disabled after an incident is its own incident.</li>
+<li><strong>Route the five alerts that matter to a human.</strong> Suspicious activity, impossible travel, mass file deletion, new admin role granted, malware detected. Defender or Entra can email these to a distribution list &mdash; pick the list your <a href="escalation-policy-template.html">escalation policy</a> already points at.</li>
+<li><strong>Log retention: match it to your incident needs.</strong> Free tier holds 90 days in the unified log; Business Premium extends it. If your <a href="incident-response-plan-template-small-teams.html">incident response plan</a> assumes you can reconstruct last month, make sure the logs exist that long.</li>
+<li><strong>Do a five-minute monthly log skim.</strong> New apps consented, new admins, anomalous sign-ins. It's not a SOC; it's the same weekly-walk habit as patching, pointed at identity instead of devices.</li>
+</ul>
+
+<h2>10. The quarterly pass (everything above, in 45 minutes)</h2>
+
+<ul>
+<li><strong>Secure Score delta first.</strong> Compare to last quarter's screenshot. Anything you closed should stay closed; anything new and top-five goes on this quarter's list.</li>
+<li><strong>Admins, consents, forwarding rules, guests.</strong> The four lists that accrete. Each one trimmed back to named, current, explainable.</li>
+<li><strong>Spot-check one mailbox and one laptop.</strong> Forwarding rules on a random finance mailbox, encryption and updates on a random laptop. Two spot checks catch drift that list reviews miss.</li>
+<li><strong>Write the three-line summary.</strong> Date, score, what changed, what's accepted risk. It feeds the <a href="annual-security-review-checklist.html">annual review</a> and answers the customer questionnaire's security section before it's asked &mdash; the same evidence folder the <a href="customer-security-questionnaire-template.html">questionnaire template</a> builds.</li>
+</ul>
+
+<p class="closing">Microsoft 365 security for a small tenant is one admin-center sitting: Secure Score's top five, real MFA everywhere with legacy auth closed, forwarding locked down, app consents gated, sharing defaults chosen on purpose, Defender's free tier switched on, and a quarterly pass that trims the four lists that accrete. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the per-tenant walkthrough sheets and the patch-and-access log, and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> automates the recurring reviews so the tenant stays tight between passes. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week code <strong>HIVE-LAUNCH30</strong> &mdash; 30% off any paid kit.</p></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="google-workspace-security-checklist.html">Google Workspace Security Checklist</a></li>
+<li><a href="email-security-checklist.html">Email Security Checklist for Small Teams</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+<li><a href="passkeys-rollout-checklist.html">Passkeys Rollout Checklist</a></li>
+<li><a href="contractor-security-onboarding-checklist.html">Contractor Security Onboarding Checklist</a></li>
+<li><a href="email-deliverability-spf-dkim-dmarc-checklist.html">SPF, DKIM &amp; DMARC Checklist</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>. Templates, not legal or security advice.</footer>
+</main>
+</body>
+</html>

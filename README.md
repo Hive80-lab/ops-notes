@@ -47,4 +47,5 @@ Incident response, on-call, and automation **checklists and templates** you can 
 - [Secrets rotation checklist](https://hive80-lab.github.io/ops-notes/secrets-rotation-checklist.html)
 
 - [Website maintenance checklist](https://hive80-lab.github.io/ops-notes/website-maintenance-checklist-small-business.html)
+- [Microsoft 365 security checklist](https://hive80-lab.github.io/ops-notes/microsoft-365-security-checklist.html)
 *Templates, not legal or regulatory advice. Site: <https://hive80-lab.github.io/ops-notes/>*
