@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ransomware Recovery Checklist for Small Teams: The First 48 Hours &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A ransomware recovery checklist for small teams: isolate before touching anything, protect the backup first, verify offline copies, preserve evidence, decide on ransom with counsel, restore clean, and rotate every credential before reconnecting.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Ransomware Recovery Checklist for Small Teams: The First 48 Hours</h1>
+<p>The expensive mistake teams make during ransomware is restoring <em>while the attacker is still inside</em>. They reimage two machines, join them back to the network, and watch the encryption return through the front door. The first 48 hours are not a restore project &mdash; they are a containment project with a restore at the end. Here is the checklist that keeps the order right.</p>
+
+<h2>The first 48 hours &mdash; in order</h2>
+<ol>
+<li><strong>Isolate before you touch anything &mdash; unplug, don't power off.</strong> Pull the network cable / turn off Wi-Fi on every machine that shows the ransom note or behaves oddly. <em>Do not shut down:</em> RAM holds evidence, and some strains kill the boot sector on a clean shutdown. One encrypted laptop left plugged into the office switch is how five machines became thirty.</li>
+<li><strong>Protect the backup before the backup is next.</strong> Pause cloud sync (OneDrive, Dropbox, Google Drive) and disconnect network-attached backup shares. Ransomware walks mapped drives and sync folders by design &mdash; an untouched, offline copy is your entire recovery, and it is the attacker's next target while it's still reachable.</li>
+<li><strong>Verify the backup offline before you trust it.</strong> Any backup taken <em>after</em> infection started is already encrypted &mdash; compare timestamps against the first symptom, then restore the newest clean copy to an isolated machine and actually open files from it. An air-gapped or offline copy passes. Everything still attached to the network gets the same suspicion as the patient.</li>
+<li><strong>Preserve evidence before you wipe.</strong> If a machine is still on, photograph the ransom note (the ID string matters), note what changed &mdash; extensions, wallpaper, files renamed &mdash; and capture what you can before reimage. You need it to identify the strain, to report to police (ReportCyber in Australia, IC3 in the US), and for the insurer's claim. Wiping first makes all three harder.</li>
+<li><strong>Decide the ransom question with counsel, not adrenaline.</strong> Paying funds the next attack, offers no decryption guarantee, and still leaves you with a data breach to disclose. Loop in legal and your insurer <em>before</em> deciding &mdash; many policies void coverage if you pay or even negotiate without notifying them first. Write the decision down either way; the written decision is what auditors and insurers ask for.</li>
+<li><strong>Restore clean, not fast.</strong> Rebuild from known-good media, and rotate <em>every</em> credential before a machine rejoins the network: passwords, API keys, tokens, VPN accounts, service accounts &mdash; assume all of them are burned. And patch the way in (it is usually exposed RDP or a VPN without 2FA) <strong>before</strong> reconnecting, or you are re-infecting the rebuilt fleet on day one.</li>
+<li><strong>Convert the pain into a drill.</strong> In the review, answer four things: what did we lose, what alerted (or didn't), what was manual, and how long was the offline copy lagging. Then schedule the quarterly restore test and the offline backup cadence. Teams that recover in days did the drill <em>before</em> the incident; the drill is the only part of this checklist you can practice in peacetime.</li>
+</ol>
+
+<h2>The 48-hour timeline, on one card</h2>
+<table>
+<tr><th>Window</th><th>Do</th><th>Do not</th></tr>
+<tr><td>Hour 0&ndash;1</td><td>Unplug affected machines; pause syncs; disconnect backup shares</td><td>Power off, pay, or "just check one file"</td></tr>
+<tr><td>Hour 1&ndash;4</td><td>Verify offline backup on an isolated machine; capture evidence</td><td>Restore onto the production network</td></tr>
+<tr><td>Hour 4&ndash;24</td><td>Report (ReportCyber / IC3), call insurer and lawyer, hold public comms to facts</td><td>Negotiate unilaterally; trust "decryption guarantees"</td></tr>
+<tr><td>Hour 24&ndash;48</td><td>Rebuild clean; rotate every credential; patch the entry vector</td><td>Rejoin the network with the old password set</td></tr>
+<tr><td>Day 3+</td><td>Restore data, monitor like it's on fire, run the review and book the drill</td><td>Declare victory before the first clean week</td></tr>
+</table>
+
+<h2>The three rules that make the checklist work</h2>
+<ul>
+<li><strong>The offline copy is the recovery.</strong> 3-2-1 backup means nothing if the "1" is on a share the attacker could reach. One offline or immutable copy, tested quarterly, beats five backups that ransomware can encrypt.</li>
+<li><strong>Every credential is burned.</strong> The cheapest assumption after any ransomware event is that every password, key, and token the network ever held is on someone else's machine. Rotation is an hour of work; re-infection is a second incident report.</li>
+<li><strong>Report even if you pay.</strong> Law enforcement tracks the strains and sometimes holds working decryptors; insurers and regulators read the report as evidence you handled it like an adult. Silence only protects the attacker.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> is the advanced incident-management pack &mdash; the DR plan, evidence log, comms templates, and the tabletop scenarios this checklist drills into &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so the offline copy and restore tests stay on schedule by themselves</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout (ends Sep 11, 23:30 ACST).</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="disaster-recovery-plan-template-small-teams.html">Disaster Recovery Plan Template for Small Teams (The One-Page DR Plan)</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup &amp; Restore Test Checklist (Because Untested Backups Are Hope, Not Backups)</a></li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams (First 10 Servers)</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes of Any Incident</a></li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates (Copy, Fill, Send)</a></li>
+<li><a href="tabletop-exercise-failure-points.html">Tabletop Exercises: Where Small Teams Fail Them</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+</main>
+</body>
+</html>
