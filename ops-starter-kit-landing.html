@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ops Starter Kit &mdash; Incident Response for Small Teams ($14) &mdash; HIVE80lab</title>
+<meta name="description" content="The Ops Starter Kit: a fillable incident response plan, 3-level severity matrix, tabletop scenarios, and comms templates for small teams. Be ready in 20 minutes, not next quarter.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/ops-starter-kit-landing.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article data-hlab-exp="exp001">
+
+<div id="hero-a">
+<h1>Ops Starter Kit: Fillable Incident Response for Small Teams &mdash; $14</h1>
+<p>When an incident hits, the plan you wish you had is the one you fill in <em>during</em> the outage. This kit is the other kind: a fillable incident response plan, a severity matrix with teeth, tabletop scenarios to rehearse on, and comms templates your team can send without thinking. Open it, fill the blanks once (about 20 minutes), and the plan is ready before the pager fires.</p>
+</div>
+
+<div id="hero-b" style="display:none">
+<h1>When the Incident Hits at 2AM, the Plan Is Already Filled In</h1>
+<p>Most teams open their incident plan during the outage and find a blank template. The Ops Starter Kit is the other kind: a fillable incident response plan, a severity matrix with teeth, tabletop scenarios to rehearse on, and comms templates ready to send. Fill the blanks once (about 20 minutes) &mdash; so when the pager fires, the plan is already done.</p>
+</div>
+
+<h2>What's inside</h2>
+<ul>
+<li><strong>Fillable IR plan</strong> &mdash; roles, on-call chain, comms channels: fill once, keep current.</li>
+<li><strong>3-level severity matrix</strong> &mdash; SEV1 pages a human at any hour; SEV3 never does. Give the levels teeth.</li>
+<li><strong>Tabletop scenarios</strong> &mdash; rehearse the outage before it rehearses on you.</li>
+<li><strong>Comms templates</strong> &mdash; status page, customer email, exec update: send-ready under pressure.</li>
+</ul>
+
+<h2>Who it's for</h2>
+<p>Small teams (2&ndash;20 people) with no dedicated ops role &mdash; the on-call person is also the person who ships features. If your "incident process" is a wiki page nobody has edited since last year, this is the 20-minute fix.</p>
+
+<h2>Format &amp; price</h2>
+<p>PDF + fillable templates. <strong>$14</strong>. Volume 2 ($27) covers the on-call rotation side: escalation policies, handoff templates, and the 2AM test.</p>
+
+<p><a class="buy" href="https://hive80lab.gumroad.com/l/ops-starter-kit" style="font-size:1.15em"><strong>Get the Ops Starter Kit &mdash; $14</strong></a></p>
+<p class="hint">One page per template. No filler, no vendor pitches &mdash; templates you'll actually fill in.</p>
+
+<aside class="related"><h2>Free companions</h2><ul>
+<li><a href="the-2am-test-incident-handoff.html">The 2AM Test: Will Your Handoff Survive Without Context?</a></li>
+<li><a href="severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates</a></li>
+<li><a href="runbook-template.html">Runbook template (free, copy-paste)</a></li>
+<li><a href="escalation-policy-template.html">Escalation policy template</a></li>
+</ul></aside>
+</article>
+</main>
+<footer>Part of the HIVE80lab ops kit. <a href="index.html">All ops notes</a>.</footer>
+<script>
+// exp-001-ops-starter-kit-hero | hero framing A=feature-first B=pain-first | 50/50 sticky split
+(function () {
+  'use strict';
+  var exp = 'exp001';
+  var KEY = 'hlab_' + exp;
+  function variant() {
+    var m = (location.search.match(/[?&]v=([ab])/) || [])[1];
+    if (m) { try { localStorage.setItem(KEY, m); } catch (e) {} return m; }
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    if (saved === 'a' || saved === 'b') return saved;
+    var v = (Math.random() < 0.5) ? 'a' : 'b';
+    try { localStorage.setItem(KEY, v); } catch (e) {}
+    return v;
+  }
+  var v = variant();
+  document.documentElement.setAttribute('data-hlab-variant', v);
+  var base = 'utm_source=ops-notes&utm_medium=landing&utm_campaign=' + exp + '&utm_content=' + exp + '-' + v;
+  document.querySelectorAll('a[href*="hive80lab.gumroad.com"]').forEach(function (a) {
+    a.setAttribute('data-hlab-exp', exp);
+    a.setAttribute('data-hlab-variant', v);
+    var url = a.getAttribute('href');
+    a.setAttribute('href', url + (url.indexOf('?') > -1 ? '&' : '?') + base);
+  });
+  if (v === 'b') {
+    var a = document.getElementById('hero-a'), b = document.getElementById('hero-b');
+    if (a) a.style.display = 'none';
+    if (b) b.style.display = 'block';
+  }
+  window.HLAB_variant = v;
+})();
+</script>
+</body>
+</html>
