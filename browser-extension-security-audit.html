@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Browser Extension Security Checklist for Small Teams (The Attack Surface Hiding in Every Employee's Chrome)</title>
+<meta name="description" content="A browser extension security audit for small teams: the permission walk, the zombie-extension purge, update and review cadence, and the one question that catches most malicious extensions before they catch you.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Browser extension security checklist for small teams: the attack surface hiding in every employee's Chrome</h1>
+
+<p>Every laptop in your company runs a browser, and every browser runs a small pile of third-party code with alarming privileges: read every page you visit, capture what you type, see your webmail, your admin panels, your invoice tool. Extensions are <a href="software-supply-chain-security-checklist.html">third-party software</a> &mdash; they're just the kind nobody counts because installing one takes four seconds and no approval. This checklist is the quarterly pass that turns that blind spot into a controlled list.</p>
+
+<h2>1. The inventory walk (thirty minutes, once per quarter)</h2>
+
+<ul>
+<li><strong>Ask the browser, not the person.</strong> "Which extensions do you use?" gets a guess. <code>chrome://extensions</code>, <code>edge://extensions</code>, and Firefox's Add-ons Manager get the truth. Screenshot or export the list per person: name, version, date added, permissions.</li>
+<li><strong>Flag the unknown dates.</strong> An extension installed two years ago by someone who left the company is exactly the kind of thing that stops getting updated and starts getting quietly sold. Date-added is your best lead.</li>
+<li><strong>Check the install source.</strong> Web Store installs are auditable; .crx side-loads and "developer mode" unpacked extensions are how malware usually arrives. Anything installed outside the store gets explained or removed today.</li>
+<li><strong>Note the count.</strong> The number matters less than the trend &mdash; if it only grows quarter over quarter, nobody is culling, and a growing pile of privileged code is a liability with a compound interest rate.</li>
+</ul>
+
+<h2>2. The permission walk (the part that actually matters)</h2>
+
+<ul>
+<li><strong>"Read and change all your data on all websites" is root access.</strong> Some tools genuinely need it (password managers, screenshot tools). An ad-blocker copycat that doesn't, or a shopping-coupon assistant that does, is the pattern behind most extension hijack stories.</li>
+<li><strong>Match permissions to the job.</strong> A tab manager that wants to read page contents, a note-taker that wants clipboard access, a theme that wants anything at all &mdash; each mismatch is either an over-privileged build or a red flag. Keep what earns it; cut what doesn't.</li>
+<li><strong>Pay special attention to anything that can read webmail.</strong> An extension that can read every page can read your inbox, and your inbox is the front door for <a href="phishing-response-checklist-small-teams.html">phishing</a> and invoice fraud. Mail-adjacent extensions get held to the highest bar in the review.</li>
+<li><strong>The one question that catches most bad ones:</strong> "Would I still install this today if I read the permissions out loud?" If the honest answer is no, it stays no even though it's already installed.</li>
+</ul>
+
+<h2>3. The zombie purge (extensions that quietly rot)</h2>
+
+<ul>
+<li><strong>Kill anything abandoned upstream.</strong> Check the store listing's "last updated" date. An extension untouched for 18+ months is unpatched code running with full page access &mdash; and abandoned extensions are the ones most likely to change hands to a new, hostile owner. This is the same risk model as the <a href="vendor-security-review-checklist.html">vendor review</a>, compressed into a browser tile.</li>
+<li><strong>Kill anything unused.</strong> The PDF merger from one project in 2023 is dead weight with live permissions. "Used once, installed forever" is the default behavior; the purge is how you reverse it.</li>
+<li><strong>Kill duplicates.</strong> Three ad blockers fight each other, triple the privilege surface, and slow every page load. Keep the best one, delete the rest.</li>
+<li><strong>Re-run the purge quarterly.</strong> Extensions accrete like browser tabs. A calendar event titled "extension purge" &mdash; 30 minutes, 4 times a year &mdash; is the whole system. It's the same ritual shape as the <a href="annual-security-review-checklist.html">annual security review</a>, just on a shorter loop.</li>
+</ul>
+
+<h2>4. The update-and-change watch</h2>
+
+<ul>
+<li><strong>Turn on automatic updates</strong> (Chrome and Edge default to on; Firefox is a settings toggle). An un-updated extension is a known-vulnerable one waiting for a scan.</li>
+<li><strong>Skim the changelog at major versions.</strong> When an extension jumps a full version or changes hands, the store listing usually says so. Ownership changes are when benign tools historically go bad &mdash; the new maintainer ships one "analytics update" and every user's page content starts flowing somewhere new.</li>
+<li><strong>Watch for permission creep after updates.</strong> Chrome flags newly requested permissions. A calculator that suddenly wants to read all website data didn't grow features &mdash; it grew reach. That's a remove-unless-proven moment.</li>
+<li><strong>Keep the approved list short and written down.</strong> A one-page doc: allowed extensions, who approved them, when. It turns future audits from archaeology into a diff, and it's the sheet that makes onboarding say "these are the ones you may install."</li>
+</ul>
+
+<h2>5. Policy for the humans (four sentences, no lectures)</h2>
+
+<ul>
+<li><strong>Install from the official store only</strong> &mdash; never from a "download here" link, and never a shared .crx file. The store isn't perfect, but it's the difference between an audited install and a coin flip.</li>
+<li><strong>New extension = one-line ping.</strong> "Adding ______, it needs ______" in the team chat. Not approval theater &mdash; a paper trail and a moment of "wait, does that need that?"</li>
+<li><strong>Never install an extension to fix one task once.</strong> The bulk-converter used a single time is the classic infection vector; do the one-off manually and skip the install.</li>
+<li><strong>Company machines get a managed profile</strong> where it matters: a work browser profile with only approved extensions, kept separate from the personal one. You get 80% of the control for none of the surveillance-software vibes.</li>
+</ul>
+
+<h2>The 15-minute version (if you do nothing else)</h2>
+
+<ul>
+<li>Open every browser's extension page once this quarter &mdash; today is fine.</li>
+<li>Delete everything you don't recognize, haven't used in 90 days, or wouldn't install again.</li>
+<li>Check "last updated" on the survivors; abandon anything stale with broad permissions.</li>
+<li>Write the one-line install policy in the team channel. Done. Next quarter, repeat &mdash; it gets faster every time.</li>
+</ul>
+
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the audit sheets that turn this checklist into a per-person table &mdash; extension, permissions, verdict, owner &mdash; and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> puts the quarterly re-run on a schedule so the purge happens without anyone remembering to remember. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week code <strong>HIVE-LAUNCH30</strong> &mdash; 30% off any paid kit.</p></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="software-supply-chain-security-checklist.html">Software Supply Chain Security Checklist</a></li>
+<li><a href="phishing-response-checklist-small-teams.html">Phishing Response Checklist for Small Teams</a></li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout for Small Business</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Teams</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist</a></li>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
