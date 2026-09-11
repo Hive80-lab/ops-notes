@@ -1,3 +1,5 @@
+- **NEW: [Break-Glass Account Checklist for Small Business](https://hive80-lab.github.io/ops-notes/break-glass-account-checklist.html)** — build the emergency admin login before the lockout: cloud-only, CA-exempt, sealed offline, alerted, quarterly-tested, used with a paper trail.
+
 - **NEW: [MFA Device Lost Runbook for Small Teams](https://hive80-lab.github.io/ops-notes/mfa-device-lost-runbook.html)** — verify the human out-of-band, revoke the lost factor before enrolling the new one, keep business running through the lockout window, the break-glass account, and the backup codes everyone skipped.
 
 - **NEW: [Employee Offboarding Checklist for Small Teams](https://hive80-lab.github.io/ops-notes/employee-offboarding-checklist.html)** — offboarding that starts the day notice lands: day-zero access pull, blast-radius revocation, devices/keys/badges back, mailbox cutover, the only-they-know list, hostile-exit variant, and the two-week-after seat diff.

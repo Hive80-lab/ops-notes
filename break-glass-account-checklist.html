@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Break-Glass Account Checklist for Small Business (The Emergency Admin Login That Ends the Lockout)</title>
+<meta name="description" content="How to build and keep an emergency admin account that works when everything else is locked out: cloud-only, conditional-access-exempt, sealed offline, alerted on every sign-in, tested quarterly, and used with a paper trail.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Break-Glass Account Checklist</h1>
+<p>A break-glass account is one emergency admin identity that exists for exactly one day: the day nobody can get in. The only admin's phone died with the only authenticator on it. The only admin left and nobody can say why. The identity provider itself is having an outage. Ransomware is on the clock. On that day, a working emergency login is the difference between a five-minute recovery and a two-day vendor-support hostage negotiation. On every other day, that same account is the credential an attacker wants most &mdash; which is why this checklist is mostly about keeping it asleep.</p>
+
+<h2>1. The lockouts this account is for</h2>
+<ul>
+<li><strong>The lost-factor lockout.</strong> The admin's phone &mdash; with the only TOTP app, the only SIM, the only hardware key &mdash; is gone. The <a href="mfa-device-lost-runbook.html">MFA device lost runbook</a> gets the person back; the break-glass account is what keeps the company admin plane alive until they're re-enrolled.</li>
+<li><strong>The departed-admin lockout.</strong> One person held all the admin ropes and their employment ended badly, abruptly, or both. The <a href="employee-offboarding-checklist.html">offboarding checklist</a> prevents this; the break-glass account is the airbag when it happened anyway.</li>
+<li><strong>The vendor-and-outage lockout.</strong> Conditional access or the SSO provider rejects everyone, including admins. An account that bypasses the normal login path still works. This is also the scenario that decides how the account must be built &mdash; see below.</li>
+<li><strong>The disaster clock.</strong> Ransomware doesn't wait for password resets. The <a href="first-30-minutes-incident-response.html">first 30 minutes runbook</a> is calmer when one clean admin credential is sealed in a safe.</li>
+</ul>
+
+<h2>2. Build it right on day one</h2>
+<ul>
+<li><strong>One per provider, named for the job.</strong> A cloud-only admin identity in Microsoft 365 and Google Workspace each &mdash; named <em>bg-emergency@yourdomain</em>, never after a person. Person-named emergency accounts get inherited, guessed, or reused by whoever holds the title now. The provider-specific mechanics live in the <a href="microsoft-365-security-checklist.html">Microsoft 365 checklist</a> and the <a href="google-workspace-security-checklist.html">Google Workspace checklist</a>.</li>
+<li><strong>Cloud-only, and exempt from the login rules.</strong> The account must not sync from or depend on the identity provider it exists to rescue &mdash; no federated SSO, no conditional-access policies that can lock it out with everyone else. Exempt it deliberately and document the exemption, because an undocumented exemption looks exactly like an attacker's back door to your next auditor.</li>
+<li><strong>Least-privilege by scenario, not by tradition.</strong> Give it the admin roles the disaster actually needs &mdash; user admin plus the provider's top-level role &mdash; and nothing else. No mailbox, no licenses unless the provider requires them, no group ownerships that accumulate.</li>
+<li><strong>MFA on it anyway &mdash; but the survivable kind.</strong> No SMS. TOTP on a dedicated second device that lives with the sealed credentials, or a hardware key, plus the provider's backup codes printed alongside. An emergency account without a second factor is the door you left propped open; an emergency account whose second factor lives on the admin's daily phone is the door you bricked shut. The <a href="mfa-rollout-checklist-small-business.html">MFA rollout checklist</a> explains why never-exactly-one-factor applies double here.</li>
+</ul>
+
+<h2>3. Seal it &mdash; offline, outside the vault it may need to rescue</h2>
+<ul>
+<li><strong>The password does not live in the password manager.</strong> One of the lockout scenarios this account exists for is "nobody can get into the password manager." Storing the rescue key inside the thing it rescues is a circle, not a plan. The <a href="password-manager-rollout-small-business.html">password manager rollout</a> covers day-to-day secrets; this one is different on purpose.</li>
+<li><strong>Print it. Envelope it. Safe it.</strong> The envelope holds: the generated 20+ character password, the provider backup codes, the TOTP seed or spare hardware key, and one index card saying what this is, which provider, and the three-line use runbook. Two copies, two locations (office safe + a second custodian's sealed copy), because a single sealed copy in a single burning building is not a backup.</li>
+<li><strong>Seal means tamper-evident.</strong> Signature across the flap, dated on the outside. You want to <em>know</em> when the envelope was opened, not wonder.</li>
+<li><strong>Name two custodians, not one.</strong> The owner plus one senior person who knows the envelope exists and where it lives. Custodians change; the register (below) is how the knowledge moves with them.</li>
+</ul>
+
+<h2>4. Keep it asleep: the hardening rules</h2>
+<ul>
+<li><strong>Zero daily use, zero tokens.</strong> The account signs in only during the quarterly test and real emergencies. No browser sessions parked, no mobile apps enrolled, no API tokens minted "just while we set things up." Dormancy is its armor.</li>
+<li><strong>Alert on every sign-in.</strong> An audit-log alerting rule where any <em>bg-emergency</em> sign-in pings the owner and the second custodian immediately. Every sign-in is an incident until someone explains it &mdash; including the quarterly test, which gets logged so the alert has a matching entry.</li>
+<li><strong>Include it in every access review.</strong> The <a href="annual-security-review-checklist.html">annual security review</a> and any quarterly access walk must show: roles still least-privilege, exclusion still documented, custodians still correct, envelope still sealed with an intact signature.</li>
+<li><strong>Log the register.</strong> One page &mdash; the same instinct as the <a href="key-inventory-register.html">key inventory register</a>: when the envelope was created, re-sealed, rotated, and tested; who the custodians are; where both copies live. The register is public internally; the contents never are.</li>
+</ul>
+
+<h2>5. The trigger list: what counts as the emergency</h2>
+<ul>
+<li><strong>Write the triggers down before you need them.</strong> "Primary admin unreachable for 30+ minutes during an active incident." "Primary admin's access terminated and re-entry impossible." "Identity provider outage blocking all admin sign-ins." "Confirmed compromise of the primary admin account." A written list is the difference between a controlled emergency tool and a convenience login for Friday afternoons.</li>
+<li><strong>Two-person rule for planned use.</strong> Any non-active-incident use requires the owner plus one custodian agreeing in writing (a message is fine). Emergencies bypass the rule; the log then explains why.</li>
+<li><strong>Convenience is the enemy.</strong> The moment the break-glass account is the easiest way to do something ordinary, it has become the weakest link with a name tag. If a workflow keeps needing it, fix the workflow.</li>
+</ul>
+
+<h2>6. The runbook for using it</h2>
+<ul>
+<li><strong>Verify reality first.</strong> The same reflex as the lost-device runbook: is the lockout real, or is the "locked out admin" a phisher? One out-of-band check before the envelope opens &mdash; a lockout is a social-engineering stage set.</li>
+<li><strong>Log the entry as you go.</strong> Who opened the envelope, when, why, what was signed in to, what was changed. If the emergency turns out to be a breach, this is your incident timeline's spine, not a reconstruction from memory.</li>
+<li><strong>Fix, then rotate, then re-seal.</strong> After any real use: rotate the password, regenerate the backup codes, re-enroll or re-seed the TOTP, new envelope, new signature, register updated the same day. Anyone who saw the screen during the emergency has effectively seen the credentials &mdash; treat them as shared.</li>
+<li><strong>If the use was breach-shaped, the account inherits the incident.</strong> Run the <a href="first-30-minutes-incident-response.html">first 30 minutes runbook</a> against it: the credentials are burned, the audit log for the account's whole dormant history is now evidence, and the post-incident review asks why the trigger fired.</li>
+</ul>
+
+<h2>7. The fifteen-minute quarterly test</h2>
+<ul>
+<li><strong>Sign in, for real.</strong> Once a quarter: open the sealed envelope, sign in with the password and the second factor, confirm the admin roles are intact, sign out. An untested break-glass account is a myth with a password &mdash; expired seeds, rotated policies, and dead hardware keys are only discovered in the drill.</li>
+<li><strong>Check the envelope against reality.</strong> Backup codes still unused? Safe device still charged, and the TOTP still generating accepted codes? Exclusion from conditional access still in place after the quarter's policy changes? Anything drifted, fix it during the test.</li>
+<li><strong>Log it, re-seal it.</strong> Register entry: date, tester, result, re-seal signature. A test without a register entry is indistinguishable from an unexplained sign-in alert.</li>
+<li><strong>Once a year, rehearse the whole disaster.</strong> A tabletop: "the only admin resigned effective immediately." The team walks the runbook end to end &mdash; trigger list, envelope, recovery, rotation, re-seal &mdash; using the <a href="employee-offboarding-checklist.html">offboarding checklist</a> for the human side. The first real emergency should be your second time through.</li>
+</ul>
+
+<h2>8. Locked out right now, with no break-glass account?</h2>
+<ul>
+<li><strong>Use the vendor's identity-recovery path &mdash; but gather proof first.</strong> Both major providers have account-recovery processes for exactly this; they take hours to days and hinge on proof you control the domain. Before you start: registrar login, DNS access for a TXT verification record, business registration, recent billing records. The recovery goes as fast as your evidence.</li>
+<li><strong>Verify the story even now.</strong> Especially now. "We're locked out" and "someone locked us out" look identical from the inside, and phishers ride lockout panic. If the lockout followed a personnel event or a suspicious email, treat it as a possible compromise and run the <a href="first-30-minutes-incident-response.html">first 30 minutes</a> in parallel with the recovery call.</li>
+<li><strong>When you're back in, build the account the same week.</strong> This checklist exists so "the day after, not the day of" stops being the story you tell. Recovery without the follow-through is just the first act of a repeat.</li>
+<li><strong>Audit the window.</strong> Whoever held the door during the lockout did things with it. Pull the audit log for the whole lockout period before you consider it closed.</li>
+</ul>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="mfa-device-lost-runbook.html">MFA Device Lost Runbook for Small Teams</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes: Incident Response</a></li>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist</a></li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout for Small Business</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
