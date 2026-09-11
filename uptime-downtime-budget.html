@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Uptime Budget: How Much Downtime 99.9% Actually Buys (And How to Spend It) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A downtime budget for small teams: what 99.9% uptime really allows per month, how to spend it on deploys and maintenance, and the one-line ledger that keeps SLO conversations honest.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>The Uptime Budget: How Much Downtime 99.9% Actually Buys (And How to Spend It)</h1>
+<p>Most teams promise "99.9% uptime" without ever doing the math. Nine-nine-point-nine means <strong>43 minutes and 50 seconds of downtime per month</strong> &mdash; that's the whole budget. Every deploy that 502s for two minutes, every migration that runs long, every cable someone pulls: it all spends from the same 43 minutes. Teams that never write the number down are always surprised by it. Here's the checklist to make yours a budget you actually manage.</p>
+
+<h2>The downtime budget &mdash; copy this</h2>
+<ol>
+<li><strong>Pick one number and publish it.</strong> 99% = 7h 12m/month. 99.5% = 3h 36m. 99.9% = 43m 50s. 99.95% = 21m 55s. Choose the number your customers actually experience today &mdash; not the aspirational one. An SLO nobody believes is worse than an honest one.</li>
+<li><strong>Measure from the customer's side.</strong> The budget is spent when a customer can't use the product, not when a host is down. An internal replica failing while users see nothing spends nothing. If you can't measure from outside, that's finding #0 &mdash; an external check is the whole measurement.</li>
+<li><strong>Write the one-line ledger per incident.</strong> Date, minutes, cause, was it customer-visible (y/n). At the end of each month you sum one column. Ten lines a quarter is the entire SLO governance most small teams need.</li>
+<li><strong>Plan maintenance inside the budget.</strong> Want a 20-minute database migration window? That's half the 99.9% budget, in one shot. Either schedule it deliberately and say so, or drop the promise to 99.5% and sleep better. Pretending maintenance doesn't count is how SLOs become fiction.</li>
+<li><strong>Spend deploys out of the same wallet.</strong> If your deploys cause a visible blip, each one costs budget. Ten deploys a week at 30 seconds each is 25 minutes a month &mdash; more than half of 99.9%. Making deploys zero-downtime isn't a luxury; it's how you keep budget for real incidents.</li>
+<li><strong>Set the burn alarm, not the perfection alarm.</strong> Alert when you've burned 50% of the monthly budget in the first week &mdash; that pace means you'll breach. Don't alert on every minute of downtime; alert on pace.</li>
+<li><strong>Breach &rarr; short written review, not shame.</strong> When the budget is spent, the review is three questions: what spent it, what would have prevented it, and is the SLO still the right promise. Fix or renegotiate &mdash; never quietly ignore.</li>
+</ol>
+
+<h2>The one-line uptime ledger</h2>
+<table>
+<tr><th>Date</th><th>Minutes</th><th>Cause</th><th>Customer-visible</th><th>Would have prevented</th></tr>
+<tr><td>2026-09-04</td><td>6</td><td>Deploy rollback blip</td><td>yes</td><td>Pre-deploy smoke check (now added)</td></tr>
+<tr><td>2026-09-09</td><td>18</td><td>Disk full on db-01</td><td>yes</td><td>Disk alert at 80% &mdash; existed, was SEV3</td></tr>
+<tr><td>2026-09-14</td><td>4</td><td>TLS cert renewal</td><td>no</td><td>n/a</td></tr>
+</table>
+
+<h2>The rules that keep the budget honest</h2>
+<ul>
+<li><strong>The budget is shared.</strong> Deploys, maintenance, and incidents all spend from it. The moment one team believes their downtime "doesn't count", the number stops meaning anything.</li>
+<li><strong>Round up, in the customer's favor.</strong> 3 minutes of errors counted as 5. Cheap insurance against lying to yourself, and it makes the ledger fun to keep instead of a defense case.</li>
+<li><strong>Renew the promise yearly, out loud.</strong> Your product in 12 months won't match today's. An SLO reviewed once a year is a contract you can keep; one set in stone is a breach you scheduled.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> includes the monitoring pack &mdash; the uptime ledger, burn-rate alerts, and the maintenance-window calendar this checklist plugs into &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so uptime checks and ledgers update themselves</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="server-monitoring-checklist-small-teams.html">Server Monitoring Checklist for Small Teams</a></li>
+<li><a href="severity-matrix-3-levels.html">Severity Levels: Why 3 Levels Beat 5 for Small Teams</a></li>
+<li><a href="status-page-communication-template.html">Status Page Communication Template</a></li>
+<li><a href="change-management-checklist.html">Change Management Checklist for Small Teams (No CAB Required)</a></li>
+<li><a href="deployment-rollback-checklist.html">Deployment Rollback Checklist (Tested Before You Need It)</a></li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams (Blameless, 1 Page)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+</main>
+</body>
+</html>
