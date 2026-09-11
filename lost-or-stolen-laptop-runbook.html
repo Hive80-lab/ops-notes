@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lost or Stolen Laptop: The First Hour (Revoke, Wipe, Document)</title>
+<meta name="description" content="A step-by-step runbook for a lost or stolen company laptop: the first 10 minutes of session revocation, remote wipe, what's actually on the disk (and how to make sure it doesn't matter), secret rotation, the paperwork, and the encryption-by-default policy that makes theft an insurance claim instead of a breach.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Lost or stolen laptop: the first hour, in order</h1>
+
+<p>A lost laptop is two incidents at once: a <strong>physical loss</strong> (insurers, police, replacement hardware) and an <strong>access incident</strong> (every session, token, cached password, and SSH key that rode out of the coffee shop in someone's backpack). Teams that treat it as only the first one get burned by the second. The order below is designed so that <strong>access gets revoked before you spend an hour on paperwork</strong> &mdash; the thief cannot be slowed down by your forms, so revoke first.</p>
+
+<h2>1. The first 10 minutes: facts, then revocation</h2>
+<ul>
+<li><strong>Confirm the basics and write them down:</strong> whose device, when last seen, where, whether it was locked. You're building a timeline you'll need for police, insurers, and (if customer data lived on it) your notification assessment. Notes now beat reconstruction at 11pm.</li>
+<li><strong>Reset the user's identity first:</strong> rotate the password on the identity provider (Google Workspace, Microsoft 365, or your SSO) and sign the user out of all sessions. On Google: Admin console &rarr; User &rarr; Security &rarr; Sign out. This kills the mail, drive, and SSO sessions in one move.</li>
+<li><strong>Revoke MFA devices and app passwords for that user</strong> &mdash; the laptop may hold an enrolled authenticator or an app password that keeps working after the password changes.</li>
+<li><strong>Try the remote controls immediately, in this order:</strong> locate/lock (Find My, Microsoft Entra device actions, MDM) and then remote wipe. Wipe takes a while; starting it now is what makes it finish.</li>
+<li><strong>Revoke network access:</strong> disable the device certificate or VPN account, and remove the laptop's entry from your WiFi/zero-trust tooling. A wiped-but-online laptop with a valid VPN cert can still be a door.</li>
+</ul>
+
+<h2>2. Assume the disk is readable (because it might be)</h2>
+<ul>
+<li><strong>Verify disk encryption status, don't assume it.</strong> FileVault or BitLocker on means a powered-off, encrypted machine is mostly an insurance claim. Off means the disk is readable with a Linux USB stick &mdash; treat everything on it as compromised. Check the status for that specific device in your inventory or MDM console; ask the user "did you ever get the 'enable FileVault' prompt?" if no records exist.</li>
+<li><strong>Rotate what the device could hold:</strong> SSH keys and GitHub tokens, API keys in <code>.env</code> files and config folders, passwords saved in the browser, VPN configs, chat tokens, any creds pasted into terminal history. This is the same play as an <a href="api-key-leak-response-runbook.html">API key leak</a> &mdash; enumerate, rotate, verify the old one is dead.</li>
+<li><strong>Check for customer data</strong> before anyone says "there was nothing sensitive on it." Cached email attachments, downloads, a spreadsheet of client contacts on the desktop &mdash; these count as data on a readable disk, and they can trigger breach notification duties depending on your jurisdiction and contracts. Note what you find, don't guess.</li>
+<li><strong>Watch the account</strong> for the next 72 hours: new sign-in alerts, new MFA devices, rules added to the mailbox (a classic post-theft persistence trick), and password-reset attempts on related accounts.</li>
+</ul>
+
+<h2>3. The paperwork (do it while the trail is fresh)</h2>
+<ul>
+<li><strong>Police report</strong> &mdash; required by most insurers, and some corporate policies require a report number for breach documentation. Non-emergency line is fine; you want the number, not a manhunt.</li>
+<li><strong>Insurance or lease claim</strong> with the serial number (it's in your inventory or the original invoice &mdash; this is the moment the asset inventory earns its keep).</li>
+<li><strong>Written incident record:</strong> timeline, actions taken with times, encryption status, what was rotated, what you watched. If a customer ever asks "what did you do when the laptop was stolen," this document is the answer.</li>
+<li><strong>If personal data may have been exposed:</strong> run it through your <a href="incident-response-plan-template-small-teams.html">incident response plan</a> and check local notification obligations. "Probably fine" is not a defensible conclusion; "we assessed and it was encrypted, here's the record" is.</li>
+<li><strong>Debrief the human.</strong> The user who lost the laptop should tell the team what happened and be thanked for reporting fast. Punish the first report and you guarantee the second laptop goes unreported for three days.</li>
+</ul>
+
+<h2>4. The mistakes that turn theft into breach</h2>
+<ul>
+<li><strong>Waiting to see if it turns up.</strong> The most common failure. "It's probably in the car" costs you the revocation window. Lock can be undone; a wiped laptop can be restored from backup; a session that ran for six hours cannot.</li>
+<li><strong>Password reset without session sign-out.</strong> Most suites keep existing sessions alive after a password change. Reset + "sign out everywhere" is one action, not two.</li>
+<li><strong>Encryption that was "coming next quarter."</strong> If FileVault/BitLocker is not enforced fleet-wide, the first theft is the audit. Enforce it, and store recovery keys centrally &mdash; a disk the company cannot unlock is its own mini-disaster.</li>
+<li><strong>Secrets living on laptops at all.</strong> Production keys in <code>.env</code> files, browser-stored passwords for admin panels, SSH keys with no passphrase. Secrets belong in the <a href="secrets-rotation-checklist.html">password manager and a rotation cycle</a>, not on a machine that weighs two kilograms and travels.</li>
+<li><strong>No device inventory.</strong> You cannot wipe a device you can't identify, and you can't claim insurance on a serial number nobody recorded. Inventory with owner, serial, encryption status, and last-seen date &mdash; a spreadsheet beats nothing, MDM beats a spreadsheet.</li>
+</ul>
+
+<h2>5. Prevention: make the next theft boring</h2>
+<ul>
+<li><strong>Encryption by default</strong> &mdash; enforced during onboarding via your <a href="employee-onboarding-checklist-template.html">onboarding checklist</a>, not offered as a settings panel the user never opens.</li>
+<li><strong>MDM or at least remote-wipe enrollment</strong> for every laptop that touches company mail. Test the wipe once on a spare device so you know what it actually does (and how long it takes).</li>
+<li><strong>Session hygiene:</strong> short idle timeouts on admin consoles, no "remember this device" on the money-path accounts, MFA re-prompt on sensitive actions.</li>
+<li><strong>Backups that make hardware disposable:</strong> if the machine is backed up daily, the data loss is zero and the incident is purely about access &mdash; which is the incident you can control.</li>
+<li><strong>Add it to the tabletop:</strong> one rotation of your <a href="tabletop-exercise-failure-points.html">tabletop exercise</a> should be "the CFO's laptop just vanished at the airport." You'll find the gaps in revocation in an hour, not during the real one.</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Revoke before paperwork:</strong> identity reset + sign-out-everywhere + MFA device revocation + remote wipe + network revocation, in that order, in the first ten minutes.</li>
+<li><strong>Encryption turns theft into insurance;</strong> the absence of encryption turns theft into disclosure. Enforce it on day one of device ownership.</li>
+<li><strong>Rotate what the device could hold</strong> &mdash; tokens, keys, saved passwords &mdash; and watch the account for persistence tricks for 72 hours.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the incident record and asset inventory sheets this runbook leans on, and <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> turns the 72-hour watch (sign-in alerts, new MFA devices, mailbox rules) into an automated daily check. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="api-key-leak-response-runbook.html">API Key Leak Response Runbook</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Teams (Enforce It Without Locking Anyone Out)</a></li>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
