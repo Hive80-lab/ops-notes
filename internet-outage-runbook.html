@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internet Outage Runbook for Small Teams (When the Whole Office Goes Dark) &mdash; ops-notes</title>
+<meta name="description" content="An internet outage runbook for small teams: prove it is the ISP and not you in the first ten minutes, stand up a phone-tether failover lane with data caps, keep the critical path working offline, tell customers before they ask, climb the ISP escalation ladder with a ticket number, decide the shop-stays-open threshold, and close the loop with a drill and a backup-ISP quote.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Internet outage runbook: when the whole office goes dark</h1>
+
+<p>Tuesday, 11:05. The router's green lights turn amber, three people announce it in three Slack threads, and someone is already rebooting a switch nobody asked them to touch. An internet outage is the rare incident where the diagnosis is the easy part and everything else &mdash; customers, payments, phones, the queue of people asking "is it just me?" &mdash; is the hard part. The <a href="dns-outage-runbook.html">DNS outage runbook</a> covers the case where the pipe works but names don't resolve; this page is the bigger, dumber failure: the pipe itself is gone, and the team needs to keep working and keep selling until it comes back. The one rule that runs the whole page: <strong>declare it once, work the ladder, and never let the customer be the one to tell you the internet is down.</strong></p>
+
+<h2>1. First ten minutes: prove it is the ISP and not you</h2>
+
+<ul>
+<li><strong>One wired device, one known-good cable, one speed test.</strong> If the wired desktop on the good cable also has no internet, the office wifi is not the suspect. This single test prevents the classic hour lost re-flashing a router that was never the problem.</li>
+<li><strong>Phone hotspot tells you which side of the modem you are on.</strong> If the office phone on cellular loads sites fine, your local network may still be suspect &mdash; but at minimum the world outside is working, which means this is "our pipe," not "the internet."</li>
+<li><strong>Router lights and modem lights, read in order.</strong> Amber or red on the modem's WAN indicator with everything else green is an ISP-side failure signature. Note the exact pattern and the time &mdash; it is evidence for the support ticket you are about to open, and the <a href="first-30-minutes-incident-response.html">first thirty minutes discipline</a> applies to outages too.</li>
+<li><strong>Check the ISP's own status page from a phone.</strong> If their status page is green while three people's traceroutes die at the same hop, screenshot it. A green status page during a real outage is exactly the kind of fact that turns a polite support call into an escalation.</li>
+<li><strong>One reboot, of one device, by one person, then stop.</strong> A single power-cycle of the router/modem is a legitimate early step. A cycle of uncoordinated reboots from four people is how a ten-minute ISP blip becomes an afternoon of "which config did we lose?"</li>
+</ul>
+
+<h2>2. Declare the outage and staff it</h2>
+
+<ul>
+<li><strong>One channel, one owner, one message.</strong> Post to the team channel: what is down, who owns the incident, where updates will land. The <a href="incident-communication-templates.html">incident communication templates</a> work for internal outages just as well as customer-facing ones.</li>
+<li><strong>Name the fallback owner for the moment the primary's laptop battery dies.</strong> An outage that kills the office wifi also kills the video bridge the incident owner was running the incident from. The <a href="on-call-handoff-checklist.html">on-call handoff rules</a> apply here: state, then contact, then authority.</li>
+<li><strong>Track the clock from the last verified-good moment.</strong> When did the internet last provably work? That timestamp starts your SLA math and ends the "was it down when I left for lunch?" debates.</li>
+<li><strong>Kill the automation that depends on the dead pipe.</strong> Scheduled syncs, deploy pipelines, and cloud backup jobs will fail loudly or, worse, retry silently into the void. The <a href="cron-job-monitoring-checklist.html">cron monitoring rules</a> earn their keep here &mdash; a paused backup job is a note in the log; a failed one is a mystery next week.</li>
+</ul>
+
+<h2>3. Stand up the failover lane</h2>
+
+<ul>
+<li><strong>The failover lane is a phone, a cable, and a rule.</strong> Any recent phone with a working data plan is a backup WAN. The rule: it is for the tasks that keep the business alive, not for YouTube "because nobody can do anything anyway."</li>
+<li><strong>Name what gets the hotspot first.</strong> Order of precedence, written before the outage: the payment/POS path, the support inbox, the on-call bridge. Everything else waits. A hotspot shared without priorities is a hotspot shared by whoever shouted first.</li>
+<li><strong>Know the data cap math before you need it.</strong> Ten gigabytes is about an hour of video calls or two days of email and dashboards. Tether one laptop as the office's shared gateway if you must, but video calls are the first thing that dies, not the last.</li>
+<li><strong>A 4G/5G backup router is the grown-up version of this section.</strong> A backup router with a data SIM, tested quarterly, turns a two-hour outage into a shrug. If the office has none, the runbook's job is to survive today &mdash; and the after-action step is to price one.</li>
+<li><strong>People who can work from home should go work from home.</strong> The <a href="remote-work-security-checklist.html">remote work rules</a> apply from day one: VPN up, no "just this once" shadow storage, personal hotspot hotspots stay personal devices. The office being dark is not a permission slip for security debt.</li>
+</ul>
+
+<h2>4. Keep the critical path alive offline</h2>
+
+<ul>
+<li><strong>Split the work into "cloud-required" and "works-anyway."</strong> Local file edits, design work on local assets, writing, and planning all survive an outage. Anything whose save button is a cloud icon does not &mdash; name it, so nobody loses an hour of work to a save that silently failed.</li>
+<li><strong>Switch the cloud-app work to phone-tether, only for the alive lane.</strong> Sending invoices, answering the support inbox, running payroll: these ride the failover lane. Everything cloud-flavored but not urgent waits, in writing.</li>
+<li><strong>Write down what the outage silently breaks.</strong> Door-badge provisioning, label printers that pull fonts from the cloud, the VoIP desk phones, the smartboard that signs in every morning. The list you capture today is the outage-impact map you reuse next time.</li>
+<li><strong>Payments have a paper fallback that everyone knows.</strong> If the point-of-sale is cloud-bound, the manual-receipt procedure exists and someone on shift can run it &mdash; or the honest answer is "we cannot take payments right now," and the decision to close follows from that fact, not from hope.</li>
+</ul>
+
+<h2>5. Talk to customers before they ask</h2>
+
+<ul>
+<li><strong>Publish the first status note inside fifteen minutes, even if it says nothing new.</strong> "We are aware of an outage affecting our office systems and are working with our provider" is a complete first message. The <a href="status-page-communication-template.html">status page template</a> has the cadence and the phrasing; the one-hour update rhythm is what keeps the inbox quiet.</li>
+<li><strong>Use phone and SMS if the web presence is unreachable.</strong> A status page hosted on the same dead pipe helps nobody. The personal phones of two named people are the emergency outbound channel until the pipe returns.</li>
+<li><strong>Say what still works, not only what broke.</strong> "Order history is unavailable, support email is working, replies may be slower than usual" is a useful message. "We are experiencing technical difficulties" is wallpaper.</li>
+<li><strong>Give the next update a time, not a promise.</strong> "Next update at 1:30pm" beats "shortly." An outage with a clock on it stays calm; an outage with only adjectives escalates.</li>
+</ul>
+
+<h2>6. Work the ISP ladder</h2>
+
+<ul>
+<li><strong>Open the ticket early, even if the status page says fine.</strong> The ticket timestamp is what you point at later for SLA credits, and tier-one scripts resolve "did you try rebooting" in minutes if you have already done it and can say so.</li>
+<li><strong>Ask for the incident number and an ETA in writing.</strong> "We have an open ticket, incident #48211, provider ETA under review, last update 12:40" is a status update. "They are working on it" is a mood.</li>
+<li><strong>Escalate with facts, not volume.</strong> Businesses affected, hours down, the green status page screenshot, the traceroute dying at the same hop. The <a href="vendor-escalation-ladder.html">vendor escalation ladder</a> is the same climb with an ISP on top of it.</li>
+<li><strong>Log every checkpoint time.</strong> Down at 11:05, ticket at 11:20, escalation at 12:15, restored at 14:50, verified 15:05. This log is the input to the after-action section and the evidence for any service-credit claim.</li>
+<li><strong>Know what your contract promises before you need it.</strong> The <a href="vendor-contract-checklist.html">vendor contract review</a> should have surfaced the SLA, the credit formula, and the escalation contact. If it did not, this outage is the prompt to fetch that page of the contract.</li>
+</ul>
+
+<h2>7. Decide the shop-stays-open threshold</h2>
+
+<ul>
+<li><strong>Write the threshold down while nothing is down.</strong> "If the outage passes two hours and payments are still down, we close the floor and send people home" is a decision made in daylight. The same decision made at hour three is an argument made in the dark.</li>
+<li><strong>Hourly workers get a real answer, not "wait and see."</strong> The <a href="on-call-compensation-policy.html">compensation principle</a> rhymes: people's time is a cost you either spend deliberately or waste resentfully. Two hours of paid "stand by" is cheaper than a day of ambiguity.</li>
+<li><strong>Customers get the closure decision too.</strong> If the office closes, the status note says so, with the reopening condition. "Closed until we can take payments; next update 4pm" ends the trickle of "are you open?" calls.</li>
+<li><strong>Sending people home is not failure.</strong> A five-person team idle on a dead pipe costs more in morale than the outage itself. The <a href="power-failure-it-checklist.html">power-failure checklist</a> makes the same point with worse weather: the runbook's job is the decision, not the heroics.</li>
+</ul>
+
+<h2>8. After reconnection: verify, log, harden</h2>
+
+<ul>
+<li><strong>Verify before you declare victory.</strong> Two pages on two networks, one upload, one video call, one payment test. The <a href="vendor-outage-runbook.html">vendor outage rules</a> apply: restored is a claim, verified is a fact.</li>
+<li><strong>Un-pause what you paused, in the same breath.</strong> Backups, cron jobs, deploys, monitoring holds. A resumed schedule nobody resumed is next month's <a href="backup-restore-test-checklist.html">restore-test</a> mystery.</li>
+<li><strong>Replay the runbook against what actually happened.</strong> What did section 3 get wrong about your office? Which cloud app surprised you? Update the runbook the same day &mdash; an after-action note written a week later is fiction.</li>
+<li><strong>Price the failover upgrade while the memory is fresh.</strong> The backup-SIM router, the second ISP on a different last-mile medium, the tethered-laptop gateway. One quote obtained this week is worth ten remembered intentions.</li>
+<li><strong>Drill it quarterly, fifteen minutes.</strong> Cut the WAN (or just pretend to), walk the first three sections on paper, check the hotspot still has data and charge. The <a href="incident-response-drill-schedule-template.html">drill schedule</a> exists so this rehearsal happens on a calendar, not only in outages.</li>
+<li><strong>Feed the log into the annual review.</strong> Downtime hours, customer impact, what the failover lane actually carried. The <a href="annual-security-review-checklist.html">annual review</a> and the <a href="server-monitoring-checklist-small-teams.html">monitoring checklist</a> both get a row out of it.</li>
+</ul>
+
+<p>The whole discipline fits one sentence a five-person team can keep: <em>prove it is the ISP, declare it once, keep the alive lane alive, tell people before they ask, climb the ladder with a ticket number, and decide daylight-bright whether the shop stays open.</em> The internet coming back is the provider's job; the business surviving the wait is yours &mdash; and this page is how it does, on paper, before the next amber light.</p>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="dns-outage-runbook.html">DNS Outage Runbook</a></li>
+<li><a href="power-failure-it-checklist.html">Power Failure IT Checklist</a></li>
+<li><a href="status-page-communication-template.html">Status Page Communication Template</a></li>
+<li><a href="vendor-outage-runbook.html">Vendor Outage Runbook</a></li>
+<li><a href="vendor-escalation-ladder.html">Vendor Escalation Ladder</a></li>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist</a></li>
+<li><a href="on-call-handoff-checklist.html">On-Call Handoff Checklist</a></li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes: Incident Response</a></li>
+<li><a href="incident-response-drill-schedule-template.html">Incident Response Drill Schedule</a></li>
+<li><a href="cron-job-monitoring-checklist.html">Cron Job Monitoring Checklist</a></li>
+<li><a href="on-call-compensation-policy.html">On-Call Compensation Policy</a></li>
+<li><a href="vendor-contract-checklist.html">Vendor Contract Checklist</a></li>
+</ul>
+</aside>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
