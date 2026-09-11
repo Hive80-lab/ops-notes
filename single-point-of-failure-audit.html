@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Single Point of Failure Audit for Small Teams (Find the One Thing That Kills Everything)</title>
+<meta name="description" content="A two-hour single-point-of-failure audit for small teams: walk every critical path, tag each dependency one-deep, score each SPOF by blast radius and likelihood, and fix the top three with fallbacks that cost almost nothing. Includes the walk-the-wire method, the eleven usual suspects, a worked example, and a paste-in SPOF register CSV.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Single Point of Failure Audit for Small Teams: Find the One Thing That Kills Everything</h1>
+<p class="lede">Every small business runs on a handful of invisible single points of failure: the one DNS provider, the one laptop with the only copy of the accounting file, the one contractor who holds the deploy credentials, the one power adapter for the office server. None of them are problems &mdash; until the day they are, and then they're the whole problem. A SPOF audit doesn't eliminate risk; it makes the invisible visible and prices the fallback before the outage prices it for you. This audit takes one person about two hours, once or twice a year.</p>
+
+<h2>TL;DR: The Two-Hour Audit</h2>
+<ul>
+<li><strong>The gap it closes:</strong> redundancy failures are silent &mdash; nobody notices that "the backup laptop" was repurposed in March, or that the backup vendor account expired, until the primary dies.</li>
+<li><strong>The method:</strong> pick your three most critical flows (orders, payments, customer comms), walk each one end to end, and tag every dependency one level deep &mdash; every link where "if this dies, the flow stops."</li>
+<li><strong>The rule:</strong> you don't fix every SPOF. You fix the ones where blast radius is catastrophic and likelihood is nonzero, and you <em>write down</em> the ones you accept.</li>
+<li><strong>The payoff:</strong> most fixes cost nothing &mdash; a printed recovery page, a second admin account, an offline copy of the vendor list. The expensive ones get budgeted on purpose instead of discovered at 2am.</li>
+</ul>
+
+<h2>Walk the Wire: The Method</h2>
+<p>Pick one critical flow &mdash; say, "a customer buys something." Now trace it as a chain of physical and virtual links, and for <strong>each link ask: what else provides this?</strong> If the answer is "nothing," you found a SPOF. One level deep is enough; mapping four levels deep produces a diagram nobody reads.</p>
+<table>
+<tr><th>Link in the flow</th><th>Dependency</th><th>Second provider?</th></tr>
+<tr><td>Customer opens the site</td><td>DNS registrar &rarr; hosting &rarr; CDN</td><td>Usually none &mdash; check registrar expiry and lock status (<a href="domain-hijack-protection-checklist.html">domain hijack protection</a>)</td></tr>
+<tr><td>Payment is authorized</td><td>Payment processor &rarr; its acquiring bank</td><td>One processor is a SPOF &mdash; see the <a href="payment-outage-playbook.html">payment outage playbook</a></td></tr>
+<tr><td>Order confirmation is sent</td><td>Email provider &rarr; domain's SPF/DKIM/DMARC</td><td>None for most teams &mdash; at minimum keep the <a href="email-deliverability-spf-dkim-dmarc-checklist.html">email authentication records</a> documented offline</td></tr>
+<tr><td>Order is fulfilled</td><td>Fulfillment app &rarr; shipping API</td><td>Manual fallback: a printed label process and the vendor's phone number</td></tr>
+<tr><td>Staff diagnose any failure</td><td>Laptop with admin credentials &rarr; 2FA device &rarr; password manager</td><td>The <a href="mfa-device-lost-runbook.html">lost-MFA runbook</a> only works if a second admin exists</td></tr>
+</table>
+<p>Do this for your three flows. A four-person team typically surfaces 10&ndash;18 SPOFs in the first pass. That's normal, and it's the point: the audit converts vague dread into a ranked list.</p>
+
+<h2>The Eleven Usual Suspects</h2>
+<p>Almost every small-team audit finds some of these. Scan the list before you walk the wire &mdash; it primes the search:</p>
+<ol>
+<li><strong>The domain registrar.</strong> Auto-renew off, credit card expired, single admin. The business dies of an expired credit card, not a hacker.</li>
+<li><strong>The payment processor.</strong> Account freezes are the classic small-business outage &mdash; funds frozen for 30 days with no recourse. Read the <a href="vendor-contract-checklist.html">vendor contract checklist</a> clause on fund holds <em>before</em> you need it.</li>
+<li><strong>The single admin account.</strong> One person holds owner rights to the domain, the store, and the email tenant. If their phone is at the bottom of a lake, so is your access. The fix is a break-glass admin &mdash; see the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> for storage.</li>
+<li><strong>The one laptop.</strong> The machine with the local books file, the design sources, or the deploy keys. If it's not backed up to two places, it's the business.</li>
+<li><strong>The office network.</strong> One router, one ISP, one power circuit. The <a href="internet-outage-runbook.html">internet outage runbook</a> is the drill for this one.</li>
+<li><strong>The contractor with the keys.</strong> The freelancer who holds the DNS, the hosting, and the deploy pipeline &mdash; and replies to email within a week. This is the people-shaped version: the <a href="key-person-dependency-checklist.html">key-person dependency checklist</a> handles the human half.</li>
+<li><strong>The third-party integration.</strong> One webhooks provider, one shipping API, one tax service &mdash; with no documented fallback and no idea what breaks when they do. The <a href="vendor-escalation-ladder.html">vendor escalation ladder</a> at least gets you a human fast.</li>
+<li><strong>The certificate and the cron job.</strong> SSL expiry and a nightly job nobody monitors each take the site down quietly. The <a href="ssl-certificate-expiry-runbook.html">SSL expiry runbook</a> and <a href="cron-job-monitoring-checklist.html">cron monitoring checklist</a> are the pre-made fixes.</li>
+<li><strong>The shared inbox.</strong> One email address (support@, orders@) whose password one person knows, on one phone, with no delegate access.</li>
+<li><strong>The printer, the dongle, the physical key.</strong> The only key to the server cabinet or the mail room is a SPOF with a blast radius you'll meet on a Saturday.</li>
+<li><strong>Knowledge itself.</strong> The setup that exists in one person's head: the deploy sequence, the vendor contacts, the router admin password. If it's not written, it's a SPOF. The <a href="runbook-template.html">runbook template</a> is the cure.</li>
+</ol>
+
+<h2>Score It: Blast Radius &times; Likelihood</h2>
+<p>Rate every SPOF on two axes and fix in order:</p>
+<table>
+<tr><th>Blast radius</th><th>Likelihood</th><th>Action</th></tr>
+<tr><td>Stops revenue (orders, payments, DNS)</td><td>Has failed before, or no redundancy at all</td><td><strong>Fix now</strong> &mdash; this sprint, this week</td></tr>
+<tr><td>Stops revenue</td><td>Unlikely (redundant, contractually solid)</td><td><strong>Document + monitor</strong> &mdash; alert on it, revisit next audit</td></tr>
+<tr><td>Stops one team's workday</td><td>Any</td><td><strong>Cheap fallback</strong> &mdash; spare adapter, printed contact list, delegate access</td></tr>
+<tr><td>Cosmetic</td><td>Any</td><td><strong>Accept in writing</strong> &mdash; a one-line risk acceptance in the register</td></tr>
+</table>
+<p>The discipline that makes the audit worth anything is the last row: an accepted risk you wrote down is a decision; an unexamined one is a surprise.</p>
+
+<h2>Worked Example: The Agency That Almost Lost Tuesday</h2>
+<p>A five-person marketing agency ran the audit on a quiet Friday. Top finding: their DNS registrar account was in the name of a founder's personal email, with auto-renew disabled and the credit card on file expired in March. Blast radius: total &mdash; no DNS, no email, no website, no client campaigns. They fixed it in twenty minutes: card updated, auto-renew on, registrar lock enabled, and a second admin added. The next finding was a contractor in another country who held sole deploy access to a client's site &mdash; the fix was a shared vault entry and a documented handover, not a confrontation.</p>
+<p>Total audit cost: two hours and two 20-minute fixes. The alternative scenario &mdash; DNS lapses on a launch Monday, recovery takes three days through registrar support queues &mdash; is the kind of story that ends with "we lost the client." The audit is how you read that story in advance, as fiction, instead of living it as news. Close the loop with the <a href="after-action-report-template.html">after-action report</a> if any SPOF on the list has already bitten you once.</p>
+
+<h2>Paste-In SPOF Register (CSV)</h2>
+<pre>
+date,system,dependency,second_provider,blast_radius,likelihood,action,owner,review_date
+2026-09-12,website,DNS registrar,none,total-kill,medium,card+autorenew+2nd admin,owner,2027-03-01
+2026-09-12,checkout,payment processor,none,total-kill,low,2nd processor dormant,sam,2027-03-01
+2026-09-12,deploys,contractor creds,none,blocking,medium,vault entry + runbook,alex,2026-12-01
+2026-09-12,office,printer firmware key,none,annoyance,low,accepted in writing,sam,2027-03-01
+</pre>
+
+<h2>How This Fits the Rest of the Plan</h2>
+<p>The SPOF audit is the input to your <a href="disaster-recovery-plan-template-small-teams.html">disaster recovery plan</a>: every catastrophic-blast-radius row becomes a scenario the DR plan must answer, and the measured cost of each fallback belongs in the <a href="uptime-downtime-budget.html">downtime budget</a>. Re-run the audit after any big change &mdash; new processor, new office, new hire &mdash; and once a year regardless. The <a href="backup-restore-drill-checklist.html">restore drill</a> and the <a href="user-access-review-checklist.html">user access review</a> cover the two SPOFs this audit always re-finds: the backup that was never tested and the account that was never removed.</p>
+
+<h2>Instant-Download Ops Kits</h2>
+<p>This checklist is part of the <strong>Hive80 Lab ops kit line</strong> &mdash; field-tested, instantly downloadable:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/rtodsv">Ops Field Cards</a> &mdash; 12 printable incident checklists &mdash; $4</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+<p><strong>&#9889; Launch pricing is live at the store &mdash; check the banner for today's code.</strong></p>
+
+<h2>Related Ops-Notes Pages</h2>
+<ul>
+<li><a href="key-person-dependency-checklist.html">Key-Person Dependency Checklist</a></li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a></li>
+<li><a href="domain-hijack-protection-checklist.html">Domain Hijack Protection Checklist</a></li>
+<li><a href="payment-outage-playbook.html">Payment Outage Playbook for Small Teams</a></li>
+<li><a href="internet-outage-runbook.html">Internet Outage Runbook</a></li>
+<li><a href="vendor-contract-checklist.html">Vendor Contract Checklist</a></li>
+<li><a href="disaster-recovery-plan-template-small-teams.html">Disaster Recovery Plan Template for Small Teams</a></li>
+<li><a href="runbook-template.html">Runbook Template</a></li>
+</ul>
+</main>
+</body>
+</html>
