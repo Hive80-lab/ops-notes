@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delegation of Authority Template for Small Teams (Who Can Approve What, on One Page) &mdash; ops-notes</title>
+<meta name="description" content="A delegation of authority template for small teams: five decision rows (one-time spend, recurring spend, access and admin rights, external commitments, incidents), dollar thresholds instead of vibes, an evidence column auditors can read, named deputies for the vacation problem, the 2 a.m. emergency path with 24-hour ratification, and the short list that never delegates.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Delegation of authority: who can approve what, on one page</h1>
+
+<p>Every small team runs on one of two failed defaults. Default one: everything escalates to the owner, so a $79 software renewal waits three days for a signature while the trial expires, and nothing moves while he sleeps &mdash; including, if you run agents of your own, every automation you built to move things while you sleep. Default two: the blank check, where a $9/month trial becomes a $2,000/year line item that nobody remembers approving and a former employee still has domain admin because "someone set it up in March." A delegation of authority (DoA) table is the middle path: one page that says, for the five kinds of decisions that actually happen in a ten-person company, <em>who decides, up to what number, and what evidence the decision leaves behind</em>. It is written on a calm Tuesday so it can be applied on the stressful one. This page is the template, in the order you should build it.</p>
+
+<h2>1. The five rows that cover ninety percent of decisions</h2>
+<ul>
+<li><strong>One-time money.</strong> Software purchases, hardware, contractors, the surprise invoice. The most expensive decision type to leave undefined, because it's the one a busy week quietly answers with "just put it on the card."</li>
+<li><strong>Recurring money.</strong> Subscriptions, retainers, monthly SaaS seats. This row exists because recurring spend is <em>forever</em> money: the $49/month tool that survives four years is $2,352, and it was approved by nobody in particular. Treat every new recurring charge as owner-tier regardless of the amount &mdash; it's the same sprawl logic as the <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a>, applied at the front door instead of during the cleanup.</li>
+<li><strong>Access and admin rights.</strong> Who can grant the keys: standard tooling for a new hire is different from domain admin, break-glass credentials, or a payment-method change. This is the row that keeps the <a href="user-access-review-checklist.html">quarterly access review</a> short, because every grant traces to a named approver instead of a shrug.</li>
+<li><strong>External commitments.</strong> Contracts, security questionnaires, anything customer-facing with your name on it. These bind the company, and the signature discipline lives in the <a href="vendor-contract-checklist.html">vendor contract checklist</a>: one signer, one folder.</li>
+<li><strong>Incidents.</strong> The 2 a.m. spend that unblocks a recovery. Defined at noon so the night shift doesn't have to text the owner to buy back the business &mdash; the same "decided in advance" logic as the <a href="runbook-template.html">runbook template</a>.</li>
+</ul>
+
+<h2>2. The money column: numbers, not adjectives</h2>
+<ul>
+<li><strong>A threshold is a dollar figure with a name attached, or it is decoration.</strong> "Small purchases can be approved by managers" is not a policy; "$200&ndash;$2,000: the budget owner, evidenced by a ticket number" is. Numbers are what make the table survivable by anyone who isn't the owner, and what make it auditable by anyone who is.</li>
+<li><strong>A working starter set for a ten-person team:</strong> under $200 &mdash; any team member, receipt to the shared folder, monthly spot-check; $200&ndash;$2,000 &mdash; the named budget owner; over $2,000 &mdash; owner signature; <em>any new recurring charge &mdash; owner, always</em>, even $9/month, because the amount is not the point, the forever is.</li>
+<li><strong>Review the numbers annually or they erode into theater.</strong> Inflation, team growth, and habit all push real decisions past thresholds that no longer match reality &mdash; and once people routinely break a threshold "because it's obviously fine," the table trains everyone to ignore tables. Put the review in the calendar next to the <a href="annual-security-review-checklist.html">annual security review</a>, adjust the numbers, re-sign the page. One line in the meeting notes is the whole ceremony.</li>
+</ul>
+
+<h2>3. The access column: who can grant the keys</h2>
+<ul>
+<li><strong>The standard new-hire stack is a manager decision, executed from a checklist.</strong> Email, chat, the standard tool set &mdash; the hiring manager approves, provisioning runs off the <a href="oncall-onboarding-new-hires-checklist.html">new-hire onboarding checklist</a>. This is deliberately fast: you are not protecting the company from a new designer having Figma.</li>
+<li><strong>Admin, break-glass, and payment rails are owner decisions, full stop.</strong> Domain admin, the password vault's admin group, MFA resets for admins, any change to the bank account or card on file. These are the credentials an attacker wants and the ones a mistake costs the most &mdash; they sit in the same tier as the <a href="break-glass-account-checklist.html">break-glass accounts</a>: few holders, logged grants, named approver on every one.</li>
+<li><strong>Offboarding anyone can trigger; the owner sees the log.</strong> Removing access on a departure should never wait for a signature &mdash; the checklist runs the same day, and the DoA row says "anyone may execute, owner receives the completion log." Speed on removal, ceremony on grant: that asymmetry is the whole trick, and it's the same one the <a href="employee-offboarding-checklist.html">offboarding checklist</a> runs on.</li>
+</ul>
+
+<h2>4. The evidence column: approvals you can audit</h2>
+<ul>
+<li><strong>Every row names where the approval lives.</strong> A ticket comment, a signed PDF in the contracts folder, a pinned message in the approvals channel &mdash; the place matters less than the fact that it exists and is the <em>same</em> place every time. An approval that lives in a text message is an approval that doesn't exist in six months, which is the same "a place, not a person" rule the <a href="software-license-register.html">license register</a> applies to keys.</li>
+<li><strong>The traceability test is one question:</strong> "who approved this, and where would I look?" Pick three real decisions from last month &mdash; a purchase, a grant, a contract &mdash; and trace each to a row and an artifact. If any of the three dead-ends, the table has a hole; fix the row, not the retrospective.</li>
+<li><strong>This column is what the outsiders read.</strong> The insurer's questionnaire, the customer's <a href="customer-security-questionnaire-template.html">security questionnaire</a>, and the <a href="cyber-insurance-requirements-checklist.html">cyber insurance checklist</a> all ask some version of "who can approve spend and access?" The evidence column turns the answer from an essay into a link.</li>
+</ul>
+
+<h2>5. Deputies: the vacation problem, solved at noon</h2>
+<ul>
+<li><strong>Every approver row gets a named deputy.</strong> Not "someone senior" &mdash; a name. The table's first real test is not a purchase, it's the owner being unreachable for a day while a decision ripens, and a row without a deputy fails that test by design.</li>
+<li><strong>The deputy line has its own limits, written in the row.</strong> A sensible pattern: the deputy may approve one-time spend up to a lower cap, may <em>never</em> approve new recurring charges, admin grants, or contract signatures, and logs every decision in the same evidence column. Narrow in scope, unambiguous in wording.</li>
+<li><strong>Deputy authority can be time-boxed without ceremony.</strong> "While I'm on the plane" is a valid activation if the deputy line already exists on paper. What kills small teams is not the wrong person deciding &mdash; it's the <em>right</em> person being the only person who can, which is one careful bus factor away from the <a href="admin-first-week-runbook.html">first-week runbook's</a> whole argument about inheriting the keys.</li>
+</ul>
+
+<h2>6. Incidents: the 2 a.m. exception, defined at noon</h2>
+<ul>
+<li><strong>The incident commander gets a spend cap, not a phone tree.</strong> Write it down: "to restore service, the IC may spend up to $500 without asking &mdash; the vendor's urgent support tier, a spare drive, an hour of a contractor's time." This is the difference between a ten-minute recovery and a two-hour one where the senior person is negotiating with a payment page at 2 a.m.</li>
+<li><strong>Everything else follows the emergency-change path:</strong> act to restore, then ratify in writing within 24 hours &mdash; the same after-action discipline the <a href="maintenance-window-policy.html">maintenance window policy</a> applies to emergency patches. Ratification is not bureaucracy; it's how the exception teaches the table where its thresholds are wrong.</li>
+<li><strong>Restoring service and negotiating are different authorities.</strong> The IC can buy the backup that ends the outage; the decision to pay an extortion demand, sign anything, or talk to the attacker stays with the owner &mdash; see the short list below.</li>
+</ul>
+
+<h2>7. What never delegates</h2>
+<ul>
+<li><strong>Bank and payment-method changes, always the owner.</strong> Not the deputy, not "finance," the owner &mdash; because this is the one row where a single approved fraud costs the most and reverses the slowest.</li>
+<li><strong>Break-glass credential knowledge and legal signatures.</strong> The break-glass envelope has named holders and that list is short by design; contracts get one signer per the <a href="vendor-contract-checklist.html">vendor contract checklist</a>, with the lawyer rule ($10k+) untouched. Delegation multiplies speed at the edges by concentrating the pointy end deliberately.</li>
+<li><strong>People decisions and the ransom question.</strong> Terminations, compensation, and any decision to pay an extortion demand stay at the top &mdash; these are the decisions where being wrong is expensive in ways a table cannot amortize.</li>
+</ul>
+
+<h2>8. Installing it in one afternoon</h2>
+<ul>
+<li><strong>One page, one table, one signature.</strong> Five rows, dollar figures, deputy names, evidence locations. The owner signs it; it gets pinned in the wiki next to the <a href="admin-first-week-runbook.html">first-week runbook</a> so the next admin inherits the authority map along with the passwords. A DoA table that lives in someone's head is the blank check with extra steps.</li>
+<li><strong>The done-signals are behavioral, not documentary.</strong> Anyone can answer "can I buy this / can I grant this" in under sixty seconds without pinging a human; the owner's approval queue fits on one screen; and the last month's decisions all trace to a row. When those three are true, the table is working. When the first one isn't, the table is decoration and people are back to asking forgiveness.</li>
+<li><strong>Calendar the annual re-sign</strong> and fold it into the <a href="annual-security-review-checklist.html">annual review</a>: thresholds moved, deputies confirmed, rows for things that became a thing this year (your first AI agent's spend, for instance &mdash; the <a href="ai-agent-ops-playbook.html">agent ops playbook</a> has opinions on who an agent reports to, and the DoA row is where that authority is written down).</li>
+</ul>
+
+<p><em>Small-team honesty note: you do not need the corporate forty-page DoA policy with a signature matrix and twelve approval tiers &mdash; that's for companies where "who approved this?" is a deposition question. Ten people need one table, five rows, numbers with dollar signs, a deputy per row, and an emergency clause. The trap this page prevents is symmetric: the owner-as-bottleneck, where every $79 decision waits for a signature and nothing moves overnight (including your agents, which will wait politely and infinitely at exactly that gate), and the blank check, where nobody remembers approving the $2,000/year thing and the quarterly review finds admin grants with no mother or father. Five rows beats both failures. Write it on a calm Tuesday.</em></p>
+
+<p>Related: <a href="vendor-contract-checklist.html">vendor contract checklist</a> &middot; <a href="software-license-register.html">software license register</a> &middot; <a href="user-access-review-checklist.html">user access review</a> &middot; <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a> &middot; <a href="break-glass-account-checklist.html">break-glass account checklist</a> &middot; <a href="admin-first-week-runbook.html">new admin's first week</a> &middot; <a href="employee-offboarding-checklist.html">employee offboarding</a> &middot; <a href="oncall-onboarding-new-hires-checklist.html">new-hire onboarding</a> &middot; <a href="maintenance-window-policy.html">maintenance window policy</a> &middot; <a href="change-freeze-window-policy.html">change freeze policy</a> &middot; <a href="runbook-template.html">runbook template</a> &middot; <a href="incident-response-drill-schedule-template.html">incident drill schedule</a> &middot; <a href="customer-security-questionnaire-template.html">customer security questionnaire</a> &middot; <a href="annual-security-review-checklist.html">annual security review</a> &middot; <a href="cyber-insurance-requirements-checklist.html">cyber insurance checklist</a> &middot; <a href="asset-inventory-checklist.html">asset inventory</a> &middot; <a href="office-move-it-checklist.html">office move checklist</a> &middot; <a href="power-failure-it-checklist.html">power failure IT checklist</a></p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
