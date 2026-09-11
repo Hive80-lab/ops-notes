@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-Call Handoff Checklist for Small Teams (No Monday Surprises) &mdash; Free Template</title>
+<meta name="description" content="A free on-call handoff checklist for small teams: the written handoff note, the five things that must be in it, the template you can copy tonight, and the rule that ends 'wait, YOU were supposed to know about that'.">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>On-Call Handoff Checklist for Small Teams (No Monday Surprises)</h1>
+<p>Most on-call disasters don't start during the on-call shift &mdash; they start at the handoff. Engineer A closed the ticket in their head, muttered something in a hallway, and went on leave. Engineer B inherited a sleeping pager with three landmines inside it. Monday morning, an alert fires, and B finds out about the failing replication job that A has been babysitting all week. The fix costs nothing: a five-minute <em>written</em> handoff with five things in it. Here's the checklist.</p>
+
+<h2>The handoff note &mdash; copy this</h2>
+<ol>
+<li><strong>Written, not verbal. Ever.</strong> "I told Dave about the cron job" is not a handoff &mdash; it's a rumor. If it isn't in the handoff note, the next engineer doesn't know it, and in three weeks nobody will.</li>
+<li><strong>State of the world, in one paragraph.</strong> What's currently degraded, what's currently flapping, what was fixed this week and how. This is the paragraph the next person reads first &mdash; keep it under five lines.</li>
+<li><strong>Open items with owners and deadlines.</strong> Every half-done thing: the migration that's paused at step 3, the cert that expires Thursday, the vendor ticket with no response since Tuesday. Name, date, next action.</li>
+<li><strong>Known flaky alerts, with the tell.</strong> "alertmanager: pvc-alert flaps at 3am, it's the NFS mount, ignore unless it persists 15+ min." One sentence each. This is the single highest-leverage line in the whole note &mdash; it converts 80% of night pages into sleep.</li>
+<li><strong>In-flight changes and their landmines.</strong> Anything deployed, flagged, or disabled this week, plus what to do if it misbehaves. The person who inherits the feature flag should not discover it in an incident.</li>
+<li><strong>Who owes whom an answer.</strong> Escalations sent to vendors, messages waiting on other teams, the security team's pending question. If the next on-call can't see the debt, the debt gets paid in downtime.</li>
+</ol>
+
+<h2>The message you can paste tonight</h2>
+<pre>ON-CALL HANDOFF &mdash; &lt;date&gt; &mdash; from &lt;name&gt; to &lt;name&gt;
+
+STATE: everything up. Grafana dashboard link. One degraded thing: &lt;what&gt;.
+FLAKY: &lt;alert name&gt; flaps &lt;when&gt; &mdash; &lt;why&gt; &mdash; ignore unless &lt;condition&gt;.
+OPEN: 1) &lt;item&gt; &mdash; owner &lt;who&gt; &mdash; due &lt;when&gt; &mdash; next step &lt;what&gt;.
+       2) &lt;item&gt; ...
+CHANGES: &lt;what shipped / got disabled&gt; &mdash; if it misbehaves: &lt;action&gt;.
+WAITING: &lt;vendor/team/person&gt; owes us &lt;answer&gt; since &lt;date&gt;.
+ESCALATE TO: &lt;name&gt; for &lt;area&gt;, &lt;name&gt; for &lt;area&gt;. If unsure: &lt;name&gt;.</pre>
+<p>Seven lines. Two minutes to write, ten seconds to read, and it survives holidays, sick days, and people quitting. A hallway conversation survives none of those.</p>
+
+<h2>Rules that make handoffs survive</h2>
+<ul>
+<li><strong>Same time, every time.</strong> Hand off at a fixed slot &mdash; same weekday, same hour &mdash; so the note is expected, not discovered. A handoff nobody is waiting for is a handoff nobody reads.</li>
+<li><strong>Fifteen minutes, synchronous, then written.</strong> Five minutes of talking is fine for tone; the note is still the artifact. If only the talk happened, the handoff didn't happen.</li>
+<li><strong>The receiver asks one question: "what would you warn me about?"</strong> Whatever comes out of that question goes in the note verbatim. Gut feelings are how handoffs capture what tickets don't.</li>
+<li><strong>No new on-call starts blind.</strong> First day on-call? The previous engineer shadows the first alert hour. One shadowed hour prevents the "I didn't know we HAD a mail server" class of incidents.</li>
+<li><strong>Review the note in the postmortem.</strong> When an incident traces back to something the handoff should have caught, add it to the template. Your handoff note is a living control, not a ritual.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Ops Starter Kit Vol. 2 ($27)</strong></a> includes the full on-call pack &mdash; rotation schedule, escalation matrix, and the handoff note this checklist plugs into &mdash; launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows so the routine checks page a script instead of a human</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="on-call-rotation-schedule-template.html">On-Call Rotation Schedule Template</a></li>
+<li><a href="incident-communication-templates.html">Incident Communication Templates (Status Page, Internal, Customer)</a></li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams (Blameless, 1 Page)</a></li>
+<li><a href="server-monitoring-checklist.html">Server Monitoring Checklist for Small Teams</a></li>
+<li><a href="deployment-rollback-checklist.html">Deployment Rollback Checklist (Tested Before You Need It)</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits for small ops teams</a>.</footer>
+</article>
+</main>
+</body>
+</html>
