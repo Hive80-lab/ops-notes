@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Old Hardware Disposal Checklist (Wipe, Log, Prove It Before the Truck Leaves) &mdash; ops-notes</title>
+<meta name="description" content="A hardware disposal checklist for small teams: no drive leaves unverified, every device gets an inventory row before it powers down, MDM and licenses are deregistered before the wipe, each device class gets the right erase method, drives that cannot boot get destroyed instead of wiped, and the paper trail &mdash; who wiped what, when, how &mdash; is the evidence a client or auditor asks for.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Old hardware disposal: wipe, log, prove it before the truck leaves</h1>
+
+<p>Saturday, 10:20. The upgrade pile finally goes to e-waste: two dead laptops, a monitor, a five-year-old NAS, and the office copier nobody will miss. Someone does a last courtesy check of the top laptop &mdash; and finds the finance director's browser still signed into the company drive, <em>remembered</em>. Nothing malicious, just machines nobody formally owned at the end. That is what a disposal process prevents: the moment of handoff is the last moment your data is your problem, and it is the moment most small teams treat like a trash run. The <a href="asset-inventory-checklist.html">asset inventory</a> tells you what you own; this checklist is the exit lane for what you stop owning &mdash; wipe, log, prove, then let the truck take it. The one rule that runs the whole page: <strong>no storage device leaves the building until its data state is verified and written down.</strong></p>
+
+<h2>1. The pile gets an inventory row before anything powers off</h2>
+<ul>
+<li><strong>Every device, one row: serial, assignee, data state, planned method.</strong> The <a href="asset-inventory-checklist.html">inventory</a> row that was opened when the device arrived is closed by this checklist, not by the recycling bin. Six rows beat a shoebox of "laptops, assorted" &mdash; because the row is what you hand the client who asks "what happened to the laptop with our quarterly decks on it?"</li>
+<li><strong>Copiers, printers, and NAS boxes are computers too.</strong> The office multifunction printer has a hard disk holding every scan and copy of the last five years; the NAS holds the actual backups. The pile that gets taken seriously is the pile with screens; the pile that leaks is the one with paper trays. Check the <a href="printer-security-checklist.html">printer fleet checklist</a> &mdash; its storage section is the first half of this one.</li>
+<li><strong>Photograph the pile as you tag it.</strong> Ten seconds per device: serial number, condition, anything visibly damaged. When a recycler's manifest and your rows disagree later, the photos end the argument in your favor before it starts.</li>
+<li><strong>Pull the drive from any machine that will not boot &mdash; then it stops being "the dead laptop."</strong> A machine that powers on to a firmware error is not exempt from the rule; its disk is exactly as full as it was the day it died. The dead machine gets dismantled at the bench, its drives join the pile as first-class devices, and the empty chassis is the only thing that was ever truly garbage.</li>
+</ul>
+
+<h2>2. Deregister before you wipe, or the wipe creates ghosts</h2>
+<ul>
+<li><strong>MDM and enrollment first.</strong> Remove the device from the management console (the <a href="byod-policy-checklist.html">BYOD policy</a>'s exit step, applied to company-owned hardware) <em>before</em> erasing &mdash; a device wiped while still enrolled comes back from the dead on someone else's login screen, still claiming to belong to your company. The console entry is also the source for the serial-and-assignee row you just wrote.</li>
+<li><strong>Activation locks and BIOS/EFI passwords second.</strong> The Mac that "went to the recycler" and came back with an activation lock still set is un-recyclable and un-sellable, and the fix now needs the original owner's account credentials. Check for Find-My-style locks and firmware passwords on every Mac and every enterprise laptop before the wipe, because after the wipe those checks need the machine to cooperate.</li>
+<li><strong>Software licenses and subscriptions third.</strong> The decommissioned laptop still holds a paid seat of the design suite, and the NAS a perpetual license nobody transferred. Cancel or reassign the seats while the device is still in the building and the licenses are still findable; after disposal, the seat is a monthly bill attached to a serial number in a landfill. The <a href="annual-security-review-checklist.html">annual review</a> finds these too, but it finds them a year late.</li>
+<li><strong>Shared accounts the device was holding last.</strong> The shipping-label kiosk, the door-code tablet, the conference-room screen &mdash; the peripheral that everyone forgot was even a computer. Rotate the shared credentials it knew, the same sweep the <a href="employee-offboarding-checklist.html">offboarding checklist</a> runs for people, extended to machines.</li>
+</ul>
+
+<h2>3. The wipe, per device class &mdash; one method, verified</h2>
+<ul>
+<li><strong>Company laptops and desktops: built-in secure erase, or pull the drive.</strong> Modern machines with self-encrypting drives (FileVault or BitLocker on, per the <a href="backup-encryption-checklist.html">encryption baseline</a>) can be safely released by a signed-in erase that destroys the encryption keys &mdash; the data is mathematically gone. For anything older or unencrypted, the honest method is physical: pull the SSD, wipe it as a drive, recycle the empty chassis. "I deleted my files and emptied the trash" is not a wipe; the file table lost the address, not the data.</li>
+<li><strong>Phones and tablets: factory reset is enough &mdash; after deregistration.</strong> Post-MDM-removal, the built-in reset cryptographically scrubs a modern phone's keys, same physics as the laptop. The trap is order: reset <em>before</em> removing MDM and you get a locked orphan; skip the reset entirely and you get a phone that boots to the ex-employee's photo album.</li>
+<li><strong>External drives and USB sticks: these are the ones that walk out in desk drawers.</strong> Small, unencrypted, unlogged &mdash; and frequently holding the client folder someone copied "just for the meeting" in 2023. Wipe or shred them like any other disk; the drawer is not an archive, and the <a href="backup-key-escrow-recovery.html">key escrow</a> page explains where things that must survive <em>should</em> live instead.</li>
+<li><strong>NAS and server disks: wipe, then verify with a read-back.</strong> These hold the backups themselves, so the stakes are highest &mdash; and the "extra copy for safety" instinct is strongest exactly here. The rule: the <a href="backup-restore-test-checklist.html">restore test</a> already proved the backups live somewhere safe; the disk that held the old copy is wiped, verified, and logged like any other device. Sentiment is not a data-retention policy &mdash; the <a href="log-retention-policy-small-teams.html">retention schedule</a> is.</li>
+<li><strong>Verify, don't assume: boot it one last time.</strong> The verification step for every wipe is the same: power the device back on and confirm it behaves like an empty machine &mdash; setup assistant on a laptop, setup wizard on a phone, blank on a wiped drive in an enclosure. "It ran the erase and I watched the progress bar" is a claim; "it booted to the setup screen afterward" is evidence.</li>
+</ul>
+
+<h2>4. Drives that cannot be wiped get destroyed &mdash; and destruction gets documented too</h2>
+<ul>
+<li><strong>Failed-drive triage: three erase attempts or one ball-peen hammer, but never "send it and hope."</strong> A drive with firmware errors may resist software erasure; that is the moment to switch from wipe to destroy, not to hand the un-wiped drive to the recycler with a note. A degauss or a professional shred service destroys the platters and the data together; a hammer through a spinning drive is crude but effective at 2 a.m., as the <a href="data-breach-first-24-hours.html">breach runbook</a>'s containment section will attest.</li>
+<li><strong>Solid-state drives change the math.</strong> Shredding an SSD works only if the shred is fine enough &mdash; every NAND chip holds data, so the standard is "no chip larger than a grain of rice." Platter drives are more forgiving. If your recycler can't state their shred particle size for SSDs, their truck is not your destruction method; their truck is a transport risk with your logo on the boxes.</li>
+<li><strong>The certificate of destruction is the point.</strong> For anything destroyed rather than wiped, keep: the drive serial (from the inventory row), the method, the date, and the provider's certificate or receipt. This is the document that answers the client question, the insurer question, and the <a href="user-access-review-checklist.html">access review</a>'s "and what about disposed assets?" line &mdash; all with one PDF.</li>
+</ul>
+
+<h2>5. The paper trail: one spreadsheet that closes the loop</h2>
+<ul>
+<li><strong>Columns: serial, description, assignee, data state, method, date, initials, receipt.</strong> The whole paper trail is seven columns, and the evidence it produces is disproportionate to the effort: for any disposed device, in one row, you can answer <em>what left, what was on it, what you did about it, and who saw it done.</em> Auditors, clients, and cyber-insurance questionnaires all read this document; none of them read the recycling bin.</li>
+<li><strong>Close the asset inventory row the same day.</strong> Disposal is the end of a device's life in your <a href="asset-inventory-checklist.html">inventory</a>, and a row that says "disposed 12 Sep, wiped, verified" is the difference between an inventory and a museum. The same review cycle that flags stale access flags the stale asset rows &mdash; the pile in the corner is the physical version of the account nobody deprovisioned.</li>
+<li><strong>Keep the rows as long as the data's risk, not as long as the sentiment.</strong> The disposal log is subject to the same discipline as every other ops artifact: a stated retention period, a named owner, a calendar reminder. The <a href="log-retention-policy-small-teams.html">log retention policy</a> already sets the pattern &mdash; extend it to one more artifact rather than inventing a new one.</li>
+</ul>
+
+<h2>6. The handoff: choose the recycler, watch the boxes out the door</h2>
+<ul>
+<li><strong>Pick a recycler with a chain-of-custody answer, not just a bin.</strong> The question is one sentence: "if a device from my box shows up resold in another country, what is your accountability?" Certified recyclers answer with a certification name and a manifest; the free drop-off bin behind the electronics store answers with a shrug. A wiped device in an uncertified bin is a modest risk; an <em>unwiped</em> one there is an incident with a delivery confirmation.</li>
+<li><strong>You hand it over; you do not leave it in the lobby.</strong> The handoff is the moment custody transfers, so it is the moment the manifest gets signed &mdash; take the paper (or photo) and put the serials next to your inventory rows. The <a href="physical-security-office-checklist.html">physical security</a> rule applies: a stack of wiped-but-unverified hardware by the fire door is an opportunity for whoever walks past it.</li>
+<li><strong>Reuse and resale are the same checklist with one extra step.</strong> Selling or donating a machine is legitimate &mdash; after the wipe, the verification boot, the deregistration, and a fresh OS install so the new owner gets a working machine rather than a mystery. The resale listing that says "wiped, factory reset, ready to go" is honest only because the checklist above it made it true.</li>
+</ul>
+
+<p>The whole discipline fits one sentence a five-person team can keep: <em>every device that leaves is wiped or shredded, every wipe is verified by a reboot, every fact is a row, every row has a receipt.</em> The pile in the corner is the last unmanaged copy of your company's data; this checklist is how it stops being yours, on paper, deliberately.</p>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="asset-inventory-checklist.html">Asset Inventory Checklist</a></li>
+<li><a href="employee-offboarding-checklist.html">Employee Offboarding Checklist</a></li>
+<li><a href="byod-policy-checklist.html">BYOD Policy Checklist</a></li>
+<li><a href="printer-security-checklist.html">Printer Security Checklist</a></li>
+<li><a href="backup-encryption-checklist.html">Backup Encryption Checklist</a></li>
+<li><a href="backup-key-escrow-recovery.html">Backup Key Escrow &amp; Recovery</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist</a></li>
+<li><a href="lost-or-stolen-laptop-runbook.html">Lost or Stolen Laptop Runbook</a></li>
+<li><a href="data-breach-first-24-hours.html">Data Breach: First 24 Hours</a></li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist</a></li>
+<li><a href="physical-security-office-checklist.html">Physical Security Checklist</a></li>
+<li><a href="log-retention-policy-small-teams.html">Log Retention Policy for Small Teams</a></li>
+</ul>
+</aside>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
