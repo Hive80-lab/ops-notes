@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seasonal Peak Readiness Checklist for Small Teams: Surviving Your Best Sales Day</title>
+<meta name="description" content="A seasonal peak readiness checklist for small businesses: capacity math, freeze windows, on-call staffing, load tests, payment limits, and the rollback plan for your biggest traffic day of the year. Peak season punishes teams that improvise &mdash; this checklist makes the biggest day boring, with a copy-paste T-minus plan and instant-download ops kits.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Seasonal Peak Readiness Checklist for Small Teams: Surviving Your Best Sales Day</h1>
+<p class="lede">Every year has one day when your store gets triple the traffic, double the orders, and half the patience &mdash; Black Friday, a product drop, a holiday shipping cutoff, tax season. Peak day rewards teams that prepared in September and punishes teams that improvise in November. This checklist is the T-minus plan: what to freeze, what to load-test, who is on call, what to do when checkout slows down, and how to land the day without a midnight postmortem.</p>
+
+<h2>TL;DR: The Peak-Day Doctrine</h2>
+<ul>
+<li><strong>The math first:</strong> you cannot staff, freeze, or test for &ldquo;busy&rdquo; &mdash; pick a number: last year's peak &times; 3. Every decision below hangs off that number.</li>
+<li><strong>The freeze:</strong> nothing deploys in the 10 days before peak except fixes for things actually on fire. A new feature that works 95% of the time will fail exactly when everyone is looking.</li>
+<li><strong>The staffing:</strong> peak day gets a named incident commander and an on-call rotation written on a calendar, not assumed over coffee.</li>
+<li><strong>The goal:</strong> a boring peak day. The win condition is not &ldquo;zero incidents&rdquo; &mdash; it's &ldquo;every incident handled inside 15 minutes by someone who knew what to do.&rdquo;</li>
+</ul>
+
+<h2>Why Peak Days Break Small Teams</h2>
+<p>Big companies run peak readiness as a program &mdash; capacity reviews in September, freeze windows in November, war rooms on the day. Small teams get the same traffic curve with none of the process, so the failure modes are predictable:</p>
+<ul>
+<li>The database or plan tier that was fine at 400 visitors/day hits 3,000 and everything times out at once.</li>
+<li>Someone ships a &ldquo;small improvement&rdquo; on Black Friday eve. It breaks checkout. There is no clean rollback because four other things shipped since the last known-good.</li>
+<li>The payment processor flags the volume spike as fraud and quietly holds funds &mdash; nobody noticed until payouts stopped.</li>
+<li>Support volume triples while the one person who knows the shipping cutoffs is on a plane.</li>
+<li>Nothing bad happens &mdash; but nobody knows whether anything bad happened, because no one was watching dashboards. You find out from angry DMs.</li>
+</ul>
+<p>Peak readiness is not about preventing every failure. It's about knowing which failures you can tolerate, fixing those you can't, and having the day's decisions made before the day starts.</p>
+
+<h2>The T-Minus Plan: Six Checkpoints</h2>
+<p>Work backward from peak day. Each checkpoint is a dated line on the calendar &mdash; if a checkpoint slips, the freeze extends, not the deadline.</p>
+
+<h3>T&minus;21 days: Capacity Math and the Number</h3>
+<p>Write down last year's peak (traffic, orders, support tickets). Multiply by three &mdash; that's your design target. Then answer with evidence, not vibes:</p>
+<ul>
+<li>What breaks first at 3&times;? Check your plan tiers: hosting, database connections, email quota, API rate limits, payment processing caps.</li>
+<li>Which third-party services have usage ceilings (email sends, webhook calls, file storage, SMS credits)? Suspenders before the day: upgrade, pre-pay, or contact the vendor in writing.</li>
+<li>Run the <a href="cloud-cost-spike-runbook.html">cloud cost spike runbook</a> in reverse: estimate the bill at 3&times; and set the alert threshold above it, so a cost alert doesn't page you mid-peak for spending money you meant to spend.</li>
+<li>Order extra of any physical thing: packaging, labels, printer toner, that weird cable the label printer needs.</li>
+</ul>
+
+<h3>T&minus;14 days: Load Test and the First Freeze</h3>
+<ul>
+<li>Load test the critical path: land &rarr; product &rarr; cart &rarr; checkout &rarr; email receipt. Even a crude test (10 people clicking checkout simultaneously on a staging copy) beats no test.</li>
+<li>Fix what the test found, or descope it. Peak day is not the day to tune your query that takes 4 seconds.</li>
+<li>Declare the freeze in writing: from T&minus;10 (or the test date, whichever is later) only fixes for revenue-affecting bugs ship. Every deploy needs a named approver and a <a href="deployment-rollback-checklist.html">rollback plan tested that day</a>.</li>
+<li>Snapshot everything now: database backup, config export, last-known-good release tag. If the day goes sideways, these are your <a href="backup-restore-test-checklist.html">restore points</a> &mdash; and you verified the restore last month, right?</li>
+</ul>
+
+<h3>T&minus;7 days: Staffing, Contacts, and the War-Room Setup</h3>
+<ul>
+<li>Name the incident commander for peak day (see the <a href="incident-commander-checklist.html">incident commander checklist</a> &mdash; role, not rank; one name on the sheet).</li>
+<li>Write the on-call schedule on a calendar with phone numbers, including a named backup for every role. Solo founder? Then the schedule says when you sleep, when a friend/contractor covers, and that support auto-replies honestly.</li>
+<li>Confirm emergency contacts for every vendor you depend on: payment processor, host, email provider, 3PL. Account numbers, support tiers, and how to escalate past the first-line script.</li>
+<li>Set up the war room: one shared channel, the status page, dashboards pinned. Decide now who is allowed to post publicly and in what voice &mdash; see the <a href="status-page-communication-template.html">status page templates</a>.</li>
+</ul>
+
+<h3>T&minus;1 day: The Final Sweep</h3>
+<ul>
+<li>Freeze check: git log for the week &mdash; anything shipped since the last full test? Either revert it or re-test the critical path end to end.</li>
+<li>Alert check: thresholds raised to match 3&times; volume so the noise floor doesn't page you for traffic you asked for. Alert fatigue on peak day burns out the only people who can fix things.</li>
+<li>Confirm backups ran within the last 24 hours, and the restore procedure is written on one page.</li>
+<li>Load the batteries into the laptop the on-call will actually use. Charger. Second monitor. Phone charged. Real food in the fridge. It sounds like a joke until it's 19:00 and the commander hasn't eaten since 11:00.</li>
+</ul>
+
+<h3>Peak Day: The Battle Rhythm</h3>
+<ul>
+<li><strong>Every hour, on the hour:</strong> one person reads the numbers out loud &mdash; orders per hour, checkout conversion, error rate, support queue depth. Say them out loud even if nothing's wrong; silence is how small problems hide.</li>
+<li><strong>Checkout slowdown protocol:</strong> don't debug live. Step one is always the customer-facing response &mdash; banner up, social posts acknowledged, expectations set. Then the war room opens. (Copy the <a href="payment-outage-playbook.html">payment outage playbook</a> &mdash; it is the same incident wearing a different hat.)</li>
+<li><strong>The spend rule:</strong> the commander may spend up to a written limit ($200 is a good default) to fix an outage without asking anyone. That limit lives on the standing orders sheet, agreed in September.</li>
+<li><strong>Log the timeline as it happens:</strong> timestamps, decisions, actions. Your future postmortem &mdash; and your peak-day postmortem &mdash; is only as good as this log.</li>
+</ul>
+
+<h3>T+2 days: The Landing</h3>
+<ul>
+<li>Thank the team in writing, with specifics, while the memory is fresh.</li>
+<li>Capture the numbers against the T&minus;21 targets: did you hit 3&times;? What broke first? What did the cost actually look like?</li>
+<li>File the postmortem while the pain is fresh &mdash; even a one-pager (use the <a href="postmortem-template-small-teams.html">small-teams postmortem template</a>). Next year's checklist starts from this year's.</li>
+<li>Unfreeze deliberately: first deploy after peak gets extra review &mdash; the tired-team window right after peak is when mistakes are cheapest to catch and most expensive to make.</li>
+</ul>
+
+<h2>The Peak Readiness Checklist (Copy-Paste)</h2>
+<pre>
+PEAK READINESS - T-MINUS SHEET                 Peak date: ____
+Design target: last-year peak x ____ = ____ orders/hr
+
+T-21  CAPACITY
+  [ ] Last-year numbers written down (orders, traffic, tickets)
+  [ ] Plan tiers checked: host / db / email / API / payment cap
+  [ ] Vendor limits confirmed in writing; upgrades booked
+  [ ] Cost alert threshold set ABOVE the expected peak bill
+  [ ] Physical supplies ordered (packaging, labels, toner)
+
+T-14  TEST + FREEZE
+  [ ] Critical path load-tested (land-product-cart-checkout-email)
+  [ ] Findings fixed or descoped
+  [ ] Freeze declared in writing: date, approver, exceptions
+  [ ] Rollback plan tested on the current release
+  [ ] DB backup + config snapshot + last-known-good tag saved
+
+T-7   PEOPLE + CONTACTS
+  [ ] Incident commander named (one name)
+  [ ] On-call calendar written w/ phone numbers + backups
+  [ ] Vendor emergency contacts verified (pay/host/email/3PL)
+  [ ] War-room channel + dashboards + status page ready
+  [ ] Who posts publicly, in what voice: decided
+
+T-1   FINAL CHECK
+  [ ] git log re-tested OR reverted (no untested deploys)
+  [ ] Alert thresholds raised to 3x noise floor
+  [ ] Backup confirmed < 24h old; restore procedure on one page
+  [ ] On-call kit ready: laptop, charger, food, sleep plan
+
+PEAK DAY  BATTLE RHYTHM
+  [ ] Hourly readout: orders/hr, conversion, errors, queue
+  [ ] Slowdown: customer comms FIRST, war room SECOND
+  [ ] Commander spend limit: $____ without asking
+  [ ] Timeline logged live (timestamps, decisions)
+
+T+2    LANDING
+  [ ] Thanks sent in writing, with specifics
+  [ ] Numbers vs targets captured; first-break noted
+  [ ] Postmortem filed (one page minimum)
+  [ ] Unfreeze: first deploy gets extra review
+</pre>
+
+<h2>Worked Example: The Friday the Sale Actually Worked</h2>
+<p>A three-person store ran this sheet for their first big holiday sale. The T&minus;21 math said their shared database plan died around 2&times; last year's traffic &mdash; they upgraded eleven days out, tested the checkout path at 3&times; with friends clicking on a staging copy, and found their email provider capped them at 500 sends/day &mdash; fixed with a written confirmation from the vendor, not a support-ticket hope. Peak day: traffic hit 2.7&times;, checkout conversion dipped 09:00&ndash;09:40, the commander posted the status-page update within 12 minutes (no debugging in public), and the team traced it to a rate-limited webhook &mdash; one vendor contact later, resolved. Total revenue impact: negligible. The owner's summary: &ldquo;The sheet didn't prevent problems. It made the problems small and known.&rdquo; The next year, the checklist took them 40 minutes to update instead of a weekend of rediscovering everything.</p>
+
+<h2>Peak-Day Anti-Patterns</h2>
+<ul>
+<li><strong>The peak-day deploy.</strong> &ldquo;It's a tiny change.&rdquo; It always is. The freeze exists precisely because your judgment is worst when traffic is best.</li>
+<li><strong>Testing only the homepage.</strong> The homepage survives. Checkout, inventory sync, and email sending die first. Load-test the money path.</li>
+<li><strong>Alerts tuned for normal days.</strong> Untouched thresholds will fire constantly at 3&times; and train your team to ignore pages &mdash; exactly when the real page arrives.</li>
+<li><strong>The hero soloist.</strong> One person, no backup, no sleep plan. They will make their worst decision at hour eleven. Write the relief into the calendar.</li>
+<li><strong>Skipping the landing.</strong> Post-peak week is when the repeat-buyer emails, the refund queue, and the &ldquo;where is my order&rdquo; pile live. Landing is part of the checklist, not an afterthought.</li>
+</ul>
+
+<h2>Instant-Download Ops Kits</h2>
+<p>This checklist is part of the <strong>Hive80 Lab ops kit line</strong> &mdash; field-tested, instantly downloadable:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/rtodsv">Ops Field Cards</a> &mdash; 12 printable incident checklists &mdash; $4</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+<p><strong>&#9889; Launch pricing is live at the store &mdash; check the banner for today's code.</strong></p>
+
+<h2>Related Ops-Notes Pages</h2>
+<ul>
+<li><a href="cloud-cost-spike-runbook.html">Cloud Cost Spike Runbook</a> &mdash; the bill at 3&times; and how to see it coming</li>
+<li><a href="payment-outage-playbook.html">Payment Outage Playbook</a> &mdash; when the money path breaks on the money day</li>
+<li><a href="deployment-rollback-checklist.html">Deployment Rollback Checklist</a> &mdash; the freeze-window escape hatch</li>
+<li><a href="incident-commander-checklist.html">Incident Commander Checklist</a> &mdash; who runs the day when it wobbles</li>
+<li><a href="status-page-communication-template.html">Status Page Communication Template</a> &mdash; customer comms that keep trust</li>
+<li><a href="on-call-rotation-schedule-template.html">On-Call Rotation Schedule Template</a> &mdash; staffing the day on a calendar, not a hope</li>
+<li><a href="maintenance-window-policy.html">Maintenance Window Policy</a> &mdash; why the freeze beats the Friday deploy</li>
+<li><a href="postmortem-template-small-teams.html">Postmortem Template for Small Teams</a> &mdash; the landing step's paperwork</li>
+</ul>
+
+<hr>
+<p><strong>Peak day is won in the quiet weeks before it.</strong> Do the math, freeze early, name the commander, and let your best sales day be your most boring one.</p>
+</main>
+</body>
+</html>
