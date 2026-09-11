@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Workspace Security Checklist for Small Business (Lock Down the Admin Console Before Someone Else Does)</title>
+<meta name="description" content="A small-business checklist for the platform that holds everything: super-admin hygiene (two named admins, break-glass account), 2-step verification enforced the right way, OAuth app review, forwarding and delegation rules audited against BEC, external-sharing defaults that match reality, the offboarding sequence that keeps the mailbox, DKIM/SPF/DMARC, and the monthly 30-minute pass &mdash; so the tool that runs the company stops being the easiest way in.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Google Workspace security checklist for small business</h1>
+
+<p>For most small companies, Google Workspace <em>is</em> the company: email, files, calendar, payroll scans, customer contracts, the password-reset address for every other SaaS account. And it is usually configured the way the founder configured it in year one &mdash; one super admin (themselves), 2SV "encouraged," file sharing on "anyone with the link," and three forwarding rules nobody remembers creating. <strong>The platform that holds everything is, by default, the easiest door into everything.</strong></p>
+
+<p>The good news: Workspace is also the cheapest major security upgrade a small business can buy. Almost every high-impact control lives in one console, takes minutes, and costs nothing extra. This checklist is the ninety-minute setup pass, plus a thirty-minute monthly ritual that keeps it true. It pairs with the <a href="email-security-checklist.html">email security checklist</a> (the human layer) and the <a href="email-deliverability-spf-dkim-dmarc-checklist.html">SPF/DKIM/DMARC checklist</a> (the spoofing layer) &mdash; Workspace touches all three.</p>
+
+<h2>1. The admin console: who holds the crown jewels</h2>
+
+<p>Everything in this checklist starts with one question: <strong>who can change the answers?</strong></p>
+
+<ul>
+<li><strong>Exactly two named super admins, no more, no fewer.</strong> One super admin is a bus factor of one &mdash; lose the phone with the 2SV prompt and you are in Google's account-recovery queue, begging, while the company's mail is offline. Five is a misconfiguration waiting to be phished. Two real people, documented in the ops wiki, is the whole range.</li>
+<li><strong>One break-glass account that is not a person.</strong> Create a second super admin like <code>recovery@yourdomain.com</code> whose password lives (split, if you're careful) in the password manager's emergency vault and whose 2SV is a stored set of backup codes, not a phone. It is used roughly never &mdash; and on the one day a founder's account is locked, it is the whole company.</li>
+<li><strong>Super admin is a role, not a person's daily account.</strong> If a founder reads email from the super-admin account, their inbox is now phishing-target-zero with keys to everything. Use the principle the <a href="ai-agent-permission-boundaries.html">permission-boundaries checklist</a> spells out for agents: daily accounts get the minimum; powers get delegated; the powerful account does almost nothing.</li>
+<li><strong>Delegate, don't promote.</strong> User management can go to the office manager as a delegated admin; group and device roles separately. "Super admin" stays with two people who know what it means.</li>
+</ul>
+
+<h2>2. Enforce 2-step verification &mdash; and read the exceptions twice</h2>
+
+<p>Unenforced 2SV in Workspace is a checkbox, not a control. The enforcement page is <em>Security &rarr; Authentication &rarr; 2-step verification</em>:</p>
+
+<ul>
+<li><strong>Turn it on for everyone, with a grace period, and actually enforce.</strong> "Allow users to turn on 2SV" is the default; that is opt-in, and opt-in security at small companies lands at about 60%. New users get a one-week enrollment window, then they are locked out until they enroll &mdash; which is exactly the pressure that gets to 100%.</li>
+<li><strong>Prefer prompts and security keys over SMS.</strong> Google prompt is one tap and far better than SMS; passkeys are better still (see the <a href="passkeys-rollout-checklist.html">passkeys rollout</a>). Allow SMS during the transition, then wean. SIM-swap attacks against founders are real and cheap.</li>
+<li><strong>Check the enforcement frequency is not "suspicious sign-in only."</strong> The risk-based setting sounds smart and mostly works &mdash; but it is the setting that lets a patient attacker in on the third try.</li>
+<li><strong>Advanced Protection Program for the two super admins and the finance owner.</strong> It requires security keys or passkeys and blocks the sketchiest apps outright. The people holding the crown jewels get the inconvenience &mdash; that is the trade working as designed.</li>
+<li><strong>Store backup codes.</strong> Every user's 2SV backup codes go into the password manager on day one. "My phone died" is the phrase that turns a security win into a lockout incident.</li>
+</ul>
+
+<h2>3. OAuth apps: the shadow IT you already approved</h2>
+
+<p>The scariest screen in Workspace is <em>Security &rarr; API controls &rarr; App access control</em>. Every third-party app the team has ever clicked "Sign in with Google" on &mdash; CRM trials, PDF converters, that meeting-notes tool &mdash; holds a scoped grant to mail, files, or calendar, and most small tenants have never looked at the list.</p>
+
+<ul>
+<li><strong>Review the granted list once, now.</strong> Sort by scope. Anything with full Gmail access (read, send, delete) or Drive-wide access that nobody can explain gets revoked. Revoking is safe: the app stops working, someone complains, you re-grant a narrower scope if it earns it.</li>
+<li><strong>Flip new apps from "unrestricted" to "configure."</strong> Under app access control, unconfigured third-party apps can be blocked by default; users request access, an admin approves, the grant is logged. This one toggle converts shadow IT from a silent leak into a queue you control.</li>
+<li><strong>Watch for the impersonation classes.</strong> Apps named like Google ("GmaiI", "Workspace Sync") or requesting scopes unrelated to their job (a calculator asking for Gmail read) are the classic phish &mdash; the user approves the OAuth consent screen themselves, no password needed. Teach the one-line rule in the <a href="phishing-response-checklist-small-teams.html">phishing drill</a>: <em>reading the permission list on a consent screen is the new checking the sender.</em></li>
+<li><strong>Re-grant on a schedule, not on trust.</strong> Any OAuth grant that survives the quarterly <a href="annual-security-review-checklist.html">annual review</a> with no business owner named gets revoked by default. Apps, like keys in the <a href="api-key-rotation-checklist.html">rotation checklist</a>, are guilty until in use.</li>
+</ul>
+
+<h2>4. Mail rules: audit forwarding, delegation, and filters</h2>
+
+<p>Business email compromise in Workspace rarely breaks the door &mdash; it is invited in by a rule the attacker (or a user, "to check email on vacation") created:</p>
+
+<ul>
+<li><strong>Audit automatic forwarding company-wide, monthly.</strong> Admin console &rarr; Gmail &rarr; End user access shows forwarding, delegation, and IMAP state. Any auto-forward to a non-company address is a finding: confirm it with the user in person, then delete it. The classic BEC play is a quiet forwarding rule plus an altered invoice &mdash; the <a href="invoice-fraud-bec-prevention-checklist.html">invoice-fraud checklist</a> covers the wire half; this is the visibility half.</li>
+<li><strong>Check mailbox delegation on the finance and founder mailboxes first.</strong> Delegate access is legitimate for assistants and auditors &mdash; and invisible to the mailbox owner. The finance mailbox gets a named, dated delegate list, reviewed like any other access list (the <a href="access-request-offboarding-checklist.html">offboarding checklist</a> owns removing them).</li>
+<li><strong>Gmail filters that auto-forward or delete count as exfiltration.</strong> Users can hide rules in settings that no admin console shows by default. The monthly pass includes asking each admin-level user to screenshot their filter list &mdash; thirty seconds each, and it catches the rule that has been silently mailing your invoices somewhere else since March.</li>
+<li><strong>Turn on the security sandbox and attachment warnings in Gmail settings</strong> (where your edition includes them), and leave the external-image warning on: tracking pixels in phishing mail are still the cheapest recon tool an attacker has.</li>
+</ul>
+
+<h2>5. Sharing defaults: match reality, not paranoia</h2>
+
+<p>Drive sharing is where small businesses oscillate between "anyone with the link" (leaks) and "locked down" (users forge workarounds with personal accounts, which leaks worse). Pick defaults that match how the company actually works:</p>
+
+<ul>
+<li><strong>Default link sharing: "restricted."</strong> People share with named collaborators; the link blast goes out only when someone deliberately chooses it. The <a href="customer-data-deletion-request-checklist.html">deletion-request checklist</a> and any customer contract both get dramatically easier when files are shared with people, not with the internet.</li>
+<li><strong>Turn off "anyone with the link" for Shared Drives containing financials and HR.</strong> Those two folders hold the documents that cost the most when leaked and answer the questions the <a href="customer-security-questionnaire-template.html">customer questionnaire</a> asks.</li>
+<li><strong>Set an external-sharing rule you can actually live with.</strong> "View only, no download, no commenting by outsiders" for the company-wide folders; full collaboration inside teams. If contractors need real access, guest them properly into the domain &mdash; managed, reviewable, and removable by the <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding checklist</a>.</li>
+<li><strong>Kill "publish to the web" by default.</strong> It is the setting that turns an internal pricing sheet into a public URL because someone wanted to embed it in a slide.</li>
+</ul>
+
+<h2>6. Offboarding and the license trap</h2>
+
+<p>Workspace's quiet failure mode: an offboarded employee keeps mail flowing for months because deleting the account deletes the mailbox archive someone will need for the contract dispute.</p>
+
+<ul>
+<li><strong>Suspend first, delete later.</strong> Day one of an exit: suspend the account (access dead, mailbox intact), forward no mail yet, and reset the password so active sessions die. Deletion is a decision for month three, not minute one &mdash; the offboarding runbook owns this file.</li>
+<li><strong>Transfer the artifacts that matter:</strong> Drive files to a shared drive (ownership moves with the file), calendar to a delegate, and the mailbox itself &mdash; either a paid archive-license or a Google Takeout export into cold storage, per the <a href="log-retention-policy-small-teams.html">retention policy</a>.</li>
+<li><strong>Revoke the OAuth grants, not just the password.</strong> A suspended user's third-party app tokens die with the account &mdash; but the shared API keys and the OAuth grants <em>other</em> users made for that person's tools do not. The exit-day sweep is the same one as the <a href="access-request-offboarding-checklist.html">access checklist</a>: password, sessions, 2SV factors, delegated access, devices, tokens.</li>
+<li><strong>Watch the license bill as the audit.</strong> An unused paid license that survives three monthly invoices is the system's way of telling you an offboarding step was skipped.</li>
+</ul>
+
+<h2>7. Email authentication: your domain, not your provider's problem</h2>
+
+<p>Workspace sends mail as your domain; the world has no way to know that unless your DNS says so. This is a fifteen-minute setup with a permanent payoff (the deep how-to lives in the <a href="email-deliverability-spf-dkim-dmarc-checklist.html">SPF/DKIM/DMARC checklist</a>):</p>
+
+<ul>
+<li><strong>DKIM: generate in the admin console, publish, and click "start authenticating."</strong> Default Google mail signs with its own key unless you turn DKIM on for <em>your</em> domain &mdash; the step everyone skips.</li>
+<li><strong>SPF: one <code>include:_spf.google.com</code> record, nothing else in it</strong> unless you genuinely send from elsewhere &mdash; two SPF records is the classic self-inflicted wound.</li>
+<li><strong>DMARC: start at <code>p=none</code> with reports, watch for two weeks, then tighten.</strong> Moving straight to <code>p=reject</code> on a domain with legacy senders is how a small business stops receiving its own invoices &mdash; from the utility company.</li>
+<li><strong>Then keep the blast radius small:</strong> if mail rules, OAuth, and admin access are locked down, the spoofing layer is the last cheap door &mdash; and this is the one that makes the <a href="invoice-fraud-bec-prevention-checklist.html">BEC email</a> fail its first check.</li>
+</ul>
+
+<h2>8. Sessions, devices, and the audit trail</h2>
+
+<ul>
+<li><strong>Set web session duration for admin accounts to hours, not weeks.</strong> A laptop that stays logged in to the super-admin console for a month is a shared laptop's lost-library-book problem. User sessions can stay long; admin sessions get short.</li>
+<li><strong>Check devices if your edition has device management &mdash; and at minimum, review "recently active" sessions monthly.</strong> An old iPhone still holding a Gmail session from a former employee is the offboarding step that was skipped.</li>
+<li><strong>Export the audit logs you can.</strong> Admin console &rarr; Reporting &rarr; Audit gives admin, login, and Drive events. Export monthly into the same evidence folder as the <a href="log-retention-policy-small-teams.html">retention policy</a> &mdash; when the day comes, "here is the log" beats "we would probably find it."</li>
+<li><strong>Turn on login challenge / suspicious-login emails</strong> so the system tells <em>you</em> before you read about it in a customer's reply-all.</li>
+</ul>
+
+<h2>9. The mistakes small teams make anyway</h2>
+
+<ul>
+<li><strong>One founder super admin, enforced never.</strong> The setup is perfect until the founder's phone goes swimming. Break-glass account or it is a single point of failure wearing a security badge.</li>
+<li><strong>2SV enforced&hellip; except for the executives.</strong> The exception list is the target list. Executives get keys and a five-minute tutorial, not an exemption.</li>
+<li><strong>The domain admin email is also the CEO's email.</strong> Keep the registry-contact, DNS, and recovery addresses separate from the daily inbox &mdash; the same hygiene as the <a href="domain-hijack-protection-checklist.html">domain checklist</a>.</li>
+<li><strong>"We'll review OAuth after the busy season."</strong> The grant you approved in January for a tool the team stopped using in February is still holding a Gmail read scope. Tools expire; grants don't.</li>
+<li><strong>Deleting the mailbox on day one.</strong> The contract dispute in month four is why "suspend first" exists.</li>
+</ul>
+
+<h2>10. Close the loop: the monthly 30-minute pass</h2>
+
+<ul>
+<li><strong>The pass, minute by minute:</strong> forwarding &amp; delegation review (5), new OAuth grants since last month (5), 2SV enrollment gaps &mdash; target zero (5), new admin-role changes (5), Drive external-sharing changes in the sensitive folders (5), session &amp; device anomalies (5). One recurring calendar event, one person named in the event, one line of notes.</li>
+<li><strong>Feed the evidence file.</strong> The monthly pass produces exactly the artifacts enterprise buyers and cyber-insurance renewals ask for: enforced MFA with screenshots, an OAuth review log, a named admin list. The <a href="annual-security-review-checklist.html">annual review</a> and the <a href="customer-security-questionnaire-template.html">questionnaire responses</a> are then ninety minutes of assembly instead of an afternoon of archaeology.</li>
+<li><strong>Keep the boundary honest:</strong> Workspace security is the identity-and-mail layer. The endpoints (the <a href="lost-or-stolen-laptop-runbook.html">laptop runbook</a>, the <a href="server-hardening-checklist-small-teams.html">server hardening</a>, the <a href="iot-device-security-checklist.html">device fleet</a>) are separate checklists &mdash; one afternoon, done in order, is a materially harder company.</li>
+<li><strong>Remember the economics:</strong> ninety minutes once, thirty minutes a month, for the platform that holds the company's mail, money trail, and contracts. That is the highest control-per-dollar ratio in small-business security.</li>
+</ul>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="email-security-checklist.html">Email Security Checklist for Small Business</a></li>
+<li><a href="email-deliverability-spf-dkim-dmarc-checklist.html">Email Deliverability: SPF, DKIM &amp; DMARC Checklist</a></li>
+<li><a href="invoice-fraud-bec-prevention-checklist.html">Invoice Fraud &amp; BEC Prevention Checklist</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+<li><a href="passkeys-rollout-checklist.html">Passkeys Rollout Checklist</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist for Small Business</a></li>
+<li><a href="customer-security-questionnaire-template.html">Customer Security Questionnaire Response Template</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
