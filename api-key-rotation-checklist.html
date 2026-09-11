@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Key Rotation Checklist for Small Teams (A 60-Minute Quarterly Ritual for the Keys Nobody Wants to Touch)</title>
+<meta name="description" content="A small-team checklist for the maintenance task everyone defers: an API key inventory that finds the keys nobody remembers making, expiry-vs-rotation decisions per provider, a no-downtime rotation sequence (create → deploy → verify → revoke), CI/CD and deploy-platform secrets, shared credentials to kill, and the rotation log that turns a scary ritual into routine hygiene &mdash; so a leaked key is an inconvenience, not an invoice.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>API key rotation for small teams</h1>
+
+<p>Every small team has a folder of keys older than the company's last two hires: the Stripe secret that predates the rebrand, the AWS access key in someone's <code>.env</code> from the prototype, a SendGrid key with full send rights that three people know by heart, a GitHub token with <code>repo</code> scope that outlived the contractor who made it. <strong>Nobody rotated them because nobody has ever shown them what rotation looks like when it doesn't break production.</strong></p>
+
+<p>This is the deferred-maintenance problem, not a knowledge problem. Password managers pushed password rotation into routine; API keys never got the same machinery, so they quietly become permanent. Meanwhile the blast radius grows: a key made for a weekend script now powers your invoicing. A key like that, leaked, doesn't just embarrass you &mdash; it mines crypto in your cloud account or emails your entire customer list. The fix is a boring quarterly ritual with a strict sequence: <em>create the new key before you kill the old one, always.</em> Sixty minutes, once a quarter, and the day a key leaks becomes an inconvenience instead of an incident. This pairs with the <a href="api-key-leak-response-runbook.html">key-leak response runbook</a> the same way backups pair with restore tests.</p>
+
+<h2>1. Build the key inventory (25 minutes, once)</h2>
+
+<p>Rotation starts the same way every good control does: you cannot rotate what you cannot list. One sitting, then it's a living document:</p>
+
+<ul>
+<li><strong>Sweep the usual hiding places.</strong> Team password manager, the <code>.env</code> files people actually run, CI/CD secret stores (GitHub Actions secrets, Vercel/Netlify/Railway env vars, Docker/Kubernetes secrets), server config files, the shared Google Doc someone made in year one, browser-stored postman collections, and the notes app on the founder's phone. The last two are where the oldest, widest keys live.</li>
+<li><strong>Then sweep the providers, not just your notes.</strong> Open the API-keys page of every provider you use &mdash; AWS IAM, Stripe, SendGrid, Twilio, OpenAI, GitHub, Cloudflare, your DNS registrar &mdash; and list every key that exists, not every key you remember creating. Providers are ground truth; your inventory is the diff. The keys that appear only on the provider side are the scary ones.</li>
+<li><strong>Record four fields per key:</strong> what it's for, where it's used (system and file path), who or what owns it, and its scope/permissions. Scope is the field that turns a leaked key from a catastrophe into a shrug &mdash; a read-only analytics key that expires is a non-event.</li>
+<li><strong>Date every key.</strong> Provider consoles show created/last-used timestamps. A key unused for 90 days is not an asset; it's an unlocked door nobody walks through. Delete those in step 5 &mdash; don't rotate them, retire them.</li>
+</ul>
+
+<h2>2. Decide per key: rotate, shrink, or retire</h2>
+
+<p>Not every key deserves rotation. The quarterly decision for each key is one of three moves:</p>
+
+<ul>
+<li><strong>Retire</strong> keys with no confirmed use in the last quarter (verify in the provider's last-used column, not in memory). Deleting an unused key is the highest-yield security action in this whole checklist: zero downtime, zero migration, one less thing to leak.</li>
+<li><strong>Shrink</strong> keys whose scope is wider than their job. The invoicing cron that only reads invoices does not need write. The CI job that deploys does not need IAM wildcard. Replace one wide key with two narrow ones while you're in there &mdash; the rotation is already open, the marginal cost is minutes.</li>
+<li><strong>Rotate</strong> everything that stays: any key older than 90 days, any key known to more than one person, any key that ever appeared in a chat thread, ticket, screenshot, or commit &mdash; even one you "deleted." Git history is forever, which is why <a href="secrets-rotation-checklist.html">secret hygiene</a> treats pushed secrets as leaked, always.</li>
+</ul>
+
+<h2>3. The no-downtime rotation sequence (the part nobody teaches)</h2>
+
+<p>Rotations break production in exactly one way: the old key dies while something still uses it. The sequence below makes that impossible, and it's the whole ritual in miniature:</p>
+
+<ul>
+<li><strong>Step 1 &mdash; Create the new key</strong> with the narrowest scope that does the job. Note its prefix/ID. Do not touch anything else yet.</li>
+<li><strong>Step 2 &mdash; Deploy the new key everywhere the old one lives</strong>: update the secret store, the <code>.env</code> files, the CI variables, the cron host, the server config. Where multiple consumers share one key, deploy the new key to each in turn and <strong>verify each consumer before moving on</strong> &mdash; a test call, a dry run, a health check. The inventory from step 1 is your deployment list; anything you can't find a consumer for goes back to the provider page to be retired, not rotated.</li>
+<li><strong>Step 3 &mdash; Watch for stragglers.</strong> Give it one cron cycle and one deploy pipeline (usually a day; if you rotate on a Monday, revoke the following Monday). Then check the provider's last-used timestamp on the old key. <strong>Timestamp shows a hit after you deployed? Something still uses it</strong> &mdash; find it before step 4, not after.</li>
+<li><strong>Step 4 &mdash; Revoke the old key.</strong> Now, and only now. The old key's last-used timestamp freezes, the log entry gets written, and the rotation is complete. A key that is revoked but whose consumers were never verified is how Saturday outages are manufactured.</li>
+</ul>
+
+<p>The order is the safety property: <em>create &rarr; deploy &rarr; verify &rarr; revoke.</em> At every moment before the last step, both keys are live, so a missed consumer costs nothing but a log line.</p>
+
+<h2>4. The platforms that quietly hold half your keys</h2>
+
+<p>Small teams rotate the keys in their password manager and forget that the deploy platform is made of keys too:</p>
+
+<ul>
+<li><strong>CI/CD variables</strong> (GitHub Actions secrets, GitLab CI variables, CircleCI contexts): these are copies of production credentials with their own access rules. Rotate the source key, then update the CI secret &mdash; and check who can read the secret. A CI secret readable by every repo in the org is one compromised dependency away from a <a href="software-supply-chain-security-checklist.html">supply-chain incident</a>.</li>
+<li><strong>Deploy platforms</strong> (Vercel, Netlify, Railway, Fly, Heroku): env vars per project, often copied from one project to the next by hand. Search across projects for the old key's prefix; platforms make cross-project drift easy and rotating one project while three others still hold the dead key is the classic follow-up outage.</li>
+<li><strong>Server configs and cron hosts</strong>: the backup box and the crontab are where keys go to become immortal. Grep the usual config paths on every box in your inventory &mdash; not just the primary app server.</li>
+<li><strong>Container images and build artifacts</strong>: if a key was ever baked into an image or a build log, treat it as leaked regardless of the calendar &mdash; rotation is the only cleanup that works, because you cannot un-bake a secret.</li>
+</ul>
+
+<h2>5. Kill the shared key while you're in there</h2>
+
+<p>The rotation session is the cheapest moment the team will ever have to fix key <em>architecture</em>, not just key age:</p>
+
+<ul>
+<li><strong>One key per consumer, not one key per provider.</strong> If three systems use the SendGrid key, rotation day is when you split it into three keys. Now next quarter's rotation touches one system at a time, a leak's blast radius is one system, and the last-used timestamps tell you exactly which consumer is alive.</li>
+<li><strong>Replace shared "team keys" with scoped, per-system keys.</strong> A key everyone shares is a password written on the whiteboard. The audit trail question "who used this key?" currently answers "yes."</li>
+<li><strong>Move credentials out of chat, tickets, and docs.</strong> Every key found in Slack or a Google Doc during the step-1 sweep gets rotated <em>and</em> relocated to the password manager or secret store in the same session. The relocation is what stops the re-leak; the rotation alone just resets the clock on the same bad habit.</li>
+<li><strong>Prefer provider features that make rotation automatic.</strong> OAuth-style tokens, short-lived credentials, and identity-based auth (workload identity, instance roles) remove the rotation problem class entirely. Every key you convert to auto-expiring is one line you delete from next quarter's checklist.</li>
+</ul>
+
+<h2>6. Third-party and vendor keys: the keys you don't control</h2>
+
+<p>Half the credentials in a small company's blast radius belong to other people's systems, and they rotate on their own schedule, not yours:</p>
+
+<ul>
+<li><strong>Rotate what you issue to others, too.</strong> API keys you gave to a contractor, an integration partner, or a customer's webhook are in your inventory with an extra field: <em>who holds it.</em> Contractors rotate out of the company the same way employees do &mdash; their keys go through the <a href="access-request-offboarding-checklist.html">offboarding checklist</a>, not the quarterly ritual.</li>
+<li><strong>Webhook signing secrets count.</strong> The secret that verifies your payment provider's webhooks is a key; rotate it on the provider's dual-secret schedule (most support two live secrets for exactly this create-deploy-verify-revoke dance).</li>
+<li><strong>Know each provider's rotation mechanics before you need them.</strong> Five minutes per provider now: does it support two live keys? does the old key have a grace period? can scope be changed without reissuing? This is the difference between a 10-minute rotation and an outage. Log it in the <a href="vendor-security-review-checklist.html">vendor review</a>.</li>
+<li><strong>Credential-stuffing works both ways:</strong> your key to their API is their exposure to you. If a vendor is breached and discloses leaked credentials, your key on their systems is rotated that day &mdash; add "vendor breach news" as a trigger, not a quarterly wait.</li>
+</ul>
+
+<h2>7. The rotation log (turns a ritual into a control)</h2>
+
+<p>One file, appended every quarter. This is the document that makes the whole thing auditable &mdash; by you, by a customer's security reviewer, by the <a href="annual-security-review-checklist.html">annual review</a>:</p>
+
+<ul>
+<li><strong>Per rotation, record:</strong> date, key (by name/prefix, never the value), action (rotated / retired / shrank), consumers updated, verification done, old key revocation confirmed. The revocation-confirmed line is the one auditors and incident retros look for first.</li>
+<li><strong>Keep last-used timestamps from the provider console</strong> in the log &mdash; they're your proof that consumers moved over and your early-warning system for the stragglers you missed.</li>
+<li><strong>Log the exceptions, not just the rotations.</strong> "Stripe key rotates on its own schedule per provider policy; verified 2026-Q3" is a complete and professional answer. An unexplained gap is where a <a href="postmortem-template-small-teams.html">postmortem</a> starts.</li>
+<li><strong>Feed one section up for free:</strong> "All N provider keys reviewed Q3; M retired, K shrank, J rotated, 0 exceptions" is a line your next enterprise buyer's questionnaire wants, ready-made from the <a href="customer-security-questionnaire-template.html">questionnaire template</a>.</li>
+</ul>
+
+<h2>8. Make it a calendar event, not a memory test</h2>
+
+<p>The ritual only survives if the calendar carries it:</p>
+
+<ul>
+<li><strong>Quarterly, 60 minutes:</strong> sweep (10) &rarr; provider diff (10) &rarr; decisions (10) &rarr; rotations with the create-deploy-verify-revoke sequence (25) &rarr; log (5). Batch the easy ones; leave the two scariest keys (production DB, cloud root-adjacent) for a second pair of eyes if you have one.</li>
+<li><strong>Event-driven rotations, regardless of calendar:</strong> staff or contractor departure, a key seen in a chat/screenshot/commit, a vendor breach disclosure, an endpoint device loss &mdash; these rotate immediately through the <a href="api-key-leak-response-runbook.html">leak runbook</a>, not at the next quarter boundary.</li>
+<li><strong>Tie it to the existing maintenance rhythm.</strong> The same quarterly pass that checks <a href="backup-restore-test-checklist.html">backup restores</a> and firmware can carry key rotation; one ops morning, three controls, one calendar entry.</li>
+<li><strong>Automate what you can:</strong> provider APIs for key listing, a CI job that greps repos for key-shaped strings against the inventory, alerts on new key creation. The goal is not a zero-touch system &mdash; it's a system where the human session is decisions, not discovery.</li>
+</ul>
+
+<h2>9. Common failure modes (learned the hard way by someone, somewhere)</h2>
+
+<ul>
+<li><strong>Revoking before deploying.</strong> The single most common rotation outage. The sequence in section 3 exists to make this impossible; if you find yourself in a provider console about to delete the old key, stop and check the consumers first.</li>
+<li><strong>Rotating the key but not the secret store.</strong> The password manager has the new key, CI still has the old one, and next quarter's sweep finds the ghost. One key, one source of truth, one owner.</li>
+<li><strong>"It's internal, we'll rotate later."</strong> Internal keys leak through exactly two doors: people and logs. Both doors open from the inside.</li>
+<li><strong>The forever grace period.</strong> Some providers let an old key linger in a "disabled but recoverable" state. Disabled is not deleted. Finish the revocation, confirm it in the log, close the tab.</li>
+</ul>
+
+<h2>10. Close the loop: the quarterly pass, the runbook, and the audit trail</h2>
+
+<ul>
+<li><strong>One page in the ops wiki (or one file in the repo)</strong> holds: the inventory, the rotation log, and the calendar recurrence. If it lives in someone's head, it's a ritual; if it lives in the repo, it's a control.</li>
+<li><strong>The leak runbook stays one click away.</strong> The whole point of routine rotation is that the emergency path &mdash; <a href="api-key-leak-response-runbook.html">leak response in the first 30 minutes</a> &mdash; becomes rare and rehearsed, because everyone already knows where every key lives and how to replace it. The drill is the same sequence you've done twelve times, just faster and angrier.</li>
+<li><strong>Ship the log line upward.</strong> The quarterly summary line goes into the annual review and the customer security questionnaire. Compliance reviews are mostly someone asking "do you actually do the things on your website?" &mdash; this is the file that answers.</li>
+<li><strong>Remember the economics:</strong> 60 minutes per quarter to make the worst Tuesday of your year a 20-minute fix. The <a href="secrets-rotation-checklist.html">secrets checklist</a>, the <a href="backup-restore-test-checklist.html">restore test</a>, and this rotation live in the same ops morning &mdash; and that morning is the cheapest insurance the team will ever buy.</li>
+</ul>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="api-key-leak-response-runbook.html">API Key Leak Response Runbook for Small Teams</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist for Small Teams</a></li>
+<li><a href="software-supply-chain-security-checklist.html">Software Supply Chain Security Checklist for Small Teams</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review for Small Teams</a></li>
+<li><a href="backup-restore-test-checklist.html">Backup Restore Test Checklist</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist for Small Business</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>

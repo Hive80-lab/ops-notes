@@ -1,3 +1,4 @@
+- [API Key Rotation Checklist](api-key-rotation-checklist.html) — key inventory sweep, rotate/shrink/retire, no-downtime create→deploy→verify→revoke, CI/CD + platform secrets, shared-key kills, vendor keys, rotation log.
 - [IoT Device Security Checklist](iot-device-security-checklist.html) — inventory walk, default creds, quarterly firmware, device VLAN, exposure audit, printers, cameras/NVR, ownership loop.
 - [Customer Security Questionnaire Response](customer-security-questionnaire-template.html) — evidence folder, the twelve repeatable answers, honest-not-yet answers, buyer-form red flags, quarterly refresh + reuse rule.
 - [Customer Data Deletion Requests](customer-data-deletion-request-checklist.html) — 48h acknowledge+verify, search-based inventory, delete/keep split, processor relay, backup sentence, closing letter.
