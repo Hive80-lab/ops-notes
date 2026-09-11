@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-Call Onboarding Checklist for New Hires (From Read-Only to 2AM-Ready)</title>
+<meta name="description" content="A one-page on-call onboarding checklist for new hires: what to read before the first rotation, the shadow week, the first-30-minutes drill, escalation keys and break-glass access, and the certification gate that decides when they take the pager alone.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>From read-only to 2AM-ready: onboarding a new hire onto the pager</h1>
+<p>The fastest way to turn a good hire into a liability at 2AM is to hand them the pager with a link to the wiki and the words "you'll figure it out." The fastest way to burn out your senior engineer is the opposite: keeping them as the only person who can take a page forever. On-call onboarding is the bridge between those two failure modes &mdash; a short, written path from <em>read-only observer</em> to <em>certified responder</em> that usually takes two to three rotations, not six months of osmosis. It rides on the structures you already have: the <a href="on-call-rotation-schedule-template.html">rotation schedule</a>, the <a href="on-call-handover-template.html">handover template</a>, the <a href="severity-matrix-3-levels.html">severity matrix</a>, and the <a href="incident-response-plan-template-small-teams.html">incident response plan</a> the new hire is joining.</p>
+
+<h2>1. Before the first rotation: the reading list and the read-only access</h2>
+<ul>
+<li><strong>Give four documents, not forty.</strong> The reading list that actually gets read is short: the <a href="incident-response-plan-template-small-teams.html">incident response plan</a>, the <a href="severity-matrix-3-levels.html">severity matrix</a>, the <a href="first-30-minutes-incident-response.html">first-30-minutes runbook</a>, and the current <a href="on-call-rotation-schedule-template.html">rotation schedule</a> with names and dates. Everything else is reference material the new hire will meet when a page forces them to. A reading list that takes a week is a reading list that gets skimmed and forgotten.</li>
+<li><strong>Grant read-only everything on day one.</strong> Dashboards, alert history, past <a href="incident-timeline-template.html">incident timelines</a>, the status-page archive: a new hire who can <em>see</em> last month's pages learns what real pages look like before they own one. What they do <em>not</em> get yet: production change rights, the <a href="break-glass-account-checklist.html">break-glass credentials</a>, or the power to acknowledge-and-mute. Read access is safe and cheap; it is also the difference between shadowing and spectating.</li>
+<li><strong>Set the expectation in writing.</strong> One line in the onboarding doc: "You are not expected to resolve anything on your first two rotations. You are expected to watch, take the timeline, and ask why-questions." New hires silence alerts they do not understand out of fear of looking slow; the written permission to <em>not know</em> is what keeps the noise visible.</li>
+</ul>
+
+<h2>2. The shadow rotation: watch pages happen, write the timeline</h2>
+<ul>
+<li><strong>Pair every page, no exceptions.</strong> For the shadow rotation, alerts go to both phones, and the on-call engineer talks through their triage out loud: which <a href="severity-matrix-3-levels.html">severity</a>, which runbook, who gets pinged, what gets written where. The new hire's job is the <a href="incident-timeline-template.html">timeline</a> &mdash; timestamps, who did what, what the alert actually said. Taking the timeline forces attention without handing over the wheel.</li>
+<li><strong>Debrief every page within 24 hours.</strong> Ten minutes, three questions: what did you see first, what surprised you, what would you have looked up that we didn't? The surprises are the syllabus. If the new hire was surprised that a <a href="disk-full-incident-runbook.html">disk-full page</a> resolves with a log rotate and not a server rebuild, that gap gets a runbook note before the next rotation &mdash; the onboarding is now improving the docs for everyone, which is exactly what a good shadow week produces.</li>
+<li><strong>Include one handoff in each direction.</strong> The new hire should see a shift <a href="on-call-handoff-checklist.html">handoff</a> performed and then perform one themselves, watched. The handover document is where tribal knowledge actually lives; writing one under supervision, while nothing is on fire, is the cheapest possible rehearsal of the real thing.</li>
+</ul>
+
+<h2>3. The drill: a first-30-minutes tabletop they run, not watch</h2>
+<ul>
+<li><strong>Flip the roles once before they go solo.</strong> Book 45 quiet minutes, hand the new hire a scenario (the same style as the <a href="first-30-minutes-incident-response.html">first-30 tabletop</a>: "it's 2AM, the checkout endpoint is throwing 500s"), and let them drive while a senior observer says nothing unless they would have reached for something harmful. The drill passes when the new hire, unprompted: classifies the severity, opens the timeline, posts the first <a href="incident-communication-templates.html">customer communication draft</a>, and states the escalation threshold &mdash; not when they "know the docs."</li>
+<li><strong>Drill the awkward parts on purpose.</strong> The parts new responders freeze on are social, not technical: waking up the boss, paging a person (not a channel), saying "I don't know yet" in an incident channel, and deciding to <em>stop</em> investigating and <em>start</em> escalating. The drill should force at least one deliberate escalation so the first real one at 2AM is muscle memory, not a moral crisis. The <a href="the-2am-test-incident-handoff.html">2AM handoff test</a> is the same idea applied to the whole team.</li>
+<li><strong>Grade the drill against the runbooks, not the person.</strong> Every stall point in the drill is a documentation defect first: if the new hire did not know where the rollback lives, the <a href="deployment-rollback-checklist.html">rollback checklist</a> is not linked from the alert, and that is a fix in the alerting, not a lecture. Onboarding that ends with a list of doc fixes has paid for itself.</li>
+</ul>
+
+<h2>4. Keys, access, and the break-glass line</h2>
+<ul>
+<li><strong>Escalate access in step with responsibility.</strong> The certification rotation is when production change rights arrive &mdash; granted through the same review your <a href="employee-onboarding-checklist-template.html">onboarding checklist</a> uses for any production access, not as pager-passing ceremony. The rule that matters: by the time someone can be paged alone, someone else must be able to see everything they can do. Shared visibility first, shared <a href="break-glass-account-checklist.html">break-glass</a> only if the team is small enough that it cannot be avoided.</li>
+<li><strong>Walk the break-glass path once, hands on.</strong> If your emergency access is a sealed kit or a break-glass account, the new hire walks it once during onboarding: where it lives, when it may be used, what gets logged and rolled immediately after. The classic break-glass failure is a credential nobody under 30 has ever typed; a five-minute supervised walkthrough in daylight is the fix. The same hands-on rule applies to the <a href="password-manager-rollout-small-business.html">password manager</a> vault and any <a href="api-key-rotation-checklist.html">API keys</a> the rotation relies on.</li>
+<li><strong>Do the leak-and-rotate speech now, not after an incident.</strong> New on-call people will eventually touch credentials in an incident &mdash; which is exactly when mistakes happen. Five minutes: what counts as a leaked key, where the <a href="api-key-leak-response-runbook.html">leak runbook</a> lives, and the rule that no incident ever gets worse by pausing to rotate a credential properly.</li>
+</ul>
+
+<h2>5. Certification: the gate that decides when they take the pager alone</h2>
+<ul>
+<li><strong>Write the gate down before the first rotation, not when the pressure arrives.</strong> A certification page is a dozen checkboxes with a sign-off line: completed reading list, one full shadow rotation with timeline, one handoff written, one first-30 drill passed, break-glass walkthrough done, and the severity matrix recited from memory in one sentence each level. When the boxes are checked, the next rotation is theirs. No vibes, no "whenever you feel ready" &mdash; feelings are not a rotation policy, dates are.</li>
+<li><strong>Cap the shadow period at two rotations.</strong> An open-ended "shadow until ready" quietly becomes never, which is how teams end up with a single point of failure named Dave. Two rotations, then certify or name the specific gap and a date. The same deliberate-review rhythm as the <a href="annual-security-review-checklist.html">annual security review</a>, applied to people instead of systems.</li>
+<li><strong>The first solo rotation is still staffed &mdash; by a phone, not a body.</strong> Certification means they take the page; it does not mean they are alone. The senior on-call stays reachable for the first solo shift with one agreement: calling is free, breaking things alone is expensive. After that rotation, the new hire joins the normal <a href="on-call-rotation-schedule-template.html">rotation</a> and the <a href="on-call-compensation-policy.html">compensation policy</a> applies like it does for everyone else.</li>
+</ul>
+
+<h2>6. The one-page template</h2>
+<ul>
+<li><strong>Reading card:</strong> the four documents with links, the read-only access list with who granted it, and the written expectation line.</li>
+<li><strong>Shadow card:</strong> rotation dates, pages paired (with debrief dates), timeline samples written, handoff performed both directions.</li>
+<li><strong>Drill card:</strong> scenario used, date, pass/fix list (doc fixes separated from skill gaps), observer sign-off.</li>
+<li><strong>Access card:</strong> rights escalated (what, when, who approved), break-glass walkthrough date, keys covered.</li>
+<li><strong>Certification line:</strong> checklist complete yes/no, gaps named, certification date, first solo rotation date, post-solo debrief scheduled.</li>
+</ul>
+<p><em>Small-team honesty note: if the team is two engineers and a founder, this whole page is one shared doc and a calendar invite &mdash; and it still matters, because the alternative is that the founder is the pager until burnout or a holiday forces the issue. On-call onboarding is how a small team buys its first real day off: the cheapest insurance is a second person who knows where the rollback lives. And when a page goes badly anyway, the <a href="postmortem-template-small-teams.html">postmortem</a> feeds the next hire's reading list &mdash; which is how the whole system compounds instead of rusting.</em></p>
+
+<p>Related: <a href="on-call-rotation-schedule-template.html">on-call rotation schedule</a> &middot; <a href="on-call-handover-template.html">on-call handover template</a> &middot; <a href="on-call-handoff-checklist.html">on-call handoff checklist</a> &middot; <a href="the-2am-test-incident-handoff.html">the 2AM handoff test</a> &middot; <a href="severity-matrix-3-levels.html">severity matrix</a> &middot; <a href="first-30-minutes-incident-response.html">first 30 minutes</a> &middot; <a href="incident-timeline-template.html">incident timeline</a> &middot; <a href="incident-communication-templates.html">incident communications</a> &middot; <a href="postmortem-template-small-teams.html">postmortem template</a> &middot; <a href="employee-onboarding-checklist-template.html">employee onboarding</a></p>
+</main>
+</body>
+</html>
