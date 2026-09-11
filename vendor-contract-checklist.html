@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor Contract Checklist for Small Teams (Five Clauses to Read Before You Sign) &mdash; ops-notes</title>
+<meta name="description" content="A vendor contract checklist for small teams: the five clauses to read before you sign &mdash; auto-renewal and termination, data ownership and export, breach notification, liability and uptime promises, and the signature discipline that puts the contract where your register can find it.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Vendor contract checklist: five clauses to read before you sign</h1>
+
+<p>Most small teams sign vendor contracts the way they accept cookie banners &mdash; scroll to the bottom, click, done. The contract then sits in someone's email until the day it matters: the renewal that auto-charged a card for another year, the vendor breach where nobody can find the notification clause, the exit where nobody knows what happens to the data. The <a href="vendor-security-review-checklist.html">vendor security review</a> decides <em>whether</em> a vendor is safe enough; this page is the signing gate that decides <em>on what terms</em>. Five clauses, twenty minutes, before the signature &mdash; not after the invoice.</p>
+
+<h2>1. Termination and auto-renewal: the clause that decides whether you can leave</h2>
+<ul>
+<li><strong>Read the exit before the entrance.</strong> Before feature lists and price, find how you get out: notice period (30/60/90 days?), renewal term (month-to-month or auto-annual?), and penalties for early exit. A twelve-month auto-renewal with a sixty-day notice window means your real decision date is four months before the renewal date &mdash; not the week the invoice lands.</li>
+<li><strong>Put the notice deadline on the calendar at signature time.</strong> The moment the contract is signed, the renewal date and the notice-by date go into the <a href="software-license-register.html">software license register</a> &mdash; the register's renewal column already runs the sixty-day decision; the contract's notice clause is what makes that decision legally possible. A register row without the notice deadline is a countdown you cannot act on.</li>
+<li><strong>Auto-renewal is a default, not a law of nature.</strong> Ask for month-to-month during negotiation, especially in year one. Vendors say yes more often than teams think to ask. If the answer is no, the ask itself tells you how the vendor treats leverage &mdash; useful information for the <a href="vendor-escalation-ladder.html">escalation ladder</a> you may climb later.</li>
+<li><strong>Write the exit trigger while goodwill is high.</strong> One line in your own ops notes: "we leave if X happens twice" (two missed SLA months, one unanswered P1 in 48 hours, a price increase above Y%). The escalation ladder ends in a written exit trigger; the contract is where you confirm an exit is actually available when the trigger fires.</li>
+</ul>
+
+<h2>2. Data ownership, export, and deletion: what happens to your data when you go</h2>
+<ul>
+<li><strong>Ownership in one sentence.</strong> The contract should say your data is yours, full stop. If the vendor's data clause grants itself licenses to "improve services" over your customer records, decide now &mdash; in writing, in the negotiation &mdash; not during the breach postmortem.</li>
+<li><strong>Export is a deliverable, not a favor.</strong> The clause that matters is format and cost: CSV/database dump? API? Included in the plan or billed as a "professional service"? A vendor that owns your only copy in a proprietary format has a hostage, and the <a href="vendor-offboarding-data-deletion-checklist.html">offboarding checklist</a> starts with getting the data out. Test the export on day one, not departure day &mdash; the same discipline as the <a href="backup-restore-test-checklist.html">backup restore test</a>, applied to a vendor.</li>
+<li><strong>Deletion on exit, with a deadline.</strong> Look for: data deleted within 30&ndash;90 days of termination, written confirmation on request, and the same promise flowing down to subprocessors. If the contract is silent, your data lives in their backups forever &mdash; which becomes <em>your</em> problem in the next <a href="data-breach-first-24-hours.html">breach</a> and the next customer questionnaire.</li>
+<li><strong>Subprocessor list and change notice.</strong> You need to know which other companies touch your data and get a heads-up when that list grows. Small teams cannot run enterprise subprocessor governance &mdash; but "email me before you add one" costs the vendor nothing and is a fair ask at signature.</li>
+</ul>
+
+<h2>3. Breach notification: who tells you, how fast, and saying what</h2>
+<ul>
+<li><strong>The number that matters is hours, not adjectives.</strong> "Prompt notification" means whatever the vendor wants it to mean. Ask for a number: 24&ndash;72 hours to notify you of a security incident affecting your data. For comparison, the GDPR clock for <em>you</em> starts at 72 hours &mdash; if your processor notifies you on day six, your own obligation is already broken.</li>
+<li><strong>Notification needs a channel that works during the incident.</strong> An email to a support alias is not notification. The clause should name how (email to your security contact, phone for confirmed incidents) &mdash; and your security contact should be a shared mailbox, not one person's address, for the same reason the <a href="break-glass-account-checklist.html">break-glass accounts</a> page gives: incidents do not check who is on holiday.</li>
+<li><strong>What the vendor commits to <em>after</em> the breach.</strong> Notification content (what data, how many, what they did), cooperation with your own <a href="incident-communication-templates.html">customer communications</a>, and who pays for what. You will write your customers' notification based on their facts; a vendor that refuses to share facts quietly makes you lie.</li>
+<li><strong>If they will not put a number in writing, that is the answer.</strong> A vendor's refusal to commit to a notification window is a finding &mdash; exactly the kind the <a href="vendor-security-review-checklist.html">vendor security review</a> records. You can still sign; you just sign knowing, and you write the risk down where the <a href="annual-security-review-checklist.html">annual review</a> will find it.</li>
+</ul>
+
+<h2>4. Liability, uptime promises, and support tiers: the parts that only matter at 2 a.m.</h2>
+<ul>
+<li><strong>Read the liability cap and its exclusions.</strong> Nearly every SaaS contract caps liability at twelve months of fees &mdash; that is normal and usually fine. What matters is the exclusions: if "loss of data" is carved out, a vendor bug that wipes your data costs them nothing. One sentence of negotiating capital ("carve customer data loss out of the exclusion") is worth more than an hour arguing the cap.</li>
+<li><strong>Uptime promises need a remedy, not a percentage.</strong> 99.9% with a service-credit ceiling of one month's fee is theater for a small team. What you actually need mirrors the <a href="sla-slo-definition-template.html">SLA/SLO</a> page's honesty rule: a number you can measure, a status page you can check, and support tiers with named response times. The credits are decoration; the response times are the product.</li>
+<li><strong>Support tier is a contract line, not a hope.</strong> Rung zero of the <a href="vendor-escalation-ladder.html">escalation ladder</a> is "read the tier you already paid for." At signature, confirm which tier you bought, its response times, and what "urgent" means in their ticketing system &mdash; because at 2am that sentence is the difference between a sixty-minute wait and a Monday-morning one.</li>
+<li><strong>The payment-process clause beats fraud after the fact.</strong> Verify how banking details change are handled (portal-only, callback verification) and connect it to the <a href="invoice-fraud-bec-prevention-checklist.html">invoice-fraud checklist</a>: most BEC attacks arrive as a vendor "update" to payment details. A contract line that pins changes to a verified channel is cheaper than the incident.</li>
+</ul>
+
+<h2>5. The signature discipline: who signs, and where the contract lives</h2>
+<ul>
+<li><strong>One signer, and it is not whoever clicked fastest.</strong> Pick one person (or role) who signs vendor contracts. Click-through "I agree" checkboxes on self-serve tools are the exception everyone abuses &mdash; the rule is that anything with a renewal invoice above the team's threshold (say $50/month) gets the five-clause read. The <a href="shadow-it-audit-checklist.html">shadow IT audit</a> exists precisely because the click-through path bypassed every gate.</li>
+<li><strong>The signed contract lives in one place, linked from the register.</strong> Same discipline as the license register's "where the key lives" column: the PDF goes to one folder with one naming pattern, and the register row links to it. When the auditor, the insurer, or the new admin asks "what are the terms with this vendor?", the answer is one hop &mdash; the <a href="admin-first-week-runbook.html">new admin's first week</a> depends on that hop existing.</li>
+<li><strong>Amendments are contracts too.</strong> The renewal quote, the seat increase, the plan downgrade &mdash; each one is a new agreement. File them with the original. The register's annual prune (<em>keep / watch / kill</em>) only works if the paper trail is where the verdict is being made.</li>
+<li><strong>When to actually pay a lawyer.</strong> A five-person team cannot run legal review on every vendor &mdash; and does not need to. The five-clause read covers the $0&ndash;$500/month tier. Pay a lawyer when: annual spend crosses roughly $10k, customer PII is flowing at scale, or the vendor refuses changes to the data and breach clauses. That is a threshold rule, written down, not a vibe.</li>
+</ul>
+
+<p><em>Small-team honesty note: this page will not make a bad contract good. Vendors send their paper on their terms, and most small teams sign most of it &mdash; that is the realistic baseline. What the checklist buys you is knowing <strong>which five clauses you are accepting</strong> and having the two that matter most (notice deadline, notification window) written into your own register and calendar before the invoice arrives. The trap this page exists to prevent is the signature as amnesia: nobody read it, nobody filed it, and three years later the exit conversation starts with "wait, we renewed in March?" Twenty minutes per contract, one owner, one folder. That is the whole program.</em></p>
+
+<p>Related: <a href="vendor-security-review-checklist.html">vendor security review</a> &middot; <a href="software-license-register.html">software license register</a> &middot; <a href="vendor-escalation-ladder.html">vendor escalation ladder</a> &middot; <a href="vendor-offboarding-data-deletion-checklist.html">vendor offboarding and data deletion</a> &middot; <a href="sla-slo-definition-template.html">SLA and SLO definitions</a> &middot; <a href="cyber-insurance-requirements-checklist.html">cyber insurance requirements</a> &middot; <a href="invoice-fraud-bec-prevention-checklist.html">invoice fraud / BEC prevention</a> &middot; <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a> &middot; <a href="shadow-it-audit-checklist.html">shadow IT audit</a> &middot; <a href="annual-security-review-checklist.html">annual security review</a> &middot; <a href="api-key-rotation-checklist.html">API key rotation</a> &middot; <a href="break-glass-account-checklist.html">break-glass accounts</a> &middot; <a href="customer-security-questionnaire-template.html">customer security questionnaire</a> &middot; <a href="contractor-security-onboarding-checklist.html">contractor onboarding</a> &middot; <a href="backup-restore-test-checklist.html">backup restore test</a> &middot; <a href="admin-first-week-runbook.html">new admin's first week</a></p>
+
+<aside class="kit">
+<h2>Live from the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first automation templates for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident-response kit for small teams</li>
+<li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7</a> &mdash; $19 solo operator's playbook</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; communications</li>
+</ul>
+<p class="hint">&#128172; Discuss: <a href="https://github.com/Hive80-lab/ops-notes/discussions/1">What are your first 3 steps in an incident?</a></p>
+<p class="hint">Store links are live.</p>
+</aside>
+</main>
+</body>
+</html>
