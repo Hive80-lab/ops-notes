@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice Fraud &amp; Business Email Compromise Prevention Checklist for Small Business (Before the Wire Clears)</title>
+<meta name="description" content="A small-team playbook against invoice fraud and business email compromise: verify every bank-detail change out of band, make payments boring with a two-person rule, learn the fake-invoice and lookalike-domain tells, and run the first-hour wire-recall drill &mdash; so the payment that looks routine doesn't quietly leave the account.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Invoice fraud and BEC prevention for small teams</h1>
+
+<p>The most expensive email a small business ever receives doesn't look like a hack. It looks like accounting work: an invoice, a "kindly note our bank details have changed," a reply on an existing thread. <strong>Business email compromise and invoice fraud work precisely because they arrive dressed as routine</strong> &mdash; no attachments, no broken grammar, no suspicious links. Just a request your payables process handles every week. The FBI's loss figures for BEC run into the billions a year, and small companies are the preferred target for exactly one reason: no payment controls between the inbox and the bank.</p>
+
+<p>This is the control set that closes the gap. It costs nothing to run, adds minutes to each payment, and it works even when every other defense fails &mdash; because its core move is <em>refusing to act on email alone</em>.</p>
+
+<h2>1. Know the four frauds that arrive looking like accounting work</h2>
+
+<p>Everything else in this checklist is a defense against these four plays:</p>
+
+<ul>
+<li><strong>CEO fraud ("the urgent payment").</strong> An email or chat from the boss's real address (or a lookalike) asks for a quiet, urgent transfer &mdash; "supplier settlement," "confidential acquisition," "don't loop anyone in, I'm in a meeting." The secrecy is the tell: real deadlines survive being verified.</li>
+<li><strong>The vendor bank-change email.</strong> A known vendor emails updated account details, usually with a plausible reason (new bank, "our old bank closed the account"). Payment lands in the attacker's account; the real vendor eventually calls asking why they haven't been paid.</li>
+<li><strong>The fake invoice from a real name.</strong> An invoice arrives from a supplier you actually use &mdash; maybe one whose mailbox was compromised &mdash; with altered banking details or an invented charge. It matches a real vendor relationship, so it clears review.</li>
+<li><strong>Thread hijacking (payment diversion).</strong> An attacker gets into a real mailbox, reads the actual invoice thread, and replies inside it from your vendor &mdash; or you &mdash; with new payment details. No forged domain anywhere; the context is real because it <em>is</em> real.</li>
+</ul>
+
+<p>Note what they have in common: <strong>not one of them defeats a callback.</strong> That's why the next section is the whole game.</p>
+
+<h2>2. The one rule that stops most of it: bank details change by voice, never by email</h2>
+
+<p>Institute a single, non-negotiable control: <strong>a change of payment details is confirmed by calling the vendor on the phone number you already have &mdash; from the vendor ledger, not from the email signature or the invoice.</strong> Attackers control the whole paper trail when they're inside an email conversation; the signature block, the letterhead, the "call me to confirm" number are all attacker-controlled. The only channel they don't control is the phone number your ledger recorded last year.</p>
+
+<ul>
+<li><strong>Callback on the known number.</strong> If the ledger number goes to voicemail, the payment waits. "I couldn't reach them on the recorded number" is a complete sentence; "the invoice had the new number" is a hole in the hull.</li>
+<li><strong>Make it a script, not a judgment call.</strong> "Hi, we received banking changes on this invoice &mdash; please confirm your account details for our records." Legitimate vendors never object; they're used to it, because their bank asks them the same questions.</li>
+<li><strong>Same rule for "verify by replying."</strong> Replying to the same thread verifies nothing &mdash; the attacker reads the thread. Verification must leave the compromised channel entirely.</li>
+<li><strong>First payment to a new vendor gets the full treatment too.</strong> Verify the entity's registration (company registry lookup), confirm bank details by voice, and make the first payment small &mdash; a trial transaction that proves the rails before real money moves.</li>
+</ul>
+
+<p>Write the rule on the wall if you have to: <strong>"We never change bank details because an email said so."</strong> It's the cheapest fraud control in existence and it would have stopped most of the headline losses.</p>
+
+<h2>3. Make payments boring</h2>
+
+<p>Fraud needs urgency and improvisation. Payables should offer neither. The <a href="change-management-checklist.html">change-management principle</a> applies to money the same way it applies to production: changes to payment rails go through a defined path, with review, not through whoever happened to open the inbox:</p>
+
+<ul>
+<li><strong>Two-person rule above a threshold.</strong> Any payment over an amount you set (for many small teams, one day's revenue is a good line) requires the maker and a second approver &mdash; different people, and the second person confirms vendor and amount against the ledger, not against the email.</li>
+<li><strong>No "urgent" bypass.</strong> The exception process for urgent payments is... a faster version of the normal process. If a payment can only go out by skipping verification, the fraudster has already designed your process for you.</li>
+<li><strong>Match three things before paying.</strong> Invoice matches a purchase order or contract, invoice matches the vendor ledger entry, bank details match the last verified details. A mismatch in any one stops the payment.</li>
+<li><strong>Keep the vendor ledger current.</strong> Every vendor row has: verified contact number, verified bank details, who verified it, and when. This ledger is the reference the callback in section 2 depends on &mdash; garbage ledger, useless control. Vendor screening on entry belongs in the <a href="vendor-security-review-checklist.html">vendor security review</a>.</li>
+<li><strong>Amounts just under the threshold are a signal, not a coincidence.</strong> Fraudsters probe approval limits. One invoice at $4,900 against a $5,000 line is nothing; three in a month is a pattern. Track it.</li>
+</ul>
+
+<h2>4. Learn the tells (and the one that matters most)</h2>
+
+<p>Tells are weak defenses alone &mdash; but they cost nothing to teach:</p>
+
+<ul>
+<li><strong>Display name vs. domain.</strong> "CFO Michael" can display over <code>michael@cfo-legacycapltal.com</code> (lookalike: <em>capltal</em>). Train eyes to check the actual domain on every payment-related email, not the display name.</li>
+<li><strong>Reply-to mismatch.</strong> From: shows the vendor's real domain; the hidden Reply-To goes elsewhere. Show full headers for anything payment-related.</li>
+<li><strong>Urgency plus secrecy.</strong> "Wire today," "don't discuss with accounts," "I'm boarding a flight" &mdash; pressure aimed at bypassing exactly the two-person rule in section 3. That combination is the classic BEC signature.</li>
+<li><strong>Style drift.</strong> A thread-hijacker writes differently from the vendor you've emailed for two years. Slightly-off greetings, different sign-off, new footer. Notice and check.</li>
+<li><strong>Domain age.</strong> A vendor "you've worked with for years" emailing from a domain registered three weeks ago is not a vendor. WHOIS lookup takes thirty seconds.</li>
+</ul>
+
+<p>The honest caveat: a good attacker clears every tell above. That's why the tells are the <em>last</em> line &mdash; the callback rule is the first, and the drill in section 7 is what makes both survive a bad week.</p>
+
+<h2>5. Harden the mailbox layer</h2>
+
+<p>BEC gets easier when your own mailboxes leak. The <a href="email-security-checklist.html">email security checklist</a> carries the full stack &mdash; SPF, DKIM, and DMARC enforcement, MFA, access review &mdash; and the payables-specific additions are:</p>
+
+<ul>
+<li><strong>External-sender banners.</strong> Every external email gets a visible tag in the client. Half of BEC defense is just making "this is from outside" impossible to miss.</li>
+<li><strong>Quarantine rule-change alerts.</strong> Mailbox rules that auto-forward, auto-delete, or redirect &mdash; a classic post-compromise move to keep a thread hijack alive &mdash; should trigger an alert to admin, not happen silently.</li>
+<li><strong>Watch for lookalike domains in your logs.</strong> If <code>yourcompany-payments.com</code> gets registered and starts sending you mail, that's a campaign aimed at you. DMARC reports will show the senders; see the <a href="email-deliverability-spf-dkim-dmarc-checklist.html">SPF/DKIM/DMARC checklist</a>.</li>
+<li><strong>Phish handling is pre-decided.</strong> When the fake bank-change email arrives (and one eventually will), nobody improvises: the <a href="phishing-response-checklist-small-teams.html">phishing response checklist</a> is the drill.</li>
+</ul>
+
+<h2>6. If a payment already went out: the first hour</h2>
+
+<p>Money leaves fast; the recall window is minutes to hours, not days. If you find a fraudulent payment &mdash; or even a strong suspicion &mdash; the sequence matters:</p>
+
+<ul>
+<li><strong>Call your bank immediately.</strong> Ask for a recall/freeze on the transfer. Say the words "fraudulent transfer" &mdash; that routes you somewhere different from "I made a mistake." Speed here is the difference between recovery and a write-off.</li>
+<li><strong>Ask the receiving bank to freeze via your bank.</strong> Your bank can contact the beneficiary bank; if funds are still in the account, they can be frozen. Every hour of delay drops the odds.</li>
+<li><strong>Report it.</strong> In the US, file with the FBI's IC3 the same day (their RAT process exists precisely to freeze wire fraud funds); note your local equivalent elsewhere. This also creates the paper trail your <a href="cyber-insurance-requirements-checklist.html">cyber insurance</a> claim will want.</li>
+<li><strong>Treat the mailbox as compromised until proven otherwise.</strong> If a thread was hijacked, the attacker is still reading it. Rotate the mailbox credentials, revoke sessions and tokens, kill suspicious forwarding rules &mdash; the <a href="api-key-leak-response-runbook.html">credential-leak runbook</a> logic applies to mailboxes too.</li>
+<li><strong>Tell the team the boring truth.</strong> "We paid a fraudster; here's the email; here's what we changed" recruits your team into the defense. Silence guarantees a repeat, because the same play works twice on the same target.</li>
+</ul>
+
+<p>For the wider blast radius (was data also taken? which systems saw that mailbox?), the <a href="data-breach-first-24-hours.html">first 24 hours of a breach</a> picks up where this section stops.</p>
+
+<h2>7. Drill it quarterly</h2>
+
+<p>Controls decay into folklore unless tested. Once a quarter, run a fifteen-minute drill:</p>
+
+<ul>
+<li><strong>Send yourselves the attack.</strong> A fake "updated bank details" email from a lookalike domain, or a "CEO urgent payment" note. Did the recipient callback on the ledger number, or did they start typing a transfer?</li>
+<li><strong>Walk one real payment end to end.</strong> Invoice in, three-way match, callback if anything changed, two-person approval, payment out. Time it. If verification makes the process take three days, fix the process &mdash; controls that are too slow get bypassed the first time a real deadline arrives.</li>
+<li><strong>Re-run the drill when finance changes.</strong> A new bookkeeper, a new approver, a new bank &mdash; each is a reset of the human control layer. Ten minutes of drill on day one is cheaper than any fraud loss.</li>
+</ul>
+
+<h2>8. Write the one page</h2>
+
+<p>Close it out with a single-page payment controls policy &mdash; it's also what your bank, insurer, and any customer audit will ask for:</p>
+
+<ul>
+<li><strong>Rules:</strong> bank changes verify by callback on ledger number; two-person approval above $X; three-way match before every payment; no urgent bypass.</li>
+<li><strong>Roles:</strong> who enters, who approves, who owns the vendor ledger (and who it's reviewed by at the <a href="annual-security-review-checklist.html">annual security review</a>).</li>
+<li><strong>Drills:</strong> last drill date, what it caught, what changed because of it.</li>
+</ul>
+
+<p>The whole document fits on one page and most of it fits on a sticky note: <strong>"Bank details change by voice. Payments need two people. Urgent means verify faster, not skip."</strong> Businesses lose wire-fraud money not because the attacks are clever &mdash; they're mostly patient and plausible &mdash; but because on the day it arrived, paying it was the normal path and checking it was the exception. Invert that, and the most profitable email in fraud history becomes just another thread nobody acted on.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="email-security-checklist.html">Email Security Checklist for Small Teams</a></li>
+<li><a href="phishing-response-checklist-small-teams.html">Phishing Response Checklist for Small Teams</a></li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist for Small Teams</a></li>
+<li><a href="vendor-offboarding-data-deletion-checklist.html">Vendor Offboarding &amp; Data Deletion Checklist</a></li>
+<li><a href="annual-security-review-checklist.html">Annual Security Review Checklist for Small Business</a></li>
+<li><a href="cyber-insurance-requirements-checklist.html">Cyber Insurance Requirements Checklist</a></li>
+<li><a href="incident-response-plan-template-small-teams.html">Incident Response Plan Template for Small Teams</a></li>
+<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes of Incident Response</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>

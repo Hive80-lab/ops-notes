@@ -1,3 +1,4 @@
+- [Invoice Fraud & BEC Prevention](invoice-fraud-bec-prevention-checklist.html) — callback on ledger numbers, two-person payments, four fraud plays, first-hour wire recall, quarterly drill.
 - [Annual Security Review for Small Business](annual-security-review-checklist.html) — one morning: restore test, secrets, access, phish drill, one-page record.
 - [Passkeys for Small Teams](passkeys-rollout-checklist.html) — break-glass recovery first, per-vendor support inventory, password removed last, offboarding revokes passkeys.
 - [Vendor Offboarding & Data Deletion Checklist](vendor-offboarding-data-deletion-checklist.html) — export, untangle, revoke, delete in writing, verify.
