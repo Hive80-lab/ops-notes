@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slack Workspace Security Checklist for Small Teams (Your Chat App Is Part of the Perimeter)</title>
+<meta name="description" content="A Slack workspace security checklist for small teams: admin roles, invite controls, guest audits, app and bot approvals, webhook and integration hygiene, retention policy, external sharing, and the quarterly pass that keeps the chat perimeter tight.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Slack workspace security checklist for small teams: your chat app is part of the perimeter</h1>
+
+<p>By the time a company is ten people, the workspace chat holds more sensitive material than most of its systems: customer screenshots, API tokens pasted "just for a second," production error logs, contract links, candid talk about salary and strategy. A compromised Slack account isn't a leaked joke &mdash; it's <a href="email-security-checklist.html">a second inbox</a> with files attached. Slack knows this; the admin console has the controls. This checklist is the quarterly pass that turns them on, in one sitting, and keeps the chat perimeter as managed as the rest of your <a href="google-workspace-security-checklist.html">Google Workspace</a>.</p>
+
+<h2>1. The admin handshake (do this first, it gates everything else)</h2>
+
+<ul>
+<li><strong>Confirm who actually owns the workspace.</strong> Many small-team workspaces were created by a founder's personal account or an early contractor. Workspace Settings &rarr; Permissions shows the owner. If it's someone who left, reclaim it today &mdash; this is the same forgotten-admin problem as a <a href="domain-hijack-protection-checklist.html">domain hijack</a>, with a faster clock.</li>
+<li><strong>Keep exactly two workspace owners.</strong> One primary (the founder or ops lead) and one backup, both with MFA on the underlying account. Zero owners is a deadlock; five owners is a hole. Every other admin sits at the Admin or Member tier.</li>
+<li><strong>Check the admin list against the org chart.</strong> Admin &rarr; Members &rarr; filter by role. Every admin should be a current employee with a reason to be one. Demote the rest &mdash; it's one click and reversible.</li>
+<li><strong>Turn on two-factor enforcement if you're on a plan that has it.</strong> If you're not, at minimum require MFA on the email addresses that control admin accounts, because <a href="mfa-rollout-checklist-small-business.html">MFA on the recovery path</a> is what actually stops account takeover.</li>
+</ul>
+
+<h2>2. Invite controls (who can let strangers in)</h2>
+
+<ul>
+<li><strong>Require admin approval for invites.</strong> Workspace Settings &rarr; Invitations &rarr; "Members can send invitations: off" (or "admin approval required"). The default &mdash; any member can invite anyone &mdash; is how a well-meaning hire adds a client, a friend, and a trial vendor to the same workspace.</li>
+<li><strong>Restrict invites to your email domain.</strong> The "only people with @yourcompany.com addresses" toggle kills the mistyped-address accident and blocks throwaway-domain signups.</li>
+<li><strong>Disable or gate the invite link.</strong> A shareable join link is a useful thing for onboarding week and a liability forever after. Rotate it if it's ever been posted anywhere public &mdash; pasted in a job ad, a community thread, or a SlideShare deck.</li>
+<li><strong>Review "invitable domains" and default teams</strong> if you use them. Anything that lets a new joiner auto-subscribe to channels containing customer data deserves a second look.</li>
+</ul>
+
+<h2>3. The guest audit (the accounts everyone forgets)</h2>
+
+<ul>
+<li><strong>Export the guest list.</strong> Admin &rarr; Members, filter Multi-Channel Guests and Single-Channel Guests. Compare it against whoever is actively working with you right now. The list should be short and fully explained.</li>
+<li><strong>Kill single-channel guests from finished projects.</strong> The freelancer from the Q1 site redesign is still reading your #general the way it reads today &mdash; including the layoff talk, the customer complaints, the pricing arguments. Deactivate or downgrade them the day the engagement ends. This is the Slack branch of your <a href="access-request-offboarding-checklist.html">offboarding checklist</a>.</li>
+<li><strong>Convert ongoing partners to the minimum channel set.</strong> A multi-channel guest with six channels usually needs two. Fewer channels, smaller blast radius.</li>
+<li><strong>Set a guest review cadence.</strong> Once per quarter, fifteen minutes, with the vendor list open. Guests accrete exactly like <a href="saas-sprawl-audit-checklist.html">SaaS subscriptions</a>: one at a time, each defensible, the pile unaccountable.</li>
+</ul>
+
+<h2>4. Apps and bots (the third-party floor you never see)</h2>
+
+<ul>
+<li><strong>Turn on app approval.</strong> Admin &rarr; Apps &rarr; "Require admin approval before apps can be installed." From now on, nothing with a Slack token joins the workspace without a named human saying yes.</li>
+<li><strong>Inventory the apps you already have.</strong> Every installed app holds a token that can read messages, post as users, or open files. For each: who installed it, what it does, does anything still use it? Uninstall the orphans on the spot. It's the same "who approved this?" reflex as a <a href="vendor-security-review-checklist.html">vendor review</a>.</li>
+<li><strong>Check the scary scopes.</strong> In the app directory, open each app's permissions. <code>read</code> across all channels is normal for a standup bot. <code>read</code> plus <code>write</code> plus files for a tool nobody remembers installing is not.</li>
+<li><strong>Re-verify apps after staff changes.</strong> The bot your departed engineer installed with their admin account keeps its token after they leave. If its owner is gone, it gets a new named owner or it gets removed.</li>
+</ul>
+
+<h2>5. Webhooks and integrations (the quietest leak path)</h2>
+
+<ul>
+<li><strong>Hunt down incoming webhooks.</strong> Teams paste webhook URLs into CI systems, scripts, and monitoring tools because it takes thirty seconds. Those URLs are bearer credentials &mdash; anyone holding one can post to your channels as your tools. Find them (Admin &rarr; Configure Apps &rarr; Custom Integrations), list owners, and rotate anything not written down.</li>
+<li><strong>Never put secrets in the channel a webhook posts to.</strong> CI failure messages, deploy logs, and error trackers leak secrets with impressive regularity. If a deploy summary shows environment variables, that channel now needs to be treated like a <a href="api-key-leak-response-runbook.html">leaked key</a>, not a chat room.</li>
+<li><strong>Keep secrets out of Slack entirely.</strong> The rule is short: tokens, passwords, private keys, and customer PII never get typed into chat &mdash; not "temporarily," not "then delete it," not in a DM. Deleted is not purged, and screenshots outlive deletions. The password manager link is the alternative that costs nothing: <a href="password-manager-rollout-small-business.html">roll one out</a> and share from there.</li>
+<li><strong>Audit outgoing webhooks too.</strong> An outgoing webhook posts channel messages to an external URL. One pointed at a personal server is a one-way exfiltration pipe that no security tool will ever flag.</li>
+</ul>
+
+<h2>6. Message retention and data controls (decide what chat remembers)</h2>
+
+<ul>
+<li><strong>Set retention deliberately, not by default.</strong> Default Slack keeps everything forever. For a small team that's usually fine &mdash; but make it a decision, and write it down. If you choose shorter retention for specific channels (e.g. a customer-support channel carrying PII), configure per-channel retention and say so in the channel topic.</li>
+<li><strong>Declaw the channels that carry customer data.</strong> If support tickets, screenshots of admin panels, or customer names flow through chat, that channel is a data store. Treat its membership like access to the customer database: named people, current need, reviewed quarterly.</li>
+<li><strong>Enable file-text search awareness.</strong> PDFs and screenshots pasted into chat are searchable and retained like messages. Ask the audit question: "If a competitor read this workspace's file list, what would we be embarrassed by?"</li>
+<li><strong>Know your export rights before you need them.</strong> On free and standard plans, full export is admin-gated and plan-dependent. Don't discover during an incident that you can't produce the message history your <a href="incident-response-plan-template-small-teams.html">incident plan</a> assumes exists.</li>
+</ul>
+
+<h2>7. External sharing and Slack Connect (the doors to other companies)</h2>
+
+<ul>
+<li><strong>Review Slack Connect settings.</strong> Connect lets your channels include people from other companies. It's genuinely useful for client work &mdash; and every Connect channel is a shared perimeter you don't fully control. Decide who can create Connect channels (default: restrict to admins) and require a named owner per channel.</li>
+<li><strong>Label external channels loudly.</strong> Rename Connect channels with a visible prefix (e.g. <code>ext-</code>). People behave differently &mdash; more carefully &mdash; in a channel they can see is shared with outsiders.</li>
+<li><strong>Set file-download rules for external conversations.</strong> Slack lets you require files shared in Connect conversations to be downloaded via a link with expiration instead of stored in the chat. Enable it for the channels that touch customer data.</li>
+<li><strong>Watch for the social-engineering angle.</strong> A request that arrives over Connect from "another company" inherits borrowed trust. Treat unexpected attachments and urgent asks in Connect channels the same way you treat them in email &mdash; verify out-of-band. The <a href="phishing-response-checklist-small-teams.html">phishing checklist</a> applies with the serial numbers filed off.</li>
+</ul>
+
+<h2>8. Device and session hygiene (the account end)</h2>
+
+<ul>
+<li><strong>Review active sessions for admins.</strong> Profile &rarr; "Review sessions" or the admin console shows devices and browsers with live sessions. Revoke anything unrecognized. Admin sessions on a spare laptop in a drawer are a persistent back door.</li>
+<li><strong>Revoke sessions after any suspicious event.</strong> Weird DMs, unexpected app installs, a member reporting password-reset emails: kill all sessions for that account, force a password change, and read the <a href="first-30-minutes-incident-response.html">first 30 minutes</a> playbook before deciding it was nothing.</li>
+<li><strong>Put a passcode on mobile Slack.</strong> Slack mobile holds full history by default. If a phone is lost, a chat app with no lock is a corporate data dump in a rideshare. Lost device? Revoke its session remotely and run the <a href="lost-or-stolen-laptop-runbook.html">lost device runbook</a>.</li>
+<li><strong>Keep desktop Slack updated and signed in per person.</strong> Shared workstation logins ("we all use the front desk Mac") mean shared identity in the audit log. One human, one session.</li>
+</ul>
+
+<h2>9. The quiet things that matter later (compliance, exits, audits)</h2>
+
+<ul>
+<li><strong>Write down the rules in one paragraph.</strong> A pinned post in #general: what never gets posted (secrets, PII), who approves apps and guests, and where to report anything odd. Rules people have seen get followed; rules that live in an admin's head don't.</li>
+<li><strong>Decide your export-and-archive story.</strong> When someone leaves, does the workspace keep their DMs? (Usually yes; plan for it.) When a project ends, archive its channels instead of letting them rot with stale members.</li>
+<li><strong>Tie Slack deactivation into every exit.</strong> The <a href="employee-onboarding-checklist-template.html">onboarding</a> and offboarding checklists should both have a Slack line: deactivate account, reassign owned apps and webhooks, review their DMs only per policy. Add it once; it fires every time.</li>
+<li><strong>Do the quarterly pass.</strong> Thirty minutes: admin list, guest list, new apps, Connect channels, sessions for admins. It's the same ritual as the <a href="annual-security-review-checklist.html">annual security review</a> at chat-app speed, and it catches everything above while it's still a one-click fix.</li>
+</ul>
+
+<h2>10. When something goes wrong anyway</h2>
+
+<ul>
+<li><strong>Compromised account:</strong> revoke all sessions for the account, change the password, check installed apps and webhooks created in the last 48 hours, and scan recent posts and DMs for links or files sent by the intruder &mdash; attackers use chat to propagate because chat links get clicked.</li>
+<li><strong>Leaked secret in a channel:</strong> rotate the credential first, delete the message second. Deleting first feels cleaner and does nothing &mdash; the value was already read by every logged-in member and any retention backup.</li>
+<li><strong>Malicious app discovered:</strong> remove the app, rotate every token it held, and re-post the warning to the channels it could read. Then run the full app-inventory pass from section 4, because one slipped through means the approval gate wasn't on.</li>
+<li><strong>Not sure it happened:</strong> treat it as it did. The cost of an unnecessary session revocation is one login; the cost of a quiet intrusion reading your strategy channel for a month is unbounded.</li>
+</ul>
+
+<p class="closing">Slack security for a small team is an afternoon, once: lock the admin tier, gate the invites, purge the guests, approve the apps, own the webhooks, decide the retention, and calendar the quarterly pass. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> includes the audit sheets that turn this checklist into a per-person, per-channel table &mdash; guest, channels, apps, verdict, owner &mdash; and the <a href="https://hive80lab.gumroad.com/l/automation-starter-pack"><strong>Automation Starter Pack ($19)</strong></a> automates the reviews so the purge happens without anyone remembering to remember. Launch week: <strong>30% off any paid kit with code HIVE-LAUNCH30</strong> at checkout.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week code <strong>HIVE-LAUNCH30</strong> &mdash; 30% off any paid kit.</p></aside>
+
+<aside class="related">
+<h2>Related notes</h2><ul>
+<li><a href="google-workspace-security-checklist.html">Google Workspace Security Checklist</a></li>
+<li><a href="email-security-checklist.html">Email Security Checklist for Small Teams</a></li>
+<li><a href="access-request-offboarding-checklist.html">Access Request &amp; Offboarding Checklist</a></li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout for Small Business</a></li>
+<li><a href="api-key-leak-response-runbook.html">API Key Leak Response Runbook</a></li>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist for Small Teams</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
