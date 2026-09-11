@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Response Drill Schedule Template for Small Teams (A Plan You Never Rehearsed Is a Wish)</title>
+<meta name="description" content="A one-page drill schedule for small teams: four quarterly drills (tabletop, restore-from-backup, failover, break-glass walkthrough), monthly fifteen-minute mini-drills, drill-day roles, written pass criteria, and the fix loop that turns practice into plan changes.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>The drill calendar: a plan you never rehearsed is a wish</h1>
+<p>Every small team has an <a href="incident-response-plan-template-small-teams.html">incident response plan</a>. Almost none have rehearsed it. The difference shows up at 2AM: the team that drills fumbles for fifteen minutes while they remember where things live, and the team that doesn't fumbles for two hours while they discover the plan was fiction. The fix is not more plan &mdash; it is a <em>schedule</em>. A drill that is not on the calendar does not happen, because drills are always the first casualty of a busy week. This page is the calendar itself: four quarterly drills, a handful of fifteen-minute monthly ones, the roles, the pass criteria, and the loop that turns every drill into fixes instead of feelings.</p>
+
+<h2>1. Why the calendar is the drill</h2>
+<ul>
+<li><strong>Drills decay on their own schedule, so schedule against it.</strong> People rotate off, tools get renamed, the runbook that worked in March is wrong by October. A quarterly cadence means nothing drifts more than six months before someone rediscovers it. The <a href="annual-security-review-checklist.html">annual security review</a> is the deep audit; the drill calendar is the quarterly heartbeat that keeps the plan between reviews honest.</li>
+<li><strong>Each quarter gets one big drill, each month gets one small one.</strong> That is the whole budget: about four hours of practice a year plus an hour a month. Teams fail at drills by attempting a full-scale simulation of a datacenter fire with four people and a shared calendar. Small, frequent, and specific beats large, annual, and theatrical.</li>
+<li><strong>The schedule is public.</strong> The drill calendar lives where the <a href="on-call-rotation-schedule-template.html">rotation schedule</a> lives, with names and dates. A private calendar is a calendar that quietly dies. When a new hire joins, the drill calendar goes on their <a href="oncall-onboarding-new-hires-checklist.html">onboarding reading list</a> &mdash; their first scheduled drill is part of their certification.</li>
+</ul>
+
+<h2>2. The four quarterly drills</h2>
+<ul>
+<li><strong>Q1 &mdash; the tabletop: one scenario, ninety minutes, no laptops.</strong> Pick the scenario your business actually fears (for most small teams: ransomware or a payment-path outage), and walk it end to end using the <a href="tabletop-exercise-failure-points.html">tabletop exercise checklist</a>. The output is a list of stall points &mdash; places the room went quiet &mdash; not a grade. The <a href="ransomware-recovery-checklist.html">ransomware recovery checklist</a> is the usual script.</li>
+<li><strong>Q2 &mdash; the restore: prove the backup can pay out.</strong> Restore one real system from backup onto a clean machine, timed, with the key ceremony included if backups are encrypted. The <a href="backup-restore-test-checklist.html">restore test checklist</a> is the runbook; if encryption is involved, the <a href="backup-encryption-checklist.html">backup encryption checklist</a> drill is the same afternoon. A backup that has never been restored is a rumor, not a backup.</li>
+<li><strong>Q3 &mdash; the failover: rehearse the recovery path, not the disaster.</strong> Pick the rollback or failover you would need on a bad Tuesday: a <a href="deployment-rollback-checklist.html">deployment rollback</a> on staging, a DNS cutover walk-through against the <a href="dns-outage-runbook.html">DNS outage runbook</a>, or a vendor-down tabletop against the <a href="vendor-outage-runbook.html">vendor outage runbook</a>. The point is muscle memory for the <em>path</em>, because at 2AM nobody reads a page they have never seen.</li>
+<li><strong>Q4 &mdash; the break-glass and keys walkthrough: daylight rehearsal of the emergency path.</strong> Hands on: open the sealed <a href="break-glass-account-checklist.html">break-glass kit</a> (or walk the steps that would open it), rotate one real credential against the <a href="api-key-rotation-checklist.html">API key rotation</a> or <a href="secrets-rotation-checklist.html">secrets rotation</a> checklist, and confirm the alerting fires on emergency-account use. If the walkthrough requires breaking the seal for real, rotate the sealed contents the same hour &mdash; a break-glass kit that cannot survive being tested is a decoration.</li>
+</ul>
+
+<h2>3. The monthly fifteen-minute mini-drills</h2>
+<ul>
+<li><strong>The severity recitation.</strong> The on-call person for the week classifies two hypothetical events aloud against the <a href="severity-matrix-3-levels.html">severity matrix</a>, one sentence per level, and starts a <a href="incident-timeline-template.html">timeline entry</a> for the fake incident. Two people, ten minutes, zero infra. This is the drill that makes the first ten minutes of a real incident calm.</li>
+<li><strong>The lost-device walk.</strong> One person narrates the <a href="mfa-device-lost-runbook.html">MFA device lost runbook</a> from memory while the other checks against the page. The mismatch list is the fix list. Nobody should meet this runbook for the first time while holding a found phone in a parking lot.</li>
+<li><strong>The handoff under pressure.</strong> Write a complete <a href="on-call-handover-template.html">handover</a> for a fictional open incident in ten minutes, then have the receiver restate it. The <a href="on-call-handoff-checklist.html">handoff checklist</a> exists precisely so the real 2AM version is a copy-paste job; the mini-drill keeps the copy-paste honest. The <a href="the-2am-test-incident-handoff.html">2AM handoff test</a> is the full-size version.</li>
+<li><strong>The cleanup sandbox.</strong> Once a quarter, fill a scratch disk or a test volume and walk the <a href="disk-full-incident-runbook.html">disk-full runbook</a> on it. Disk-full is the most common small-team incident and the most preventable; a team that has practiced the cleanup once stops fearing it forever.</li>
+</ul>
+
+<h2>4. Drill-day roles (four people, three of whom can be the same person)</h2>
+<ul>
+<li><strong>Facilitator.</strong> Brings the scenario, keeps the clock, refuses to answer questions the runbook should answer. The facilitator's discipline is the drill's quality: the moment they rescue the room, the room stops learning. In a two-person team, the facilitator is whoever did <em>not</em> own the system last.</li>
+<li><strong>Incident commander and scribe.</strong> Someone drives (classifies, escalates, delegates) and someone writes the timeline as it would be written for real, per the <a href="first-30-minutes-incident-response.html">first-30-minutes runbook</a>. Rotating these roles is the point: your only IC should not be the person who is already on-call every quarter.</li>
+<li><strong>Observer with the checklist.</strong> One person holds the written pass criteria and marks every stall point with the reason: missing doc, missing access, missing tool, or missing skill. Grading against the runbooks, not the people, is what keeps drills blameless &mdash; and what makes the findings actually get fixed. The <a href="postmortem-template-small-teams.html">postmortem template</a> takes the findings from here.</li>
+</ul>
+
+<h2>5. Pass criteria and the fix loop</h2>
+<ul>
+<li><strong>Write the pass criteria before the drill, not during it.</strong> One line per drill: "restore of the billing database on a clean machine, under one hour, from sealed keys, with the old system untouched." A drill without pre-written criteria is a conversation with a timer. The same discipline as a <a href="change-management-checklist.html">change ticket</a>: if you cannot state success in a sentence, you are not ready to run the drill.</li>
+<li><strong>Split the findings into doc fixes and skill gaps.</strong> Every stall point is either the documentation failing the team (fix the doc, ship it this week) or a person missing a skill (schedule the pairing, not a lecture). Teams that mix these two lists end up neither training nor fixing. The doc-fix list is usually longer, and that is good news &mdash; docs are cheap to fix and the fix pays out on every future drill and incident.</li>
+<li><strong>Re-test the fix, not the whole drill.</strong> If Q2's restore failed on the encryption key ceremony, the October mini-drill is one key ceremony, not another full restore. Small re-tests keep the loop tight and make the next quarterly pass on the first try. Anything unresolved rides to the next <a href="annual-security-review-checklist.html">annual review</a> as a named open item, with an owner.</li>
+<li><strong>Let drills write to the plan.</strong> The drill that finds "the escalation path in the plan skips the finance system" edits the <a href="incident-response-plan-template-small-teams.html">incident response plan</a> the same day. A plan that never changes after four drills a year is not stable &mdash; it is unread.</li>
+</ul>
+
+<h2>6. The one-page template</h2>
+<ul>
+<li><strong>The calendar line (one row per drill):</strong> quarter &middot; drill name &middot; owner (a person, not a team) &middot; scenario &middot; pass criteria sentence &middot; date &middot; result (pass / fix list).</li>
+<li><strong>The standing quarters:</strong> Q1 tabletop (business-feared scenario) &middot; Q2 restore-from-backup (timed, with keys) &middot; Q3 failover path (rollback, DNS, or vendor-down) &middot; Q4 break-glass + one real rotation.</li>
+<li><strong>The standing minis:</strong> weekly severity recitation on the active on-call &middot; monthly handoff-under-pressure &middot; quarterly lost-device walk and cleanup sandbox.</li>
+<li><strong>The fix log:</strong> date &middot; finding &middot; type (doc / access / tool / skill) &middot; owner &middot; fix date &middot; re-test date. Same columns as a postmortem action list, so the two artifacts stay compatible.</li>
+<li><strong>The cadence rule:</strong> never two consecutive quarters without a completed drill. A missed drill is rescheduled within thirty days or the failure goes on the same fix log &mdash; the schedule polices itself or it does not exist.</li>
+</ul>
+<p><em>Small-team honesty note: if the team is one founder and a part-time admin, this is one shared doc with four rows and a phone timer &mdash; and it still matters, because the founder is usually both the plan and the single point of failure inside it. The drill that matters most is the one that scares you to think about; put that one in the next quarter, not the one that is easy to pass. And when a real incident happens anyway, its postmortem action list feeds straight into this fix log &mdash; reality is just a drill you didn't schedule.</em></p>
+
+<p>Related: <a href="tabletop-exercise-failure-points.html">tabletop exercise failure points</a> &middot; <a href="backup-restore-test-checklist.html">backup restore test</a> &middot; <a href="disaster-recovery-plan-template-small-teams.html">disaster recovery plan template</a> &middot; <a href="first-30-minutes-incident-response.html">first 30 minutes</a> &middot; <a href="severity-matrix-3-levels.html">severity matrix</a> &middot; <a href="the-2am-test-incident-handoff.html">the 2AM handoff test</a> &middot; <a href="deployment-rollback-checklist.html">deployment rollback</a> &middot; <a href="break-glass-account-checklist.html">break-glass account</a> &middot; <a href="annual-security-review-checklist.html">annual security review</a> &middot; <a href="postmortem-template-small-teams.html">postmortem template</a> &middot; <a href="incident-response-plan-template-small-teams.html">incident response plan</a> &middot; <a href="on-call-rotation-schedule-template.html">on-call rotation schedule</a></p>
+</main>
+</body>
+</html>
