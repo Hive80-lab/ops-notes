@@ -1,4 +1,6 @@
 - [API Key Rotation Checklist](api-key-rotation-checklist.html) — key inventory sweep, rotate/shrink/retire, no-downtime create→deploy→verify→revoke, CI/CD + platform secrets, shared-key kills, vendor keys, rotation log.
+- [Google Workspace Security Checklist](google-workspace-security-checklist.html) — super-admin hygiene + break-glass, enforced 2SV, OAuth app review, forwarding/delegation audit vs BEC, sharing defaults, suspend-first offboarding, DKIM/SPF/DMARC, monthly 30-min pass.
+- [Software Supply Chain Security Checklist](software-supply-chain-security-checklist.html) — dependency inventory, shrink-the-chain, lockfile discipline, CI/Actions SHA pinning + scoped tokens, base-image digests, next-big-CVE response hour.
 - [IoT Device Security Checklist](iot-device-security-checklist.html) — inventory walk, default creds, quarterly firmware, device VLAN, exposure audit, printers, cameras/NVR, ownership loop.
 - [Customer Security Questionnaire Response](customer-security-questionnaire-template.html) — evidence folder, the twelve repeatable answers, honest-not-yet answers, buyer-form red flags, quarterly refresh + reuse rule.
 - [Customer Data Deletion Requests](customer-data-deletion-request-checklist.html) — 48h acknowledge+verify, search-based inventory, delete/keep split, processor relay, backup sentence, closing letter.

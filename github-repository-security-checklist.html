@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub Repository Security Checklist for Small Teams (Lock Down the Repo Before Someone Else Does)</title>
+<meta name="description" content="A small-team checklist for the place your code actually lives: least-privilege member access, 2FA enforcement, branch protection on main, secrets kept out of history (with push protection on), Dependabot and dependency review, GitHub Actions hardened with pinned versions and a permissions block, deploy-key and webhook audits, and the monthly 30-minute pass that turns repo settings into customer-facing evidence.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>GitHub repository security checklist for small teams</h1>
+
+<p class="lede">For most small teams, the repository is the most valuable thing on the internet they own: the product, the customer data access, and the deployment path all meet there. And unlike a laptop or an office, a repo is reachable from anywhere, by anyone who has (or phishes, or buys) a single token. The good news: GitHub gives you a 90-minute setup pass that removes the worst half of the risk &mdash; no paid tools, no security engineer, just settings most repos leave at default. This is that pass, plus the thirty-minute monthly ritual that keeps it true. It pairs with the <a href="api-key-rotation-checklist.html">API key rotation checklist</a> (the tokens that reach into your infra) and the <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> (the credentials your code uses at runtime).</p>
+
+<h2>1. Access: who can push, and to what</h2>
+
+<p>Repo security starts with one question: <strong>who can change the answers?</strong> Open the org's <em>People</em> page and the repo's <em>Settings &rarr; Collaborators</em> before touching anything else:</p>
+
+<ul>
+<li><strong>Write access is the new admin.</strong> Anyone who can push to <code>main</code> can modify the workflow files that hold your deploy credentials, or edit the app to log passwords somewhere. Treat the push-to-<code>main</code> list like the super-admin list in the <a href="google-workspace-security-checklist.html">Workspace checklist</a>: two to four named humans, and everyone else at <code>read</code> or <code>triage</code>. The org-level <em>Base permissions: read</em> setting makes that the default instead of a per-repo promise.</li>
+<li><strong>Count the outside collaborators and bot accounts.</strong> Every repo accumulates them: the freelancer from last year, the CI bot someone gave <code>write</code> "temporarily", the ex-founder's account still listed because nobody was sure removing it would break CI. Each one is an unowned credential. The <a href="access-request-offboarding-checklist.html">offboarding checklist</a> owns removing people &mdash; this audit owns finding them.</li>
+<li><strong>Use teams, not individuals, for anything larger than a founder pair.</strong> Access granted to individuals never leaves when they do; access granted to a <code>@yourorg/deployers</code> team is one removal. If your org is two people, skip this; the moment it is five, do it.</li>
+<li><strong>Require 2FA for the org (Settings &rarr; Authentication security), then survive the grace period.</strong> This one toggle removes an entire attack class &mdash; the password-only account that gets sprayed. Set it, give people a week to enroll, then let GitHub do the enforcing. The <a href="mfa-rollout-checklist-small-business.html">MFA rollout checklist</a> covers the human side; here you just turn the switch GitHub already built.</li>
+</ul>
+
+<h2>2. Branch protection: make <code>main</code> annoying to break</h2>
+
+<p>The default branch is the only place where "someone made a mistake on a Friday" becomes "production is broken Monday". Protection rules are free and take ten minutes on <em>Settings &rarr; Branches</em>:</p>
+
+<ul>
+<li><strong>Require a pull request before merging to <code>main</code>, with one approval.</strong> On a two-person team, "one approval" is just "the other person glanced at it" &mdash; and that glance catches most of the accidental disasters (the deleted migration, the hardcoded key, the workflow that runs on every push). Solo founder? Skip the approval, keep the rest: the PR record itself is the change log.</li>
+<li><strong>Block force pushes and deletions on <code>main</code>.</strong> A force push does not just rewrite history &mdash; it can silently revert a fix someone shipped, or hide an injected change nobody reviews because the commit "was already there". The box is one checkbox; the failure it prevents is the kind you find out about from a customer.</li>
+<li><strong>Require status checks to pass before merging</strong> &mdash; at minimum the test suite and, once you add it (section 3), the secret scan. This is the quiet control: it converts "we should run the tests before deploy" from a habit into a property of the system.</li>
+<li><strong>Add a CODEOWNERS file so changes to the sensitive paths need the right eyes.</strong> Three lines: who owns <code>.github/workflows/</code>, who owns the <code>infra/</code> or deploy configs, who owns the code that touches customer data. Workflow edits are where an attacker (or a compromised dependency) turns code access into server access &mdash; those PRs should ping the person who will actually read them.</li>
+<li><strong>Treat protection changes as changes.</strong> Whoever can edit branch protection can un-protect it. The <a href="change-management-checklist.html">change-management checklist</a> applies here too: a one-line note in the ops log when protection rules change keeps the audit story honest.</li>
+</ul>
+
+<h2>3. Secrets: assume everything committed is public</h2>
+
+<p>The single most common small-team breach pattern is not a sophisticated exploit &mdash; it is a key that was committed once, in a throwaway branch, in March. Assume any secret that has ever been committed is burned, because automated scanners harvest public repos within minutes:</p>
+
+<ul>
+<li><strong>Turn on push protection and secret scanning (Settings &rarr; Code security; free on public repos, available on paid plans for private ones).</strong> Push protection blocks the commit that contains a recognized token format before it lands &mdash; the cheapest security control on this page, measured in prevented incidents per hour of setup.</li>
+<li><strong>Sweep history once, then stop worrying about the old commits.</strong> Run a scanner (gitleaks or trufflehog) across the full history once; every hit is a rotation job, not a rewrite job. Revoking the key (the <a href="api-key-rotation-checklist.html">rotation checklist</a>) closes the hole; history rewriting mostly breaks everyone's clones. Rotate first; clean history only for the repo you will actually maintain.</li>
+<li><strong>Move secrets to Actions secrets or a secret manager, and say so in the README.</strong> The convention matters more than the tool: <code>secrets live in the platform vault, never in files</code> is a rule a five-person team can actually keep. The <a href="secrets-rotation-checklist.html">secrets checklist</a> covers the rotation cadence; the repo side is just making the path obvious enough that nobody pastes a key into <code>config.py</code> at 6pm.</li>
+<li><strong>Pin the environment secrets down.</strong> GitHub Environments let you require approval before a deploy workflow can read production secrets. On a small team this is one click, and it means a rogue (or merely mistaken) PR cannot silently read production credentials by opening a workflow run.</li>
+<li><strong>Audit personal access tokens (PATs) like API keys.</strong> Settings &rarr; Developer settings is where the months-old tokens with <code>repo</code> scope live &mdash; exactly the pattern in the <a href="api-key-leak-response-runbook.html">key-leak runbook</a>. Fine-grained tokens, per-repo scope, expiry dates, and the ones nobody remembers creating get revoked. Org-level: check <em>Settings &rarr; Personal access tokens</em> for tokens members issued to themselves.</li>
+</ul>
+
+<h2>4. Dependencies: Dependabot plus a review habit</h2>
+
+<p>Most small teams run <code>npm install</code> against hundreds of transitive packages per build. You will not audit them all &mdash; you need the three free controls that catch the realistic cases:</p>
+
+<ul>
+<li><strong>Enable Dependabot alerts and version updates (Settings &rarr; Code security).</strong> Alerts tell you when a dependency you already ship has a known CVE; version updates keep the PRs coming so the fix is a merge, not a migration. Budget the triage: thirty minutes weekly, high/critical first, and expect some alerts to be noise you will explicitly dismiss with a reason &mdash; that reason is audit evidence, per the <a href="customer-security-questionnaire-template.html">security questionnaire</a>.</li>
+<li><strong>Turn on dependency review for PRs.</strong> It shows the dependency delta on every PR &mdash; the malicious-package case (typo-squatting, a hijacked maintainer) is visible as "added: some-package-you-never-heard-of" right in the diff, which is exactly where a reviewer will notice it.</li>
+<li><strong>Prefer lockfiles, and commit them.</strong> A lockfile makes every machine and every CI run get the same versions, which makes a supply-chain surprise visible as a one-line lockfile diff instead of a silent upgrade.</li>
+</ul>
+
+<h2>5. Actions: the CI is part of the attack surface</h2>
+
+<p>Workflows run with access to your secrets and often your deploy targets. The small-team hardening set, in priority order:</p>
+
+<ul>
+<li><strong>Pin third-party actions to a full-length commit SHA, not a tag.</strong> <code>uses: actions/checkout@v4</code> is a moving target; the tag can be re-pointed, and its maintainers' bad day becomes your build's bad day. One afternoon of pinning, forever after visible in review.</li>
+<li><strong>Set a default <code>permissions: contents: read</code> at the workflow top,</strong> then grant more only where a job needs it. The default token scope in older repos is <code>write</code> for everything &mdash; which turns any workflow bug into a repo-writing bug.</li>
+<li><strong>Require approval for first-time contributors' workflow runs</strong> (Settings &rarr; Actions &rarr; Fork pull request workflows). This is the "approve and run" toggle; without it, a drive-by PR can execute code in your CI with access to your environment.</li>
+<li><strong>Read your workflow triggers once, slowly.</strong> <code>pull_request_target</code> checking out untrusted code with secrets present, <code>schedule</code> jobs nobody remembers writing, workflows that post to external URLs &mdash; the ten-minute read finds the config a rushed Friday wrote.</li>
+</ul>
+
+<h2>6. Deploy keys, webhooks, and app installs: the side doors</h2>
+
+<p>Repo access is not just members. Three doors get forgotten in every small-team audit:</p>
+
+<ul>
+<li><strong>Deploy keys (Settings &rarr; Deploy keys):</strong> one SSH key per forgotten server that still has read (or worse, write) access to the repo. List them, name the server each one belongs to, and revoke the ones with no name &mdash; the same guilty-until-in-use rule the <a href="api-key-rotation-checklist.html">rotation checklist</a> applies to vendor keys.</li>
+<li><strong>Webhooks (Settings &rarr; Webhooks):</strong> each one holds a secret that lets its receiver impersonate your repo's events. Old CI installs, deleted Slack channels, that status tool from 2023. Verify the endpoint still exists, confirm TLS, and rotate the secret if it is older than your memory of creating it.</li>
+<li><strong>GitHub App installs (org Settings &rarr; Integrations):</strong> every integration you clicked "install" on holds scoped, durable access. Review the permission list per app with the same eyes you used on the OAuth screen in the <a href="google-workspace-security-checklist.html">Workspace checklist</a>: does a linting app need read access to <em>all</em> repositories? Uninstall the trials; scope the keepers.</li>
+</ul>
+
+<h2>7. Offboarding and the audit log</h2>
+
+<p>The day someone leaves is when repo defaults get expensive:</p>
+
+<ul>
+<li><strong>Remove org membership the same day access ends</strong> &mdash; but before removing, list what they touched: personal forks (which survive as copies), deploy keys they created, PATs with repo scope, environments where their approval was required. The <a href="access-request-offboarding-checklist.html">offboarding checklist</a> sequences this; the repo section is five minutes.</li>
+<li><strong>Rotate the credentials they could have seen.</strong> Deploy keys, environment secrets, and shared PATs that existed during their tenure get the rotate-and-verify treatment. This is paranoia priced correctly: it costs an hour and closes the "they copied the token in February" question permanently.</li>
+<li><strong>Export the audit log monthly (org Settings &rarr; Audit log).</strong> Member adds/removals, protection-rule changes, secret-scanning alerts, token grants. A monthly CSV export into the evidence folder is the artifact that turns "we take access seriously" into a dated file a customer or insurer can read &mdash; the same move the <a href="annual-security-review-checklist.html">annual review</a> builds on.</li>
+</ul>
+
+<h2>8. The monthly 30-minute pass</h2>
+
+<ul>
+<li><strong>Minute by minute:</strong> member and collaborator list vs. the current team chart (5), new PATs and app installs since last month (5), open Dependabot alerts triaged &mdash; target zero critical older than two weeks (5), deploy keys and webhooks named and owned (5), audit-log export filed (5), branch protection still on and rules unchanged (5). One calendar event, one owner, one line of notes.</li>
+<li><strong>Feed the evidence file.</strong> The export plus the alert-dismissal reasons plus the access list is most of what enterprise buyers and cyber-insurance renewals ask about your development process. Answering "do you enforce 2FA and review dependencies?" becomes a file path, not an afternoon.</li>
+<li><strong>Keep the boundary honest:</strong> the repo is one layer. The servers it deploys to (the <a href="server-hardening-checklist-small-teams.html">server hardening checklist</a>), the laptops that push to it (the <a href="lost-or-stolen-laptop-runbook.html">laptop runbook</a>), and the humans who click phishing links (the <a href="phishing-response-checklist-small-teams.html">phishing drill</a>) are separate checklists &mdash; an afternoon across all four is a materially harder company.</li>
+</ul>
+
+<h2>9. Common failure modes</h2>
+
+<ul>
+<li><strong>"It's a private repo, we're fine."</strong> Private protects you from scanners, not from the compromised laptop of anyone on the collaborator list &mdash; and every token with <code>repo</code> scope reads private repos too. The controls above are about the insider-token path, not the public path.</li>
+<li><strong>Protection rules added, then quietly removed during an "emergency."</strong> The emergency merge is fine; the missing follow-up note is the defect. Re-enable and log it the same day.</li>
+<li><strong>Secrets rotated but never revoked.</strong> The old cloud key still works alongside the new one &mdash; the exact defect the <a href="secrets-rotation-checklist.html">rotation checklist</a> exists to kill. Revoke means the old key errors.</li>
+<li><strong>Bot accounts with human privileges.</strong> If a token can push to <code>main</code>, it belongs in the same count as people. Name the bot, scope it to the repo, expire it.</li>
+<li><strong>"We'll audit after the release."</strong> The release ships; the audit slips a quarter; the freelancer from that quarter still has write access. Audits are calendar events, not moods &mdash; the same discipline as the <a href="patch-management-checklist.html">patch cadence</a>.</li>
+</ul>
+
+<h2>10. The one-afternoon version, in order</h2>
+
+<ul>
+<li><strong>If you only do one afternoon:</strong> (1) enforce org 2FA; (2) set base permissions to <code>read</code> and audit the write list; (3) protect <code>main</code> &mdash; PRs required, force pushes blocked, status checks required; (4) enable secret scanning with push protection; (5) enable Dependabot alerts; (6) audit PATs, deploy keys, and webhooks &mdash; revoke the unnamed; (7) export the audit log. Ninety minutes, no paid tools, and the repo stops being the easiest door into the company.</li>
+<li><strong>Then make it stick:</strong> the monthly 30-minute pass (section 8), CODEOWNERS when the team hits five, and the environment-approval gate before the next production deploy. Everything else on this page is refinement; those are the controls that keep working while you sleep.</li>
+</ul>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="api-key-rotation-checklist.html">API Key Rotation Checklist for Small Teams</a></li>
+<li><a href="api-key-leak-response-runbook.html">API Key Leak Response Runbook</a></li>
+<li><a href="mfa-rollout-checklist-small-business.html">MFA Rollout Checklist for Small Business</a></li>
+<li><a href="google-workspace-security-checklist.html">Google Workspace Security Checklist</a></li>
+<li><a href="change-management-checklist.html">Change Management Checklist (No CAB Required)</a></li>
+<li><a href="deployment-rollback-checklist.html">Deployment Rollback Checklist</a></li>
+<li><a href="customer-security-questionnaire-template.html">Customer Security Questionnaire Response Template</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software Supply Chain Security Checklist for Small Teams (Your Code Is Fine &mdash; Your Dependencies Are Not)</title>
+<meta name="description" content="A small-team checklist for the incidents that start in somebody else's code: lockfiles treated as load-bearing, dependency counts halved, the install-then-audit habit, branch protection and signed tags, CI secrets scoped per repo, a pinned-action policy that survives typosquats, a lockfile-drift check, and the one-hour response plan for the next big npm/PyPI compromise &mdash; so 'it was in a library' becomes 'the library fired, here is our blast radius.'">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Software supply chain security for small teams</h1>
+
+<p>Nearly every small product team reads its own code carefully and its dependencies not at all. Yet the code the team writes is maybe ten percent of what ships: the rest arrived through npm, PyPI, Maven, Docker Hub, GitHub Actions, and a dozen vendor SDKs. <strong>Your code is fine. Your dependencies are somebody else's Monday.</strong> The industry's worst incidents of the last several years &mdash; event-stream, colors/faker, xz, the npm "protestware" waves &mdash; were all supply-chain events: the application was innocent, and it went down anyway.</p>
+
+<p>The standard enterprise answer (SBOM tooling, binary transparency, sigstore ecosystems) is real but heavy. The small-team answer is a half-day of setup plus habits that fit in one checklist. This pairs with the <a href="api-key-rotation-checklist.html">API key rotation checklist</a> (the CI and platform secrets that make a dependency compromise worse) and the <a href="server-hardening-checklist-small-teams.html">server hardening checklist</a> (the blast radius on the box itself).</p>
+
+<h2>1. Count what you actually ship</h2>
+
+<p>You cannot defend a supply chain you have not enumerated. One afternoon, once:</p>
+
+<ul>
+<li><strong>Generate the bill of materials the boring way:</strong> <code>npm ls --all</code>, <code>pip freeze</code>, or your lockfile diffed against an empty directory install. The number is usually 5&ndash;20x what the team guesses. Write the number down &mdash; it is the denominator for every later decision.</li>
+<li><strong>List the non-package dependencies too:</strong> container base images, GitHub Actions (each <code>uses:</code> line is code you execute on every push with your secrets attached), Terraform modules, vendored binaries in the repo, and the SDKs your payment and email vendors ship.</li>
+<li><strong>Mark the four that would end the company if compromised:</strong> the framework, the auth library, the deployment path, and the base image. These four get the strictest rules below; everything else gets the standard ones. That is the whole prioritization &mdash; the rest is decoration.</li>
+<li><strong>Record where each language's lockfiles live and who regenerates them.</strong> The lockfile is load-bearing infrastructure, not a build artifact (see step 3).</li>
+</ul>
+
+<h2>2. Shrink the chain &mdash; the highest-yield hour in this checklist</h2>
+
+<p>The cheapest security control in software is subtraction. Every dependency you remove is a dependency that can never be compromised:</p>
+
+<ul>
+<li><strong>Halve the count, once.</strong> Run depcheck or equivalent, then delete the dead weight: the left-pad-style micro-packages (write the function), the two date libraries where one survives, the "utility belt" packages where you use three functions, the transitive duplicates. Most teams cut 20&ndash;40% in one sitting and it feels like cleaning a garage.</li>
+<li><strong>Adopt the one-question rule for new dependencies:</strong> "what does this do that I cannot write this afternoon?" A JSON parser, yes. A left-pad, no. A package with three contributors and a 40-line README gets the same answer as one you write yourself &mdash; because that is what you are doing.</li>
+<li><strong>Prefer batteries, not aggregators.</strong> The dependency that pulls in 40 others to use one function is a supply-chain exposure multiplier. Check the dependency tree before adopting, not the stars.</li>
+<li><strong>Retire on the same schedule you rotate keys.</strong> The quarterly pass from the <a href="api-key-rotation-checklist.html">rotation checklist</a> gets one extra column: dependencies with no commits, no releases, or a dead repo get replaced this quarter, not eventually.</li>
+</ul>
+
+<h2>3. Lockfiles, pinning, and the update treadmill</h2>
+
+<ul>
+<li><strong>Commit the lockfile, always, for applications.</strong> An app without a lockfile builds differently on every machine, and "different" sometimes means "the compromised version." Lockfiles are the diff between your supply chain and the world's.</li>
+<li><strong>Pin your direct dependencies (and CI actions) at known versions.</strong> Floating <code>^</code>/<code>~</code> ranges and <code>action@main</code> mean an upstream compromise deploys into your build automatically, with zero action on your side. Pin, then update deliberately.</li>
+<li><strong>Updates on a schedule, not a popup.</strong> A monthly update PR (dependabot grouped, or hand-rolled) keeps the treadmill short so the diffs are reviewable. The failure mode to avoid is the year of drift followed by the terrifying 400-line upgrade.</li>
+<li><strong>Read the changelog for the four crown-jewel dependencies; skim the rest.</strong> You are looking for behavior changes, new telemetry, and new required permissions &mdash; not line-by-line review.</li>
+</ul>
+
+<h2>4. Install-then-audit: the habit that replaces the scanner you can't afford</h2>
+
+<p>Commercial SCA tools are great; the free floor is lower than teams think:</p>
+
+<ul>
+<li><strong><code>npm audit</code> / <code>pip-audit</code> / <code>cargo audit</code> in CI, blocking on the known-exploitable level.</strong> Tune the noise: fail on high-and-critical-with-a-fix, warn on the rest, review the warning list monthly. An audit that fails on everything is an audit everyone disables.</li>
+<li><strong>Audit at install time, not just deploy time.</strong> The habit is: new dependency &rarr; run the audit &rarr; check the package's age, contributors, and download curve (a package that spiked from 200 to 200,000 weekly downloads last month deserves a squint) &rarr; then commit.</li>
+<li><strong>Watch for typosquats when typing names by hand.</strong> <code>reqeusts</code>, <code>crossenv</code>, and friends exist because copy-paste is a skill. Install from the docs link, not from memory.</li>
+<li><strong>Export the dependency list into the evidence folder</strong> the same way the <a href="log-retention-policy-small-teams.html">retention policy</a> exports logs &mdash; when the next ecosystem-wide CVE lands, "here is our exact exposure, here is what we run" is a ten-minute answer instead of a two-day archaeology dig.</li>
+</ul>
+
+<h2>5. CI and Actions: the machine that holds your secrets</h2>
+
+<p>Every GitHub Action you run executes third-party code with whatever the workflow can reach. Treat the workflow file as production config:</p>
+
+<ul>
+<li><strong>Pin actions to full-length commit SHAs, not tags.</strong> <code>actions/checkout@main</code> is a standing invitation; a tag can be moved, a SHA cannot. The <code>step-security/harden-runner</code> action (free) egress-watches the job so an exfiltration attempt shows up as a red line instead of a quiet success.</li>
+<li><strong>Scope the CI secrets per repo and per environment.</strong> The deploy key for production lives in the deploy workflow only &mdash; not in every workflow that ever touched the repo, which is the default drift. The rotation checklist's rule applies: one secret per consumer.</li>
+<li><strong>Restrict <code>GITHUB_TOKEN</code> permissions to the minimum in the workflow file</strong> (contents: read is enough for most CI). A compromised action with a read-only token is an incident report; with write access to the repo, it is a <a href="domain-hijack-protection-checklist.html">domain-hijack-grade</a> takeover of your build.</li>
+<li><strong>Require review for workflow-file changes on the main branch.</strong> Branch protection that reviews application code but waves through <code>.github/workflows</code> changes is a lock on the front door and a latch on the side.</li>
+<li><strong>Fork-PRs get no secrets, period.</strong> That is GitHub's default; verify nobody "fixed" it.</li>
+</ul>
+
+<h2>6. Build and deploy path integrity</h2>
+
+<ul>
+<li><strong>Build in CI from a clean checkout, never from a developer laptop.</strong> The laptop has three years of global packages and one node_modules nobody has audited since 2023. The clean-room build is what makes the lockfile meaningful.</li>
+<li><strong>Pin the base image by digest, rebuild on a schedule.</strong> <code>node:20-slim@sha256:...</code> plus a monthly rebuild means the base image you deploy is the base image you vetted &mdash; and that the monthly rebuild pulls the patched base within days of the vendor's fix.</li>
+<li><strong>Tag artifacts with the commit that built them</strong> so the response question "which builds contain the bad version?" is a grep, not a mystery.</li>
+<li><strong>The deployment credential gets the shortest leash in the company</strong> &mdash; scoped to the deploy target, rotated on the <a href="secrets-rotation-checklist.html">secrets schedule</a>, and revoked the same day a rotation happens.</li>
+</ul>
+
+<h2>7. The response plan: when the next big one lands</h2>
+
+<p>There will be a next xz, a next event-stream. The teams that come out fine are the ones with the hour already planned:</p>
+
+<ul>
+<li><strong>Step 1 (minute 0&ndash;10): determine exposure.</strong> Grep the lockfiles for the package and version range; check the four crown jewels first. No exposure &rarr; document, watch the advisory, done. This step is why the dependency inventory exists.</li>
+<li><strong>Step 2 (minute 10&ndash;30): contain.</strong> Freeze deploys from untrusted sources, revoke and rotate the CI/deploy secrets that the compromised path could reach (the rotation sequence from the <a href="api-key-rotation-checklist.html">key checklist</a>: create &rarr; deploy &rarr; verify &rarr; revoke), and check egress logs for the IoCs the ecosystem publishes.</li>
+<li><strong>Step 3 (minute 30&ndash;60): patch and rebuild</strong> from the fixed version, rebuild images from the new base, redeploy, and record the whole thing in the <a href="incident-timeline-template.html">incident timeline</a> &mdash; because a supply-chain response that isn't written down is a story, not evidence.</li>
+<li><strong>Step 4: feed the customer questionnaire.</strong> "A critical dependency CVE shipped last quarter; here is our exposure assessment, our rotation log, and our rebuild record" is the answer that turns the worst week of the year into a <a href="customer-security-questionnaire-template.html">deal-accelerating artifact</a>.</li>
+</ul>
+
+<h2>8. The mistakes small teams make anyway</h2>
+
+<ul>
+<li><strong>"We're small, nobody targets us."</strong> Supply-chain attacks do not target you; they target the ecosystem you installed from, at scale, in bulk. xz did not check the size of your company first.</li>
+<li><strong>Auditing without shrinking.</strong> Running <code>npm audit</code> monthly on a 1,400-dependency tree is bailing a boat. Cut the boat in half first, then bail.</li>
+<li><strong>Trusting a package because it is popular.</strong> Popularity is a lagging indicator &mdash; event-stream was popular too. The reviewable signals are recency of maintenance, contributor count, dependency count, and what it does that you cannot.</li>
+<li><strong>Third-party code in the workflow, first-party trust in the token.</strong> The <code>GITHUB_TOKEN</code> is the keys to the repo; any step that runs unvetted code should hold nothing.</li>
+<li><strong>"We'll inventory dependencies when we have time."</strong> The inventory takes an afternoon and turns every future incident from an unknown into a query. It is the difference between the <a href="ai-agent-failure-postmortem.html">postmortem</a> saying "we were exposed" and "we were not."</li>
+</ul>
+
+<h2>9. Close the loop: the quarterly supply-chain pass</h2>
+
+<ul>
+<li><strong>The pass, one hour:</strong> regenerate the dependency count and compare to last quarter (target: flat or down), review the four crown jewels' changelogs, rotate what the key checklist queues, re-pin anything that drifted, export the fresh inventory to the evidence folder.</li>
+<li><strong>Keep the boundary honest:</strong> this checklist covers code you import and the machines that build it. The keys it uses are the <a href="secrets-rotation-checklist.html">secrets checklist</a>, the runtime surface is the <a href="server-hardening-checklist-small-teams.html">server hardening</a>, and the monitoring that catches the weird egress is the <a href="server-monitoring-checklist-small-teams.html">monitoring checklist</a> &mdash; one afternoon, done in order, is a materially harder company.</li>
+<li><strong>Remember the economics:</strong> a half-day of setup and an hour a quarter buys you out of the incident class that ends companies without a single line of your own code being at fault. There is no cheaper insurance in engineering.</li>
+</ul>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; $19 pick-first workflows: disk reviews, rotation, shutdowns</li></ul><p class="hint">Launch week: 30% off any paid kit with code <strong>HIVE-LAUNCH30</strong> at checkout.</p></aside>
+
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="api-key-rotation-checklist.html">API Key Rotation Checklist for Small Teams</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist for Small Teams</a></li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams</a></li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist</a></li>
+<li><a href="ai-agent-permission-boundaries.html">AI Agent Permission Boundaries</a></li>
+<li><a href="incident-timeline-template.html">Incident Timeline Template</a></li>
+<li><a href="customer-security-questionnaire-template.html">Customer Security Questionnaire Response Template</a></li>
+</ul></aside>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80lab.gumroad.com">hive80lab.gumroad.com</a>.</footer>
+</main>
+</body>
+</html>
