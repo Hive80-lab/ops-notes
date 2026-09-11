@@ -63,6 +63,8 @@ Incident response, on-call, and automation **checklists and templates** you can 
 - [Microsoft 365 security checklist](https://hive80-lab.github.io/ops-notes/microsoft-365-security-checklist.html)
 - [User access review checklist](https://hive80-lab.github.io/ops-notes/user-access-review-checklist.html)
 - [Visitor log template](https://hive80-lab.github.io/ops-notes/visitor-log-template.html)
+- [Office Move IT Checklist for Small Teams](https://hive80-lab.github.io/ops-notes/office-move-it-checklist.html)
+
 - [Key inventory register template](https://hive80-lab.github.io/ops-notes/key-inventory-register.html)
 
 *Templates, not legal or regulatory advice. Site: <https://hive80-lab.github.io/ops-notes/>*
