@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Communication Timeline Template for Small Teams (Who You Tell, When, and What to Say) &mdash; HIVE80lab</title>
+<meta name="description" content="An incident communication timeline template that ends the silence vacuum: the three audiences with different clocks, the update cadence (ack within 15 minutes, then every 30 while down), the five-part update skeleton you can copy-paste, the single-writer rule, what never to write during an incident, and how to close the loop with the post-mortem link. Worked example: a twelve-person e-commerce SaaS whose 47-minute payment outage produced zero &lsquo;what is happening?&rsquo; tickets because the updates came first.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/incident-communication-timeline-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Incident communication timeline template: who you tell, when, and what you say</h1>
+<p><em>For small teams &mdash; 5 to 50 people &mdash; who have no communications department, a shared inbox, and an outage that customers will notice before you finish diagnosing it.</em></p>
+
+<p>An outage does two kinds of damage at once. The technical damage is what the incident is <em>about</em>. The trust damage is what the silence is <em>about</em>. Customers forgive a broken checkout for an hour; they forgive a vendor who said nothing for an hour much more slowly, because silence reads as "they don't know" &mdash; and once a customer believes you don't know, every future update has to climb out of that hole. The fix is not eloquence. It is a schedule, written in daylight, that says who gets told what at which minute. This page is that schedule.</p>
+
+<h2>1. The rule that beats every template: tell them before they ask</h2>
+<p>The moment a customer has to <em>ask</em> what is wrong, you have already lost the update race &mdash; their next question is "what else don't you know?" So the timeline starts earlier than most teams think: the first update goes out before diagnosis is complete, sometimes before the cause is even guessed. "We know checkout is failing, we are on it, next update by 14:30" is a complete first update. It contains no diagnosis, and it does not need one. What it contains is proof of existence: someone is awake, the thing is owned, and there is a time when you will hear more.</p>
+
+<h2>2. Three audiences, three clocks</h2>
+<table>
+<tr><th>Audience</th><th>Clock</th><th>Channel</th><th>What they need</th></tr>
+<tr><td>Users / customers</td><td>First word &le;15 min; then every 30 min while degraded</td><td>Status page, in-app banner, or email &mdash; pick one primary</td><td>Status, workaround, next-update time</td></tr>
+<tr><td>Your own staff (support, sales, CS)</td><td>Immediately at declaration; then same cadence as customers</td><td>Dedicated Slack/Teams channel + pinned summary</td><td>What to tell customers, what NOT to promise, where to route escalations</td></tr>
+<tr><td>Leadership &amp; other teams</td><td>At declaration and at every severity change</td><td>Short written ping in the incident channel</td><td>Severity, business impact, decision asks (go dark? refund? pause marketing?)</td></tr>
+</table>
+<p>The internal audience is the one small teams forget, and it is the one that burns you: a support rep who learns about the outage from a customer tweet will improvise a promise ("it'll be fixed by 3, I'm sure") that engineering then has to honor or publicly walk back. Your staff are your widest communication channel &mdash; brief them first, and give them the same skeleton you give customers.</p>
+
+<h2>3. The timeline itself</h2>
+<p>Copy this table into the incident doc at declaration. Times are offsets from <strong>T0 = declaration</strong> (see the <a href="severity-matrix-3-levels.html">severity matrix</a> for when declaration happens).</p>
+<table>
+<tr><th>When</th><th>Who writes</th><th>Audience</th><th>Minimum content</th></tr>
+<tr><td>T0 + 0&ndash;5 min</td><td>Incident commander</td><td>Internal (staff channel)</td><td>"Incident declared for X, severity N, commander is NAME, comms lead is NAME"</td></tr>
+<tr><td>T0 + 15 min</td><td>Comms lead</td><td>Customers</td><td>First ack: what's broken, that you're on it, next-update time</td></tr>
+<tr><td>T0 + 30, then every 30 min</td><td>Comms lead</td><td>Customers</td><td>Update: same status, what changed, next-update time</td></tr>
+<tr><td>At mitigation (symptoms stop)</td><td>Comms lead</td><td>Customers</td><td>"Service restored, monitoring, we'll confirm in 1 hour"</td></tr>
+<tr><td>Mitigation + 1 h</td><td>Comms lead</td><td>Customers</td><td>"Confirmed resolved" &mdash; or a new update if it recurs</td></tr>
+<tr><td>&le;72 h after</td><td>Comms lead</td><td>Customers</td><td>Post-mortem summary + link (blameless version)</td></tr>
+</table>
+<p>Two properties make this table survive contact with a real incident. First, <strong>every row names a person, not a role</strong> &mdash; "comms lead: Priya" written at T0, because "someone should update the status page" is how silence happens. Second, <strong>every update carries a next-update time</strong> &mdash; this is the single highest-leverage sentence in incident communications. "Next update by 14:30" converts your audience from refreshers into waiters, and it converts <em>your</em> obligation into a deadline the whole team can see.</p>
+
+<h2>4. The five-part update skeleton</h2>
+<p>Every update &mdash; first, middle, or final &mdash; has the same five slots. Fill them in order, keep it under a hundred words, and ship it on time even if slot 2 is "no change since last update."</p>
+<ol>
+<li><strong>Status line</strong> &mdash; one sentence: what is degraded, for whom. "Checkout is failing for about 30% of customers. Everything else works."</li>
+<li><strong>What we know</strong> &mdash; one or two sentences of fact, no speculation. "Errors began at 14:02. We have isolated it to the payment gateway."</li>
+<li><strong>What we're doing</strong> &mdash; present tense, no heroics. "We have engaged the gateway provider and are testing a fallback path."</li>
+<li><strong>Workaround</strong> &mdash; if one exists, it goes here, formatted as an instruction. "Invoices can still be paid via bank transfer; card checkout is affected."</li>
+<li><strong>Next update time</strong> &mdash; a clock time, not "shortly". "Next update by 14:30 or sooner."</li>
+</ol>
+<p>Slot 5 is the one that ends "we're still working on it" as a genre. If you cannot make the next update time, the <em>update that says you'll be late</em> is itself an update &mdash; a 20-second "diagnosis is taking longer than planned; next update 15:00" preserves more trust than a silent twenty minutes past the promise.</p>
+
+<h2>5. The single-writer rule</h2>
+<p>All customer-facing words come from one comms lead per incident. Not the CEO, not whoever is angriest in the support inbox, not three people editing the status page concurrently. The comms lead collects facts from the incident channel, writes the update, and posts it on schedule. Everyone else &mdash; including executives &mdash; routes wording suggestions to the comms lead instead of posting their own. The reason is arithmetic: three writers means three versions of "what we know," and the audience will notice the differences and read them as concealment. If you have no spare person, the incident commander writes updates <em>on a timer</em> &mdash; a 30-minute alarm labeled "UPDATE" &mdash; rather than when the work pauses.</p>
+
+<h2>6. What never to write during an incident</h2>
+<ul>
+<li><strong>ETAs you invented.</strong> "Fixed in 20 minutes" becomes a promise with your name on it. Give a next-<em>update</em> time (which you control) instead of a next-<em>fix</em> time (which you don't).</li>
+<li><strong>"Everything is fine."</strong> If customers can see the failure, this sentence costs you the next three updates' credibility.</li>
+<li><strong>Names and blame.</strong> "A contractor misconfigured&hellip;" in a customer update is a career-shaped mistake and legally unwise. Causes, with blame stripped out, belong in the <a href="blameless-post-incident-review-template.html">blameless review</a> &mdash; published later, on purpose.</li>
+<li><strong>Jargon and internal codenames.</strong> "p99 latency on the ingest path" means nothing to a shop owner whose card reader is down. Write the customer's sentence: "card payments are slow or failing."</li>
+<li><strong>Speculation marked as fact.</strong> If the cause is unconfirmed, "we believe" or "we are testing whether" is the honest maximum.</li>
+</ul>
+
+<h2>7. Channels: pick one primary, keep it honest</h2>
+<p>The <a href="status-page-communication-template.html">status page</a> is the canonical home for updates; everything else points at it. But small teams should decide in daylight which channel is <em>primary</em> per audience: status page for self-serve customers, a direct email for the ten accounts that generate most revenue, a pinned Slack message for staff. During the incident, the comms lead updates the primary channel and lets the others mirror it &mdash; never the reverse. Mirroring from secondary channels is how two versions of the truth appear. If your primary is email, understand its latency (minutes, sometimes spam-folder minutes) and put the same text on the status page so the impatient can find it.</p>
+
+<h2>8. Worked example: twelve-person e-commerce SaaS, 47-minute gateway outage</h2>
+<p>At 14:02 card checkout started failing for shops using a specific payment gateway. The on-call engineer declared at 14:05 (severity 1), the comms lead was named in the same message, and the first customer update went out at 14:08 &mdash; four minutes after declaration, thirty-odd minutes before anyone knew the cause: "Checkout is failing for some shops. We're investigating with our payment provider. Bank-transfer invoices still work. Next update by 14:30." Updates followed at 14:30 ("gateway confirmed as the cause; we've engaged their escalation line &mdash; <a href="vendor-incident-contacts-one-pager.html">contact matrix</a> did its job"), 14:49 ("traffic routed to fallback; card checkout recovering, some transactions may need retry"), and 14:55 ("confirmed resolved; we'll publish what happened within 72 hours"). Total customer-visible silence during the entire outage: zero. Support received <strong>no</strong> "what is happening?" tickets &mdash; the ones they did get were transaction-specific, which is support working as intended. The 72-hour post-mortem promise was kept on day two with a short summary and a link to the full review. One churn-risk customer replied to the final update: "first vendor that told me before I noticed."</p>
+
+<h2>9. Metrics that keep the timeline honest</h2>
+<ul>
+<li><strong>Time to first update</strong> &mdash; declaration to first customer-visible ack. Target under 15 minutes, every incident, no exceptions for "it was obvious quickly."</li>
+<li><strong>Cadence kept %</strong> &mdash; promised next-update times met, divided by promises made. Below 90%, your update times have become aspirations and audiences start refreshing support inboxes instead.</li>
+<li><strong>Post-mortem link published &le;72 h</strong> &mdash; the loop-closer. An outage whose story never gets published teaches customers that your updates end when the problem ends &mdash; which makes the <em>next</em> first update read as PR.</li>
+</ul>
+
+<h2>Where this fits</h2>
+<p>This timeline is the <em>schedule</em>; the words that go in the slots live next door: the <a href="status-page-communication-template.html">status page communication template</a> covers the page mechanics and message library, and the <a href="incident-post-mortem-template.html">incident post-mortem template</a> is the 72-hour follow-through this timeline promises. Declaration and severity live in the <a href="severity-matrix-3-levels.html">severity matrix</a>; who gets paged to <em>become</em> the comms lead comes from the <a href="oncall-escalation-path-tiers.html">on-call escalation path</a>. If the outage is vendor-caused, the <a href="vendor-incident-contacts-one-pager.html">vendor incident contacts one-pager</a> is the difference between "we've engaged their escalation line" being true or wishful. For payments specifically, the <a href="payment-outage-playbook.html">payment outage playbook</a> pairs diagnosis with this page's comms cadence.</p>
+
+<p>If you want the communications layer built for you &mdash; message library, cadence rules, status-page copy, and the escalation wiring &mdash; that is exactly what <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> covers in depth; the free <a href="https://hive80lab.gumroad.com/l/first-30-minutes">First 30 Minutes</a> quick-start gets the first update right today, and if you would rather have the whole timeline drafted from your actual stack, the <a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> ships it in 48 hours.</p>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+<li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; done-for-you, built from your estate, 48h &mdash; $249</li>
+</ul>
+</main>
+<footer><a href="index.html">All ops notes</a></footer>
+</body>
+</html>
