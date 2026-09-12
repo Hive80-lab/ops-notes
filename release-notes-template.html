@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release Notes for Small Teams (The Template Customers Actually Read) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A release-notes template for small teams: one screen per release, customer language instead of commit language, breaking changes first with a migration deadline, written for the three readers who actually open them — support, integrators, and the quiet churner.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/release-notes-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Release notes for small teams: the template customers actually read</h1>
+<p>Release notes fail in two directions: they are never written (the "changelog" is a link to a commit log), or they are written as marketing &mdash; adjectives where facts should be. Customers open release notes for exactly three reasons: <em>is the thing I reported fixed, is anything about to change under me, and is this product still alive?</em> A template that answers those three questions, in customer language, on one screen, per release &mdash; that is the whole discipline. It takes fifteen minutes a week and quietly closes a support ticket category.</p>
+<p>This note gives the template, the three readers you are actually writing for, the cadence rules, the five traps that turn release notes into wallpaper, and a one-afternoon rollout.</p>
+
+<h2>1. The template: one screen per release</h2>
+<pre>
+Release 4.12 &mdash; 12 Sep 2026 &mdash; "exports stop timing out"
+
+BREAKING (if non-empty, this goes first, with a deadline)
+- API keys now expire after 365 days. Rotate by 30 Sep: Settings &rarr; API.
+  Integrations that don't rotate will start receiving 401s on 1 Oct.
+
+FIXED
+- CSV exports over 10k rows no longer time out (reported by 6 teams)
+- Timezone display in the audit log now matches the viewer's profile
+
+CHANGED (what behaves differently + what you must do, if anything)
+- Invoices past due now show a badge in list view; no action needed
+
+NEW
+- Saved filters for the customer list
+
+UNDER THE HOOD (optional, one honest line)
+- moved export rendering to a queue; should absorb Friday spikes
+</pre>
+<p>The rules baked into the format:</p>
+<ul>
+<li><strong>Customer language, not commit language.</strong> "Refactor auth middleware" describes your afternoon; <em>logins from SSO now survive an expired session</em> describes their week. If a line would make sense only to someone with repo access, it is a commit message, not a note.</li>
+<li><strong>Breaking changes go first or the format is a lie.</strong> A breaking change buried under &ldquo;New&rdquo; is how integrators learn about 401s from their own monitoring. Deadline, steps, and a contact, at the top.</li>
+<li><strong>Fixed items name the symptom the customer saw</strong>, not the ticket ID. <em>CSV exports over 10k rows timing out</em> is searchable by the person who hit it; <em>OPS-2381</em> is not.</li>
+<li><strong>Every Changed item answers &ldquo;what do I need to do?&rdquo;</strong> &mdash; even when the answer is &ldquo;nothing.&rdquo; The absence of an answer is what makes people email support.</li>
+<li><strong>One screen, weekly.</strong> A notes page that scrolls for six screens is a changelog nobody opens. Weekly cadence forces the discipline that makes each release readable.</li>
+</ul>
+
+<h2>2. The three readers</h2>
+<p>Write for the people who actually open the page:</p>
+<ul>
+<li><strong>Support</strong> reads release notes to pre-answer tickets. When a fix lands, support links the note in their reply &mdash; which closes the loop and makes the notes the single source of truth instead of a parallel channel. (This is the same loop that keeps an <a href="https://hive80-lab.github.io/ops-notes/status-page-template.html">incident status page</a> honest: one public place, kept current.)</li>
+<li><strong>Integrators</strong> scan for anything that touches the API, webhooks, or auth &mdash; the Changed and Breaking sections exist almost entirely for them. If those sections are unreliable, they stop trusting the page and start testing everything in staging, and you pay for that in their adoption speed.</li>
+<li><strong>The quiet churner</strong> never writes in. For them the notes are a pulse: a steady weekly page says <em>alive</em>; a three-month gap says <em>evaluate alternatives</em>. The cadence communicates even when the content is modest &mdash; which is also why the <a href="https://hive80-lab.github.io/ops-notes/maintenance-window-announcement-template.html">maintenance-window announcement</a> shares this page's format: scheduled or shipped, it is the same promise of &ldquo;we tell you before we touch your workday.&rdquo;</li>
+</ul>
+
+<h2>3. Cadence and placement</h2>
+<ul>
+<li><strong>Every production release gets notes.</strong> For teams shipping daily, that can be a weekly digest &mdash; but the digest is assembled as it ships, not reconstructed from memory on Friday.</li>
+<li><strong>Published where customers already look:</strong> linked from the app footer and, for the ones that matter, the status page. A notes page behind a login nobody has is a diary, not a channel.</li>
+<li><strong>Breaking changes get their own fuse:</strong> the <a href="https://hive80-lab.github.io/ops-notes/api-deprecation-notice-template.html">deprecation notice template</a> handles the long-fuse cases (months of warning, direct emails); the release notes carry the short reminder (&ldquo;expires 30 Sep, rotate now&rdquo;) every release until the deadline passes.</li>
+<li><strong>The git log is not release notes.</strong> The diff tells you what changed; only a human sentence tells anyone whether it matters. The fifteen minutes of writing <em>is</em> the work.</li>
+</ul>
+
+<h2>4. The five traps</h2>
+<p><strong>Commit messages pasted as notes.</strong> &ldquo;refactor auth middleware,&rdquo; &ldquo;chore: bump deps,&rdquo; &ldquo;fix tests&rdquo; &mdash; a page of these trains customers that opening release notes is a waste of a click, and once that training lands, the breaking-change note arrives to an empty room.</p>
+<p><strong>Breaking changes last.</strong> Order is a claim about priority. If the API expiry notice sits under three paragraphs about a new dashboard, the format says <em>we are proud of the dashboard</em>, and the integrator pays for the sentence.</p>
+<p><strong>Marketing adjectives.</strong> &ldquo;Blazing fast improvements to exports&rdquo; answers none of the three questions. Speed claims need the symptom and the number: <em>exports over 10k rows were timing out; they complete in under a minute now.</em></p>
+<p><strong>Apologies without dates.</strong> &ldquo;We're working hard on the export issues&rdquo; in every release for two months is worse than one line: <em>known issue, fix scheduled for 4.13, 3 Oct.</em> A date with a slip beats a promise with none &mdash; and if there is no date, say what has to be true first.</p>
+<p><strong>Notes only for launches.</strong> If the page goes quiet between big releases, the aliveness signal inverts exactly when it matters most. Weekly small notes are cheaper and read more than quarterly essays; the discipline is the same one that keeps a <a href="https://hive80-lab.github.io/ops-notes/weekly-review-checklist.html">weekly review</a> alive &mdash; small, repeated, honest.</p>
+
+<h2>5. Worked example</h2>
+<p>An eleven-person invoicing SaaS ships monthly and announces releases with a marketing email nobody opens. Support fields a steady drum of &ldquo;is the export thing fixed yet?&rdquo; tickets, and an integration partner discovers a rate-limit change from their own 401s.</p>
+<p>They switch to weekly one-screen notes in the format above, linked from the app footer, with the three readers in mind: support links the Fixed entries when closing tickets, API-affecting lines carry a tag the partner documentation points at, and the breaking-change block runs first with a deadline. Nine weeks later: the &ldquo;is it fixed&rdquo; ticket category drops by roughly 60% &mdash; the answer is now a link &mdash; the partner's integrations survive the next behavior change with one ticket instead of an escalation, and two renewal conversations cite the changelog unprompted as evidence the product is moving. The total cost is fifteen minutes per Friday, pulled from the same meeting where the <a href="https://hive80-lab.github.io/ops-notes/dora-metrics-small-teams.html">four delivery numbers</a> are already read. The counter-example is their own previous practice: a JIRA-generated changelog of ticket IDs and links that required access to JIRA to read, which is to say, customers read none of it and support answered all of it.</p>
+
+<h2>6. Metrics (for the metric itself)</h2>
+<ul>
+<li>100% of production releases have notes within 24 hours of shipping &mdash; the release checklist's last item.</li>
+<li>Breaking changes appear first, every time, with a migration deadline and steps.</li>
+<li>Support links the Fixed entry when closing a matching ticket; the link count is the honest readership metric.</li>
+<li>Weekly cadence held &mdash; including the dull weeks. A quiet page teaches customers not to look.</li>
+<li>One screen per release; if a week needs two screens, the week shipped too much unannounced change.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/api-deprecation-notice-template.html">API deprecation notice template</a> is the long-fuse version of a breaking change, the <a href="https://hive80-lab.github.io/ops-notes/maintenance-window-announcement-template.html">maintenance-window announcement</a> covers the planned disruption, and the <a href="https://hive80-lab.github.io/ops-notes/status-page-template.html">status page template</a> covers the unplanned one.</em></p>
+</main>
+</body>
+</html>
