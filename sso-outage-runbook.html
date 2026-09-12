@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The SSO Outage Runbook for Small Teams (When Nobody Can Log In) &mdash; HIVE80lab</title>
+<meta name="description" content="A small-team runbook for identity-provider outages: tell lockout from outage in five minutes, the break-glass local admin path, what still works when login does not, communicating when your email lives behind the same door, and the traps (single IdP dependency, unreachable break-glass, the password-reset loop).">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/sso-outage-runbook.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+
+<h1>The SSO Outage Runbook for Small Teams</h1>
+<p class="lede">A DNS outage makes you hard to find. A <strong>single sign-on outage makes you impossible to enter</strong> &mdash; including for you. The status page is up, the site renders, the database is fine, and every door is locked because the front door (Google Workspace, Okta, Entra ID, or whatever issues the tokens) is having a bad day. Worst of all, the people who could fix it are locked out too. The fix is not heroics at 2am. It is five checks to tell lockout from outage, one local door you built in sunlight, and a comms path that does not run through the thing that is down.</p>
+
+<h2>First five minutes: is it them or you?</h2>
+<p>Half of "SSO is down" is not an IdP outage &mdash; it is one misconfigured app, one expired signing certificate, or one person whose session died. Five checks before you declare anything:</p>
+<ol>
+<li><strong>Reproduce from a second device on a different network.</strong> Phone on mobile data, incognito window, another office. One person failing = their session; everyone failing = the IdP.</li>
+<li><strong>Test a second app behind the same IdP.</strong> The SSO login button on two different apps. Both dead = provider. One dead = that app's SAML/OIDC config, and the runbook is not this one &mdash; it is that app's admin page.</li>
+<li><strong>Check the IdP's status page <em>and</em> your own auth logs.</strong> No successful authentications for fifteen minutes across all apps is a signal your logs can confirm before any vendor admits anything. Errors like <code>invalid_signature</code> or a <em>today</em>-dated cert expiry point at your side, not theirs.</li>
+<li><strong>Check the auth domain itself.</strong> If <code>login.yourcompany.com</code> or the IdP's auth host stops resolving, this is a DNS problem wearing an SSO costume &mdash; run the <a href="dns-outage-runbook.html">DNS outage runbook</a> first.</li>
+<li><strong>Decide the path, out loud, in one sentence:</strong> "Provider-side &mdash; activating break-glass and posting status" or "Our side &mdash; last change was X, rolling back X." An IdP outage is the one incident where the person deciding should not be the person trying to log in.</li>
+</ol>
+
+<h2>Break-glass: the local door you built in sunlight</h2>
+<p>When the IdP is down, the only way in is a path that <strong>does not go through the IdP</strong>. That path must exist before the outage &mdash; building it during one means building it without testing it. Four properties of a break-glass that actually works:</p>
+<ul>
+<li><strong>Local admin account(s) on the critical few systems</strong> &mdash; the production host, the payment admin panel, the DNS/registrar console &mdash; kept in a password manager vault that is <em>not</em> SSO-gated. An emergency login stored inside the login system is a joke with a punchline at 3am.</li>
+<li><strong>Printed 2FA recovery codes, sealed, in two locations.</strong> The most common break-glass failure is the second factor that lives in the same dead IdP. Paper survives a provider outage.</li>
+<li><strong>A named short list of who may use it</strong> &mdash; two or three people, written down. Break-glass with unlimited users is just "no security."</li>
+<li><strong>Every use is logged and closed the same day</strong>: who used it, on what system, for how long, and the ticket that rotates the password after. A break-glass door that stays open forever is a breach you have not noticed yet. Drill it quarterly &mdash; a ten-minute game where one person proves they can get into production without the IdP is the cheapest insurance you will ever buy.</li>
+</ul>
+
+<h2>What still works when login does not</h2>
+<p>The outage is smaller than it feels &mdash; if you know what survives:</p>
+<ul>
+<li><strong>Existing sessions usually hold.</strong> Tokens were issued before the outage and are verified locally or cached; customers already logged in keep working. Panic-resetting sessions converts a sign-in problem into a full outage.</li>
+<li><strong>Service accounts and CI keep running</strong> if they use API keys rather than interactive SSO &mdash; deploys, backups, and monitors usually keep running. Check before assuming the whole machine is down.</li>
+<li><strong>New signups and password resets are the real victims.</strong> That is your blast-radius line for comms: "existing users are unaffected; new sign-ins are paused."</li>
+<li><strong>Email may be behind the same door.</strong> If your mail lives in Google Workspace or Microsoft 365, the IdP outage took your email too. Your comms fallback &mdash; an independently hosted status page, a personal-domain group alias, a phone/WhatsApp tree &mdash; must not depend on the thing that is down. Write the fallback on a calm afternoon.</li>
+</ul>
+
+<h2>Tell people before they tell you</h2>
+<p>Nothing turns a 40-minute IdP hiccup into a trust incident faster than silence. Three updates, on a clock:</p>
+<ul>
+<li><strong>Internal, minute 5:</strong> "IdP provider outage suspected; break-glass active for [two named people]; existing sessions unaffected; next update 15:20." One message, in the channel everyone reads.</li>
+<li><strong>Status page, minute 15:</strong> "Sign-in is unavailable for some users. Data is safe. Existing sessions are unaffected. We are working with our identity provider and will update by [time]." Name what works, not just what is broken.</li>
+<li><strong>Every promised update, on time, even when it is "no change yet."</strong> The update cadence is the product during an outage.</li>
+</ul>
+
+<h2>The mistakes that turn an hour into a day</h2>
+<ul>
+<li><strong>The single IdP dependency with no local door.</strong> If every system &mdash; production, DNS, the password manager itself &mdash; federates to one provider and nothing has a local login, an IdP outage is a full company outage. One break-glass account on the three systems you would cry about losing is the minimum.</li>
+<li><strong>Break-glass stored inside the dead system.</strong> Recovery codes emailed to the SSO-gated inbox, the local admin password in the SSO-gated vault. Store the escape hatch <em>outside</em> what it escapes from.</li>
+<li><strong>The password-reset loop.</strong> The reflex during a login outage is resetting everyone's passwords. It does nothing while the IdP is down, and after recovery it produces a lockout storm, a support queue, and MFA re-enrollment for people who were never affected. Nobody resets anything during an IdP outage.</li>
+<li><strong>Fixing the provider.</strong> You cannot fix Okta from your laptop. Your job is the two things you own: the local door and the comms. Everything else is waiting well.</li>
+<li><strong>Skipping the review because "the vendor fixed it."</strong> The post-mortem question is not "why did the IdP fail" &mdash; it is "why did <em>we</em> have no path in, and how long did it take us to notice." The answer list is the next quarter's hardening work.</li>
+</ul>
+
+<h2>Worked example</h2>
+<p>An eleven-person agency, Friday 9:12am: Google Workspace authentication went partially down (Google later confirmed a global incident). The old way: everyone tried their own browser in turn for an hour, two admins reset passwords "to see if it helps" (it did not), the founder could not reach production because production SSH'd through SSO, and the first customer-facing word was a support ticket at 11:30 asking if the company had disappeared. Total: five hours of degraded work, 60+ unnecessary password resets, and one churned account.</p>
+<p>The rerun, six months later: second-network reproduction at 9:14, second-app test confirmed provider-side by 9:19, break-glass opened for the two named on-call people at 9:21 &mdash; local admin on the deploy host and the payment panel, password rotated and ticket closed by 9:40. Status page updated 9:26 with "existing sessions unaffected" (and it was true &mdash; client work never stopped). Email fallback ran through the founder's personal-domain alias. Zero password resets. Total: 34 minutes of lockout for two break-glass users, zero for everyone else, and the post-mortem produced one permanent fix: a second local admin on the staging host, which the drill the next quarter proved in eleven minutes.</p>
+
+<h2>Metrics (for the SSO outage plan itself)</h2>
+<ul>
+<li>Break-glass drill cadence: quarterly, with a pass rate recorded &mdash; a drill nobody ran is a door that does not open.</li>
+<li>Time from "confirmed provider-side" to status posted: under 15 minutes. Track the median.</li>
+<li>Password resets during IdP outages: zero, always. Any nonzero number is the reset loop re-emerging.</li>
+<li>Every critical system has a documented local-login path, tested in the last 90 days. Count it as a percentage; anything under 100% is a list of future 3am surprises.</li>
+<li>Comms fallback verified independent of the IdP: if your status page, email, and chat all authenticate through the IdP, you have one outage with no microphone.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/mfa-device-lost-runbook.html">MFA device lost runbook</a> is the single-person version of this incident; the <a href="https://hive80-lab.github.io/ops-notes/dns-outage-runbook.html">DNS outage runbook</a> is its sibling when the auth domain itself stops resolving; and the <a href="https://hive80-lab.github.io/ops-notes/vendor-outage-runbook.html">vendor outage runbook</a> is the general playbook for any provider having the bad day the IdP is having.</em></p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
