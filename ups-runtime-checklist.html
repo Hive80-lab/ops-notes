@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UPS Runtime Checklist: The Battery That Buys You Ten Minutes You Did Not Schedule</title>
+<meta name="description" content="A UPS runtime checklist for small businesses: why the power cut that matters is the two-minute one during a payment batch, the four-question sizing check (what plugs in, what draws, how long to ride through, how long to shut down clean), the quarterly battery test that catches the dead cell before the storm does, the shutdown order that protects the database rather than the monitor, and the traps that turn a UPS into a five-year paperweight.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/ups-runtime-checklist.html">
+</head>
+<body>
+<main>
+<h1>UPS Runtime Checklist: The Battery That Buys You Ten Minutes You Did Not Schedule</h1>
+
+<p><strong>The quick version:</strong> the power cut that hurts a small business is almost never the long one &mdash; that's a closure, and everyone knows how to react. It's the two-minute flicker that lands in the middle of a payment batch, a stock count, or a database write, and leaves the business rebooting a half-dead file server with a customer's card machine blinking. A UPS is cheap insurance against exactly that: enough battery to ride through the flicker, or to shut things down cleanly when the power doesn't come back. This page gives the four-question sizing check, the quarterly battery test that catches the dead cell before the storm does, and the shutdown order that protects the database instead of the monitor.</p>
+
+<h2>What a UPS actually buys</h2>
+<p>Strip the marketing: a UPS does two jobs, and only two. <strong>Ride-through</strong> &mdash; a flicker or brownout shorter than the battery never reaches your equipment at all. <strong>Graceful exit</strong> &mdash; if the power stays out, the battery buys you minutes to shut down in the right order instead of yanking the disk out from under the database. It does <em>not</em> buy a workday; a desktop drawing 150&nbsp;W drains a mid-size UPS in ten to twenty minutes, and anything with a laser printer attached does worse. Businesses that expect runtime from a UPS bought the wrong product: for hours of runtime you want a generator or a battery power station; for minutes of clean shutdown, a UPS.</p>
+
+<h2>The four-question sizing check (once, ten minutes)</h2>
+<ol>
+<li><strong>What plugs in?</strong> Only what must survive: the router/modem, the switch, the file server or NAS, the point-of-sale machine, and one workstation. Not monitors (they can reboot), not printers, not the kettle &mdash; every socket you protect divides the battery thinner.</li>
+<li><strong>What does it draw?</strong> Add the wattage (nameplate is fine; a plug-in power meter is better). A typical small-office protected set &mdash; router, switch, NAS, one desktop &mdash; draws 80&ndash;150&nbsp;W. A POS terminal with a card reader adds 30&ndash;50&nbsp;W.</li>
+<li><strong>How long to ride through?</strong> At 100&nbsp;W draw, a 600&nbsp;VA/360&nbsp;W unit holds roughly five to eight minutes; a 1500&nbsp;VA/900&nbsp;W unit holds twenty-plus. Match runtime to the <em>shutdown</em> you need, plus margin &mdash; not to the outage you fear.</li>
+<li><strong>How long to shut down clean?</strong> Time it once: NAS gracefully powering off, 3&ndash;5 minutes; database flush, 2&ndash;5; everything else, seconds. If your runtime is four times your shutdown time, you're sized. If it isn't, buy a bigger battery or protect fewer sockets.</li>
+</ol>
+
+<h2>The quarterly battery test (ten minutes, four readings)</h2>
+<p>UPS batteries die quietly &mdash; sealed lead-acid cells lose capacity from heat and age, and the unit's own self-test lies about it. Every quarter, run four readings and write them down:</p>
+<ul>
+<li><strong>Runtime at load.</strong> Pull the wall plug under real load and time how long the equipment holds. Compare to the same reading a year ago; capacity that has fallen by a third is a battery on borrowed time.</li>
+<li><strong>Alarm check.</strong> The unit should beep on the transfer and again on low battery. A UPS that never alarms is a UPS nobody would notice failing.</li>
+<li><strong>Self-test result.</strong> Run the unit's own battery test after the pull-the-plug one &mdash; the internal test is a claim, the wall-pull is evidence.</li>
+<li><strong>Date on the battery.</strong> Sealed lead-acid lasts 3&ndash;5 years at room temperature, less on a warm shelf. Past four years, price a replacement &mdash; for many units the cell swaps in ten minutes with a screwdriver.</li>
+</ul>
+<p>Log the four readings next to your other quarterly checks; a runtime column that shrinks across quarters is the early warning no dashboard provides.</p>
+
+<h2>The shutdown order (protect the database, not the monitor)</h2>
+<p>When the lights stay out and the battery is draining, order matters. Equipment tolerates a hard cut in reverse order of damage:</p>
+<ol>
+<li><strong>Databases and point-of-sale first.</strong> Close the POS session, stop the accounting package, flush and stop the database service. These are the only machines that corrupt when the power dies mid-write.</li>
+<li><strong>File servers and NAS second.</strong> Trigger the graceful shutdown; the NAS rebuilds its array the polite way only if you let it stop politely.</li>
+<li><strong>Workstations third.</strong> Save, close, shut down. Two minutes, and the half-written document survives.</li>
+<li><strong>Network gear last.</strong> Router and switch stay up until everything behind them is down &mdash; they carry the shutdown commands and the cloud backups.</li>
+</ol>
+<p>If the UPS speaks USB to the NAS or server, configure it once to do this automatically &mdash; a scripted shutdown beats a sprint across the shop, and it works at 2 am when nobody is in the building.</p>
+
+<h2>Worked example: the bakery's flicker</h2>
+<p>A bakery ran its till and card machine off one power strip with everything else &mdash; ovens included. A summer brownout cut power for ninety seconds during the Saturday stock count; the till rebooted mid-batch, the card machine lost its terminal key, and the morning took forty minutes to reconcile by hand. The oven, being a dumb resistive heater, never noticed.</p>
+<p>The fix cost one afternoon: a 900&nbsp;W UPS under the counter carrying the till, the card machine, and the network gear. The quarterly test times the runtime (nineteen minutes at their load), and the UPS's USB cable tells the till to close the batch and shut down cleanly if the outage passes six minutes. The next flicker &mdash; six months later &mdash; was a non-event: the till blinked, the count continued, nobody looked up.</p>
+
+<h2>The four traps</h2>
+<ul>
+<li><strong>Runtime theatre.</strong> A big UPS whose sockets carry monitors and a printer &mdash; the battery spent on things that don't care about power while the database rode bare.</li>
+<li><strong>The never-tested battery.</strong> The unit passed its 2019 purchase test and has been a paperweight since 2022. The wall-pull test is the only one that counts.</li>
+<li><strong>The daisy-chained strip.</strong> A surge strip feeding a UPS (or a UPS feeding a strip) trips protections against each other; wall socket to UPS to equipment, nothing between.</li>
+<li><strong>The shutdown that needs a human.</strong> A runtime plan that assumes someone is standing next to the server when the lights go out &mdash; configure the automatic shutdown once and let the cable do the sprinting.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &amp; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/power-failure-it-checklist.html">power failure IT checklist</a> covers the morning after &mdash; what to check when the power returns and the machines come up in the wrong order; the <a href="https://hive80-lab.github.io/ops-notes/backup-restore-drill-checklist.html">backup restore drill checklist</a> is the safety net for the outage that outlasts every battery; the <a href="https://hive80-lab.github.io/ops-notes/annual-leave-coverage-checklist.html">annual leave coverage checklist</a> is the same principle for people &mdash; plan the transfer before the absence, not during it; and the <a href="https://hive80-lab.github.io/ops-notes/seasonal-peak-readiness-checklist.html">seasonal peak readiness checklist</a> is when the flicker risk is highest, because summer heat and winter storms are the two seasons that kill power and batteries alike.</em></p>
+</main>
+</body>
+</html>
