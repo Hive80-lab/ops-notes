@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Severity Matrix Template: P1&ndash;P4 on One Page (Stop Calling Everything Urgent) &mdash; HIVE80lab</title>
+<meta name="description" content="A severity matrix that fits one page: P1&ndash;P4 defined with examples, response times, update cadence and who gets told; the sixty-second severity call; the upgrade/downgrade rule that keeps the numbers honest; comms lanes per severity; and three metrics. Worked example: a twelve-person SaaS that cut a Saturday-night payment outage from six silent hours to a ninety-second call.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/incident-severity-matrix-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Incident Severity Matrix Template: P1&ndash;P4 on One Page</h1>
+<p class="sub">One page. What P1&ndash;P4 actually mean on your team, the sixty-second severity call, and the upgrade/downgrade rule that keeps the numbers honest.</p>
+
+<p>Without a severity matrix, every incident is sized by whoever is most awake and most scared &mdash; which means everything is &ldquo;urgent&rdquo; at 2am and nothing is urgent on a quiet Tuesday. The pager becomes a mood ring: real P1s get treated like tickets, and typos get escalated like breaches. The fix is not a longer process. It is <strong>one table, agreed while everyone is calm</strong>, that any human can apply in sixty seconds with no meeting and no guilt.</p>
+
+<h2>The severity matrix, one page</h2>
+<p>Four rows. If an incident needs more than four severities, you are running a bureaucracy, not an on-call. A row per level &mdash; what it means, an example your team recognizes, how fast the first human moves, how often everyone hears an update, and who is told:</p>
+<table>
+<tr><th>Sev</th><th>Definition</th><th>Example</th><th>First response</th><th>Updates</th><th>Who is told</th></tr>
+<tr><td><strong>P1</strong></td><td>Business stopped: customers cannot pay, log in, or reach their data; data loss or security breach in progress</td><td>Checkout down for everyone; production database unreachable; attacker indicator on a production box</td><td>Page on-call now; commander named within 5 minutes; work stops on everything else</td><td>Status page within 15 minutes; stakeholder update every 30 minutes until stable</td><td>On-call, commander, leadership, customers (status page)</td></tr>
+<tr><td><strong>P2</strong></td><td>Degraded but alive: a workaround exists or impact is partial</td><td>Checkout works but takes 20 seconds; one region down; nightly batch failed and can be re-run</td><td>On-call engages within 1 business hour</td><td>Every 2 hours or on any state change</td><td>On-call, system owner, lead of the affected team</td></tr>
+<tr><td><strong>P3</strong></td><td>Broken but invisible to customers</td><td>Internal dashboard erroring; one non-critical job failing; cosmetic bug on a marketing page</td><td>Next business day, as a ticket</td><td>In the ticket, no broadcasts</td><td>The team that owns it</td></tr>
+<tr><td><strong>P4</strong></td><td>Not broken: polish, docs, nice-to-have</td><td>Missing doc, stale copy, refactor nobody is blocked on</td><td>Backlog, whenever</td><td>Never</td><td>Nobody</td></tr>
+</table>
+<p>Three columns carry the weight. <strong>&ldquo;First response&rdquo;</strong> converts the label into a clock &mdash; a severity without a clock is an opinion. <strong>&ldquo;Updates&rdquo;</strong> is the anti-silence column: the number one thing that turns a bad Saturday into a churned account is not the outage, it is the six hours nobody heard anything. <strong>&ldquo;Who is told&rdquo;</strong> ends the &ldquo;should I wake the founder?&rdquo; debate &mdash; the row answers it, per level, in advance.</p>
+
+<h2>The sixty-second severity call</h2>
+<p>Whoever detects the incident asks three questions, in order, out loud:</p>
+<ul>
+<li><strong>Is money or data moving &mdash; or stuck?</strong> Payments failing, orders not recording, data being written wrong or read by someone who should not: that is a P1 regardless of how few users are affected, because the blast radius is growing while you deliberate.</li>
+<li><strong>Is there a workaround?</strong> No workaround and customers blocked: P1. Workaround exists: P2. Nobody notices: P3 or P4.</li>
+<li><strong>Who has to know in the next hour?</strong> The row in the &ldquo;Who is told&rdquo; column &mdash; page them, then start the update clock.</li>
+</ul>
+<p>Call it in sixty seconds, say the level and one reason out loud (&ldquo;P1 &mdash; checkout is down, no workaround&rdquo;), and let the <a href="incident-commander-checklist.html">incident commander</a> take it from there. Uncertainty resolves one way: <strong>when torn between two levels, pick the higher one</strong>. Over-calling is cheap &mdash; one downgrade line in the log. Under-calling is the six silent hours that cost you the customer.</p>
+
+<h2>The upgrade/downgrade rule</h2>
+<p><strong>Downgrades are free. Upgrades need no permission either. What is not allowed is calling it P2 and then not doing P2&rsquo;s clock.</strong> Anyone can downgrade, any time, with one logged line: why, when, and who. Anyone can upgrade, any time, no permission asked &mdash; better wrong and early than right and late. The one hard rule: the duties are welded to the label. If you are calling it a P1, the status page and the thirty-minute updates are running; if you are calling it a P2, the two-hour updates are running. A label that skips its own comms clock is a lie, and the <a href="incident-post-mortem-template.html">post-mortem</a> treats it as the finding.</p>
+
+<h2>Comms lanes per severity</h2>
+<p>The severity label is also a routing table &mdash; it decides who hears what, without anyone deciding in the moment:</p>
+<ul>
+<li><strong>P1:</strong> status page within 15 minutes (even with no ETA &mdash; &ldquo;we know, we are on it&rdquo; counts), stakeholder channel update every 30 minutes, direct note to affected customers the same day. Customers hear first, not last.</li>
+<li><strong>P2:</strong> stakeholder channel on state changes; affected customers told when the workaround is not obvious.</li>
+<li><strong>P3 / P4:</strong> the ticket. Nothing else. No channel-wide pings for a broken internal dashboard.</li>
+</ul>
+<p>For what goes in each update, the <a href="incident-communication-templates.html">incident communication templates</a> carries the templates; the matrix only decides when they fire.</p>
+
+<h2>Three metrics that keep the matrix honest</h2>
+<ul>
+<li><strong>Share of P1s downgraded within the first hour.</strong> Healthy is most of them &mdash; early over-calls are the system working, not a failure. If nothing is ever downgraded, your P1 is either too broad or people are afraid to touch the label.</li>
+<li><strong>Time from detect to label.</strong> Target under sixty seconds, measured per incident. If this creeps up, the matrix is being debated, not applied.</li>
+<li><strong>Labels that skipped their own clock.</strong> A P1 with no status page, a P2 with no updates &mdash; count them at the post-mortem. The goal is zero; the point of the label is the clock, not the vocabulary.</li>
+</ul>
+
+<h2>Worked example: from six silent hours to a ninety-second call</h2>
+<p>A twelve-person B2B SaaS company. The year before: the payment webhook queue stopped draining at 21:40 on a Saturday. No matrix, so the on-call engineer &mdash; alone, unsure, and reading Stripe docs &mdash; logged it as &ldquo;P3, weird webhook errors, will look Sunday.&rdquo; Reconciliation failed Monday morning, one enterprise customer&rsquo;s invoices were wrong for a week, and the account churned in the renewal month. Total silent hours: about six, all of them expensive.</p>
+<p>They wrote the matrix above in one afternoon and pinned it in the on-call channel. Five months later, the same failure at 21:10 on a Saturday: the on-call asked the three questions &mdash; money stuck, no workaround &mdash; called <strong>P1 at 21:12</strong>, commander named by 21:17, status page up at 22:02 with a plain-language &ldquo;we know, we are on it,&rdquo; rollback of the previous webhook change executed at 23:05, root cause a partner-side certificate expiry discovered and documented that night. One incident was downgraded P1&rarr;P2 at 23:30 with a logged reason. Final metrics from the post-mortem: detect-to-label 90 seconds, first customer update 52 minutes, zero silent hours. Same team, same failure class, one page of difference.</p>
+
+<h2>Where this fits</h2>
+<p>The matrix is the vocabulary the rest of the incident system speaks: the <a href="first-30-minutes-incident-response.html">first 30 minutes</a> is what the label starts, the <a href="incident-commander-checklist.html">incident commander checklist</a> is the human the label hands authority to, and the <a href="escalation-policy-template.html">escalation policy</a> decides who gets paged at each level. After the dust settles, the <a href="incident-post-mortem-template.html">post-mortem template</a> is where label misses get reviewed without blame. If you would rather have the whole incident loop &mdash; severities, commander lanes, comms, the post-mortem &mdash; built and rehearsed for your estate by an outside pair, that is the <a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a>; and the <a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> turns your post-mortems into procedures your team can run without you. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> covers the incident half; <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Vol. 2</a> covers the on-call rotation that carries the pager.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="security-audit-scorecard.html">Security Audit Scorecard</a> &mdash; free, 45 checks scored live in your browser, nothing uploaded.</li><li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li><li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; built from your estate, delivered in 48h &mdash; $249</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident pack for the on-call rotation</li></ul><p class="hint">20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p></aside>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
