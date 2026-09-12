@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security Audit Preparation Checklist for Small Business (Be Audit-Ready in a Day) &mdash; HIVE80lab</title>
+<meta name="description" content="A security audit preparation checklist for small business: the six-document readiness packet, the fix-first ten (cheap fixes you close before anyone looks), the evidence folder numbered to the 45 checks, the eight questions the auditor will ask, hand-over without handing over the keys, and the one-page current-state memo. Worked example: 11-person logistics firm, one day of prep, seven critical fixes closed pre-audit, report delivered with zero surprises.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/security-audit-preparation-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Security audit preparation checklist: be audit-ready in a day</h1>
+<p>A security audit costs the same whether you are ready for it or not &mdash; the fee is fixed, but the <em>findings</em> are not. An unprepared team spends the first paid hour of the audit on inventory archaeology: who has the server password, where the backups actually go, whether the departed finance manager's account is still live. A prepared team starts at check one with the evidence already on the table. Preparation is the difference between an audit that finds your real risks and an audit that finds your filing.</p>
+<p>This is the checklist: a six-document readiness packet, a self-score before anyone else scores you, the ten cheap fixes you close before the walkthrough, an evidence folder numbered to the same 45 checks the auditor uses, the eight questions you will be asked, a hand-over that protects your secrets, and a one-page memo that turns the whole exercise into a decision.</p>
+
+<h2>1. The readiness packet: six documents</h2>
+<p>Everything an auditor needs fits in six documents. If any of them does not exist, <em>that fact is itself the first finding</em> &mdash; write it down and move on; do not let a missing document stop the prep.</p>
+<ul>
+<li><strong>The asset inventory</strong> &mdash; every laptop, phone, server, router, cloud account and SaaS subscription, one row each, with an owner column. The <a href="it-asset-inventory-template.html">IT asset inventory template</a> is the format.</li>
+<li><strong>The access list</strong> &mdash; who can reach what: email, file shares, admin consoles, banking, the builder panel. Flag anyone with admin rights and anyone who left the company in the last twelve months.</li>
+<li><strong>The policy one-pager</strong> &mdash; your password rule, your MFA rule, your backup schedule, your "who to call at 2am" line. One page. If it lives in the owner's head, the page says that, and the page gets written.</li>
+<li><strong>The incident and near-miss log</strong> &mdash; every phishing email someone almost clicked, every laptop that went missing, every outage. Near-misses are evidence the process exists, not confessions.</li>
+<li><strong>The vendor list</strong> &mdash; every third party that holds your data or runs your payments, with what they hold. This feeds the <a href="vendor-security-review-checklist.html">vendor security review</a>.</li>
+<li><strong>Backup evidence</strong> &mdash; the last three restore-test results with dates. A backup you have never restored is a hope, not a control, and auditors price it that way.</li>
+</ul>
+
+<h2>2. Score yourself first</h2>
+<p>Run the <a href="security-audit-scorecard.html">45-check audit scorecard</a> the day before the auditor arrives &mdash; honestly, not aspirationally. Three reasons, all of them money:</p>
+<ul>
+<li><strong>No findings should surprise you.</strong> An audit where the buyer gasps at page one is an audit that becomes an argument. You already know the score; the auditor's job is to confirm, prioritize and write the fix plan.</li>
+<li><strong>You can pre-close the cheap failures.</strong> Every check you pass overnight is one the auditor records as "remediated" instead of "open finding" &mdash; the report reads better and the fix list gets shorter.</li>
+<li><strong>You pay for insight, not discovery.</strong> Fixed-fee audits like the <a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> assume the walkthrough, not the archaeology. A prepared packet is why the five-day turnaround holds.</li>
+</ul>
+
+<h2>3. The fix-first ten</h2>
+<p>Ten controls that cost under a day each and remove the findings auditors weight heaviest. Do these before the walkthrough, in this order:</p>
+<ol>
+<li><strong>MFA on every admin account</strong> &mdash; email admin, cloud consoles, registrar, banking. One afternoon, closes the single most common critical finding.</li>
+<li><strong>Remove departed staff</strong> &mdash; work through the access list chronologically; every account older than the last offboarding is a finding with your name on it. The <a href="user-access-review-checklist.html">user access review checklist</a> is the sweep pattern.</li>
+<li><strong>Patch the internet-facing things</strong> &mdash; router firmware, the website's CMS and plugins, anything with a public IP. The <a href="patch-management-checklist.html">patch cadence</a> keeps it that way.</li>
+<li><strong>Run one restore test</strong> &mdash; restore yesterday's backup of one file share to a scratch location, screenshot it. This converts "backups: unknown" to "backups: verified" on the report.</li>
+<li><strong>Kill shared passwords</strong> &mdash; the admin password taped under the keyboard, the everyone@ logins. A <a href="password-manager-rollout-small-business.html">password manager rollout</a> is a day of work.</li>
+<li><strong>Move registrar and DNS to a company mailbox</strong> &mdash; the domain sitting on a founder's personal Gmail is how a business loses its name.</li>
+<li><strong>Turn on device encryption</strong> &mdash; FileVault or BitLocker on every laptop in the inventory; it is two clicks and it deletes the "stolen laptop" scenario from the risk list.</li>
+<li><strong>Revoke stale API keys and tokens</strong> &mdash; anything older than six months or belonging to a person who left.</li>
+<li><strong>Write the 2am line</strong> &mdash; one sentence in the policy one-pager: who gets called, in what order, from which phone. The <a href="incident-response-plan-template-small-teams.html">incident response plan template</a> is the skeleton.</li>
+<li><strong>Screenshot everything you just fixed</strong> &mdash; into the evidence folder, next section.</li>
+</ol>
+
+<h2>4. The evidence folder</h2>
+<p>An auditor's report is only as strong as its evidence, and your remediation list is only as short. Build one folder, numbered to match the 45 checks:</p>
+<ul>
+<li><strong>One folder, numbered subfolders, dated files.</strong> <code>01-mfa-admin.png</code>, <code>02-access-list.csv</code>, <code>17-restore-test-2026-09-11.pdf</code>. When the walkthrough hits check 17, you open folder 17. Ten seconds, no "let me get back to you."</li>
+<li><strong>Screenshots over promises.</strong> A settings page with the date visible beats a paragraph saying "we do that." The report cites evidence; it cannot cite intentions.</li>
+<li><strong>Redact what the folder shows.</strong> Usernames can stay; the screenshots should not include live secrets, full customer lists, or anything you would not hand a contractor.</li>
+</ul>
+
+<h2>5. The eight questions you will be asked</h2>
+<p>Every small-team audit walks the same eight questions. Prepare the one-sentence answers and the evidence pointer for each:</p>
+<ol>
+<li>"Who has admin rights, and when did you last check?"</li>
+<li>"How does an ex-employee stop having access the day they leave?"</li>
+<li>"If ransomware lands at 9am Monday, what gets restored, and how do you know the backup is good?"</li>
+<li>"What did your last phishing near-miss look like, and what changed after it?"</li>
+<li>"Where are the passwords for the router, the registrar and the server?"</li>
+<li>"Which vendor could hurt you most if they were breached, and what did you check about them?"</li>
+<li>"What is on the public internet that you think is not?" (the shadow-IT answer feeds the <a href="shadow-it-audit-checklist.html">shadow IT audit</a>)</li>
+<li>"If the owner's phone was stolen tonight, what happens by morning?" (stolen-device flow: the <a href="lost-or-stolen-laptop-runbook.html">lost laptop runbook</a>)</li>
+</ol>
+
+<h2>6. Hand over carefully, not wide open</h2>
+<p>Prepared does not mean exposed. Three rules protect you while the audit reads your estate:</p>
+<ul>
+<li><strong>Least privilege first.</strong> The auditor gets a read-only account where read-only is possible, and a named contact for everything else &mdash; not the domain admin password in an email.</li>
+<li><strong>Secrets never travel by email or chat.</strong> Credentials go through a password manager's share link with an expiry date, or not at all. If a tool demands a raw secret, rotate it the day the engagement ends.</li>
+<li><strong>Redact on the way out.</strong> Customer names, payment details and staff personal data get masked in the packet. An auditor testing access control needs the structure of the access list, not the identities.</li>
+</ul>
+
+<h2>7. The one-page current-state memo</h2>
+<p>The last document in the packet is the one you write last: one page, three sections &mdash; <strong>what we protect</strong> (the crown jewels, named), <strong>what we know is weak</strong> (your honest self-score, the failures you have not closed yet and why), and <strong>what we want out of this audit</strong> (priorities, not pleasantries: "tell us the order to fix things in, and what we can defer").</p>
+<p>This memo changes the audit's shape. It converts the engagement from "find what you find" to "confirm, correct and sequence" &mdash; which is what produces a fix plan you will actually execute instead of a report that goes in a drawer. The output format it feeds is the <a href="security-audit-report-template.html">one-page audit report</a>.</p>
+
+<h2>8. Worked example</h2>
+<p>An 11-person logistics firm booked an audit after a customer's security questionnaire came back with "unable to verify." Prep took one working day: the packet was assembled from existing exports (three hours, mostly hunting the two SaaS tools nobody remembered buying), the scorecard came out at 31 of 45, and seven of the fourteen failures were in the fix-first ten &mdash; closed by the next morning: MFA on the three admin accounts, two departed-staff accounts removed, a restore test that actually restored, registrar moved off a personal mailbox, and screenshots for all five.</p>
+<p>The audit itself: one walkthrough call, 41 minutes. The report arrived on day three, fourteen findings &mdash; seven marked <em>remediated during preparation</em>, five ranked medium, two critical (the forgotten SaaS tools with customer data and no MFA). Total surprise: zero. The customer questionnaire was resubmitted with the report attached, and the deal &mdash; which had been cooling for a month &mdash; closed the following week.</p>
+<p>The unprepared version of the same audit is easy to price: the walkthrough becomes two calls because the access list did not exist, three of the five days are spent on discovery the client pays for either way, and the findings arrive later, hit harder, and change nothing fast.</p>
+
+<h2>9. Five audit-readiness numbers</h2>
+<ul>
+<li><strong>Packet completeness</strong> (documents present of six &mdash; target: 6/6 within a quarter of adopting this page; a missing incident log is the most common gap).</li>
+<li><strong>Evidence coverage</strong> (checks with dated evidence / 45 &mdash; 60% is enough to change the report's tone; chase it before the walkthrough, not after).</li>
+<li><strong>Fix-first closure rate</strong> (of the ten, closed before audit &mdash; below 7, the audit is buying archaeology).</li>
+<li><strong>Departed-staff residual</strong> (accounts still live more than a day after offboarding &mdash; target: zero; this is the number auditors quote first).</li>
+<li><strong>Days from booking to walkthrough-ready</strong> (the prep clock &mdash; one day is the bar this checklist sets; a week means the packet is being written from scratch each time, which means it is not a packet, it is an event).</li>
+</ul>
+
+<h2>Where this fits</h2>
+<p>Preparation makes the audit cheap; the audit itself is the <a href="small-business-security-audit-checklist.html">45-point small-business security audit</a>, scored live in the <a href="security-audit-scorecard.html">interactive scorecard</a>. If you would rather hand the walkthrough to an outside pair and receive the prioritized fix plan, that is the <a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a>; and when the findings say you would not survive Tuesday, the <a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> turns them into a procedure your team can run at 2am. If the question is budget, the honest price tiers are in the <a href="security-audit-cost-small-business.html">audit cost guide</a>.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="security-audit-scorecard.html">Security Audit Scorecard</a> &mdash; free, 45 checks scored live in your browser, nothing uploaded.</li><li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li><li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; built from your estate, delivered in 48h &mdash; $249</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident pack for the on-call rotation</li></ul><p class="hint">20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p></aside>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
