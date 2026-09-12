@@ -1,0 +1,41 @@
+The moment the driver hands you the docket is the last moment the delivery can still be someone else's problem.
+
+Sign it clean, and everything inside those boxes becomes your word against the invoice &mdash; the missing carton, the crushed case, the milk that arrived at 9&deg;C. What happens in the two minutes before the pen touches the docket decides who pays for what's wrong. Most businesses spend those two minutes signing.
+
+Here is the receiving ritual that keeps the responsibility on the supplier's side of the door.
+
+## The economics of the doorway
+
+A discrepancy found while the driver is still at the door is a line written on the sheet and a credit note issued Tuesday. The same discrepancy found on Friday is a phone call, a memory contest, and usually an absorption. Two minutes at the door is the cheapest margin protection a small business owns &mdash; and the reason uncounted deliveries leak is that the invoice repeats the order, the docket repeats the invoice, and only the box knows the truth.
+
+## The five-step receiving ritual
+
+1. **Count the cartons against the docket &mdash; before signing.** Pallet-level first; item-level for the lines that walk: protein, coffee, spirits, anything small and expensive. Count against the PO, not the paperwork.
+2. **Cold check in product, not air.** A probe into the liquid, right at the door. 4&deg;C and below is stock; 7&deg;C is a conversation you have while the driver is still standing there.
+3. **Open-and-verify the short-shippable lines.** The top five lines by value, every delivery. Ninety seconds, and it tells the rep this kitchen counts.
+4. **Condition and dates.** Crush, seals, leaks, and the date row &mdash; short-dated stock at full price is a discount nobody applied. Damage gets photographed *before* it's unpacked.
+5. **Discrepancies go on the docket, and the driver countersigns.** "1 carton short &mdash; 2kg coffee not received," signed by both of you, is evidence that has already won. The same words said to a departing van are a request. If you must sign fast, sign "received subject to count."
+
+## The rules
+
+- **Whoever signs, counts.** If the busiest person always signs, the busiest person's shifts are where the money leaks.
+- **Quarantine, don't shelve.** Anything disputed goes to the quarantine shelf with the docket clipped to it. Shelve first, count later means the evidence gets used, sold, or binned before anyone admits it existed.
+- **Verbal credits don't exist.** "We'll sort you out next delivery" is a zero-dollar asset until it's on paper.
+- **Unordered goods are a question, not a gift.** Stock that arrives nobody ordered is either a packing error to flag or invoice bait to refuse. Check it against the PO before it enters your stock.
+
+## The traps
+
+- The rubber-stamp signature (signing the invoice's word while the boxes are still on the truck).
+- Shelve first, count later (the count that happens "when it's quiet" &mdash; it's never quiet).
+- The friendly supplier's word (friendship is not an accounting method; get the good ones in writing too).
+- The swallowed discrepancy ("it's only $18" &mdash; absorbed, unrecorded, and repeated weekly because it was never written down).
+
+## The two cafés
+
+A caf&eacute; ordered 12kg of house coffee for the weekend; two bags didn't come off the truck. The barista counted at the door, wrote "10 of 12kg &mdash; 2 short" on the docket, driver signed. Forty seconds. Credit note Tuesday.
+
+The neighbouring caf&eacute;, same roaster, signed clean and phoned later. The roaster's system said 12 delivered as 12 invoiced; the argument took three weeks and ended at "we'll make it up on the next order" &mdash; which never quite arrived. Same beans, same price, different margin for the month.
+
+Receiving discipline doesn't make deliveries perfect. It makes mistakes someone else's invoice line.
+
+The full page &mdash; the weekly five-minute audit, the traps, and the worked example &mdash; lives on the [ops notes site](https://hive80-lab.github.io/ops-notes/delivery-receiving-checklist.html). If you want the incident-side version of this discipline (what to do in the first 30 minutes when *any* system fails), the [First 30 Minutes checklist](https://hive80lab.gumroad.com/l/first-30-minutes) is free.
