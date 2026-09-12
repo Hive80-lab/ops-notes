@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Change Advisory Board for Small Teams (The 10-Minute Review That Isn't Theater) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A change advisory board that fits a small team: the five-question change card, four risk classes that get extra scrutiny, an async review instead of a weekly meeting, the five traps that turn a CAB into approval theater, and a worked example that cut change failure rate from 31% to 11%.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/change-advisory-board-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Change advisory board for small teams: a 10-minute review that isn't theater</h1>
+<p>The ITIL change advisory board &mdash; a weekly meeting where changes are read aloud to people who do not operate them &mdash; deserves its reputation. In small teams it decays into one of two failures: forty changes rubber-stamped in forty-five minutes (a queue wearing a meeting's clothes), or no review at all until the Friday migration takes the billing database down. Both miss the same point. A change review exists to answer, <em>before merge</em>, five questions that predict most change-induced incidents. Answer them in writing, in the pull request, and the board dissolves back into the work.</p>
+<p>This note gives the five-question card, the short risk-class list that decides what gets extra scrutiny, the async setup that replaces the meeting, the five traps that turn a CAB into approval theater, and a one-afternoon rollout.</p>
+
+<h2>1. The five-question change card</h2>
+<p>Every change answers these in its description &mdash; one line each, in writing. Unwritten answers do not count; the point is that writing them down is where the thinking happens.</p>
+<ul>
+<li><strong>What breaks if this fails?</strong> The blast radius, in customer terms: <em>orders cannot be placed</em>, not <em>the orders service errors</em>. A change with no honest answer to this question has not been understood yet.</li>
+<li><strong>How do we undo it?</strong> The rollback must be named and reachable: <em>revert PR #482 and run <code>down-migration-07.sql</code></em>. "Re-deploy the previous version" is only an answer if you have actually done it recently. An untested rollback is a hope, not a plan &mdash; the <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">rollback checklist</a> exists because this line gets skipped.</li>
+<li><strong>Who is on-call when it ships?</strong> A change ships inside someone's shift, and that person should know it is coming. If the answer is a shrug, the change waits until there is a name.</li>
+<li><strong>What does it touch that customers feel?</strong> This selects the risk class (section 2) and therefore how much scrutiny it gets.</li>
+<li><strong>When does it ship, and why then?</strong> Timing is a decision, not a default. A schema change at 4:45pm Friday is a decision too &mdash; just usually the wrong one.</li>
+</ul>
+
+<h2>2. Risk classes: short, or pointless</h2>
+<p>Scrutiny must be rationed or it stops being scrutiny. Four classes is enough for most small teams:</p>
+<ul>
+<li><strong>Class 1 &mdash; data:</strong> migrations, backfills, deletes, anything irreversible. Extra scrutiny, always: the undo is tested on a copy of production data before merge, not after.</li>
+<li><strong>Class 2 &mdash; auth and permissions:</strong> the changes that fail silently. A role that loses a permission produces no error, only a customer who cannot work.</li>
+<li><strong>Class 3 &mdash; money paths:</strong> billing, payments, invoices. Doubled charges and missed charges both count as failures, and both show up in support before they show up in metrics.</li>
+<li><strong>Class 4 &mdash; everything else:</strong> ship it, mention it in the deploy log, move on.</li>
+</ul>
+<p>The list stays short by force. The moment <em>most</em> changes are high-risk, the classes have stopped measuring risk and started measuring politics &mdash; and reviewers stop reading, which is how the one dangerous change slips through wearing the same label as the other thirty-nine.</p>
+
+<h2>3. The meeting, replaced</h2>
+<p>Under roughly twenty people, the review is async: the five answers live in the PR template, the reviewer for Class 1&ndash;3 changes is a named second pair of eyes (rotate it; the same approver every time is a single point of failure with a calendar invite), and merge waits on that one approval. Nobody attends a meeting to hear a change described.</p>
+<p>What survives as a meeting is a <strong>10-minute weekly slot</strong> with one agenda: the changes that <em>failed or nearly failed</em> this week. Not a re-approval of the week's changes &mdash; a review of the process that let them through. This is the slot where someone says <em>the backfill answer on Wednesday's change was "we hope it's fine," and we merged it anyway</em>, and the card gets a rule added. Failed changes feed the same weekly table as the <a href="https://hive80-lab.github.io/ops-notes/dora-metrics-small-teams.html">DORA four numbers</a>, so the process is judged by its receipts.</p>
+<p>For the changes that need an approver at 3am, pre-write the authority: the <a href="https://hive80-lab.github.io/ops-notes/standing-orders-delegation-template.html">standing-orders ladder</a> already answers who decides when the decider is asleep, and a CAB that ignores it will be ignored right back.</p>
+
+<h2>4. The five traps</h2>
+<p><strong>Approval theater.</strong> A board that approves forty changes a week is a queue with minutes. If reviewers cannot remember what they approved yesterday, the review does not exist &mdash; it is a signature factory. The fix is classing down: fewer changes deserve a meeting than anyone expects.</p>
+<p><strong>The emergency loophole.</strong> When everything urgent bypasses review, "urgent" becomes a label people apply under deadline pressure, and the review only ever sees the safe changes. The repair: emergency changes still get reviewed &mdash; retrospectively, within 48 hours, in the weekly slot. Review after the fact is not as good as before; it is infinitely better than never.</p>
+<p><strong>Review by people who can't operate the thing.</strong> A change approved by managers and merged without the on-call who will catch its pager is a ritual, not a review. The operator belongs in the loop; often they are the only reviewer who has seen this system fail before.</p>
+<p><strong>The freeze as the only tool.</strong> A <a href="https://hive80-lab.github.io/ops-notes/change-freeze-window-policy.html">change freeze</a> is for exceptional windows &mdash; peak season, an active incident, a migration weekend. As a substitute for review it backfires: changes queue up behind the freeze and ship in one avalanche when it lifts, which is precisely the big-bang pattern that produces the worst failures.</p>
+<p><strong>No record.</strong> A verbal approval leaves nothing to learn from. One line in the deploy log &mdash; what shipped, who approved, what class &mdash; is enough to answer, three incidents later, "what changed on Thursday?" without archaeology. The <a href="https://hive80-lab.github.io/ops-notes/incident-post-mortem-template.html">post-mortem</a> for a failed change starts from that line.</p>
+
+<h2>5. Worked example</h2>
+<p>A nine-person logistics SaaS runs the classic CAB: Thursdays, 45 minutes, twenty-three changes on the deck, all approved. The approvals mean so little that a Thursday-approved database migration ships Friday with a rollback script that has never been run &mdash; and when it melts the orders table, the script turns out to reference a column that was renamed two migrations ago. Recovery takes eleven hours and one very quiet morning of order intake.</p>
+<p>The redo is one afternoon: the five questions go into the PR template as required fields, the four classes get defined, and the Thursday meeting shrinks to a 10-minute failures-only review. The first month is noisy &mdash; engineers object to writing five lines &mdash; until the card catches its first backfill whose honest answer to <em>how do we undo it?</em> was "we can't," and the team watches a potential eleven-hour incident die in a comment thread instead of production. A quarter later: change failure rate down from 31% to 11%, meeting time down from 45 minutes to 10, and the two riskiest changes of the quarter were caught by question two. The counter-example is the sister team that responded to the same class of incident with a six-week freeze instead: changes piled up behind it, then shipped in one three-day avalanche, and the post-freeze fortnight produced more incidents than the freeze prevented.</p>
+
+<h2>6. Metrics (for the metric itself)</h2>
+<ul>
+<li>100% of Class 1&ndash;3 changes carry the five written answers before merge &mdash; spot-checkable in one minute by sampling the PR log.</li>
+<li>100% of emergency changes reviewed retrospectively within 48 hours.</li>
+<li>Change failure rate read weekly, next to deployment frequency &mdash; the pair that keeps each other honest.</li>
+<li>Median elapsed approval time for a Class 4 change is minutes. If low-risk changes wait days for review, the process has become the risk.</li>
+<li>The weekly slot covers failures only. A review meeting that re-approves safe changes has already become theater.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">deployment rollback checklist</a> is what question two commits you to, the <a href="https://hive80-lab.github.io/ops-notes/change-freeze-window-policy.html">change-freeze window policy</a> covers the exceptional windows review can't, and the <a href="https://hive80-lab.github.io/ops-notes/incident-post-mortem-template.html">incident post-mortem template</a> is where a failed change gets its receipt.</em></p>
+</main>
+</body>
+</html>
