@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outage Email Templates for Customers (Acknowledge, Update, Resolved) &mdash; HIVE80lab</title>
+<meta name="description" content="Three outage email templates customers actually read: the 15-minute acknowledgment with a next-update time, the 30-minute update skeleton where only the facts line changes, and the resolution email with what broke, what changed, and the credit line. Subject-line patterns, the never-write list, the single-writer rule, and the refund decision. Worked example: 47-minute payment gateway outage, four emails, zero what-is-happening tickets, three churn saves.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/outage-email-templates-customers.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Outage emails customers actually read: three templates and the clocks between them</h1>
+<p>During an outage your customers do not experience your incident process &mdash; they experience your silence. The status page is a dashboard; the email is the apology that lands in the inbox of the person whose checkout just failed twice. The failure mode is predictable: fifteen minutes of quiet while everyone works the problem, then one email with no next-update time, then nothing until it's fixed. Each of those silences converts directly into tickets, refund demands, and churn. The fix is not better writing under pressure &mdash; it is three templates written in advance, with clocks attached, so that mid-incident nobody is composing from scratch.</p>
+<p>This page gives you the three templates: the acknowledgment (sent inside 15 minutes, and its only job is to end the silence), the update (every 30 minutes while down, same skeleton every time), and the resolution (sent once customers are transacting again, with the credit line and the post-mortem link). Plus the subject-line patterns, the never-write list, the single-writer rule, and the refund decision. The clocks come from the same discipline as the incident communication timeline: a promise of &ldquo;next update at 14:30&rdquo; is a commitment, not a vibe.</p>
+
+<h2>1. The acknowledgment email (inside 15 minutes)</h2>
+<p>The acknowledgment has one job: prove a human saw it. It is not an explanation &mdash; you do not have one yet. Five sentences, no more:</p>
+<table>
+<tr><th>#</th><th>Sentence</th><th>Why</th></tr>
+<tr><td>1</td><td>We're aware of [the problem in plain language] and actively working on it.</td><td>Ends the silence. Plain language, no component names.</td></tr>
+<tr><td>2</td><td>[Who is affected: checkout, logins, all customers or a subset.]</td><td>Lets unaffected customers relax; affected ones feel seen.</td></tr>
+<tr><td>3</td><td>Our engineers are [doing the one true thing: "working on restoring checkout"].</td><td>Shows motion without promising a fix time.</td></tr>
+<tr><td>4</td><td>Next update at [clock time], sooner if we restore sooner.</td><td>The most important sentence in the email. A clock time.</td></tr>
+<tr><td>5</td><td>Live status: [status page URL].</td><td>Moves the loud customers to the place built for updates.</td></tr>
+</table>
+<p><strong>Subject line:</strong> <em>&ldquo;We're aware of the checkout issue &mdash; next update at 14:30&rdquo;</em>. The subject carries the next-update time too, because some customers read the subject and nothing else. Never speculate about cause in the acknowledgment &mdash; the first cause you name out loud becomes the official story, and if it's wrong you now have two incidents.</p>
+
+<h2>2. The update email (every 30 minutes while down)</h2>
+<p>The update uses the identical five-sentence skeleton. That is the point: the customer should be able to read email three by skipping to the parts that changed. Only sentence three (what we're doing) and the facts ever change. If nothing has changed, say so honestly and pair it with what you have ruled out: <em>&ldquo;Still working on restoring checkout. We've ruled out the payment provider and are focused on our own queue layer.&rdquo;</em> That is a good update. What is not acceptable: re-sending the acknowledgment verbatim, or missing the promised update time &mdash; one missed cadence and every future clock you set reads as noise.</p>
+<p>If you restore service between updates, the next scheduled update still goes out &mdash; as the resolution. Never let a promised update time pass silently because &ldquo;the alert already fired.&rdquo; The alert reached the on-call; the email reaches the customer.</p>
+
+<h2>3. The resolution email (after customers are transacting again)</h2>
+<p>The resolution email is the one customers forward to their boss, so it does the heaviest lifting. Four paragraphs:</p>
+<ul>
+<li><strong>What happened</strong> &mdash; one plain sentence, cause included now that you know it: <em>&ldquo;A config change at 14:02 made our checkout queue reject all payment requests.&rdquo;</em></li>
+<li><strong>When it broke and when it ended</strong> &mdash; clock times, from your incident timeline: <em>&ldquo;Impact ran 14:04&ndash;14:51; you may have seen declined payments in that window.&rdquo;</em> Telling customers the window lets them audit their own orders instead of contacting you to ask.</li>
+<li><strong>What changes so it doesn't repeat</strong> &mdash; one or two concrete guards: <em>&ldquo;Pre-deploy checks now block that config class, and a queue-depth alert pages us before customers see it.&rdquo;</em> Link the post-mortem when it publishes &mdash; within 72 hours.</li>
+<li><strong>The credit line</strong> &mdash; see section 6. If a credit applies, state it here, automatically applied, with the amount.</li>
+</ul>
+
+<h2>4. Subject-line patterns</h2>
+<table>
+<tr><th>Email</th><th>Subject</th><th>Why it works</th></tr>
+<tr><td>Ack</td><td>&ldquo;We're aware of [issue] &mdash; next update at [time]&rdquo;</td><td>Awareness + a clock; nothing to click to learn more.</td></tr>
+<tr><td>Update</td><td>&ldquo;Update on [issue]: [one fact] &mdash; next update [time]&rdquo;</td><td>Skimmable thread; the one changed fact is in the subject.</td></tr>
+<tr><td>Resolution</td><td>&ldquo;Resolved: [issue] &mdash; what happened and what we changed&rdquo;</td><td>Signals closure and substance; forwardable to a manager.</td></tr>
+</table>
+
+<h2>5. What never goes in an outage email</h2>
+<ul>
+<li><strong>An ETA you cannot keep.</strong> &ldquo;Fixed within the hour&rdquo; is a promise clock, and missing it costs more than silence. Give next-update times, not fix times.</li>
+<li><strong>&ldquo;We apologize for any inconvenience.&rdquo;</strong> The conditional apology reads as legal boilerplate. Apologize for the specific thing: <em>&ldquo;We're sorry &mdash; your checkout was down for 47 minutes and that's our failure.&rdquo;</em></li>
+<li><strong>Blaming a vendor by name.</strong> If the gateway was down, say &ldquo;a payment provider outage&rdquo; &mdash; naming them invites a joint-customer mess and reads as deflection.</li>
+<li><strong>Jargon.</strong> &ldquo;Elevated error rates on the async settlement path&rdquo; means nothing to a shop owner who lost a sale. Translate to what the customer experienced.</li>
+<li><strong>&ldquo;Everything is fine.&rdquo;</strong> Mid-incident optimism ages worst of all. State what is known, what is unknown, and when the next word comes.</li>
+<li><strong>New commit/push activity as proof of work.</strong> Customers do not read deploy logs; they read clocks.</li>
+</ul>
+
+<h2>6. The credit and refund decision</h2>
+<p>Decide the rule before the outage, write it into the resolution template as a conditional, and never negotiate it incident by incident. If you publish an SLA, the credit is arithmetic &mdash; state the number and apply it automatically: <em>&ldquo;Per our SLA, this outage exceeds our monthly uptime commitment; a credit of $X has been applied to your account, no action needed.&rdquo;</em> If you have no SLA, a goodwill credit still beats the churn conversation: <em>&ldquo;We've added a $50 credit to next month's invoice &mdash; no action needed.&rdquo;</em> One sentence, automatic, no cap in the fine print you then have to defend. A month of credit costs less than one enterprise account re-evaluating a vendor that went silent.</p>
+
+<h2>7. The single-writer rule</h2>
+<p>One comms lead per incident writes every customer email; everyone else feeds facts into the incident channel and never hits send. All three emails go from one address (support@ or status@), because customers replying to a thread need one place to land. The comms lead does not debug &mdash; the moment they start troubleshooting, the next-update clock stops, and the silence vacuum opens. This role, its clocks, and the handoff at shift change are defined in the on-call escalation structure; the outage emails are simply where that structure meets the customer.</p>
+
+<h2>8. Worked example: the 47-minute gateway outage</h2>
+<p>A twelve-person e-commerce SaaS: payment gateway outage, checkout down 14:04&ndash;14:51 on a Tuesday. Comms ran on the templates: ack at 14:12 (8 minutes, promised next update at 14:42), updates at 14:42 and 15:12 (the second arrived after restore, converting to the resolution as promised), resolution at 15:20 with the window, two named guards, and the post-mortem link published 61 hours later. Total: four emails. Result: zero &ldquo;what is happening?&rdquo; tickets during the outage, three accounts that opened cancellation flows talked back from it in the following week, one automatic credit applied. The team's retrospective note: the subject-line clock times did the work &mdash; customers replied to the updates with order numbers instead of anger, which turned the thread into a queue of audit requests the resolution email then closed.</p>
+
+<h2>9. Metrics for the email sequence</h2>
+<ul>
+<li><strong>Time to first email</strong> &mdash; impact start to ack sent. Under 15 minutes is the band; over 30 means the comms lead role was not staffed, which is an on-call finding, not a writing finding.</li>
+<li><strong>Cadence-kept %</strong> &mdash; promised next-update times that were met. 100%, or an explanation per miss.</li>
+<li><strong>Resolution email lag</strong> &mdash; restore to resolution sent. Under 30 minutes; the post-mortem link may follow separately within 72 hours.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications, including the outage comms pack &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+<li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; done-for-you, built from your estate, 48h &mdash; $249</li>
+</ul>
+</main>
