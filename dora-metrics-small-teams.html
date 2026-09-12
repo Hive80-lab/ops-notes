@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DORA Metrics for Small Teams (The Four Delivery Numbers That Matter) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="Four numbers tell you whether your delivery is healthy: deployment frequency, lead time for changes, change failure rate, and failed-deployment recovery time. Definitions in small-team units, the five traps that make them lie, benchmarks you can actually hit, and a one-afternoon instrumentation plan.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/dora-metrics-small-teams.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>DORA metrics for small teams: the four delivery numbers that matter</h1>
+<p>Ask a small engineering team how delivery is going and you get adjectives: <em>pretty good, a bit slow, kind of fragile.</em> Ask the same team four specific questions and you get a health record: <em>how often do you deploy, how long from merged to live, what share of deploys cause an incident, and how fast do you undo a bad one?</em> Those are the four DORA metrics &mdash; deployment frequency, lead time for changes, change failure rate, and failed-deployment recovery time &mdash; and they matter precisely because they fight each other. You cannot max all four by gaming one: shipping constantly raises frequency but wrecks failure rate unless your changes got smaller; hiding failures wrecks recovery time. The tension <em>is</em> the honesty.</p>
+<p>This note defines the four in units a five-to-fifteen-person team can actually collect by hand, lists the traps that make each number lie, gives benchmark bands from the DORA research that are worth aiming at (and the smaller band worth starting from), and a one-afternoon instrumentation plan that needs nothing but <code>git</code> and a shared spreadsheet.</p>
+
+<h2>1. The four numbers, defined for a small team</h2>
+<ul>
+<li><strong>Deployment frequency</strong> &mdash; how many <em>days per week</em> something ships to production. Count days-with-a-deploy, not deploys-per-day: three deploys before lunch then silence is one day, and that is the honest number. Batch deploys (the Friday 4pm &ldquo;week's work in one release&rdquo;) show up as exactly what they are: frequency 1.</li>
+<li><strong>Lead time for changes</strong> &mdash; hours from <em>merge to production</em>, median. Not from ticket creation &mdash; that number is dominated by queue and negotiation, not by your pipeline. If a merged PR waits two days for &ldquo;the next release window,&rdquo; lead time is 48 hours, and no re-labeling changes it.</li>
+<li><strong>Change failure rate</strong> &mdash; the share of production deploys that caused an incident, a rollback, a hotfix, or a customer-visible defect. Count every deploy; mark the failed ones; divide. A rollback is not a separate successful deploy &mdash; it is the receipt for a failed one.</li>
+<li><strong>Failed-deployment recovery time</strong> &mdash; time from <em>customer impact</em> to <em>service restored</em> on a failed change, median. From impact, not from ticket-open: a monitoring gap is part of the cost, and measuring from open flatters the queue instead of the customer.</li>
+</ul>
+
+<h2>2. The five traps that make the numbers lie</h2>
+<p><strong>Counting effort instead of outcomes.</strong> Story points, commits, lines of code &mdash; none of them survive contact with a customer. If a metric has no deployment date in it, it is a work diary, not a delivery metric.</p>
+<p><strong>Vanity micro-deploys.</strong> Shipping a typo fix at 9am to start the frequency graph is fine once; a pattern of trivial deploys means frequency stopped measuring flow and started measuring performance theatre. The pair that keeps each other honest is frequency &times; failure rate &mdash; if frequency doubles while failure rate triples, you are shipping risk, not value.</p>
+<p><strong>Lead time measured from ticket creation.</strong> Then the number includes product debate, backlog time, and the two weeks the ticket sat unassigned &mdash; real costs, but the wrong lever. Keep cycle time (ticket-to-merge) and lead time (merge-to-prod) as two separate numbers, or you will &ldquo;improve&rdquo; the pipeline by hurrying the backlog.</p>
+<p><strong>Recovery from ticket-open, not impact.</strong> The customer does not know a ticket exists. If detection relies on a user reporting it, your recovery time includes their wait &mdash; which is exactly the number that should hurt.</p>
+<p><strong>Quarterly argue-the-data.</strong> A team that spends the retro disputing whether a deploy &ldquo;counts&rdquo; is spending the effort the metric was meant to save. Decide the counting rules once, in one page, and let imperfect-but-consistent beat precise-but-disputed. (This is the same rule that keeps a <a href="https://hive80-lab.github.io/ops-notes/postmortem-template-small-teams.html">post-mortem template</a> short.)</p>
+
+<h2>3. Benchmarks: aim at the band, not the elite line</h2>
+<p>The DORA research (State of DevOps, 2021&ndash;2024) publishes four performance bands. For a small team, useful reading:</p>
+<ul>
+<li><strong>Deployment frequency:</strong> low is monthly+, medium is weekly-to-monthly, high is at least daily. If you ship weekly you are already ahead of most teams your size; on-demand is a direction, not a requirement.</li>
+<li><strong>Lead time for changes:</strong> low is one-to-six months, medium is a week-to-a-month, high is under a week, elite is under a day. The gap from &ldquo;a month&rdquo; to &ldquo;two days&rdquo; is usually one bottleneck: a release ritual that could be a button.</li>
+<li><strong>Change failure rate:</strong> low is 0&ndash;15%, high is above 40%. If you are near half, the fix is almost never &ldquo;test more&rdquo; in the abstract &mdash; it is smaller changes and a rehearsed <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">rollback checklist</a>.</li>
+<li><strong>Recovery time:</strong> low is a week-plus, high is under a day, elite is under an hour. Small teams routinely beat elite here on incident response and lose the same points to <em>detection</em> &mdash; the fix is a monitoring row, not a war room.</li>
+</ul>
+<p>Rule of use: pick <em>one</em> number per quarter to move, and leave the other three as context. Teams that push all four at once improve none, because every lever pulls against another.</p>
+
+<h2>4. Instrumentation in one afternoon</h2>
+<ul>
+<li><strong>Deploy log</strong> (10 min): a one-line append on every production deploy &mdash; timestamp, short SHA, service. A shell alias wrapping your deploy command does it; no platform needed.</li>
+<li><strong>Lead time</strong> (20 min): the deploy log line plus <code>git log --merges</code> gives you merge-to-deploy per release; a spreadsheet column does the arithmetic. Weekly median, not mean.</li>
+<li><strong>Failure flag</strong> (10 min): add one checkbox to your <a href="https://hive80-lab.github.io/ops-notes/incident-post-mortem-template.html">post-incident template</a> &mdash; &ldquo;caused by deploy #N&rdquo; &mdash; and link the deploy log line. Failure rate is failed/total over the same window.</li>
+<li><strong>Recovery clock</strong> (10 min): incident start (impact) and end (restored) already exist in your incident doc; write them in the same row as the deploy number.</li>
+<li><strong>The weekly four-number table</strong> (5 min/week): four cells, one trend arrow each, reviewed in the meeting you already run. A number nobody reviews is a number you will stop trusting &mdash; the same reason a <a href="https://hive80-lab.github.io/ops-notes/weekly-review-checklist.html">weekly review checklist</a> keeps the whole ops loop alive.</li>
+<li><strong>One lever per quarter:</strong> frequency &rarr; shrink the release ritual; lead time &rarr; shrink PR size; failure rate &rarr; smaller changes plus rollback rehearsal; recovery &rarr; detection first (one good saturation/alert row), rollback second. Changing two at once is how teams end up changing zero.</li>
+</ul>
+
+<h2>5. Worked example</h2>
+<p>A six-person B2B scheduling app measures honestly for the first time in March: deploys 1.2 days/week (the Friday batch), lead time 9 days median, change failure rate 30% (the Friday batch has grown to forty-PR releases, so any bad PR ships with nine friends), recovery 6 hours (bad deploys found by customers, rolled back Monday). They pick one lever: release size. PRs capped at one day's work, deploy button pressed whenever the tree is green instead of on Fridays.</p>
+<p>Ninety days later: deploys 4.1 days/week, lead time 26 hours, failure rate 12% (small changes fail less and are diagnosed faster), recovery 40 minutes (a failing one-day change has one suspect and a rehearsed rollback). No platform was bought; the total instrumentation is a shell alias and a spreadsheet. The counter-example is the sister team that bought a delivery-analytics platform first, then spent a quarter disputing what a &ldquo;deploy&rdquo; was in the tool's config, and ended March with a beautiful dashboard of numbers nobody trusted.</p>
+
+<h2>6. Metrics (for the metric itself)</h2>
+<ul>
+<li>The four numbers are computed every week, in one table, with counting rules written on one page.</li>
+<li>Exactly one improvement lever per quarter; the other three numbers stay as context, not targets.</li>
+<li>Failure rate and frequency are always read as a pair &mdash; neither is ever reported alone.</li>
+<li>Counting-rule disputes get settled in one sentence at the next review, not a tooling migration.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">deployment rollback checklist</a> is what recovery time is made of, the <a href="https://hive80-lab.github.io/ops-notes/change-freeze-window-policy.html">change-freeze window policy</a> tells you when to stop shipping entirely, and the <a href="https://hive80-lab.github.io/ops-notes/incident-post-mortem-template.html">incident post-mortem template</a> is where the failure flag lives.</em></p>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</main>
+</body>
+</html>
