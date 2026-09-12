@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Continuity Plan Template for Small Teams (The One Page That Survives the Outage) &mdash; HIVE80lab</title>
+<meta name="description" content="A business continuity plan template that fits on one page: the seven-function table (function, how it dies, the workaround, who runs it, how we know we're back), RTO and RPO you can actually keep, three workarounds you rehearse quarterly, a comms tree with named senders, and a 20-minute monthly check. Worked example: a nine-person agency through a three-day outage.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/business-continuity-plan-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Business continuity plan template: the one page that survives the outage</h1>
+
+<p>Continuity plans fail the same way audit remediations do: they are written once, they are too big to finish, and nobody can execute them from memory under stress. The fix is the same shape. A small team does not need a 40-page BCP binder &mdash; it needs <strong>one page that names your seven critical functions, the workaround for each, who runs it, and how you know you are back</strong>. Everything else is appendices nobody opens at 2 a.m. This template is that page, with the tables filled in from a real outage. If your outage half is thinner than your paperwork, the <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> supplies the incident procedures that plug straight into rows 6 and 7.</p>
+
+<h2>1. The binder is where plans go to die</h2>
+<p>A binder gets edited by committee, cited by auditors, and abandoned by operators. The tell is simple: if the plan has never been <em>opened during</em> an incident, it is a compliance document, not a continuity plan. Write the one-pager so a tired person can run it &mdash; short sentences, named people, no "as appropriate." Keep the risk register, the insurance papers, and the vendor contracts in the appendix; keep <strong>what you do in the first hour of a real outage</strong> on the sheet of paper (or one PDF screen) the whole team can see. The <a href="single-point-of-failure-audit.html">single-point-of-failure audit</a> tells you what to put in the rows; this page tells you how to run them.</p>
+
+<h2>2. The seven-function table</h2>
+<p>List every function whose loss costs money or trust within a day, and cap the list at seven. More than seven means you are listing systems, not functions &mdash; "email dies" is a system, "cannot invoice" is a function. Each row gets five columns:</p>
+<ul>
+<li><strong>Function</strong> &mdash; one line a newcomer understands: "Invoice clients," "Take support tickets," "Ship customer data."</li>
+<li><strong>How it dies</strong> &mdash; the realistic failure, not the dramatic one: "Email provider outage," "Billing SaaS down," not "meteor."</li>
+<li><strong>The workaround</strong> &mdash; a verb, a tool you actually have, and a number: "Switch support to shared inbox; two people staffed; badge every ticket 'delayed'."</li>
+<li><strong>Who runs it</strong> &mdash; one name, one backup name. A row without two names fails on the first sick day.</li>
+<li><strong>How we know we're back</strong> &mdash; the observable that ends the workaround: "Send-test to own external address succeeds twice in a row."</li>
+</ul>
+<p>That last column does more work than any other: workarounds without an end-condition become the new normal, and the workaround is almost always more expensive than the primary path.</p>
+
+<h2>3. RTO and RPO you can actually keep</h2>
+<p>Two numbers per row, and they must be ones your tooling can honor. <strong>RTO</strong> (recovery time objective) is how long a function may be down before revenue or promises break. <strong>RPO</strong> (recovery point objective) is how much data you can afford to lose &mdash; which is really a statement about your backup cadence, not your ambitions. Write the pair only after you have tested what restores: an RPO of "1 hour" is fiction until the <a href="backup-restore-drill-checklist.html">restore drill</a> proves your last verified restore point was 1 hour old. The honest starter set for a ten-person team: invoicing RTO 1 day / RPO 1 day; support RTO 4 hours / RPO none; production data RTO 1 hour / RPO 1 hour. If a row cannot meet its numbers, the row earns a decision (pay for better tooling) or an accepted risk with a name and a date &mdash; not silence.</p>
+
+<h2>4. Workarounds you rehearse, quarterly</h2>
+<p>Three workarounds get rehearsed, because they cover the realistic calendar: <strong>(1) email down</strong> &mdash; everyone forwards to the shared inbox alias and client comms move to SMS or the phone tree; <strong>(2) office/building unavailable</strong> &mdash; the team runs the day fully remote, laptops home nightly, which is the real rehearsal; <strong>(3) key-person unavailable</strong> &mdash; the named backup runs the person's top function for a morning from written instructions alone. Thirty minutes each, once a quarter, findings written as one line under the row ("SMS tree was missing two numbers &mdash; fixed"). Unrehearsed workarounds are fiction with formatting. Fold the key-person rehearsal into the <a href="tabletop-exercise-failure-points.html">tabletop exercise</a> you already run; the schedule lives in the <a href="incident-response-drill-schedule-template.html">drill schedule template</a>.</p>
+
+<h2>5. Continuity roles, one line</h2>
+<p>Four roles, four names, one line each &mdash; and they may repeat across roles but never inside one: <strong>Decider</strong> (declares continuity mode and ends it), <strong>Comms</strong> (sends customer and vendor updates on cadence), <strong>Restorer</strong> (runs the technical recovery and owns "how we know we're back"), <strong>Runner</strong> (keeps the workaround staffed hour to hour). Small teams collapse these to two or three people; the failure mode to avoid is the same person deciding, talking, and restoring &mdash; the comms then only happens when the technical work pauses, which is exactly when it matters most. If nobody on the team has ever run an outage end-to-end, that is what the <a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> is for: your estate, written as procedures someone else can execute.</p>
+
+<h2>6. The comms tree</h2>
+<p>Three audiences, three senders, one cadence &mdash; decided on a calm day: <strong>customers</strong> get the status note from the Comms role (one sender only; two voices contradict), on a stated cadence ("next update at 4 p.m., even if nothing changed"), with the workaround and the expected shape of the fix &mdash; never a root cause you have not confirmed; <strong>staff</strong> get the phone tree or group message with their row assignments; <strong>critical vendors</strong> (payment processor, host, landlord, insurance) get a named contact per row. Draft the two templates now, in the calm: the first-hour note ("we are aware, we are working, here is the workaround, next update at X") and the close-out note ("resolved at X, affected Y, what changed"). The <a href="incident-post-mortem-template.html">post-mortem template</a> reuses the close-out as its timeline spine.</p>
+
+<h2>7. The monthly 20-minute check</h2>
+<p>Continuity rots quietly: names change, tools change, the workaround that worked in March relies on a shared inbox nobody has opened since. Once a month, twenty minutes: read the seven rows aloud; confirm every name still works there; confirm the "how we know we're back" observable for the two riskiest rows; confirm the comms senders are still employed; check the last restore-drill date is under 90 days. Any stale cell gets fixed in the meeting or gets an owner and a date &mdash; the check fails silently otherwise. Log the result as one line in the ops journal; the point is <em>contact</em> with the plan, not paperwork about the plan. The <a href="maintenance-window-policy.html">maintenance window policy</a> is where tooling changes that touch rows get announced, so the plan stays current without heroics.</p>
+
+<h2>8. Worked example: nine-person agency, three-day building outage</h2>
+<p>A nine-person design/build agency, mid-invoice week, loses its building to a burst pipe: three days, no desks, half the team's chargers left behind. The plan on the wall said exactly what happened next. Invoicing (RTO 1 day) ran from the billing SaaS on laptops from home &mdash; nobody had ever logged in from outside the office, but the rehearsal in quarter two found the two expired SSO sessions and fixed the password-manager shares, so Monday's run took eleven minutes instead of a lost morning. Support (RTO 4 hours) fell back to the shared inbox with two people staffed and a "delayed" badge on every ticket; the end-condition observable (queue under one day for 24 straight hours) ended the mode on day two. The key-person row fired for real when the only person who knew the build pipeline was on a flight; the named backup ran deploys from the written instructions, slower, with one wrong deploy rolled back in nine minutes by the drill habit. Client comms went out at the promised cadence from one sender; two clients later cited the updates as why they stayed. Total direct cost: about 90 lost person-hours. The counterfactual is the same outage without the page: a lost invoice week, support silence that costs the two accounts, and a founder doing all of it badly from their phone.</p>
+
+<h2>9. Five continuity numbers</h2>
+<ul>
+<li><strong>Rows rehearsed this quarter</strong> (target: 3 of 3; a quarter with zero rehearsals resets the plan's honesty).</li>
+<li><strong>Stale cells found in the monthly check</strong> (target: 0 carried over; a stale cell twice in a row means the check is being done by whoever remembers, not by the plan).</li>
+<li><strong>Time from declaration to workaround running</strong> (target: under 60 minutes for the top three rows; if the first rehearsal takes 3 hours, the RTOs are fiction and the rows need simpler workarounds).</li>
+<li><strong>Verified restore point age at drill time</strong> (target: under the stated RPO; this is the only backup number that counts &mdash; the rest is vendor marketing).</li>
+<li><strong>Days since last real execution</strong> (any actual incident that ran the plan counts double; a plan executed in anger and amended within the week is the strongest continuity asset a small team owns).</li>
+</ul>
+
+<h2>Where this fits</h2>
+<p>The restore half of continuity lives in the <a href="backup-restore-drill-checklist.html">backup &amp; restore drill checklist</a>, the rehearsal calendar in the <a href="incident-response-drill-schedule-template.html">drill schedule template</a>, and the failure patterns they expose in <a href="tabletop-exercise-failure-points.html">tabletop failure points</a>; the first-hour moves are the <a href="https://hive80lab.gumroad.com/l/first-30-minutes">First 30 Minutes</a> quick-start. If you would rather have the whole loop &mdash; the audit that finds the gaps, the plan that closes them &mdash; run by an outside pair, that is the <a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a>; and when any row says "if this fires, we lose the week," the <a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> turns it into a procedure your team can run without you. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> covers the incident half of the page; <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Vol. 2</a> covers the on-call rotation that inherits it.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="security-audit-scorecard.html">Security Audit Scorecard</a> &mdash; free, 45 checks scored live in your browser, nothing uploaded.</li><li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li><li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; built from your estate, delivered in 48h &mdash; $249</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident pack for the on-call rotation</li></ul><p class="hint">20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p></aside>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
