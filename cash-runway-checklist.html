@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cash Runway Checklist for Small Teams — Know Your Number Before You Need It</title>
+<meta name="description" content="A cash runway ritual a small team runs monthly in twenty minutes: honest net burn from the last three closes, the three balances (bank, processor in-transit, credit), green/yellow/red bands with pre-decided actions, the lever order (cut, sell, raise), and the one-line trend that keeps you honest.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/cash-runway-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Cash Runway Checklist for Small Teams</h1>
+<p class="lede">Every small team has a runway number, and almost none of them know it. "We're fine, there's money in the bank" is not a number; it is a feeling, and feelings trend downward slowly until they trend downward all at once. Runway is one division: cash on hand divided by net monthly burn. The hard part is not the division &mdash; it is computing both numbers honestly and deciding, <em>now</em>, what you will do at each threshold, while you are calm enough to decide well.</p>
+
+<h2>1. Compute net burn honestly</h2>
+<p>Net burn is average cash out minus average cash in over the <strong>last three months</strong> &mdash; three, not one, because one month is an anecdote. Pull it straight from the <a href="monthly-close-checklist.html">month-end close</a> numbers (this is why the close exists; if you don't close, your burn is a guess with a spreadsheet costume). Two honesty rules. <strong>Exclude the one-offs on both sides</strong>: the annual insurance premium, the equipment buy, the one-time enterprise invoice &mdash; they inflate and deflate runway alternately and average out to noise. List them separately as a one-off line. <strong>Include the things people forget</strong>: processor fees, the FX spread on foreign sales, payroll taxes that lag the payroll everyone remembers. If your burn "changed" by more than 15% from last month with no decision to explain it, you miscounted &mdash; find the line before trusting the number.</p>
+
+<h2>2. The three balances &mdash; cash that is and cash that isn't</h2>
+<p>The bank app shows one number; real cash has three. <strong>Bank balance</strong>: the truth, minus anything earmarked (taxes held back, the deposit for the office you signed for). <strong>Processor in-transit</strong>: revenue your processor has settled but the bank hasn't landed &mdash; usually 1&ndash;3 days of sales; it counts, but as a separate line so the bank number doesn't swing mysteriously (the same payout-lag accounting the close uses). <strong>Available credit</strong>: credit lines and overdrafts count at 90%, not 100% &mdash; credit you have not drawn is a decision away from being cash, but a decision that comes with interest and a board meeting with your bank. What does <em>not</em> count: receivables (an invoice is not cash until it is one &mdash; an aged unpaid invoice is a hope with a due date), processor reserves the platform is holding back, and any grant or investment "basically done." Runway computed on hope is the number that kills companies, because it feels like safety exactly until it doesn't.</p>
+
+<h2>3. The bands &mdash; decide now what you do at each one</h2>
+<p>Three bands, and the entire point is that the actions are <strong>written down before you need them</strong>. <strong>Green (6+ months):</strong> invest deliberately &mdash; hiring, product, the second processor &mdash; and keep the ritual monthly. <strong>Yellow (3&ndash;6 months):</strong> pre-decided moves fire without a meeting: discretionary spend freezes, the price review happens this quarter (see the <a href="price-increase-announcement-template.html">price increase template</a> &mdash; it is the cheapest revenue lever you own), slow-paying invoices get chased weekly. <strong>Red (under 3 months):</strong> the owner-led moves &mdash; the cost cut list, the runway extension pitch, the founder salary conversation &mdash; happen within two weeks, on a schedule, not "when we get to it." The band map is a decision you make once, in green, about what you will do in red. Teams that skip this don't avoid hard decisions; they just make them scared, later, with fewer options.</p>
+
+<h2>4. The lever order &mdash; cut, sell, raise</h2>
+<p>When runway shortens, the levers have an order. <strong>Cut first</strong> &mdash; but honestly: the zombie subscriptions the <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a> finds, the unused seats the <a href="user-access-review-checklist.html">access review</a> reclaims, the vendor renewal you renegotiate with the <a href="vendor-contract-checklist.html">contract checklist</a> in hand. Cuts are fast and small; a thousand a month is twelve thousand a year, which is real but rarely a rescue. <strong>Sell second</strong> &mdash; collect the receivables you already earned (a dunning email to a bounced invoice is the fastest cash that exists), raise prices on new work, chase the pipeline that is warm. Selling is slower than cutting and bigger than cutting. <strong>Raise last</strong> &mdash; capital takes months and fails most of the time it is tried; a business that starts fundraising at red has already spent its negotiating position. What never goes on the cut list, in any band: the things that are illegal to cut (taxes, payroll filings) and the things that are load-bearing (the security basics that cost $50 and prevent $50,000 days).</p>
+
+<h2>5. The ritual &mdash; twenty minutes, monthly, one line</h2>
+<p>Runway rides with the month-end close: same owner, same box, twenty extra minutes. Five fields on one line: date, cash, in-transit, net burn, months. That line, appended monthly, is the whole system &mdash; twelve lines a year is a trend, and trends are what turn a quiet slide into a visible one. Two honesty checks on the ritual itself: if the number has been "about six months" for four consecutive months, someone is rounding away a decline; and when the number crosses a band, the pre-decided action fires <em>that month</em> &mdash; an action scheduled for "next quarter" is a decision not made. If you have investors or a board, the same line goes in the update, unedited. A runway you are ashamed of is a runway you are not managing; the number exists to be acted on, not admired.</p>
+
+<h2>A worked example: 4.2 months to 7.8 in one quarter</h2>
+<p>A five-person agency computes its first real runway line at the March close: cash $118k, in-transit $9k, net burn $28k/month &mdash; 4.5 months. Yellow, barely. The pre-decided yellow moves fire: the sprawl audit kills $610/month of zombie tools; a dunning pass on aged invoices collects $7,400 that was written off emotionally but not actually lost; a price review moves new engagements from $95 to $110/hour (existing clients grandfathered until renewal); the co-founder's "small" side-project subscription stack turns out to be $290/month of company card. By June the line reads: cash $124k, burn $17.5k/month &mdash; 7.8 months, green. Nothing heroic happened: one audit, one dunning pass, one price review, three lines of spreadsheet. The agency's owner note in the decision log: "runway was always this fixable; we just never had the number on a line."</p>
+
+<h2>Related pages</h2>
+<ul>
+<li><a href="monthly-close-checklist.html">Month-End Close Checklist</a> &mdash; where burn and cash numbers come from, monthly</li>
+<li><a href="annual-ops-budget-template.html">Annual Ops Budget Template</a> &mdash; the yearly plan the runway feeds</li>
+<li><a href="decision-log-template.html">Decision Log Template</a> &mdash; where band-crossing decisions get recorded</li>
+<li><a href="price-increase-announcement-template.html">Price Increase Announcement Template</a> &mdash; the cheapest revenue lever in yellow</li>
+<li><a href="saas-sprawl-audit-checklist.html">SaaS Sprawl Audit Checklist</a> &mdash; the cut list that funds the first month of runway</li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a> &mdash; seats reclaimed are salary saved</li>
+<li><a href="vendor-contract-checklist.html">Vendor Contract Checklist</a> &mdash; renewal dates and renegotiation windows before you sign</li>
+<li><a href="invoice-fraud-bec-prevention-checklist.html">Invoice Fraud &amp; BEC Prevention Checklist</a> &mdash; protecting the cash you counted</li>
+<li><a href="company-card-compromised-runbook.html">Company Card Compromised Runbook</a> &mdash; the day the cash number changes without a decision</li>
+<li><a href="key-person-dependency-checklist.html">Key-Person Dependency Checklist</a> &mdash; the non-cash runway that runs out even faster</li>
+</ul>
+
+<hr>
+<p><strong>Runway is not a feeling in the bank app; it is one division on one line, appended monthly.</strong> Compute burn from the last three closes, count the three balances (and refuse to count hope), pre-decide the actions at green, yellow and red, pull the levers in order &mdash; cut, sell, raise &mdash; and keep the one-line trend where you and anyone who matters can see it. Small teams that know their number buy themselves the only thing cash can't: time to make good decisions slowly.</p>
+</main>
+</body>
+</html>
