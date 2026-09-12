@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generator Transfer Checklist: The Standby Generator That Starts, Then Doesn't Carry the Load</title>
+<meta name="description" content="A generator transfer checklist for small businesses: the monthly test that proves the transfer switch, not just the engine, the load order that keeps the generator from tripping on its first inrush, the weekly-and-quarterly maintenance ladder, and the traps that leave a generator able to start and unable to run the shop.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/generator-transfer-checklist.html">
+</head>
+<body>
+<main>
+<h1>Generator Transfer Checklist: The Standby Generator That Starts, Then Doesn't Carry the Load</h1>
+
+<p><strong>The quick version:</strong> a generator's job is not to start &mdash; it is to <em>carry the load</em>, and those are two different failures. Most businesses that own a standby generator have watched it pass its weekly self-test beautifully while the building it serves was on a wall socket the whole time, because the transfer switch never moved. This page gives the monthly transfer test that proves the switch and not just the engine, the load order that keeps the generator from tripping on its first inrush, the maintenance ladder the manual buries in page 40, and the traps &mdash; stale fuel, an oversized HVAC compressor, and the generator that runs for thirty minutes and shuts down on low oil mid-outage.</p>
+
+<h2>What a generator actually has to do</h2>
+<p>Two things, in order. <strong>Transfer</strong> &mdash; the automatic transfer switch (ATS) must feel the utility fail, wait out the three-to-ten second ride-through, and move the building's circuits to the generator. <strong>Carry</strong> &mdash; the engine must hold that load stable until the utility returns, which means fuel that is still fuel, oil that is still oil, and a load level the engine can actually hold. A generator that starts and then dies, or never takes the building off utility power at all, has passed the only test its self-test runs and failed the only test that matters.</p>
+
+<h2>The monthly transfer test (ten minutes, real load)</h2>
+<p>Once a month &mdash; not the weekly self-test, the <em>transfer</em> test &mdash; run four checks and write them down:</p>
+<ol>
+<li><strong>Trigger a real transfer.</strong> Most ATS units have a test button that simulates a utility failure. Press it and listen: the generator should start, and the building should audibly and visibly switch over (lights flicker and stay on; clocks on generator-fed circuits lose their blink). If the engine starts and the lights don't change, the ATS is the failure &mdash; and it is the part nobody thinks to check.</li>
+<li><strong>Read the load.</strong> Check the generator's output meter while the building is on it. A generator loafing at 5% load is not exercising the alternator; a generator at 95% is one HVAC compressor away from tripping. The sweet spot during a real outage is 50&ndash;80%.</li>
+<li><strong>Hold it.</strong> Run the building on generator power for fifteen to thirty minutes. This is when the stale fuel, weak battery, and low-oil cutoff show up &mdash; in sunlight, not at 3&nbsp;am in the storm.</li>
+<li><strong>Transfer back.</strong> Verify the ATS moves the building back to utility power on command or on restoration, and the generator cools down and shuts itself off per its cycle.</li>
+</ol>
+<p>Log the four readings next to the UPS quarterly checks. Two months of declining voltage or frequency under load is the early warning that the engine is on borrowed time.</p>
+
+<h2>The load order (don't let the first inrush kill the run)</h2>
+<p>When the building comes onto generator power, motors and compressors draw three to six times their running current at startup &mdash; an inrush that can trip a generator the engine itself could have carried. If your load is managed (or you're setting up load shed), order matters:</p>
+<ol>
+<li><strong>First: IT, POS, and refrigeration.</strong> The things that corrupt or spoil. Small, steady loads the generator holds easily.</li>
+<li><strong>Second: lighting and pumps.</strong> Gradual, predictable draw.</li>
+<li><strong>Last, and shed-able: HVAC compressors and anything big.</strong> A standby air-conditioning compressor can double a generator's required size. If the generator trips every real outage at the same moment, this is almost always why.</li>
+</ol>
+<p>Most small businesses don't need the HVAC to run the outage &mdash; they need the till, the card machine, the fridge, and the lights. Decide which loads ride and which loads shed, then wire (or program) that decision so it doesn't depend on someone standing at the panel.</p>
+
+<h2>The maintenance ladder the manual buries</h2>
+<ul>
+<li><strong>Weekly (often automatic):</strong> the engine's own exercise cycle. Necessary, not sufficient &mdash; it proves the engine, never the transfer.</li>
+<li><strong>Monthly:</strong> the transfer test above, ten minutes under real building load.</li>
+<li><strong>Quarterly:</strong> oil level, coolant level, battery terminals (clean, tight, no white crust), and the battery's age. Dead batteries are the number-one no-start cause, and they die on a calendar, not a schedule.</li>
+<li><strong>Annually (service visit):</strong> oil and filter change, air and fuel filters, coolant, valve adjustment where the manual says so, and a load-bank or full-building load test long enough to get the engine hot. A diesel that only ever runs twenty minutes wet-strokes and never gets hot enough to burn its own condensation clean.</li>
+</ul>
+
+<h2>Fuel: the silent half of the checklist</h2>
+<p>Gasoline goes stale in three to six months, diesel grows algae in a tank that breathes humidity, and propane doesn't go stale but runs out at the worst moment. Three lines to own:</p>
+<ul>
+<li><strong>Gasoline:</strong> store with stabilizer, rotate the stock, and never count a tank older than a season as fuel.</li>
+<li><strong>Diesel:</strong> tank additive for algae and water, and a look inside the tank once a year &mdash; a diesel that died at hour two of an outage with a full-looking gauge usually died of a clogged filter full of biomass.</li>
+<li><strong>Propane:</strong> check the gauge monthly with the transfer test, and know your refill vendor's storm-day response time &mdash; the queue after a hurricane is measured in days.</li>
+</ul>
+
+<h2>Worked example: the freezer aisle that stayed cold</h2>
+<p>A small grocery owned a 14&nbsp;kW standby generator that had passed every weekly self-test since installation. Its first real outage &mdash; forty-five minutes, storm-fallen line &mdash; started the generator on schedule and then left the entire store dark, because the ATS had never once transferred and its control board had failed two years earlier. Nobody noticed for forty-five minutes; the freezer aisles were fine (doors stayed shut), but the POS was down the whole time and the store closed for a Saturday morning.</p>
+<p>The fix was a control board and a new habit: the monthly transfer test, logged on a clipboard next to the walk-in temperature log. The first test after the repair found a second problem &mdash; the battery was six years old and started the engine on its last amp-hours &mdash; and replaced it for the price of one hour of a closed Saturday. The next storm took the power out for three hours; the store ran on generator the whole time, 60% load, freezer aisle and till included.</p>
+
+<h2>The four traps</h2>
+<ul>
+<li><strong>Self-test theatre.</strong> The weekly exercise cycle proves the engine starts; it never proves the transfer switch moves or the building is fed. Only a real transfer test counts.</li>
+<li><strong>The never-loaded generator.</strong> A unit that idles at 5% load every week accumulates wet-stacking and carbon fouling while appearing to pass every test. Exercise it under real building load monthly.</li>
+<li><strong>The HVAC inrush.</strong> Sizing a generator without load-shedding the big compressors is buying a unit one startup transient away from tripping exactly when it matters.</li>
+<li><strong>Fuel that is a rumour.</strong> Stale gasoline, algae diesel, or an unread propane gauge turn a working generator into a fifteen-minute machine. Fuel is maintenance, not a purchase.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/ups-runtime-checklist.html">UPS runtime checklist</a> covers the other half of the power plan &mdash; the minutes of ride-through and clean shutdown before the generator is even up; the <a href="https://hive80-lab.github.io/ops-notes/power-failure-it-checklist.html">power failure IT checklist</a> covers the morning after, when the machines come back up in the wrong order; the <a href="https://hive80-lab.github.io/ops-notes/backup-restore-drill-checklist.html">backup restore drill checklist</a> is the safety net for the outage that outlasts every fuel tank; and the <a href="https://hive80-lab.github.io/ops-notes/seasonal-peak-readiness-checklist.html">seasonal peak readiness checklist</a> is the calendar view &mdash; storm season is when all of these get tested at once, so test them before.</em></p>
+</main>
+</body>
+</html>
