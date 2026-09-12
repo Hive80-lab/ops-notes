@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capacity Planning for Small Teams (One Page, One Number per Service) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A one-page capacity planning template for small teams: one saturation metric per service, the four-week peak, headroom, weeks-of-headroom as the only forecast, an action ladder by threshold, and the five traps that turn capacity planning into spreadsheet theater.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/capacity-planning-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Capacity planning for small teams: one page, one number per service, no crystal ball</h1>
+<p>Most small teams do capacity planning one of two ways: a spreadsheet so elaborate it needs its own owner, or nothing at all until the disk fills on a Sunday. Both fail the same way &mdash; neither produces a decision in advance. Capacity planning that works for a five-to-fifteen-person team fits on one page: <em>for every service, the one resource that fails first, its hard limit, the peak it actually hit in the last four weeks, the headroom left, and the action you pre-agreed to take when headroom runs low.</em> No forecasts by quarter. No utilization dashboards nobody reads. One row per service, one owner per row, one number that decides.</p>
+<p>This note gives the template, the rule for picking the one metric that matters per service, an action ladder by threshold, the five traps that make capacity plans lie, and a one-afternoon build plan that needs only your monitoring history and a shared doc.</p>
+
+<h2>1. The template: one row per service</h2>
+<table>
+<tr><th>Service</th><th>Fails first at</th><th>Limit</th><th>4-wk peak</th><th>Headroom</th><th>Weeks left</th><th>Owner</th></tr>
+<tr><td>API (app servers)</td><td>memory</td><td>8 GB</td><td>5.2 GB</td><td>35%</td><td>9</td><td>Priya</td></tr>
+<tr><td>Postgres primary</td><td>connections</td><td>200</td><td>154</td><td>23%</td><td>4</td><td>Marco</td></tr>
+<tr><td>Ingest queue</td><td>backlog depth</td><td>50k msgs</td><td>41k</td><td>18%</td><td>3</td><td>Priya</td></tr>
+<tr><td>Primary disk</td><td>disk</td><td>500 GB</td><td>415 GB</td><td>17%</td><td>2</td><td>Sam</td></tr>
+<tr><td>Background workers</td><td>CPU</td><td>8 vCPU</td><td>2.9</td><td>64%</td><td>&gt;20</td><td>Sam</td></tr>
+</table>
+<p>Each column is a decision, so each has a rule:</p>
+<ul>
+<li><strong>Fails first at</strong> &mdash; the resource that saturates before anything else for <em>this</em> service. Every service has one: CPU, memory, connections, queue depth, disk, a provider rate limit. If you don't know which resource fails first, you have never actually watched the service fall over &mdash; check the last incident, or the <a href="https://hive80-lab.github.io/ops-notes/golden-signals-alerting.html">golden signals</a> you alert on.</li>
+<li><strong>Limit</strong> &mdash; the ceiling where degradation starts, not the number on the spec sheet. Postgres at 100% connections is dead; at 90% it is timing out under load spikes. Set the limit where users feel it, usually 80&ndash;90% of spec.</li>
+<li><strong>4-wk peak</strong> &mdash; the p95 of <em>daily peaks</em> over the trailing four weeks. Peak, never average: the average hides the 4pm spike that is eating your headroom every single day. If your monitoring can't produce this, the number for this week is "unknown," which is itself the finding.</li>
+<li><strong>Headroom</strong> &mdash; <code>(limit &minus; peak) / limit</code>. One percentage, one direction. It goes down as you grow and up when you fix things.</li>
+<li><strong>Weeks left</strong> &mdash; headroom divided by the weekly growth rate of the peak. This is the <em>only</em> forecast a small team needs; it turns capacity from an annual guessing ritual into a runway number you read like fuel.</li>
+<li><strong>Owner</strong> &mdash; a person's name. "The platform team" is not an owner; a name with a calendar invite is.</li>
+</ul>
+
+<h2>2. One saturation metric per service, no more</h2>
+<p>The temptation is to track everything: CPU, RAM, disk, IOPS, p99 latency, GC pauses. A table with twelve columns per service gets abandoned in a month. The discipline is one column: <em>the resource that fails first.</em> Finding it takes one hour &mdash; list your last three capacity-flavored incidents (the disk-full, the connection-pool exhaustion, the queue that backed up), and for each, note which resource tripped first. That distribution <em>is</em> your metric choice. When the architecture changes (you add a queue, you shard the database), the row changes; the page does not grow.</p>
+<p>Latency is not a capacity metric &mdash; it is the <em>symptom</em> of the one you missed. If your only warning is p99 climbing, you are planning with the fire alarm instead of the fuel gauge. The fix is upstream: pick the resource that runs out first and give it the row.</p>
+
+<h2>3. The action ladder: thresholds with pre-agreed moves</h2>
+<p>A number with no pre-agreed action is trivia. Every row gets a threshold, and every threshold gets a move the team agreed to <em>before</em> the pager went off:</p>
+<ul>
+<li><strong>Green &mdash; headroom above 40%:</strong> nothing. The row is read weekly and that is all. Most rows live here, permanently.</li>
+<li><strong>Amber &mdash; 20&ndash;40%:</strong> schedule the fix this sprint. The pre-agreed moves, in order of preference: <em>delete</em> (kill the job nobody owns), <em>shed</em> (rate-limit or queue the load), <em>split</em> (move the hot path to its own instance), <em>buy</em> (resize up). Buying is last not because it's bad but because it's the move that hides the next ceiling instead of the current one.</li>
+<li><strong>Red &mdash; under 20%:</strong> the fix happens this week, and it goes on the <a href="https://hive80-lab.github.io/ops-notes/weekly-review-checklist.html">weekly review</a> agenda until closed. A red row with no date is how a drill becomes a Monday-night outage.</li>
+</ul>
+<p>The ladder matters more than the numbers inside it. The failure mode it prevents is the meeting where everyone agrees the database is "getting close" and then agrees again next month, slightly louder.</p>
+
+<h2>4. The five traps</h2>
+<p><strong>Averages instead of peaks.</strong> Average CPU of 30% with a daily 4pm spike at 96% is not 70% headroom; it is one marketing email away from an incident. Every number in the table is a peak. Averages are how capacity plans stay green until the day they don't.</p>
+<p><strong>Per-server math for a per-service ceiling.</strong> Six autoscaled web instances at 40% CPU feels healthy until the connection pool on the one database behind them saturates. Autoscaling hides vertical ceilings &mdash; the queue depth, the pool, the disk. The row belongs to the service, not the fleet.</p>
+<p><strong>Thresholds with no owner.</strong> "We'll keep an eye on it" is the sentence that precedes every saturation outage. An owner plus a threshold plus a pre-agreed move is the whole trick; remove any one and the row is decoration.</p>
+<p><strong>Planning only after an incident.</strong> If the capacity table gets touched only the week after something fell over, it is a post-mortem artifact, not a plan. The table is read in the meeting you already run &mdash; five minutes, scan for amber and red, done. Piggyback it on the <a href="https://hive80-lab.github.io/ops-notes/incident-severity-matrix-template.html">severity ladder you already use</a> so a red row gets the same urgency language as a P2.</p>
+<p><strong>Forecasting in quarters.</strong> Annual capacity plans assume traffic moves like tides; small-team products move like weather. A launch, one influencer, one enterprise customer with a batch job &mdash; any of these doubles the peak in a week. Plan in weeks-of-headroom, re-read weekly, and let the annual budget worry about money while the weekly table worries about saturation.</p>
+
+<h2>5. Worked example</h2>
+<p>An eight-person B2B analytics SaaS builds the table on a Tuesday afternoon (pulling peaks from the monitoring they already had). Two rows come back red: the ingest queue at 18% headroom, growing 6% a week &mdash; <strong>three weeks left</strong> &mdash; and the primary disk at 17% with a weekly growth rate that says two weeks. Everything else is green and stays untouched.</p>
+<p>The pre-agreed move for queue depth is <em>buy</em> consumers: consumers go from 2 to 6 (worker CPU was loafing at 35%), the queue peak drops to 22k, headroom returns to 56% &mdash; green, one line in the weekly review, an extra $40/month. The disk row takes the <em>split</em> move: attachments move to object storage that week. Total planning effort: one afternoon to build, five minutes a week to read. The counter-example is the previous quarter, when the same team "did capacity planning" by estimating Q4 traffic in a spreadsheet, then got surprised by an ingest stall on a Monday night &mdash; fourteen hours of backlog, thirty-one apologetic conversations. The stall was visible in the queue-depth chart for six weeks. Nobody was reading a chart; there was no table, so there was no owner.</p>
+
+<h2>6. Metrics (for the metric itself)</h2>
+<ul>
+<li>Every production service has exactly one row; the table fits on one screen. A row you cannot fill is a service you cannot yet see &mdash; that is a finding, not a failure.</li>
+<li>Peak = p95 of daily peaks, trailing four weeks, recomputed weekly in the meeting you already run.</li>
+<li>Every amber or red row has a named owner, a pre-agreed move, and a date. No anonymous thresholds.</li>
+<li>Weeks-of-headroom is the only forecast on the page; quarters are for budgets, not saturation.</li>
+<li>The table is reviewed even when &mdash; especially when &mdash; everything is green; the week you skip reading it is the week a growth spike spends your headroom.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: <a href="https://hive80-lab.github.io/ops-notes/golden-signals-alerting.html">golden signals alerting</a> is where the peak numbers come from, the <a href="https://hive80-lab.github.io/ops-notes/cloud-cost-spike-runbook.html">cloud cost spike runbook</a> handles the morning after you buy headroom, and the <a href="https://hive80-lab.github.io/ops-notes/disk-full-incident-runbook.html">disk-full incident runbook</a> is what a missed row looks like at 2am.</em></p>
+</main>
+</body>
+</html>
