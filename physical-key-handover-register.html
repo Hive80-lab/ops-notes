@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physical Key Handover Register: One Row Per Key, and the Rules That Keep the Back Door Accountable &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A physical key handover register for small teams: one row per key with issue and return as separate events, the five rules that keep keys accountable, fobs and alarm codes on the same law, the traps, and a copy-paste template.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Physical Key Handover Register</h1>
+<p class="lede">Every building has a list of keys that exists nowhere except in people's heads: the back door, the letterbox, the alarm room, the cupboard with the till. The register replaces that folklore with a table. <strong>One row per key, issue and return recorded as two separate events, and the rule that a key never changes hands without changing a row</strong>. It is the cheapest security control a small site can run &mdash; a notebook beats a $2,000 access system that nobody maintains.</p>
+
+<h2>1. The test: can you name everyone who can open the building right now?</h2>
+<p>Not "roughly". Name them: the cleaner, the weekend casual, the contractor who did the fit-out two years ago, the ex-manager whose key "was never really returned". If the answer requires walking to the staff room board and squinting at a pegboard, the site doesn't know who can open it &mdash; and everything downstream (alarm codes, insurance claims, incident investigations) inherits the guess.</p>
+<p>Physical keys are credentials. They just predate the vocabulary. Nobody would let a departing employee keep an active login; the same standard applied to the back door is the whole register.</p>
+
+<h2>2. The register: one row per key</h2>
+<p>A notebook, a spreadsheet, or a page in the ops binder &mdash; the format matters less than the columns, because the columns are what turn a dispute into a lookup:</p>
+<table>
+<tr><th>Column</th><th>What goes in it</th><th>Why</th></tr>
+<tr><td><strong>Key ID</strong></td><td>An etched code (<code>K-12</code>), never the door name</td><td>"The red one" is not an identifier. Codes survive staff, rebrands, and arguments.</td></tr>
+<tr><td><strong>What it opens</strong></td><td>Door / lock description</td><td>Needed when a key comes back and nobody remembers it.</td></tr>
+<tr><td><strong>Type</strong></td><td>Standard / restricted / master / fob / code</td><td>Masters and fobs carry different rules (below).</td></tr>
+<tr><td><strong>Cut / programmed date</strong></td><td>When it was made</td><td>Old keys on old locks are the audit's raw material.</td></tr>
+<tr><td><strong>Issued to</strong></td><td>Name + role</td><td>Roles outlive names; both matter when someone leaves.</td></tr>
+<tr><td><strong>Issued date</strong> + <strong>signature</strong></td><td>The acknowledgement</td><td>A signature at issue time is the whole insurance claim, later.</td></tr>
+<tr><td><strong>Status</strong></td><td>Issued / returned / lost / retired</td><td>"Returned" with no date is still issued.</td></tr>
+<tr><td><strong>Return date</strong> + <strong>received-by initials</strong></td><td>Who took it back</td><td>The handover is not done until a second person's initials are on the row.</td></tr>
+</table>
+<p>One row per physical key. If a cleaner holds a ring of four keys, that is four rows and one ring &mdash; or one "ring" row that lists the key IDs inside it. Pick one convention and keep it.</p>
+
+<h2>3. The five rules</h2>
+<ul>
+<li><strong>Whoever issues, records.</strong> No key leaves the drawer without a row signed by both sides. The thirty seconds at issue time is the only moment the evidence is free; reconstructing it after an incident costs days and produces folklore.</li>
+<li><strong>Masters never leave the building.</strong> The master key is a key to every argument on the site. It lives in the cabinet or on the manager; it does not go home in pockets, and it never rides on the same ring as daily-use keys (a lost daily ring must not be a lost master).</li>
+<li><strong>Departures close rows before goodbyes close doors.</strong> Key return is part of the exit checklist &mdash; before the final shift ends, before the farewell cake, before the last pay is confirmed. A warm departure with an open key row is a cold problem in three months.</li>
+<li><strong>A lost key is a lock-change event.</strong> Not a wait-and-see. The cost of rekeying a door is trivial next to the cost of an incident you cannot explain, and insurance has a way of asking exactly who held copies.</li>
+<li><strong>Copies are issued, not improvised.</strong> "I got it cut at the hardware place on Thursday" is how sites end up with nine keys for one door and records for two. Copies get cut by the person who holds the register, then recorded like any other key.</li>
+</ul>
+
+<h2>4. The handover moment: two rows, never one edit</h2>
+<p>When a key moves from Dana to Priya, the register gets <strong>two events</strong>: Dana's row closes (returned, dated, received-by initialed) and Priya's row opens (issued, dated, signed). Editing Dana's row to say "Priya" destroys the history &mdash; and the history is the point. Six months later the question is never "who has K-12 now"; it is "who had K-12 in the week of the 14th". A register that overwrites itself cannot answer that. A register that appends can.</p>
+<p>The same applies at exits: the returning key goes into the cabinet (or the rekey queue), and the departing person signs the close. If a key is genuinely not coming back &mdash; lost, kept by agreement, worn out &mdash; the row says so with a date and a decision, not a blank.</p>
+
+<h2>5. Fobs, codes, and the same law</h2>
+<p>Electronic fobs follow the register exactly &mdash; with one addition: <strong>a collected fob still opens the door until the system deactivates it</strong>. Handing the fob across the desk is the beginning of the offboarding, not the end; the access-control checklist step is the deactivation, confirmed. Alarm codes are the same: recorded under a person, changed (not "told to the next person") on departure. A code is a key that copies itself for free.</p>
+
+<h2>6. The traps</h2>
+<ul>
+<li><strong>The drawer of unknown keys.</strong> Every site has one: twenty keys, no owners, tested against doors until one opens. The register exists so the drawer never forms &mdash; an unexplained key is retired or identified the week it appears.</li>
+<li><strong>The master on the daily ring.</strong> Convenient for four years, catastrophic in one afternoon at the gym.</li>
+<li><strong>The departed-staff key never chased.</strong> "Ah, they're gone now" is a permanent uncontrolled copy of the building. Chase it at exit, when the conversation is still friendly.</li>
+<li><strong>The row edited instead of appended.</strong> A register with no history answers today's question only; a register with history answers the one that matters later.</li>
+<li><strong>The register nobody signs.</strong> Rows without signatures are folklore with formatting. The signature is what makes the row evidence instead of a rumor.</li>
+</ul>
+
+<h2>7. Two sites, one lost cleaner's key</h2>
+<p>A bakery ran the register: eleven keys on eleven rows, each signed at issue. A cleaner reported her ring lost on a Tuesday. The manager read the register, knew exactly what was on the ring (front, back, storeroom &mdash; no master), called the locksmith the same day, had two doors rekeyed for $180, and issued the replacement ring with new rows by Thursday. Total disruption: one morning.</p>
+<p>A neighbouring cafe, same incident, no register. Nobody could say what was on the cleaner's ring &mdash; or who else held copies of the same cuts, because the last manager had "a few made" and left. The insurer asked. The cafe spent the weekend changing every lock on the premises, didn't sleep, and still couldn't produce a list of who held what. Same lost ring, different month: one cost $180, the other cost a weekend, a premium conversation, and an answer they still don't have.</p>
+
+<h2>8. The quarterly five-minute audit</h2>
+<p>Once a quarter, one person counts the cabinet against the register: every row marked <em>issued</em> should have a key in a person's pocket, every key in the cabinet should be on a row marked <em>returned</em> or <em>retired</em>. Unexplained key or unexplained row &mdash; that's the agenda item, resolved the same week, while the trail is still warm. Five minutes, four times a year, is the entire maintenance cost of never doing the weekend-from-hell rekey.</p>
+
+<h2>9. Copy-paste template</h2>
+<pre>
+PHYSICAL KEY REGISTER &mdash; [site name]
+
+| Key ID | Opens            | Type     | Cut date   | Issued to      | Issued date | Signature | Status   | Return date | Received by |
+|--------|------------------|----------|------------|----------------|-------------|-----------|----------|-------------|-------------|
+| K-01   | Front door       | Standard | 2025-03-02 | D. Nguyen      | 2025-03-04  | (signed)  | Issued   |             |             |
+| K-02   | Back door        | Standard | 2025-03-02 | (cabinet)      |             |           | Returned | 2026-08-14  | MP          |
+| K-07   | Storeroom        | Master   | 2024-11-20 | MANAGER ONLY   | 2024-11-21  | (signed)  | Issued   |             |             |
+
+KEY RETURN RECEIPT (attach to closed row)
+  Key ID: ______   Returned by: ______________   Date/time: __________
+  Condition:  [ ] OK   [ ] Damaged   [ ] Not returned (reason + decision)
+  Received by (initials): ______     Next action if lost: REKEY &mdash; booked for: ______
+</pre>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns exit-day chaos &mdash; keys, accounts, badges, code word &mdash; into a fillable sequence, and <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Vol. 2 ($27)</strong></a> adds the DR plan and evidence log for the review after anything worse. The <a href="https://hive80lab.gumroad.com/l/first-30-minutes"><strong>First 30 Minutes checklist</strong></a> is free.</p>
+
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
