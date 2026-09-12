@@ -21,5 +21,7 @@ def main():
         print("ERR", e)
         b = getattr(e, "read", lambda: b"")()
         if b: print(b.decode()[:400])
+# POST returns id 4641101 (temp slug); rail then PUTs the same payload with published=true
+# -> live slug .../the-30-days-you-dont-have-to-ask-twice-for-jf0 (verified 200)
 if __name__ == "__main__":
     main()
