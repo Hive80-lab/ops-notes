@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Release Checklist for Small Teams (Green Build to Shipped, in 12 Boxes) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A release checklist for small teams: the twelve checks between a green build and a shipped release — rollback named, migrations reversible, feature flags set, status page ready, release notes written — plus the five traps that turn a checklist into a rubber stamp.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/release-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>The release checklist for small teams: twelve boxes between &ldquo;green build&rdquo; and &ldquo;shipped&rdquo;</h1>
+<p>A release checklist is not paperwork; it is the memory of your last three bad Fridays, written down while the pain was fresh. Every box on a good one exists because somebody once shipped without it: the migration that could not be un-run, the flag that never got set for gradual rollout, the Friday 5pm release with no note and no owner. For a team under twenty, the checklist is twelve boxes, most releases check nine of them in five minutes, and the point is that the three that apply are the three that would have hurt.</p>
+<p>This note gives the checklist itself, the risk-class shortcut that keeps it fast, the five traps that turn checklists into rubber stamps, and a one-afternoon rollout. It sits between the <a href="change-advisory-board-template.html">change review that approves the release</a> and the <a href="release-notes-template.html">release notes the customer reads</a>.</p>
+
+<h2>1. The twelve boxes</h2>
+<ul>
+<li><strong>1. Rollback is named and rehearsed.</strong> The exact undo &mdash; revert commit, down-migration, feature-flag default &mdash; written in the release doc, not in someone's memory. An untested rollback is a wish (the same law the <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">rollback checklist</a> exists to enforce).</li>
+<li><strong>2. Migrations are reversible</strong> &mdash; or explicitly marked one-way, with the reason written down. A one-way migration is a decision, not an accident.</li>
+<li><strong>3. Feature flags set for anything user-visible.</strong> Default off, rollout plan says who sees it first, kill switch confirmed to work.</li>
+<li><strong>4. Risk class labeled</strong> per the change review: data, auth, money, or normal. The label decides how many of the remaining boxes are load-bearing.</li>
+<li><strong>5. Tests green on a production-like build</strong> &mdash; not just on the laptop. Config drift between staging and production is where &ldquo;but it worked in staging&rdquo; is born.</li>
+<li><strong>6. Database backup is fresh</strong> and its restore was tested recently &mdash; the release that touches data is the one that will need it.</li>
+<li><strong>7. Monitoring covers the change.</strong> New queue? New endpoint? If it cannot be observed, it cannot be rolled back on evidence &mdash; the <a href="https://hive80-lab.github.io/ops-notes/golden-signals-alerting.html">golden signals</a> need a row for it.</li>
+<li><strong>8. Timing chosen on purpose.</strong> Not Friday 4:55pm by default; the window matches the blast radius, and anyone on call knows the release is coming.</li>
+<li><strong>9. Comms ready before the deploy:</strong> the <a href="https://hive80-lab.github.io/ops-notes/release-notes-template.html">release notes</a> drafted, and if the release touches customers in real time, the status page template is warm.</li>
+<li><strong>10. One person owns the ship.</strong> A name, not &ldquo;the team.&rdquo; If it goes wrong at 17:40, the decision-maker is named on the checklist.</li>
+<li><strong>11. The decision to abort is pre-made:</strong> the exact signal (error rate, queue lag, support ticket count) that aborts the rollout &mdash; agreed before, so nobody has to argue thresholds mid-incident.</li>
+<li><strong>12. Post-ship watch exists:</strong> who watches the dashboards for the first 30 minutes, and what happens at the end of it (ship closed, or incident opened).</li>
+</ul>
+
+<h2>2. The shortcut: most releases check nine boxes in five minutes</h2>
+<p>The checklist would die if every typo fix needed twelve signatures. The risk class from the change review sets the depth: <strong>Class 4</strong> (no data, no auth, no money) boxes 1, 5, 8, 10 &mdash; ninety seconds, ship. <strong>Class 1&ndash;3</strong> gets the full twelve, in writing, attached to the release. The shortcut is what keeps the long form honest: a checklist that costs the same for everything filters nothing, and reviewers learn to skim.</p>
+<p>Timing rule of thumb: data and auth changes ship early in the day, never last-thing Friday; the whole point of box 8 is that someone <em>chooses</em> the window instead of inheriting one.</p>
+
+<h2>3. Five traps</h2>
+<p><strong>The checklist as memory test.</strong> If the boxes live in someone's head, the checklist is that person, and it does not scale past their vacation. Written, versioned with the repo, improved the week after every bad release.</p>
+<p><strong>Checkbox theater.</strong> Twenty boxes ticked in thirty seconds is not a review; it is a signature. If a box cannot actually be checked (nobody knows the rollback), the honest mark is &ldquo;not done&rdquo; &mdash; and the release waits or the risk is accepted <em>out loud</em>, by a name, not by default.</p>
+<p><strong>Checklists that never change.</strong> A checklist frozen since last year is a fossil. Every incident post-mortem donates one candidate box; the checklist accepts at most one new box per month, or it bloats into noise.</p>
+<p><strong>The same depth for every release.</strong> Twelve boxes for a typo fix teaches the team that checklists are rituals &mdash; and then the one release that needed all twelve gets a skimmed one.</p>
+<p><strong>Checklist as substitute for rehearsal.</strong> Ticking &ldquo;rollback rehearsed&rdquo; is not the rehearsal. The box marks that the rehearsal <em>happened</em> &mdash; recently, on something production-like &mdash; not that someone believes it would work.</p>
+
+<h2>4. Worked example</h2>
+<p>A ten-person project-management SaaS ships weekly, no checklist. The quarter's wounds, in order: a migration that added a <code>NOT NULL</code> column with no down-path (recovery: 7 hours and an emergency data backfill), a billing change that shipped to everyone at once (a hundred support tickets, half of them &ldquo;what changed?&rdquo;), and a Friday release where the on-call learned about the deploy from a customer.</p>
+<p>They adopt the twelve boxes in one afternoon, attached to the PR template. The next month: the migration that could not be reversed is caught at box 2 and rewritten as two steps; the billing change ships behind a flag to 5% of accounts, and box 8's abort signal (charge-failure rate over 1%) fires once &mdash; the flag flips back in four minutes, one ticket total; box 9 means the &ldquo;what changed&rdquo; tickets stop arriving because the notes page answers before the question does. Total ceremony per normal release: five minutes for four boxes. The counter-example is their own previous attempt at &ldquo;release discipline&rdquo;: a forty-item checklist in a wiki nobody opened, which is why the migration walked through it.</p>
+
+<h2>5. Metrics (for the metric itself)</h2>
+<ul>
+<li>Every release attaches the checklist; Class 4 shows four boxes, Class 1&ndash;3 shows twelve &mdash; the depth is visible, not assumed.</li>
+<li>Zero one-way migrations without a written reason.</li>
+<li>Abort signals pre-agreed for every flagged release; flags flipped by signal, not by debate.</li>
+<li>The checklist itself changes at most once a month, and every change cites the release that taught it.</li>
+<li>Time-to-complete for a normal release: minutes. If checklist time grows, boxes have become theater.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/change-advisory-board-template.html">change advisory board template</a> decides which releases need the full twelve, the <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">deployment rollback checklist</a> is box 1 made real, and the <a href="https://hive80-lab.github.io/ops-notes/release-notes-template.html">release notes template</a> is box 9 customer-facing.</em></p>
+</main>
+</body>
+</html>
