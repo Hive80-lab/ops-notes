@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home-Office Security Checklist for Small Teams — the Perimeter Moved to the Kitchen Table</title>
+<meta name="description" content="A home-office security checklist for remote and hybrid small teams: router hygiene and network separation, device basics, access and secrets discipline, physical-space checks, and a quarterly review.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/home-office-security-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>The Home-Office Security Checklist for Small Teams</h1>
+<p>Your office perimeter is now a kitchen table. The router is whoever's was cheapest at the electronics store, the printer is shared with the household, and the laptop travels between the desk, the couch, and a caf&eacute;. A home-office security checklist is one honest walk through that setup &mdash; network, devices, access, physical space, and backups &mdash; that closes the gaps a company office used to close for you. None of it requires enterprise budget; most of it requires an hour and a label maker.</p>
+
+<h2>Pass 1: The Network</h2>
+<ul>
+<li><strong>Retire the router's default password</strong> &mdash; admin panel and Wi-Fi both. The default credentials are printed on a sticker and published on the internet; anyone within range has had the key for years.</li>
+<li><strong>Firmware once, then calendar</strong> &mdash; update the router firmware today, then put a quarterly reminder on it. Router firmware is the patch nobody sees, which is why it ships fixes for bugs already being exploited.</li>
+<li><strong>Separate the guest network</strong> &mdash; visitors, kids' tablets, smart TVs, and consoles get the guest SSID. A compromised game console should never be one subnet hop from the laptop that holds the customer database.</li>
+<li><strong>Name your IoT honestly</strong> &mdash; the doorbell camera, the robot vacuum, the smart speaker: they all phone home. If one can be moved to the guest network, move it. The <a href="wifi-security-checklist.html">Wi-Fi security checklist</a> covers the office side; this pass is the same discipline at home.</li>
+</ul>
+
+<h2>Pass 2: The Devices</h2>
+<ul>
+<li><strong>Disk encryption on, verified</strong> &mdash; FileVault on Macs, BitLocker on Windows, full-disk encryption on Linux. "It's probably on" is not a status; check the settings page and write the date down.</li>
+<li><strong>Auto-lock that actually locks</strong> &mdash; screen lock at five minutes or less, password required immediately, not "after 4 hours". A laptop that stays logged in on the kitchen counter is an unlocked office door.</li>
+<li><strong>One profile for work, honestly kept</strong> &mdash; separate user account (or at minimum a separate browser profile) for work, so household logins, bookmarks, and saved passwords don't share the same room.</li>
+<li><strong>Updates on automatic</strong> &mdash; OS and browser. The <a href="patch-management-checklist.html">patch management checklist</a> runs the office fleet; the home devices are part of it now whether the register says so or not.</li>
+<li><strong>Retire the dead hardware properly</strong> &mdash; the old laptop in the drawer still has mail cached and a session token or two. The <a href="old-hardware-disposal-checklist.html">hardware disposal checklist</a> is the exit lane.</li>
+</ul>
+
+<h2>Pass 3: Access and Secrets</h2>
+<ul>
+<li><strong>One password manager, no exceptions</strong> &mdash; work logins in the work vault, not in the browser's built-in save, not in a note, not shared with the household. If rollout never happened, the <a href="password-manager-rollout-small-business.html">password manager rollout</a> is the one-afternoon fix.</li>
+<li><strong>MFA on everything that moves money or holds customer data</strong> &mdash; email first (it resets everything else), then banking, then the admin panels. An authenticator app beats SMS; both beat nothing.</li>
+<li><strong>Family-shared logins get split</strong> &mdash; the streaming account can be shared; the registrar, hosting, and store admin accounts cannot. If a household member knows a work password, rotate it and move it into the vault with sharing.</li>
+<li><strong>Secrets don't live in one drawer</strong> &mdash; recovery codes taped inside a desk drawer is a single point of failure with a lock on it. The <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> covers the hygiene; the home twist is <em>who else in the house can reach them</em>.</li>
+</ul>
+
+<h2>Pass 4: The Physical Space</h2>
+<ul>
+<li><strong>Documents that shouldn't print</strong> &mdash; customer lists, contracts, invoices with addresses: does the household printer keep copies, and who empties the tray? Print less; shred what prints.</li>
+<li><strong>The visible-screen rule</strong> &mdash; video calls show the desk behind you. Customer names in a CRM window, whiteboards with the roadmap, the mailbox key on the shelf: what does the camera see in a screen-share gone wrong, and what does the window behind the desk show the street?</li>
+<li><strong>Deliveries and guests</strong> &mdash; the courier signs for the box; the partner works at the same table. Nothing here needs paranoia &mdash; it needs the laptop lid closed when unattended and no customer paperwork left in the hallway.</li>
+<li><strong>Keys and badges that lost their meaning</strong> &mdash; office keycards, building fobs, the spare house key under the mat: a home-office walk is a good moment to notice which access items stopped being tracked when the office moved home. The <a href="key-inventory-register.html">key management policy</a> page covers the register.</li>
+</ul>
+
+<h2>Pass 5: Backups and the Day the House Has a Bad Day</h2>
+<ul>
+<li><strong>3-2-1 survives at home too</strong> &mdash; the work laptop's backup target shouldn't be the same shelf. Cloud + one offline copy that isn't always plugged in; the <a href="backup-encryption-checklist.html">backup encryption checklist</a> matters more at home, where the backup disk sits next to the TV.</li>
+<li><strong>Test the restore, not the backup</strong> &mdash; a home backup that's green for two years but never restored is a hope, not a plan. The <a href="backup-restore-drill-checklist.html">backup restore drill checklist</a> runs the test.</li>
+<li><strong>Write the home-office outage plan</strong> &mdash; power cut, internet dead, household quarantine: what work stops, what has a workaround, who gets told. The <a href="power-failure-it-checklist.html">power failure IT checklist</a> and the <a href="internet-outage-runbook.html">internet outage runbook</a> are the templates.</li>
+<li><strong>The person is the plan</strong> &mdash; if only one person can reach the router settings, the vault, or the backup drive from home, that's a row for the <a href="single-point-of-failure-audit-checklist.html">single-point-of-failure register</a> with "home" written next to it.</li>
+</ul>
+
+<h2>The Quarterly Home-Office Review</h2>
+<p>Security at home decays quietly: a new smart device joins the Wi-Fi, a guest network gets turned off "temporarily", a router gets replaced and ships with defaults again. Fifteen minutes per quarter:</p>
+<ul>
+<li>Guest network still on, firmware still current, device list on the router still recognizable.</li>
+<li>New devices in the house in the last quarter &mdash; which network are they on?</li>
+<li>MFA still on everywhere it was on; no new admin panel added without it.</li>
+<li>Backup: last restore test date still within policy.</li>
+<li>Anything printed, taped, or written that should have been shredded.</li>
+</ul>
+
+<h2>Instant-Download Ops Kits</h2>
+<p>This checklist is part of the <strong>Hive80 Lab ops kit line</strong> &mdash; field-tested, instantly downloadable:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/rtodsv">Ops Field Cards</a> &mdash; 12 printable incident checklists &mdash; $4</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+<p><strong>&#9889; Launch pricing is live at the store &mdash; check the banner for today's code.</strong></p>
+
+<h2>Related Ops-Notes Pages</h2>
+<ul>
+<li><a href="wifi-security-checklist.html">Wi-Fi Security Checklist</a> &mdash; the office network half of pass 1</li>
+<li><a href="vpn-security-checklist.html">VPN Security Checklist</a> &mdash; the tunnel between home and the company</li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout</a> &mdash; the one-afternoon fix for pass 3</li>
+<li><a href="patch-management-checklist.html">Patch Management Checklist</a> &mdash; keeping the home devices patched like the office fleet</li>
+<li><a href="backup-encryption-checklist.html">Backup Encryption Checklist</a> &mdash; the backup disk lives in the living room now</li>
+<li><a href="backup-restore-drill-checklist.html">Backup Restore Drill Checklist</a> &mdash; prove the home backup restores</li>
+<li><a href="power-failure-it-checklist.html">Power Failure IT Checklist</a> &mdash; the home-office outage with the longest tail</li>
+<li><a href="internet-outage-runbook.html">Internet Outage Runbook</a> &mdash; the day the home pipe dies mid-shift</li>
+<li><a href="old-hardware-disposal-checklist.html">Old Hardware Disposal Checklist</a> &mdash; the drawer laptop is a data breach on a shelf</li>
+<li><a href="single-point-of-failure-audit-checklist.html">Single-Point-of-Failure Register</a> &mdash; the household SPOFs are rows too</li>
+<li><a href="key-inventory-register.html">Key Inventory Register</a> &mdash; which keys and fobs are still tracked after the office move</li>
+</ul>
+
+<hr>
+<p><strong>Home offices didn't create new security problems &mdash; they just moved the office into a building with no IT department.</strong> One walk through the five passes, an hour of fixes, and a fifteen-minute quarterly review is the whole system. The kitchen table can be as safe as the server room; it just has to be decided on purpose.</p>
+</main>
+</body>
+</html>
