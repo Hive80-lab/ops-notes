@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Error Budget Policy Template (What Happens When the Budget Burns) &mdash; HIVE80lab</title>
+<meta name="description" content="A one-page error budget policy that turns your SLO from a number into a decision rule: the budget counted in bad minutes, four computed states (green, amber, red, blown) with named deciders for each, what spends the budget and what does not, the fraud list that keeps the number honest, and the tighten-the-SLO rule for teams that stay green all year. Worked example: a 22-minute bad deploy pauses feature work for four days and prevents a month of it.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/error-budget-policy-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>The error budget policy: what happens when the budget burns</h1>
+<p>An SLO without a policy is a wish with a decimal point. The team writes 99.9% availability in a wiki page, everyone agrees, and then a bad deploy burns a third of the budget on a Tuesday afternoon and &mdash; nothing happens. No state changes, nobody pauses anything, and the next risky deploy ships on schedule, because the number watches you miss it and says nothing. The <a href="https://hive80-lab.github.io/ops-notes/sla-slo-definition-template.html">SLO definition</a> sets the promise; this page is the enforcement: the budget counted in minutes, four states that are computed rather than felt, a named decider for every state, and a fraud list that keeps the number honest. A 99.9% SLO over 28 days is not a percentage &mdash; it is <strong>40 minutes of customer-hurting minutes per month that you have chosen to spend on purpose</strong>. Spend them deliberately or they get spent for you.</p>
+<p>The policy exists to answer one question at any moment: <strong>is this the week we ship the risky release, or the week reliability work goes first?</strong> Not &ldquo;how reliable are we&rdquo; &mdash; that is the <a href="https://hive80-lab.github.io/ops-notes/incident-metrics-report-template.html">metrics report's</a> job. The budget converts reliability from a feeling into arithmetic, and arithmetic has states.</p>
+
+<h2>1. Three numbers, counted in minutes</h2>
+<p>The policy needs exactly three numbers, written on one line at the top: the SLO (99.9%), the window (28 days), and the budget in <strong>bad minutes</strong> (0.1% of 28 days = 40.3 minutes). Always translate to minutes: &ldquo;0.1%&rdquo; hides its smallness; &ldquo;40 minutes per month&rdquo; is small enough to feel. One bad minute = one minute in the window where the SLI says a real user was hurt. The <a href="https://hive80-lab.github.io/ops-notes/incident-severity-matrix-template.html">severity matrix</a> classifies the incident; the budget counts its damage &mdash; the two agree on one number per incident, copied by hand into the budget line, and any disagreement gets resolved in the weekly review, not silently.</p>
+<p>Cap SLIs at two per service &mdash; availability (5xx or failed probes) and one latency threshold (p95 over N ms counts as bad minutes from threshold-cross, not from request start). A third SLI means nobody updates the budget line, and a budget nobody updates is a decoration. The budget line lives in the same place as the <a href="https://hive80-lab.github.io/ops-notes/post-incident-action-item-tracker.html">action tracker</a> &mdash; one table, one owner, updated within 24 hours of every incident and every deploy that counts.</p>
+
+<h2>2. Four states, computed not felt</h2>
+<p>The budget's remaining percentage puts the service in one of four states. A cron (or a human with a Tuesday reminder, for small teams) computes it &mdash; the state is <em>read off the number</em>, never argued into existence by whoever is most upset this week:</p>
+<ul>
+<li><strong>GREEN</strong> (more than 50% remaining): normal shipping. Nothing changes; the state exists so its absence is loud.</li>
+<li><strong>AMBER</strong> (20&ndash;50% remaining): risky releases go first. Not a freeze &mdash; a re-ordering. The risky deploy you were saving for Thursday ships now, before the budget burns further, because a risky release is cheapest when there is budget left to absorb its mistakes.</li>
+<li><strong>RED</strong> (under 20% remaining): feature work touching the affected service pauses; reliability work gets first pick of engineers; no deploys that change the service's behavior without a rollback plan linked. The <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">rollback checklist</a> becomes mandatory pre-merge, not post-mortem reading.</li>
+<li><strong>BLOWN</strong> (0% remaining): automatic freeze on the affected service. The freeze ends when the budget recovers to 50% &mdash; which happens only as bad minutes age out of the 28-day window, or by design work that demonstrably removes a failure mode. Waiting is a strategy, but a slow one; design work is the fast path.</li>
+</ul>
+<p>The states are deliberately boring. The point is not sophistication &mdash; it is that nobody has to be brave to declare a freeze. The arithmetic does it, and the policy pre-authorizes the consequences, which removes the argument where arguments actually happen: &ldquo;should we pause the roadmap for reliability?&rdquo; becomes &ldquo;we are in RED, the policy says feature deploys on checkout pause.&rdquo;</p>
+
+<h2>3. Who decides what: the decision table</h2>
+<p>Every state has one named decider. Committees decide nothing at 4&nbsp;p.m. on a Friday:</p>
+<ul>
+<li><strong>GREEN</strong> &mdash; teams decide everything themselves. The policy is silent, on purpose.</li>
+<li><strong>AMBER</strong> &mdash; the service owner re-orders releases (which risky one goes first). One person, no meeting.</li>
+<li><strong>RED</strong> &mdash; the engineering or ops lead pauses feature deploys on the affected service. The pause is announced in the team channel with the budget line pasted in &mdash; the number speaks, not the person, which is what makes the pause politically survivable.</li>
+<li><strong>BLOWN</strong> &mdash; the freeze is automatic (nobody decides to start it). <strong>Unfreezing</strong> is the one decision that needs a named human plus evidence: which failure modes the design work addresses, and the <a href="https://hive80-lab.github.io/ops-notes/incident-post-mortem-template.html">post-mortem</a> actions it closes. The <a href="https://hive80-lab.github.io/ops-notes/change-freeze-window-policy.html">calendar freeze policy</a> handles planned seasonal freezes; the budget freeze handles earned ones, and the two stack.</li>
+</ul>
+
+<h2>4. What spends the budget (and the fraud list)</h2>
+<p>Bad minutes are minutes where real users were hurt by surprise. Three clarifications that kill most budget arguments:</p>
+<ul>
+<li><strong>Planned maintenance in a communicated window does not spend the budget.</strong> Customers were told; that is downtime by appointment, not a reliability failure. It still gets counted and reported &mdash; just in its own line, not the budget's.</li>
+<li><strong>A failed deploy spends the budget from first customer harm to full recovery</strong> &mdash; including the minutes it takes to notice (that is why <a href="https://hive80-lab.github.io/ops-notes/incident-metrics-report-template.html">MTTD</a> lives in the metrics report: detection latency is budget spend).</li>
+<li><strong>Partial impact counts fractionally.</strong> If 10% of users were hurt, that minute costs 0.1 budget minutes. Budgets that only count total outages teach teams to degrade quietly.</li>
+</ul>
+<p>Then the fraud list &mdash; the four moves that make a budget meaningless, banned in writing:</p>
+<ul>
+<li><strong>Redefining the SLO mid-window</strong> because it is inconvenient. SLO changes happen only at window rollover, with a written reason, at most once per quarter.</li>
+<li><strong>Moving the window</strong> so the burned minutes fall out. The window is 28 days; it does not move.</li>
+<li><strong>Post-hoc exclusions</strong> (&ldquo;that one doesn't count, it was DNS&rdquo;). Everything real users felt counts. If DNS outages are frequent enough to want excluded, that is a design finding, not an accounting problem.</li>
+<li><strong>Counting hypotheticals</strong> (&ldquo;we would have been down if&rdquo;). The budget counts what happened; the <a href="https://hive80-lab.github.io/ops-notes/incident-response-drill-schedule-template.html">drills</a> count what would have.</li>
+</ul>
+
+<h2>5. The weekly line</h2>
+<p>The budget appears in the weekly ops review as one line: <strong>remaining %, state, burn trend, and the one decision the state caused</strong>. If the line reads GREEN four weeks running with zero decisions, the SLO is too loose &mdash; tighten it until GREEN requires care (a 100% green budget is not a success story; it is a number too far from the edge to steer by, and the tighten rule applies the same honesty as the 70&ndash;85% closure band). If the line has been RED for three consecutive weeks, the problem is not the budget &mdash; it is that the reliability work keeps losing to features, and that fight belongs in planning, not in the review.</p>
+<p>The line also feeds the <a href="https://hive80-lab.github.io/ops-notes/incident-metrics-report-template.html">quarterly metrics report</a>: windows spent in each state, total budget spend, SLO changes made and why. One decision per quarter the budget forced &mdash; that is the metric that proves the policy is alive.</p>
+
+<h2>6. Worked example: 22 minutes and four days</h2>
+<p>A twelve-person SaaS, checkout API, SLO 99.9% over 28 days = 40.3 budget minutes. Week one: a connection-pool change ships on Tuesday and burns 22 minutes of harm before rollback &mdash; budget drops to 45%, state AMBER before the week is out. Under the old regime (SLO in a wiki, no policy) the next release would have shipped Thursday as planned. Under the policy: the service owner moves the risky queue-rework release to the front of the week, and the connection-pool fix ships with a <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">rollback plan</a> linked in the PR. Week two: a config-drift incident burns another 18 minutes &mdash; budget 0.7%, state RED. Feature work on checkout pauses; the two engineers on the roadmap get four days of reliability work instead: the queue-depth alert that cut <a href="https://hive80-lab.github.io/ops-notes/incident-metrics-report-template.html">MTTD</a> from 31 to 9 minutes, and a canary stage for pool changes. Week three: budget recovers past 20% as the burned minutes age; feature work resumes. The counter-example is real too: a team running 99.99% on a tier that cannot fund it blows the budget every month, ignores the state, and concludes budgets are theater. The fix was honesty, not discipline &mdash; the SLO moved to 99.5% (a 3.6-hour budget they could actually keep), and the first RED since the change was treated as the signal it always should have been.</p>
+
+<h2>7. Metrics for the policy</h2>
+<ul>
+<li><strong>Windows with a computed state</strong> &mdash; 100%. A budget that is not computed weekly is a wiki page, not a policy.</li>
+<li><strong>Decisions logged per RED/BLOWN window</strong> &mdash; at least one. RED with zero decisions means the state changed nothing, which means the policy is decoration.</li>
+<li><strong>SLO changes</strong> &mdash; at most one per quarter, at rollover, with a written reason. More means the number is negotiable, and negotiable numbers steer nothing.</li>
+<li><strong>Median freeze length after BLOWN</strong> &mdash; under 7 days. Longer freezes mean the recovery path is waiting, not design work.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications, including the post-mortem pack &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+<li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; done-for-you, built from your established stack &mdash; from $99</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/sla-slo-definition-template.html">SLA/SLO definition template</a> sets the number this policy enforces, the <a href="https://hive80-lab.github.io/ops-notes/incident-metrics-report-template.html">incident metrics report</a> reads the trend, the <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">rollback checklist</a> is the fastest way to stop spending, and the <a href="https://hive80-lab.github.io/ops-notes/change-freeze-window-policy.html">change-freeze window policy</a> covers the planned freezes the budget can't.</em></p>
+</main>
+<footer><a href="index.html">HIVE80lab &mdash; Ops notes</a> &middot; <a href="sitemap.xml">Sitemap</a></footer>
+</body>
+</html>
