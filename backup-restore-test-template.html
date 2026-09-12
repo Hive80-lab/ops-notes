@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backup Restore Test Template for Small Teams (An Untested Backup Is a Hope, Not a Plan) &mdash; HIVE80lab</title>
+<meta name="description" content="A restore test that fits one page: the restore-test card (one row per system with RPO and last verified restore), the 3-2-1 rule plus the fourth rule nobody counts, the 30-minute monthly drill, what to log during the drill, and three metrics. Worked example: a nine-person design agency whose backup token had silently expired for six weeks &mdash; caught by a 30-minute drill, proven three months later when ransomware hit and 1.2TB came back in an afternoon.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/backup-restore-test-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Backup Restore Test Template for Small Teams</h1>
+<p class="sub">One page. The drill that turns your backup from a hope into a plan &mdash; 30 minutes a month, one system at a time, with the log that proves it works.</p>
+
+<p>Every small team has backups. Very few have restores. The difference shows up on the worst day of your year: the backup console is green, the retention policy is impeccable, and the first actual restore attempt fails on an expired token, a full destination disk, or a password that lived in one person&rsquo;s head. Backups fail silently by default &mdash; a green dashboard means <em>a job ran</em>, not <em>a file came back</em>. The only signal that means anything is a restore you performed, timed, and logged. This page is the template for doing exactly that, in 30 minutes a month.</p>
+
+<h2>The restore-test card, one page</h2>
+<p>One row per system worth restoring. If a system is not on this card, you have implicitly decided you can live without it &mdash; make that decision on a quiet Tuesday, not during the outage:</p>
+<table>
+<tr><th>System</th><th>Backup tool &amp; where</th><th>RPO target</th><th>Last verified restore</th><th>Next test date</th><th>Owner</th></tr>
+<tr><td>File server / shared drive</td><td>Cloud backup, nightly</td><td>24h</td><td>2026-09-09 (single folder, 12 min)</td><td>2026-10-06</td><td>Ops lead</td></tr>
+<tr><td>Production database</td><td>Nightly dump + weekly full</td><td>24h</td><td>2026-08-12 (to staging, 41 min)</td><td>2026-09-16</td><td>Backend lead</td></tr>
+<tr><td>Laptops (endpoint backup)</td><td>Per-user agent</td><td>4h</td><td>2026-07-30 (one user, 9 min)</td><td>2026-09-16</td><td>Ops lead</td></tr>
+<tr><td>SaaS data (CRM, email)</td><td>Vendor export + monthly copy</td><td>30 days</td><td>2026-08-01 (CSV export check)</td><td>2026-10-01</td><td>Founder</td></tr>
+</table>
+<p>Two columns do the real work. <strong>&ldquo;Last verified restore&rdquo;</strong> is a date and a duration &mdash; a row that says &ldquo;yes&rdquo; or is blank means never tested. <strong>&ldquo;Next test date&rdquo;</strong> means each system gets drilled on a rotating schedule, so the whole estate is proven every quarter without anyone losing a full day to it. <strong>Owner</strong> is one named human per row &mdash; the same rule as every other page in this series.</p>
+
+<h2>The 3-2-1 rule and the fourth rule nobody counts</h2>
+<p>The classic rule: <strong>three</strong> copies of the data, on <strong>two</strong> different media, with <strong>one</strong> copy off-site. It is necessary and insufficient, because it counts copies, not recoveries. The fourth rule: <strong>one test per quarter, per system</strong> &mdash; an actual restore, to an actual destination, timed and logged. A backup that has never been restored is a rumor. The fourth rule is the one this template exists to enforce.</p>
+
+<h2>The 30-minute monthly drill</h2>
+<p>Same shape every month, rotating across the card so each system is hit at least quarterly:</p>
+<ol>
+<li><strong>Pick the target</strong> (2 min): one system from the card whose &ldquo;last verified restore&rdquo; is oldest. Randomize the artifact &mdash; a folder nobody thinks about, not the demo one.</li>
+<li><strong>Restore it</strong> (15&ndash;20 min): to a scratch destination, <em>never over the live copy</em>. One file? One table? A full VM if the rotation says so &mdash; scale the drill to what the month allows, but do a real restore, not a status-page check.</li>
+<li><strong>Verify the content</strong> (5 min): open the file, query the row, checksum a sample. A restore that returns zeros is a failed restore with extra steps.</li>
+<li><strong>Log the row</strong> (3 min): date, system, time-to-restore, what broke, what the docs didn&rsquo;t say. The log is the product &mdash; the drill is just how you produce it.</li>
+</ol>
+<p>Two disciplines make the drill honest. First, <strong>rotate the destination</strong>: alternate cloud-restore, local copy, and (quarterly) a full rebuild onto spare hardware &mdash; the drill that only ever restores inside the backup tool&rsquo;s own UI never learns whether the tool itself is the single point of failure. Second, <strong>never test on the live system</strong> unless the drill is specifically a live-failover rehearsal; overwriting production to test a backup is trading a real outage for a hypothetical one.</p>
+
+<h2>What to write down during the drill</h2>
+<p>The log entry is five fields. It takes three minutes and it is what you will hand the auditor, the insurer, and the new hire:</p>
+<ul>
+<li><strong>Date, system, artifact restored</strong> &mdash; specific enough to repeat (&ldquo;/finance/2026/Q3/ folder, 214 files&rdquo;, not &ldquo;file server&rdquo;).</li>
+<li><strong>Time to restore</strong> &mdash; the number that turns &ldquo;we have backups&rdquo; into &ldquo;we are back in 40 minutes.&rdquo; This is your real RTO, measured, not hoped.</li>
+<li><strong>What broke</strong> &mdash; expired token, full disk, missing agent, password in a dead colleague&rsquo;s head. Every break found in a drill is a break you don&rsquo;t meet during the real thing.</li>
+<li><strong>What the docs didn&rsquo;t say</strong> &mdash; the step you had to improvise. Fix the doc the same day, while the improvisation is fresh.</li>
+<li><strong>Verdict</strong> &mdash; passed / passed-with-notes / failed. A failed drill is a win: it found the break for free.</li>
+</ul>
+
+<h2>Monthly spot-check vs quarterly full-fire drill</h2>
+<p>Two cadences, two different jobs. The <strong>monthly 30-minute drill</strong> proves the plumbing: tokens valid, disks not full, files coherent. The <strong>quarterly full-fire drill</strong> (half a day, on a Friday afternoon) proves the whole muscle: rebuild one critical system from nothing onto spare hardware, from the documentation alone, with the owner watching but not touching. The full-fire drill is where you discover that the database dump needs a tool version that isn&rsquo;t installed anymore, or that the only person who knows the restore passphrase is on leave. It pairs naturally with the <a href="incident-response-drill-schedule-template.html">incident-response drill schedule</a> &mdash; run restore drill and response drill in the same quarter and each covers the other&rsquo;s gaps.</p>
+
+<h2>Three metrics that keep the card honest</h2>
+<ul>
+<li><strong>Restore success rate</strong> &mdash; passed drills / attempted drills, rolling 12 months. Below 100% is fine (that&rsquo;s what drills are for); zero attempts is the failure mode.</li>
+<li><strong>Mean time to restore</strong> per system &mdash; your measured RTO. If it exceeds the promise you&rsquo;d make a customer, the backup plan is fiction.</li>
+<li><strong>% of card systems tested this quarter</strong> &mdash; the rotation coverage number. Target 100% within every rolling 90 days; the oldest &ldquo;last verified&rdquo; date on the card is your true risk position.</li>
+</ul>
+
+<h2>Worked example: the token that died quietly</h2>
+<p>A nine-person design agency backed up its file server to a cloud provider every night. The dashboard had been green for months &mdash; because the <em>scheduler</em> ran, and silently failed at the auth step for six weeks after a token expired. A monthly 30-minute drill &mdash; restore one forgotten project folder to a scratch drive &mdash; returned nothing. Token re-authed, backlog rebuilt, drill logged: failed, then passed, 14 minutes. Three months later a crypto-locker encrypted the file server overnight. Because the drills had run quarterly since, the team restored 1.2&nbsp;TB from the cloud backup onto a replacement NAS in one afternoon and lost less than a day of billable work. The ransomware event didn&rsquo;t find a backup. It found a <strong>practiced restore</strong> &mdash; and the practice is what cost $0 and 30 minutes a month.</p>
+
+<p class="cta">The drill log, the card and the full-fire checklist are in the <a href="ops-starter-kit-landing.html">Ops Starter Kit</a>. Want the whole estate &mdash; backups, restores, and the runbooks around them &mdash; audited and documented for you? See the <a href="small-team-ops-audit-and-runbook-services.html">small-team ops audit &amp; runbook service</a>.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="security-audit-scorecard.html">Security Audit Scorecard</a> &mdash; free, 45 checks scored live in your browser, nothing uploaded.</li><li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li><li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; built from your estate, delivered in 48h &mdash; $249</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident pack for the on-call rotation</li></ul><p class="hint">20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p></aside>
+</main>
+<footer>hive80lab &mdash; ops notes for small teams &middot; <a href="index.html">all notes</a></footer>
+</body>
+</html>
