@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Root Cause Categorization Checklist &mdash; HIVE80lab</title>
+<meta name="description" content="Purpose: Systematically categorize root causes to prevent recurrence. Move from ad-hoc fixes to structured improvements.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/incident-taxonomy-root-cause-categorization.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Incident Root Cause Categorization Checklist</h1>
+<p><strong>Purpose:</strong> Systematically categorize root causes to prevent recurrence. Move from ad-hoc fixes to structured improvements.</p>
+<h2>Root Cause Categories</h2>
+<table>
+<tr><th>Category</th><th>Definition</th><th>Common Examples</th></tr>
+<tr><td><strong>Infrastructure</strong></td><td>Hardware/OS/network failure</td><td>Server crash, disk full, network partition</td></tr>
+<tr><td><strong>Human Error</strong></td><td>Process, process, process</td><td>Wrong config, delete data, mis-delete</td></tr>
+<tr><td><strong>Development</strong></td><td>Code defect, missing tests</td><td>Bug, unhandled exception, race condition</td></tr>
+<tr><td><strong>Operational</strong></td><td>Change management failure</td><td>Deploy went bad, rollback failed</td></tr>
+<tr><td><strong>Third-Party</strong></td><td>External dependency failure</td><td>Vendor outage, API limit reached</td></tr>
+<tr><td><strong>External</strong></td><td>Outage not caused by you</td><td>Internet outage, cloud provider outage</td></tr>
+<tr><td><strong>Process</strong></td><td>Gap in procedure, not technology</td><td>Missing SOP, unclear escalation</td></tr>
+<tr><td><strong>Change Request</strong></td><td>Unplanned change caused issue</td><td>Feature introduced bug</td></tr>
+<tr><td><strong>Data Integrity</strong></td><td>Corrupted data, stale state</td><td>Missing migration, orphaned records</td></tr>
+<tr><td><strong>Misconfiguration</strong></td><td>Wrong settings applied</td><td>Wrong region, incorrect environment</td></tr>
+</table>
+<h2>Root Cause Analysis Flow</h2>
+<h3>1. Immediate Investigation</h3>
+<ul><li>&amp;#9744; <strong>Review alert context:</strong> What triggered the alert? Metric thresholds?</li><li>&amp;#9744; <strong>Examine logs:</strong> System logs, application logs, error traces</li><li>&amp;#9744; <strong>Check recent changes:</strong> Deployments (commit hash), config changes, environment variables</li><li>&amp;#9744; <strong>Interview witnesses:</strong> Who saw what? When?</li></ul>
+<h3>2. Hypothesis Generation</h3>
+<ul><li>&amp;#9744; <strong>Hypothesis 1:</strong> Infrastructure failure</li><li>&amp;#9744; <strong>Hypothesis 2:</strong> Human error</li><li>&amp;#9744; <strong>Hypothesis 3:</strong> Development defect</li><li>&amp;#9744; <strong>Hypothesis 4:</strong> Operational failure</li><li>&amp;#9744; <strong>Hypothesis 5:</strong> Third-party dependency</li><li>&amp;#9744; <strong>Hypothesis 6:</strong> External factor</li></ul>
+<h3>3. Evidence Collection</h3>
+<ul><li>&amp;#9744; <strong>Collect logs:</strong> Full logs around incident timeframe</li><li>&amp;#9744; <strong>Capture metrics:</strong> CPU, memory, disk, network, error rates</li><li>&amp;#9744; <strong>Review changes:</strong> Git commits, config diffs, deployment manifests</li><li>&amp;#9744; <strong>Preserve evidence:</strong> Screenshot, database snapshot, network capture</li><li>&amp;#9744; <strong>Interview team members:</strong> First responders, developers, operations</li></ul>
+<h3>4. Verification</h3>
+<ul><li>&amp;#9744; <strong>Test hypothesis 1:</strong> Simulate or repeat failure</li><li>&amp;#9744; <strong>Test hypothesis 2:</strong> Verify configuration/state</li><li>&amp;#9744; <strong>Test hypothesis 3:</strong> Review code, reproduce bug</li><li>&amp;#9744; <strong>Test hypothesis 4:</strong> Confirm change was applied</li><li>&amp;#9744; <strong>Test hypothesis 5:</strong> Check external status pages</li><li>&amp;#9744; <strong>Test hypothesis 6:</strong> Verify internet/cloud status</li></ul>
+<h3>5. Final Categorization</h3>
+<ul><li>&amp;#9744; <strong>Confirm root cause:</strong> Which category matches best?</li><li>&amp;#9744; <strong>Confirm contributing factors:</strong> Anything else?</li><li>&amp;#9744; <strong>Confirm evidence:</strong> Logs? Metrics? Screenshots?</li><li>&amp;#9744; <strong>Confirm confidence level:</strong> High / Medium / Low</li></ul>
+<h2>RCA Documentation Fields</h2>
+<ul><li>&amp;#9744; <strong>Root Cause Category:</strong> _______________</li><li>&amp;#9744; <strong>Root Cause Description:</strong> _______________</li><li>&amp;#9744; <strong>Contributing Factors:</strong> _______________</li><li>&amp;#9744; <strong>Evidence Collected:</strong></li></ul>
+<p>- [ ] Logs collected   - [ ] Metrics captured   - [ ] Screenshots taken   - [ ] Snapshots preserved</p>
+<ul><li>&amp;#9744; <strong>First Responder Names:</strong> _______________</li><li>&amp;#9744; <strong>Investigation Duration:</strong> ____ hours</li><li>&amp;#9744; <strong>Confidence Level:</strong> High / Medium / Low</li></ul>
+<h2>Prevention Checklist (by Category)</h2>
+<h3>Infrastructure → Prevention</h3>
+<ul><li>&amp;#9744; <strong>Monitor hardware health:</strong> CPU, memory, disk, network</li><li>&amp;#9744; <strong>Automated failover:</strong> Multi-AZ? Load balancer health checks?</li><li>&amp;#9744; <strong>Capacity planning:</strong> Auto-scaling enabled? Scaling rules defined?</li></ul>
+<h3>Human Error → Prevention</h3>
+<ul><li>&amp;#9744; <strong>Review approval gates:</strong> Config changes need review?</li><li>&amp;#9744; <strong>Sanity checks:</strong> Can't delete critical data without confirmation?</li><li>&amp;#9744; <strong>Training:</strong> Regular on-call training, incident drills</li></ul>
+<h3>Development → Prevention</h3>
+<ul><li>&amp;#9744; <strong>Test coverage:</strong> Unit tests, integration tests, E2E tests</li><li>&amp;#9744; <strong>Code review:</strong> All PRs reviewed?</li><li>&amp;#9744; <strong>Pre-deployment checks:</strong> Staging environment validated?</li></ul>
+<h3>Operational → Prevention</h3>
+<ul><li>&amp;#9744; <strong>Automated rollback:</strong> Immediate rollback on failure?</li><li>&amp;#9744; <strong>Deployment safety:</strong> Canary deployments? Feature flags?</li><li>&amp;#9744; <strong>Monitoring:</strong> Alerting before production impact?</li></ul>
+<h3>Third-Party → Prevention</h3>
+<ul><li>&amp;#9744; <strong>Vendor SLAs:</strong> Documented response times and penalties?</li><li>&amp;#9744; <strong>Alternative providers:</strong> What happens if this vendor fails?</li><li>&amp;#9744; <strong>Health checks:</strong> Dependency uptime monitoring?</li></ul>
+<h3>External → Prevention</h3>
+<ul><li>&amp;#9744; <strong>External dependency alerts:</strong> Notify when outage detected?</li><li>&amp;#9744; <strong>Mitigation plans:</strong> Workarounds if dependency fails?</li><li>&amp;#9744; <strong>Diversify dependencies:</strong> Multi-cloud, multi-provider?</li></ul>
+<h3>Process → Prevention</h3>
+<ul><li>&amp;#9744; <strong>SOPs documented:</strong> All procedures written down?</li><li>&amp;#9744; <strong>Rollout procedures:</strong> Training documented? Checked?</li><li>&amp;#9744; <strong>Post-mortem process:</strong> Root cause captured and shared?</li></ul>
+<h3>Change Request → Prevention</h3>
+<ul><li>&amp;#9744; <strong>Feature flags:</strong> Rollback without code change?</li><li>&amp;#9744; <strong>Gradual rollout:</strong> 10% → 50% → 100% with monitoring?</li><li>&amp;#9744; <strong>Observability:</strong> Can we see impact before 100% rollout?</li></ul>
+<h3>Data Integrity → Prevention</h3>
+<ul><li>&amp;#9744; <strong>Data migration tests:</strong> Verified before production?</li><li>&amp;#9744; <strong>Incremental backups:</strong> RPO target met?</li><li>&amp;#9744; <strong>Data validation:</strong> Schema validation, data integrity checks?</li></ul>
+<h3>Misconfiguration → Prevention</h3>
+<ul><li>&amp;#9744; <strong>Environment consistency:</strong> Config sync across environments?</li><li>&amp;#9744; <strong>Secret management:</strong> Environment variables encrypted?</li><li>&amp;#9744; <strong>Validation:</strong> Can't deploy invalid config?</li></ul>
+<p><strong>Usage:</strong> Complete after post-mortem. Use to prevent recurrence of similar incidents. Validate against existing post-mortem template: <code>incident-post-mortem-template.html</code>.</p>
+<p><strong>Product links:</strong> <code>/l/ops-starter-kit-vol-2</code> | <code>/l/ops-starter-kit</code> | <code>/l/automation-starter-pack</code></p>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+<li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li>
+<li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; done-for-you, built from your estate, 48h &mdash; $249</li>
+</ul>
+<p>Part of the five-pillar incident-response set: see the <a href="incident-response-pillars-overview.html">pillars overview</a> and the <a href="blameless-post-incident-review-template.html">blameless post-incident review template</a>.</p>
+
+</main>
+<footer><a href="index.html">All ops notes</a></footer>
+</body>
+</html>

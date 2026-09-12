@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-Call Escalation Path Tiers &mdash; HIVE80lab</title>
+<meta name="description" content="Purpose: Define structured escalation for different severity and business impact levels. Move from &quot;call the owner&quot; to defined tiers, SLAs, and channels.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/oncall-escalation-path-tiers.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>On-Call Escalation Path Tiers</h1>
+<p><strong>Purpose:</strong> Define structured escalation for different severity and business impact levels. Move from "call the owner" to defined tiers, SLAs, and channels.</p>
+<h2>Escalation Path Overview</h2>
+<table>
+<tr><th>Tier</th><th>Definition</th><th>Response SLA</th><th>Communication Cadence</th></tr>
+<tr><td><strong>Tier 1</strong></td><td>SLO breach within 15 minutes</td><td>Notify in <strong>15 min</strong></td><td>Update every 15 min</td></tr>
+<tr><td><strong>Tier 2</strong></td><td>Business impact &gt; 1 hour</td><td>Notify in <strong>30 min</strong></td><td>Update every 30 min</td></tr>
+<tr><td><strong>Tier 3</strong></td><td>P1 breach &gt; 1 hour</td><td>Notify in <strong>1 hour</strong></td><td>Update every 1 hour</td></tr>
+<tr><td><strong>Tier 4</strong></td><td>P3/P4 incidents</td><td>Notify in <strong>4 hours</strong></td><td>Next business day</td></tr>
+</table>
+<h2>Tier 1: SLO Breach Response (15 min)</h2>
+<h3>Who Escalates</h3>
+<ul><li><strong>SRE / Infrastructure Lead</strong> on-call</li><li><strong>Automation</strong> for automated detection</li><li><strong>Notification channel:</strong> PagerDuty / Opsgenie / Slack pager</li></ul>
+<h3>Response Actions</h3>
+<ul><li>&amp;#9744; <strong>Verify SLO breach:</strong> Check metrics, health endpoints, alert payload</li><li>&amp;#9744; <strong>Identify impact:</strong> Which service? Which SLA? Which metric?</li><li>&amp;#9744; <strong>First investigation:</strong> Check logs, metrics, recent changes</li><li>&amp;#9744; <strong>Communicate to team:</strong> Status channel, alert channel</li><li>&amp;#9744; <strong>Trigger Tier 2 escalation:</strong> If unresolved in 15 min</li></ul>
+<h3>Escalation Criteria</h3>
+<ul><li><strong>No response after 15 min</strong></li><li><strong>Business impact increasing</strong></li><li><strong>Root cause unclear</strong></li><li><strong>Customer complaints</strong></li></ul>
+<h3>Example Alert Message</h3>
+<p>``<code> ⚠️ P1 - SLO BREACH DETECTED Service: api-gateway SLA: 99.9% uptime (3 min downtime allowed) Impact: 2.3% downtime in last hour First responder: @sre-lead Status: Investigating - checking logs </code>``</p>
+<h2>Tier 2: Business Impact Response (30 min)</h2>
+<h3>Who Escalates</h3>
+<ul><li><strong>Senior Engineering Lead</strong> on-call</li><li><strong>Product Owner</strong> if customer impact</li><li><strong>Notification channel:</strong> Slack #incident-lead channel</li></ul>
+<h3>Response Actions</h3>
+<ul><li>&amp;#9744; <strong>Review Tier 1 findings:</strong> What was tried? What still failing?</li><li>&amp;#9744; <strong>Assess business impact:</strong> Revenue? Customers? Trust?</li><li>&amp;#9744; <strong>Allocate resources:</strong> Devs? QA? Design? Customer success?</li><li>&amp;#9744; <strong>Update Tier 1:</strong> Provide status, timeline, resources</li><li>&amp;#9744; <strong>Trigger Tier 3 escalation:</strong> If unresolved in 30 min</li></ul>
+<h3>Escalation Criteria</h3>
+<ul><li><strong>No resolution after Tier 1</strong></li><li><strong>Customer churn risk</strong></li><li><strong>Data breach risk</strong></li><li><strong>Compliance deadline risk</strong></li></ul>
+<h3>Example Status Update</h3>
+<p>``<code> 🏥 INCIDENT UPDATE (30 min mark) Status: Under control - fix in progress Root cause: Memory leak in worker pool Progress: Restarting pool, verifying metrics Est. resolution: 15 min Escalating: None (progress good) </code>``</p>
+<h2>Tier 3: Major Incident Response (1 hour)</h2>
+<h3>Who Escalates</h3>
+<ul><li><strong>CTO / Engineering Director</strong></li><li><strong>Customer Success Director</strong> (if churn risk)</li><li><strong>Legal / Compliance</strong> (if breach risk)</li><li><strong>Notification channel:</strong> Stand-up call, critical Slack channel</li></ul>
+<h3>Response Actions</h3>
+<ul><li>&amp;#9744; <strong>Finalize incident plan:</strong> What will we do? What resources?</li><li>&amp;#9744; <strong>Customer comms plan:</strong> What will we say to customers?</li><li>&amp;#9744; <strong>Internal sync:</strong> Full team stand-up</li><li>&amp;#9744; <strong>Document incident:</strong> Post-mortem, RCA, lessons learned</li><li>&amp;#9744; <strong>Trigger Tier 4 escalation:</strong> If unresolved in 1 hour</li></ul>
+<h3>Escalation Criteria</h3>
+<ul><li><strong>No resolution after Tier 2</strong></li><li><strong>Major customer churn risk</strong></li><li><strong>Regulatory fine at risk</strong></li><li><strong>Brand damage at risk</strong></li></ul>
+<h3>Example Stand-up Message</h3>
+<p>``<code> 🚨 MAJOR INCIDENT - C-LEVEL INVOLVED Service: Payment Gateway Integration Impact: $50K revenue lost per hour, 2,000 customers affected Plan: Rollback to last known good, notify customers, allocate chargebacks Customer comms: Email + in-app notification Next update: 30 min </code>``</p>
+<h2>Tier 4: Low Priority Response (4 hours)</h2>
+<h3>Who Escalates</h3>
+<ul><li><strong>On-call manager</strong></li><li><strong>Team lead</strong> if recurring</li><li><strong>Notification channel:</strong> Next business day stand-up</li></ul>
+<h3>Response Actions</h3>
+<ul><li>&amp;#9744; <strong>Root cause analysis:</strong> Complete RCA</li><li>&amp;#9744; <strong>Fix deployment:</strong> Patch, config change, rollback</li><li>&amp;#9744; <strong>Post-mortem:</strong> Document lessons, prevention</li><li>&amp;#9744; <strong>Track recurrence:</strong> Similar incidents in last 30 days?</li><li>&amp;#9744; <strong>Team learning:</strong> Share findings in weekly ops sync</li></ul>
+<h3>Escalation Criteria</h3>
+<ul><li><strong>Minor operational inconvenience</strong></li><li><strong>Low customer impact</strong></li><li><strong>No revenue loss</strong></li><li><strong>No brand/compliance risk</strong></li></ul>
+<h3>Example Status Update</h3>
+<p>``<code> 📝 LOW PRIORITY - RESOLVED Incident: Search index delayed Root cause: Migration job stuck, timeout Resolution: Task restarted, index back to 99% complete Next steps: Monitor for recurring issues </code>``</p>
+<h2>Escalation Decision Flow</h2>
+<h3>Step 1: Initial Response</h3>
+<ul><li><strong>Tier 1 (SLO breach):</strong> Automated alert → SRE on-call → 15 min</li><li><strong>Tier 2 (Business impact):</strong> Human escalation → Senior lead → 30 min</li><li><strong>Tier 3 (Major):</strong> Full team escalation → C-level → 1 hour</li><li><strong>Tier 4 (Low):</strong> Team lead escalation → Post-mortem → 4 hours</li></ul>
+<h3>Step 2: Update Frequency</h3>
+<table>
+<tr><th>Tier</th><th>First Update</th><th>Subsequent Updates</th></tr>
+<tr><td>Tier 1</td><td>Within 15 min</td><td>Every 15 min</td></tr>
+<tr><td>Tier 2</td><td>Within 30 min</td><td>Every 30 min</td></tr>
+<tr><td>Tier 3</td><td>Within 1 hour</td><td>Every 1 hour</td></tr>
+<tr><td>Tier 4</td><td>Within 4 hours</td><td>End of shift</td></tr>
+</table>
+<h3>Step 3: Escalation Loop</h3>
+<ul><li>Tier 1 → Tier 2: No response in 15 min</li><li>Tier 2 → Tier 3: No response in 30 min</li><li>Tier 3 → Tier 4: No resolution in 1 hour</li></ul>
+<h2>Documentation Fields</h2>
+<ul><li>&amp;#9744; <strong>Initial Tier:</strong> Tier 1 / Tier 2 / Tier 3 / Tier 4</li><li>&amp;#9744; <strong>Escalation Path:</strong> SRE → Senior Lead → CTO / Owner</li><li>&amp;#9744; <strong>Escalation Triggered:</strong> Yes / No</li><li>&amp;#9744; <strong>Escalation Level:</strong> Tier 1 → Tier 2 → Tier 3 → Tier 4</li><li>&amp;#9744; <strong>SLA Status:</strong> Met / Missed (minutes)</li><li>&amp;#9744; <strong>Final Tier:</strong> Tier 1 / Tier 2 / Tier 3 / Tier 4 (resolved)</li></ul>
+<h2>Escalation Contacts</h2>
+<table>
+<tr><th>Tier</th><th>Role</th><th>On-Call</th><th>Emergency Contact</th></tr>
+<tr><td>Tier 1</td><td>SRE / Infrastructure</td><td><code>@sre-lead</code></td><td>PagerDuty: SRE-P1</td></tr>
+<tr><td>Tier 2</td><td>Senior Engineering</td><td><code>@senior-lead</code></td><td>PagerDuty: SRE-P2</td></tr>
+<tr><td>Tier 3</td><td>Engineering Director</td><td><code>@cto</code></td><td>PagerDuty: SRE-P3</td></tr>
+<tr><td>Tier 4</td><td>Operations Manager</td><td><code>@ops-manager</code></td><td>PagerDuty: SRE-P4</td></tr>
+</table>
+<p><strong>Usage:</strong> Use after initial incident classification. Route incident to the correct escalation path and SLA. Works with <code>incident-timeline-template.html</code> for tracking.</p>
+<p><strong>Product links:</strong> <code>/l/ops-starter-kit-vol-2</code> | <code>/l/ops-starter-kit</code> | <code>/l/automation-starter-pack</code></p>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+<li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li>
+<li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; done-for-you, built from your estate, 48h &mdash; $249</li>
+</ul>
+<p>Part of the five-pillar incident-response set: see the <a href="incident-response-pillars-overview.html">pillars overview</a> and the <a href="blameless-post-incident-review-template.html">blameless post-incident review template</a>.</p>
+
+</main>
+<footer><a href="index.html">All ops notes</a></footer>
+</body>
+</html>

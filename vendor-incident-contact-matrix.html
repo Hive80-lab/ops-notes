@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor Incident Contact Matrix &mdash; HIVE80lab</title>
+<meta name="description" content="Purpose: Centralized vendor contact matrix for incident response. Know who to call, how to reach them, and what to expect.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/vendor-incident-contact-matrix.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Vendor Incident Contact Matrix</h1>
+<p><strong>Purpose:</strong> Centralized vendor contact matrix for incident response. Know who to call, how to reach them, and what to expect.</p>
+<h2>Vendor Matrix Overview</h2>
+<table>
+<tr><th>Vendor</th><th>Tier</th><th>Product/Service</th><th>On-Call</th><th>Email</th><th>Phone</th><th>PagerDuty</th><th>SLA Response</th><th>SLA Compensation</th></tr>
+<tr><td>Stripe</td><td>Tier 1</td><td>Payment Gateway</td><td>Support</td><td>support@stripe.com</td><td>+1 (855) 641-2193</td><td>Stripe-P1</td><td>15 min</td><td>Credit per SLA violation</td></tr>
+<tr><td>SendGrid</td><td>Tier 1</td><td>Email Service</td><td>Support</td><td>support@sendgrid.com</td><td>+1 (855) 481-7446</td><td>SendGrid-P1</td><td>15 min</td><td>Refund unused credits</td></tr>
+<tr><td>CloudFlare</td><td>Tier 1</td><td>CDN / DDoS Protection</td><td>24/7 Support</td><td>24x7@cloudflare.com</td><td>1-844-933-1553</td><td>CloudFlare-P1</td><td>15 min</td><td>Credit per SLA violation</td></tr>
+<tr><td>AWS</td><td>Tier 2</td><td>Cloud Infrastructure</td><td>Global Support</td><td>support@aws.amazon.com</td><td>1-800-767-1727</td><td>AWS-P1</td><td>30 min</td><td>Service credits</td></tr>
+<tr><td>Vercel</td><td>Tier 2</td><td>Frontend Hosting</td><td>24/7 Support</td><td>support@vercel.com</td><td>1-855-973-8355</td><td>Vercel-P1</td><td>15 min</td><td>Credits</td></tr>
+<tr><td>Gumroad</td><td>Tier 2</td><td>Payment / Orders</td><td>Support</td><td>support@gumroad.com</td><td>[internal]</td><td>Gumroad-P1</td><td>15 min</td><td>Service credits</td></tr>
+<tr><td>Datadog</td><td>Tier 1</td><td>Monitoring</td><td>Support</td><td>support@datadoghq.com</td><td>1-855-252-2362</td><td>Datadog-P1</td><td>15 min</td><td>Credits</td></tr>
+<tr><td>New Relic</td><td>Tier 1</td><td>Monitoring</td><td>Support</td><td>support@newrelic.com</td><td>1-855-207-6061</td><td>NewRelic-P1</td><td>15 min</td><td>Credits</td></tr>
+<tr><td>Sentry</td><td>Tier 1</td><td>Error Tracking</td><td>Support</td><td>support@sentry.io</td><td>1-415-795-3566</td><td>Sentry-P1</td><td>15 min</td><td>Credits</td></tr>
+<tr><td>Intercom</td><td>Tier 1</td><td>Customer Support</td><td>Support</td><td>support@intercom.com</td><td>1-888-330-9241</td><td>Intercom-P1</td><td>15 min</td><td>Credits</td></tr>
+<tr><td>Zendesk</td><td>Tier 2</td><td>Customer Support</td><td>24/7 Support</td><td>support@zendesk.com</td><td>1-888-888-8247</td><td>Zendesk-P1</td><td>30 min</td><td>Credits</td></tr>
+<tr><td>Cloudinary</td><td>Tier 2</td><td>Media Hosting</td><td>Support</td><td>support@cloudinary.com</td><td>1-310-909-3173</td><td>Cloudinary-P1</td><td>15 min</td><td>Credits</td></tr>
+</table>
+<h2>Vendor Categories</h2>
+<h3>Tier 1: Critical Infrastructure Vendors</h3>
+<p><strong>Products/Services:</strong> Payments, CDNs, DDoS protection, monitoring, error tracking</p>
+<table>
+<tr><th>Vendor</th><th>On-Call</th><th>PagerDuty</th><th>SLA</th><th>Escalation Path</th></tr>
+<tr><td>Stripe</td><td>Support</td><td>Stripe-P1</td><td>15 min</td><td>PagerDuty → VP Engineering</td></tr>
+<tr><td>SendGrid</td><td>Support</td><td>SendGrid-P1</td><td>15 min</td><td>PagerDuty → VP Engineering</td></tr>
+<tr><td>CloudFlare</td><td>24/7 Support</td><td>CloudFlare-P1</td><td>15 min</td><td>PagerDuty → VP Engineering</td></tr>
+<tr><td>Datadog</td><td>Support</td><td>Datadog-P1</td><td>15 min</td><td>PagerDuty → VP Engineering</td></tr>
+<tr><td>New Relic</td><td>Support</td><td>NewRelic-P1</td><td>15 min</td><td>PagerDuty → VP Engineering</td></tr>
+<tr><td>Sentry</td><td>Support</td><td>Sentry-P1</td><td>15 min</td><td>PagerDuty → VP Engineering</td></tr>
+<tr><td>Intercom</td><td>Support</td><td>Intercom-P1</td><td>15 min</td><td>PagerDuty → VP Engineering</td></tr>
+</table>
+<p><strong>Vendor Escalation Rules:</strong></p>
+<ul><li><strong>PagerDuty escalates automatically:</strong> If no response after 15 min, escalate to VP Engineering</li><li><strong>Customer comms:</strong> If vendor SLA violated, notify customers immediately</li><li><strong>Credit tracking:</strong> Log all SLA violations, calculate credits</li></ul>
+<h3>Tier 2: Secondary Infrastructure Vendors</h3>
+<p><strong>Products/Services:</strong> Cloud infrastructure, frontend hosting, media hosting, customer support</p>
+<table>
+<tr><th>Vendor</th><th>On-Call</th><th>PagerDuty</th><th>SLA</th><th>Escalation Path</th></tr>
+<tr><td>AWS</td><td>Global Support</td><td>AWS-P1</td><td>30 min</td><td>PagerDuty → SRE Lead</td></tr>
+<tr><td>Vercel</td><td>24/7 Support</td><td>Vercel-P1</td><td>15 min</td><td>PagerDuty → SRE Lead</td></tr>
+<tr><td>Gumroad</td><td>Support</td><td>Gumroad-P1</td><td>15 min</td><td>PagerDuty → SRE Lead</td></tr>
+<tr><td>Zendesk</td><td>24/7 Support</td><td>Zendesk-P1</td><td>30 min</td><td>PagerDuty → SRE Lead</td></tr>
+<tr><td>Cloudinary</td><td>Support</td><td>Cloudinary-P1</td><td>15 min</td><td>PagerDuty → SRE Lead</td></tr>
+</table>
+<p><strong>Vendor Escalation Rules:</strong></p>
+<ul><li><strong>PagerDuty escalates after 15 min:</strong> Escalate to SRE Lead</li><li><strong>Customer comms:</strong> If vendor SLA violated after 30 min, notify customers</li><li><strong>Credit tracking:</strong> Log SLA violations, calculate credits</li></ul>
+<h2>Vendor Contact Info</h2>
+<h3>Stripe</h3>
+<ul><li><strong>Email:</strong> support@stripe.com</li><li><strong>Phone:</strong> +1 (855) 641-2193</li><li><strong>Web:</strong> https://support.stripe.com/contact</li><li><strong>SLA:</strong> 15 min response, 99.9% uptime</li><li><strong>Compensation:</strong> Credit per SLA violation (auto-credited)</li></ul>
+<h3>SendGrid</h3>
+<ul><li><strong>Email:</strong> support@sendgrid.com</li><li><strong>Phone:</strong> +1 (855) 481-7446</li><li><strong>Web:</strong> https://help.sendgrid.com/hc/en-us/requests/new</li><li><strong>SLA:</strong> 15 min response, 99.9% uptime</li><li><strong>Compensation:</strong> Refund unused credits</li></ul>
+<h3>CloudFlare</h3>
+<ul><li><strong>Email:</strong> 24x7@cloudflare.com</li><li><strong>Phone:</strong> 1-844-933-1553</li><li><strong>Web:</strong> https://www.cloudflarestatus.com/incidents</li><li><strong>SLA:</strong> 15 min response, 99.99% uptime</li><li><strong>Compensation:</strong> Credit per SLA violation (auto-credited)</li></ul>
+<h3>AWS</h3>
+<ul><li><strong>Email:</strong> support@aws.amazon.com</li><li><strong>Phone:</strong> 1-800-767-1727</li><li><strong>Web:</strong> https://status.aws.amazon.com/</li><li><strong>SLA:</strong> 30 min response, 99.99% uptime</li><li><strong>Compensation:</strong> Service credits (auto-credited)</li></ul>
+<h3>Vercel</h3>
+<ul><li><strong>Email:</strong> support@vercel.com</li><li><strong>Phone:</strong> 1-855-973-8355</li><li><strong>Web:</strong> https://vercel.statuspage.io/</li><li><strong>SLA:</strong> 15 min response, 99.9% uptime</li><li><strong>Compensation:</strong> Credits (auto-credited)</li></ul>
+<h3>Gumroad</h3>
+<ul><li><strong>Email:</strong> support@gumroad.com</li><li><strong>Phone:</strong> [internal, see SRE Lead]</li><li><strong>Web:</strong> https://help.gumroad.com/hc/en-us/requests/new</li><li><strong>SLA:</strong> 15 min response, 99.9% uptime</li><li><strong>Compensation:</strong> Service credits (via API)</li></ul>
+<h3>Datadog</h3>
+<ul><li><strong>Email:</strong> support@datadoghq.com</li><li><strong>Phone:</strong> 1-855-252-2362</li><li><strong>Web:</strong> https://www.datadoghq.com/support/</li><li><strong>SLA:</strong> 15 min response, 99.99% uptime</li><li><strong>Compensation:</strong> Credits (auto-credited)</li></ul>
+<h3>New Relic</h3>
+<ul><li><strong>Email:</strong> support@newrelic.com</li><li><strong>Phone:</strong> 1-855-207-6061</li><li><strong>Web:</strong> https://support.newrelic.com/hc/en-us/requests/new</li><li><strong>SLA:</strong> 15 min response, 99.99% uptime</li><li><strong>Compensation:</strong> Credits (auto-credited)</li></ul>
+<h3>Sentry</h3>
+<ul><li><strong>Email:</strong> support@sentry.io</li><li><strong>Phone:</strong> 1-415-795-3566</li><li><strong>Web:</strong> https://sentry.io/support/</li><li><strong>SLA:</strong> 15 min response, 99.99% uptime</li><li><strong>Compensation:</strong> Credits (auto-credited)</li></ul>
+<h3>Intercom</h3>
+<ul><li><strong>Email:</strong> support@intercom.com</li><li><strong>Phone:</strong> 1-888-330-9241</li><li><strong>Web:</strong> https://developers.intercom.com/</li><li><strong>SLA:</strong> 15 min response, 99.9% uptime</li><li><strong>Compensation:</strong> Credits (auto-credited)</li></ul>
+<h3>Zendesk</h3>
+<ul><li><strong>Email:</strong> support@zendesk.com</li><li><strong>Phone:</strong> 1-888-888-8247</li><li><strong>Web:</strong> https://support.zendesk.com/hc/en-us/requests/new</li><li><strong>SLA:</strong> 30 min response, 99.9% uptime</li><li><strong>Compensation:</strong> Credits (auto-credited)</li></ul>
+<h3>Cloudinary</h3>
+<ul><li><strong>Email:</strong> support@cloudinary.com</li><li><strong>Phone:</strong> 1-310-909-3173</li><li><strong>Web:</strong> https://cloudinary.com/feature/help</li><li><strong>SLA:</strong> 15 min response, 99.9% uptime</li><li><strong>Compensation:</strong> Credits (auto-credited)</li></ul>
+<h2>Escalation Protocols</h2>
+<h3>Step 1: Initial Contact</h3>
+<p>1. <strong>Contact method:</strong> PagerDuty → Email → Phone 2. <strong>Message format:</strong> Incident ID, severity, impact, what you need 3. <strong>Response time:</strong> Vendor SLA target (15 min for Tier 1, 30 min for Tier 2) 4. <strong>Observation log:</strong> Document time, contact method, response</p>
+<h3>Step 2: If No Response</h3>
+<p>1. <strong>Escalate to primary on-call:</strong> PagerDuty escalates automatically 2. <strong>Alternative contact:</strong> Try different channel (email vs phone) 3. <strong>Check vendor status page:</strong> Is the vendor having an outage? 4. <strong>Prepare workaround:</strong> Can you switch providers?</p>
+<h3>Step 3: SLA Violation</h3>
+<p>1. <strong>Calculate credit:</strong> Vendor SLA violation → credit 2. <strong>Document SLA violation:</strong> Time, severity, credit amount 3. <strong>Notify customer:</strong> If customer affected, notify them 4. <strong>Track credits:</strong> Log in financial system</p>
+<h3>Step 4: Vendor Performance Review</h3>
+<p>1. <strong>Review SLA violations:</strong> How often do they fail? 2. <strong>Evaluate alternative providers:</strong> Is there a better vendor? 3. <strong>Negotiate terms:</strong> Update SLA terms if needed 4. <strong>Consider switching:</strong> If SLA violations are frequent</p>
+<h2>Vendor Management</h2>
+<h3>Vendor Performance Tracking</h3>
+<table>
+<tr><th>Vendor</th><th>SLA Violations (Last 90 days)</th><th>Response Time Average</th><th>Customer Impact</th><th>Rating</th><th>Action Needed</th></tr>
+<tr><td>Stripe</td><td>[count]</td><td>____ min</td><td>[yes/no]</td><td>Excellent / Good / Needs Improvement</td><td>[none / review / switch]</td></tr>
+<tr><td>SendGrid</td><td>[count]</td><td>____ min</td><td>[yes/no]</td><td>Excellent / Good / Needs Improvement</td><td>[none / review / switch]</td></tr>
+<tr><td>CloudFlare</td><td>[count]</td><td>____ min</td><td>[yes/no]</td><td>Excellent / Good / Needs Improvement</td><td>[none / review / switch]</td></tr>
+<tr><td>AWS</td><td>[count]</td><td>____ min</td><td>[yes/no]</td><td>Excellent / Good / Needs Improvement</td><td>[none / review / switch]</td></tr>
+<tr><td>Vercel</td><td>[count]</td><td>____ min</td><td>[yes/no]</td><td>Excellent / Good / Needs Improvement</td><td>[none / review / switch]</td></tr>
+<tr><td>Gumroad</td><td>[count]</td><td>____ min</td><td>[yes/no]</td><td>Excellent / Good / Needs Improvement</td><td>[none / review / switch]</td></tr>
+</table>
+<h3>Vendor Onboarding Process</h3>
+<p>1. <strong>Evaluate vendor:</strong> SLA, support quality, pricing 2. <strong>Negotiate terms:</strong> Ensure SLA terms are documented 3. <strong>Onboard vendor:</strong> Add to matrix, enable PagerDuty 4. <strong>Monitor performance:</strong> Track SLA violations, response times 5. <strong>Review regularly:</strong> Quarterly vendor performance review</p>
+<h3>Vendor Offboarding Process</h3>
+<p>1. <strong>Evaluate alternatives:</strong> Is there a better vendor? 2. <strong>Plan migration:</strong> Transition away from vendor 3. <strong>Notify customers:</strong> If vendor is critical, notify customers 4. <strong>Switch providers:</strong> Migrate to alternative vendor 5. <strong>Close vendor:</strong> Remove from matrix, archive contacts</p>
+<h2>Documentation Fields</h2>
+<ul><li>&amp;#9744; <strong>Vendor:</strong> [vendor name]</li><li>&amp;#9744; <strong>Contact Email:</strong> support@vendor.com</li><li>&amp;#9744; <strong>Contact Phone:</strong> [phone number]</li><li>&amp;#9744; <strong>PagerDuty Escalation:</strong> [PagerDuty ID]</li><li>&amp;#9744; <strong>SLA Response:</strong> [target response time]</li><li>&amp;#9744; <strong>SLA Compensation:</strong> [type of compensation]</li><li>&amp;#9744; <strong>SLA Violations (90 days):</strong> [count]</li><li>&amp;#9744; <strong>Customer Impact:</strong> [yes/no]</li><li>&amp;#9744; <strong>Vendor Rating:</strong> Excellent / Good / Needs Improvement</li><li>&amp;#9744; <strong>Action Needed:</strong> [none / review / switch]</li></ul>
+<h2>Vendor SLA Summary</h2>
+<table>
+<tr><th>Vendor</th><th>SLA Response</th><th>SLA Uptime</th><th>Compensation Type</th><th>Auto-Credit</th></tr>
+<tr><td>Stripe</td><td>15 min</td><td>99.9%</td><td>Credit</td><td>Yes</td></tr>
+<tr><td>SendGrid</td><td>15 min</td><td>99.9%</td><td>Refund</td><td>Yes</td></tr>
+<tr><td>CloudFlare</td><td>15 min</td><td>99.99%</td><td>Credit</td><td>Yes</td></tr>
+<tr><td>AWS</td><td>30 min</td><td>99.99%</td><td>Credits</td><td>Yes</td></tr>
+<tr><td>Vercel</td><td>15 min</td><td>99.9%</td><td>Credits</td><td>Yes</td></tr>
+<tr><td>Gumroad</td><td>15 min</td><td>99.9%</td><td>Credits</td><td>Yes</td></tr>
+<tr><td>Datadog</td><td>15 min</td><td>99.99%</td><td>Credits</td><td>Yes</td></tr>
+<tr><td>New Relic</td><td>15 min</td><td>99.99%</td><td>Credits</td><td>Yes</td></tr>
+<tr><td>Sentry</td><td>15 min</td><td>99.99%</td><td>Credits</td><td>Yes</td></tr>
+<tr><td>Intercom</td><td>15 min</td><td>99.9%</td><td>Credits</td><td>Yes</td></tr>
+<tr><td>Zendesk</td><td>30 min</td><td>99.9%</td><td>Credits</td><td>Yes</td></tr>
+<tr><td>Cloudinary</td><td>15 min</td><td>99.9%</td><td>Credits</td><td>Yes</td></tr>
+</table>
+<p><strong>Usage:</strong> Use during vendor incidents. Contact vendor using the matrix, track SLA violations, and calculate credits. Works with <code>vendor-escalation-protocols.md</code> and <code>customer-vendor-incident-comms.md</code>.</p>
+<p><strong>Product links:</strong> <code>/l/ops-starter-kit-vol-2</code> | <code>/l/ops-starter-kit</code> | <code>/l/automation-starter-pack</code></p>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+<li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li>
+<li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; done-for-you, built from your estate, 48h &mdash; $249</li>
+</ul>
+<p>Part of the five-pillar incident-response set: see the <a href="incident-response-pillars-overview.html">pillars overview</a> and the <a href="blameless-post-incident-review-template.html">blameless post-incident review template</a>.</p>
+
+</main>
+<footer><a href="index.html">All ops notes</a></footer>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Customer Vendor Incident Communications &mdash; HIVE80lab</title>
+<meta name="description" content="Purpose: Communicate vendor incidents to customers transparently and professionally. Manage expectations, provide solutions, reduce churn.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/customer-vendor-incident-comms.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Customer Vendor Incident Communications</h1>
+<p><strong>Purpose:</strong> Communicate vendor incidents to customers transparently and professionally. Manage expectations, provide solutions, reduce churn.</p>
+<h2>Communication Guidelines</h2>
+<h3>Core Principles</h3>
+<p>1. <strong>Transparency:</strong> Always inform customers of vendor incidents 2. <strong>Timeliness:</strong> Notify customers when SLA is violated 3. <strong>Accuracy:</strong> Provide correct information, admit gaps 4. <strong>Empathy:</strong> Acknowledge customer impact, apologize 5. <strong>Solution:</strong> Provide workaround, timeline, compensation</p>
+<h3>When to Notify Customers</h3>
+<ul><li><strong>Tier 1 vendor (15 min SLA):</strong> Notify if vendor response &gt; 15 min</li><li><strong>Tier 2 vendor (30 min SLA):</strong> Notify if vendor response &gt; 30 min</li><li><strong>Critical vendor (payments, CDNs):</strong> Notify immediately</li><li><strong>Customer impact:</strong> If customer experiences downtime, notify them</li></ul>
+<h2>Communication Templates</h2>
+<h3>Email Template</h3>
+<p><strong>Subject:</strong> Vendor incident affecting [service] — [status]</p>
+<p><strong>Body:</strong></p>
+<p><strong>Dear [Customer Name],</strong></p>
+<p><strong>We wanted to inform you that a vendor incident is affecting [service].</strong> This incident began at [timestamp], and our team is actively working with [vendor name] to resolve it.</p>
+<p><strong>Impact:</strong></p>
+<ul><li>[What is affected?]</li><li>[How does it impact customer experience?]</li><li>[Estimated downtime: [time]]</li></ul>
+<p><strong>What we are doing:</strong></p>
+<ul><li>Monitoring vendor status page: [link]</li><li>Escalating to vendor executives if needed</li><li>Preparing workaround [if available]</li><li>Tracking SLA violations</li></ul>
+<p><strong>What you can do:</strong></p>
+<ul><li>[Workaround if available: e.g., use alternative service]</li><li>[Expectation management: e.g., no new orders during outage]</li><li>[Contact support: [link]]</li></ul>
+<p><strong>Timeline:</strong></p>
+<ul><li>Expected resolution: [time or "ongoing"]</li><li>Update cadence: Every 30 minutes</li><li>We will notify you immediately when resolution is confirmed</li></ul>
+<p><strong>Compensation:</strong></p>
+<ul><li>[If SLA violated]: We will provide [credit/refund/extension] for affected period.</li></ul>
+<p><strong>If you have questions, please reach out to our support team:</strong> [link]</p>
+<p><strong>Sincerely,</strong> [Your Name] [Your Role]</p>
+<h3>In-App Notification Template</h3>
+<p><strong>Message:</strong></p>
+<p><strong>⚠️ Vendor Incident — [service]</strong></p>
+<p>We are experiencing an issue with [service] due to a vendor outage at [vendor name].</p>
+<p><strong>Impact:</strong></p>
+<ul><li>[What is affected?]</li><li>[Estimated downtime: [time]]</li></ul>
+<p><strong>Current Status:</strong></p>
+<ul><li>[Resolving / Investigating / Waiting for vendor]</li></ul>
+<p><strong>Updated:</strong> [timestamp]</p>
+<p>[Link to status page: https://...] [Link to support: https://...]</p>
+<h3>Support Ticket Template</h3>
+<p><strong>To Customer Support:</strong></p>
+<p><strong>Customer:</strong> [Customer Name] <strong>Incident:</strong> Vendor incident affecting [service] <strong>Customer Impact:</strong> [describe customer's issue]</p>
+<p><strong>Information to Customer:</strong></p>
+<ul><li>[Incident start time]</li><li>[Vendor name and SLA]</li><li>[Current status]</li><li>[Expected resolution time]</li><li>[Workaround if available]</li><li>[Compensation if SLA violated]</li></ul>
+<p><strong>Action Items:</strong></p>
+<ul><li>&amp;#9744; Notify customer via email</li><li>&amp;#9744; Update customer in-app notification</li><li>&amp;#9744; Link incident timeline</li><li>&amp;#9744; Track SLA violation</li><li>&amp;#9744; Calculate compensation</li></ul>
+<p><strong>Support Ticket:</strong> [customer-ticket-id]</p>
+<h2>Communication Cadence</h2>
+<h3>Immediate Notification (Tier 1)</h3>
+<ul><li><strong>Time:</strong> Within 15 minutes of SLA violation</li><li><strong>Channel:</strong> Email + in-app notification</li><li><strong>Content:</strong> Incident start, impact, vendor info, status</li></ul>
+<h3>Updates (Every 30 minutes)</h3>
+<ul><li><strong>Time:</strong> Every 30 minutes until resolution</li><li><strong>Channel:</strong> Email + in-app notification</li><li><strong>Content:</strong> Status update, estimated resolution, new information</li></ul>
+<h3>Resolution Notification</h3>
+<ul><li><strong>Time:</strong> As soon as vendor incident is resolved</li><li><strong>Channel:</strong> Email + in-app notification</li><li><strong>Content:</strong> Resolution confirmed, compensation applied, next steps</li></ul>
+<h2>Customer Impact Categories</h2>
+<h3>Minor Impact</h3>
+<ul><li><strong>Definition:</strong> Non-essential service degraded</li><li><strong>Customer action:</strong> None required</li><li><strong>Comms:</strong> In-app notification only (no email)</li><li><strong>Compensation:</strong> None (unless SLA violated)</li></ul>
+<h3>Moderate Impact</h3>
+<ul><li><strong>Definition:</strong> Essential service degraded, minor inconvenience</li><li><strong>Customer action:</strong> Can still use service but with limitations</li><li><strong>Comms:</strong> Email + in-app notification</li><li><strong>Compensation:</strong> Credit (if SLA violated)</li></ul>
+<h3>Major Impact</h3>
+<ul><li><strong>Definition:</strong> Critical service unavailable for extended period</li><li><strong>Customer action:</strong> Cannot use service</li><li><strong>Comms:</strong> Email + in-app notification + priority support</li><li><strong>Compensation:</strong> Significant credit or refund</li></ul>
+<h3>Severe Impact</h3>
+<ul><li><strong>Definition:</strong> Critical service unavailable, significant revenue loss</li><li><strong>Customer action:</strong> Cannot use service, may seek alternative provider</li><li><strong>Comms:</strong> Email + in-app notification + phone call</li><li><strong>Compensation:</strong> Full refund + credit</li></ul>
+<h2>SLA Violation and Compensation</h2>
+<h3>Compensation Types</h3>
+<table>
+<tr><th>Compensation Type</th><th>When to Use</th><th>Amount</th><th>Process</th></tr>
+<tr><td><strong>Credit</strong></td><td>Minor/SLA violation</td><td>[amount based on pricing]</td><td>Auto-applied by vendor</td></tr>
+<tr><td><strong>Refund</strong></td><td>Major/SLA violation</td><td>[full refund of affected period]</td><td>Manual refund by finance</td></tr>
+<tr><td><strong>Extension</strong></td><td>Contract term length</td><td>[extend contract by [time]]</td><td>Manual by account manager</td></tr>
+<tr><td><strong>Compensation</strong></td><td>Severe impact</td><td>[full credit + compensation]</td><td>Manual by finance + legal</td></tr>
+</table>
+<h3>Compensation Calculation</h3>
+<p><strong>Example 1: Credit</strong></p>
+<ul><li>SLA target: 99.9% uptime</li><li>Actual uptime: 98%</li><li>Downtime: 1.9%</li><li>Billing: $1,000/month</li><li>Credit: $1,000 × 1.9% = $19.00</li></ul>
+<p><strong>Example 2: Refund</strong></p>
+<ul><li>Customer impacted for 4 hours</li><li>SLA target: 15 min response</li><li>SLA violation: 4 hours = 240 minutes</li><li>Credit: $240 / 60 min × $10/min = $40.00</li></ul>
+<p><strong>Example 3: Extension</strong></p>
+<ul><li>Customer contract: 12 months</li><li>SLA violation: 1 month</li><li>Extension: Contract extended by 1 month</li></ul>
+<h2>Communication Workflow</h2>
+<h3>Step 1: Incident Detected</h3>
+<ul><li>&amp;#9744; <strong>SLA violation detected:</strong> Vendor response &gt; SLA target</li><li>&amp;#9744; <strong>Check customer impact:</strong> Which customers are affected?</li><li>&amp;#9744; <strong>Calculate compensation:</strong> Based on SLA violation</li></ul>
+<h3>Step 2: Prepare Comms</h3>
+<ul><li>&amp;#9744; <strong>Draft email template:</strong> Use template above</li><li>&amp;#9744; <strong>Identify affected customers:</strong> List of customers affected</li><li>&amp;#9744; <strong>Identify support staff:</strong> Customer success, account managers</li><li>&amp;#9744; <strong>Prepare status page:</strong> Update status page with incident info</li></ul>
+<h3>Step 3: Notify Customers</h3>
+<ul><li>&amp;#9744; <strong>Send email:</strong> To all affected customers</li><li>&amp;#9744; <strong>Send in-app notification:</strong> To all affected customers</li><li>&amp;#9744; <strong>Notify account manager:</strong> If customer is high value</li><li>&amp;#9744; <strong>Update support queue:</strong> If support tickets are affected</li></ul>
+<h3>Step 4: Update Cadence</h3>
+<ul><li>&amp;#9744; <strong>Update every 30 min:</strong> Status, timeline, compensation</li><li>&amp;#9744; <strong>Communicate resolution:</strong> When vendor incident resolved</li><li>&amp;#9744; <strong>Confirm compensation:</strong> Apply credit/refund</li></ul>
+<h3>Step 5: Follow-Up</h3>
+<ul><li>&amp;#9744; <strong>Send follow-up email:</strong> Incident resolved, compensation applied</li><li>&amp;#9744; <strong>Track customer satisfaction:</strong> Did customer experience improve?</li><li>&amp;#9744; <strong>Review customer churn risk:</strong> Any customers at risk of churning?</li></ul>
+<h2>Documentation Fields</h2>
+<ul><li>&amp;#9744; <strong>Incident ID:</strong> <code>vendor-[YYYY-MM-DD]-[vendor]-[id]</code></li><li>&amp;#9744; <strong>Customer affected:</strong> [yes/no]</li><li>&amp;#9744; <strong>Customers notified:</strong> [count]</li><li>&amp;#9744; <strong>Notification method:</strong> Email / In-app / Both</li><li>&amp;#9744; <strong>SLA violated:</strong> Yes / No</li><li>&amp;#9744; <strong>SLA violation duration:</strong> ____ min</li><li>&amp;#9744; <strong>Compensation type:</strong> Credit / Refund / Extension / Compensation</li><li>&amp;#9744; <strong>Compensation amount:</strong> $____</li><li>&amp;#9744; <strong>Resolution time:</strong> ____:____</li><li>&amp;#9744; <strong>Follow-up needed:</strong> Yes / No</li></ul>
+<h2>Post-Incident Follow-Up</h2>
+<h3>Customer Churn Risk Assessment</h3>
+<ul><li>&amp;#9744; <strong>Customer churn risk:</strong> High / Medium / Low</li><li>&amp;#9744; <strong>Actions taken:</strong></li></ul>
+<p>- [ ] Personal call to customer   - [ ] Extra support attention   - [ ] Enhanced monitoring   - [ ] Contract review</p>
+<ul><li>&amp;#9744; <strong>Outcomes:</strong></li></ul>
+<p>- [ ] Customer retained: Yes / No   - [ ] Compensation: [amount]   - [ ] Feedback: [customer feedback]</p>
+<h3>Customer Satisfaction Survey</h3>
+<ul><li>&amp;#9744; <strong>Survey sent:</strong> Yes / No</li><li>&amp;#9744; <strong>Survey response rate:</strong> ____%</li><li>&amp;#9744; <strong>Overall satisfaction:</strong> [rating]</li><li>&amp;#9744; <strong>Improvements requested:</strong> [list]</li><li>&amp;#9744; <strong>Lessons learned:</strong> [summary]</li></ul>
+<h3>Process Improvement</h3>
+<ul><li>&amp;#9744; <strong>Update vendor list:</strong> Based on incident</li><li>&amp;#9744; <strong>Improve SLA terms:</strong> Negotiate better SLA</li><li>&amp;#9744; <strong>Update comms template:</strong> Based on feedback</li><li>&amp;#9744; <strong>Improve monitoring:</strong> Add vendor monitoring</li></ul>
+<h2>Best Practices</h2>
+<h3>For Customer Comms</h3>
+<ul><li><strong>Be transparent:</strong> Don't hide vendor incidents</li><li><strong>Be honest:</strong> Admit gaps, don't over-promise</li><li><strong>Be empathetic:</strong> Acknowledge customer impact, apologize</li><li><strong>Be specific:</strong> Provide timeline, compensation, next steps</li><li><strong>Be timely:</strong> Notify customers when SLA is violated</li></ul>
+<h3>For Account Managers</h3>
+<ul><li><strong>Personal contact:</strong> Call high-value customers personally</li><li><strong>Explain impact:</strong> Clearly explain how vendor incident affects customer</li><li><strong>Offer support:</strong> Provide extra support during incident</li><li><strong>Track churn risk:</strong> Monitor customer satisfaction during and after incident</li><li><strong>Follow up:</strong> Check in after incident resolved</li></ul>
+<h3>For Support Team</h3>
+<ul><li><strong>Update tickets:</strong> Add incident info to customer tickets</li><li><strong>Set expectations:</strong> Tell customers expected resolution time</li><li><strong>Provide workaround:</strong> If workaround exists, provide to customers</li><li><strong>Track SLA violations:</strong> Document SLA violations, calculate compensation</li><li><strong>Escalate if needed:</strong> Escalate to account manager if customer churn risk</li></ul>
+<p><strong>Usage:</strong> Use for every vendor incident that affects customers. Communicate transparently, manage expectations, provide compensation. Works with <code>vendor-incident-contact-matrix.md</code> and <code>vendor-escalation-protocols.md</code>.</p>
+<p><strong>Product links:</strong> <code>/l/ops-starter-kit-vol-2</code> | <code>/l/ops-starter-kit</code> | <code>/l/automation-starter-pack</code></p>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+<li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li>
+<li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; done-for-you, built from your estate, 48h &mdash; $249</li>
+</ul>
+<p>Part of the five-pillar incident-response set: see the <a href="incident-response-pillars-overview.html">pillars overview</a> and the <a href="blameless-post-incident-review-template.html">blameless post-incident review template</a>.</p>
+
+</main>
+<footer><a href="index.html">All ops notes</a></footer>
+</body>
+</html>
