@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incident Response Readiness Score — Free 2-Minute Self-Assessment for Small Teams</title>
+<meta name="description" content="Score your incident response across 5 pillars — taxonomy, on-call escalation, playbooks, drills, vendor coordination. 12 questions, 2 minutes, instant tiered result with a fix-first plan. No signup, runs in your browser.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/ir-readiness-score.html">
+<style>
+:root{--ink:#16232e;--mut:#5b6b78;--line:#dde5ea;--bg:#f7fafc;--card:#fff;--acc:#0b6e4f;--warn:#b45309;--bad:#b91c1c;--link:#0b5394}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.7em;line-height:1.25;margin:12px 0 8px}
+h2{font-size:1.25em;margin:28px 0 10px}
+h3{font-size:1.05em;margin:18px 0 6px}
+p{margin:8px 0}
+.lead{color:var(--mut);font-size:1.05em}
+.tag{display:inline-block;font-size:.78em;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--acc);background:#e8f4ef;border:1px solid #cfe7dc;border-radius:999px;padding:2px 10px;margin-bottom:10px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.q p{font-weight:600;margin-bottom:6px}
+.q .why{font-weight:400;color:var(--mut);font-size:.88em;margin:0 0 8px}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.opts button{font:inherit;font-size:.85em;padding:8px 4px;border:1px solid var(--line);background:#fbfdfe;border-radius:8px;cursor:pointer;color:var(--ink)}
+.opts button:hover{border-color:var(--acc);background:#f0f8f5}
+.opts button.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.pillar{margin:22px 0 4px;color:var(--acc);font-size:.8em;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+#scorebar{position:sticky;top:0;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:6px;display:flex;gap:12px;align-items:center}
+#scorebar .bar{flex:1;height:8px;background:#e6edf2;border-radius:99px;overflow:hidden}
+#scorebar .fill{height:100%;width:0;background:var(--acc);transition:width .3s}
+#scorebar .num{font-weight:700;font-variant-numeric:tabular-nums}
+#result{display:none;margin-top:24px}
+.tier{border-radius:12px;padding:18px 20px;margin:10px 0;border:1px solid var(--line)}
+.tier h3{margin-top:0}
+.t-red{background:#fdf2f2;border-color:#f3c1c1}.t-red h3{color:var(--bad)}
+.t-amber{background:#fff8ec;border-color:#f0d9ad}.t-amber h3{color:var(--warn)}
+.t-green{background:#f0f8f4;border-color:#cfe7dc}.t-green h3{color:var(--acc)}
+.t-blue{background:#f2f6fd;border-color:#c9d9f2}.t-blue h3{color:#1d4ed8}
+ul{margin:8px 0 8px 20px}
+li{margin:4px 0}
+.pill{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.pill li{list-style:none;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 10px;font-size:.9em}
+.cta{display:inline-block;background:var(--acc);color:#fff!important;text-decoration:none;font-weight:600;border-radius:8px;padding:10px 16px;margin:6px 8px 6px 0}
+.cta.alt{background:var(--card);color:var(--ink)!important;border:1px solid var(--line)}
+.free{font-size:.85em;color:var(--mut)}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92em}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left}
+th{background:#eef4f8}
+footer{border-top:1px solid var(--line);margin-top:36px;padding-top:14px;color:var(--mut);font-size:.88em}
+footer a{color:var(--link)}
+@media(max-width:560px){.opts{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<main>
+<div class="tag">Free tool · no signup · runs in your browser</div>
+<h1>Incident Response Readiness Score</h1>
+<p class="lead">12 questions. 2 minutes. You get a 0–36 score across the five pillars of small-team incident response — <strong>taxonomy, on-call escalation, playbooks, drills, vendor coordination</strong> — plus the one thing to fix first. Nothing leaves your browser.</p>
+
+<div id="scorebar"><span class="num" id="sc">0/36</span><div class="bar"><div class="fill" id="fill"></div></div><span class="free" id="tierlbl">answering…</span></div>
+
+<section>
+<div class="pillar">Pillar 1 · Incident taxonomy</div>
+<div class="q"><p>1. Can you classify an incident by business impact (revenue, data, trust, compliance) in under a minute?</p><p class="why">Impact-first taxonomy stops you "classifying" a P1 as a P3 because it looks small in Slack.</p>
+<div class="opts" data-w="3"><button>Never</button><button>Rarely</button><button>Usually</button><button>Always</button></div></div>
+<div class="q"><p>2. Does every incident get mapped to a technical category (availability, security, data, third-party) before work starts?</p><p class="why">The category decides who fixes it and what the fix class is — wrong category, wrong on-call.</p>
+<div class="opts" data-w="3"><button>Never</button><button>Rarely</button><button>Usually</button><button>Always</button></div></div>
+
+<div class="pillar">Pillar 2 · On-call escalation</div>
+<div class="q"><p>3. Do you have written escalation tiers with time limits (e.g. Tier 1 at 15 min, Tier 4 at 4 hours)?</p><p class="why">Time-boxed tiers turn "wait and hope" into an automatic ladder that fires whether or not anyone is watching.</p>
+<div class="opts" data-w="3"><button>None</button><button>Vague</button><button>Written</button><button>Written+drilled</button></div></div>
+<div class="q"><p>4. Is there a dedicated incident channel structure (declared channels, roles, message conventions) rather than an ad-hoc thread?</p><p class="why">Ad-hoc threads scatter decisions; declared structure makes the incident readable after the fact.</p>
+<div class="opts" data-w="3"><button>Threads</button><button>Partial</button><button>Declared</button><button>Declared+rehearsed</button></div></div>
+<div class="q"><p>5. Does your on-call rotation have defined cadence and handoff (e.g. 4-week schedule, handoff checklist)?</p><p class="why">Rotations without handoff discipline burn people out and drop context between shifts.</p>
+<div class="opts" data-w="3"><button>None</button><button>Informal</button><button>Scheduled</button><button>Scheduled+handoff</button></div></div>
+
+<div class="pillar">Pillar 3 · Playbook triage</div>
+<div class="q"><p>6. When an incident starts, does a triage rule (type + severity → playbook) pick the runbook — not the loudest person?</p><p class="why">A selection rule removes the worst-minute-of-the-outage debate about "what do we do".</p>
+<div class="opts" data-w="3"><button>Improvised</button><button>Usually</button><button>Rule</button><button>Rule+matrix</button></div></div>
+<div class="q"><p>7. Do you have a quick-reference matrix matching incident types to playbooks?</p><p class="why">The matrix is the 10-second version of your whole library — if it doesn't fit on one screen, triage stalls.</p>
+<div class="opts" data-w="3"><button>No</button><button>Partial</button><button>Yes</button><button>Yes+current</button></div></div>
+
+<div class="pillar">Pillar 4 · Drills &amp; simulation</div>
+<div class="q"><p>8. Have you run a scheduled incident simulation (game day) in the last quarter?</p><p class="why">Untested incident response is a hope, not a plan — same as untested backups.</p>
+<div class="opts" data-w="3"><button>Never</button><button>Once</button><button>Quarterly</button><button>Quarterly+scored</button></div></div>
+<div class="q"><p>9. After incidents and drills, do you produce an after-action report with lessons and prevention owners?</p><p class="why">Without owned prevention items, the same incident recurs with a new name.</p>
+<div class="opts" data-w="3"><button>Never</button><button>Sometimes</button><button>Always</button><button>Always+tracked</button></div></div>
+
+<div class="pillar">Pillar 5 · Vendor coordination</div>
+<div class="q"><p>10. Do you keep a vendor incident contact matrix (cloud, payments, DNS, email — with escalation contacts)?</p><p class="why">During a vendor outage you need their escalation line in 30 seconds, not a status-page refresh loop.</p>
+<div class="opts" data-w="3"><button>No</button><button>Scattered</button><button>Documented</button><button>Documented+tested</button></div></div>
+<div class="q"><p>11. Do you track vendor incident SLAs and know when you're owed compensation or an RCA?</p><p class="why">Every enterprise vendor has SLA credits; almost nobody collects them without a tracker.</p>
+<div class="opts" data-w="3"><button>No</button><button>Ad-hoc</button><button>Tracked</button><button>Tracked+claimed</button></div></div>
+
+<div class="pillar">Cross-cutting</div>
+<div class="q"><p>12. Can a new joiner run the first 30 minutes of an incident without asking anyone anything?</p><p class="why">The first-30 test: if the newest person can start containment and comms from a card alone, the system is real.</p>
+<div class="opts" data-w="3"><button>No</button><button>Maybe</button><button>Yes</button><button>Yes+card</button></div></div>
+</section>
+
+<div id="result">
+<h2>Your result</h2>
+<div class="tier" id="tier"></div>
+<div id="next"></div>
+<h2>Score bands</h2>
+<table>
+<tr><th>Score</th><th>Band</th><th>What it means</th></tr>
+<tr><td>0–11</td><td>Firefighting</td><td>Incidents run you. Fix the first-30-minutes card before anything else.</td></tr>
+<tr><td>12–19</td><td>Stabilizing</td><td>You improvise well. Now make triage and escalation written and boring.</td></tr>
+<tr><td>20–27</td><td>Systematizing</td><td>The structure exists. Drills and vendor SLAs are your gap.</td></tr>
+<tr><td>28–36</td><td>Proven</td><td>You have a system. Prove it with scored drills and a done-for-you runbook review.</td></tr>
+</table>
+<h2>Want the whole pillar system?</h2>
+<p>The five pillars above (taxonomy, escalation mesh, playbook triage, simulation reports, vendor coordination) ship as a complete pack with 15+ checklists, matrices and templates — built for 5–30 person teams.</p>
+<a class="cta" href="https://hive80lab.gumroad.com/l/ops-mega-bundle?source=irscore" rel="nofollow">Get the Ops Mega Bundle — all 5 kits</a>
+<a class="cta alt" href="https://hive80lab.gumroad.com/l/hkljh?source=irscore" rel="nofollow">Done-for-you Custom Incident Runbook</a>
+<a class="cta alt" href="https://hive80lab.gumroad.com/l/ljogci?source=irscore" rel="nofollow">Small-Team Ops Audit (prioritized findings)</a>
+<p class="free">Not ready to buy? Start with the free card: <a class="cta alt" href="https://hive80lab.gumroad.com/l/first-30-minutes?source=irscore" rel="nofollow">The First 30 Minutes — free</a></p>
+</div>
+
+<footer>
+<p>Part of the <a href="https://hive80-lab.github.io/ops-notes/">Hive80 Ops Notes</a> library — <a href="incident-response-pillars-overview.html">Incident Response Pillars overview</a> · <a href="incident-severity-matrix.html">Incident severity matrix</a> · <a href="after-action-report-template.html">After-action report template</a></p>
+<p>Score is computed locally in JavaScript; no data is sent anywhere.</p>
+</footer>
+</main>
+<script>
+(function(){
+var qs=document.querySelectorAll('.q'),answered=0,total=0,score=0;
+var labels=['answering…','answering…','warming up','warming up','quarter way','quarter way','getting real','getting real','halfway','halfway','shaping up','shaping up','nearly there','nearly there','done — result below'];
+qs.forEach(function(q){total+=3});
+function tierFor(s){
+ if(s<=11)return{cls:'t-red',name:'Firefighting (0–11)',body:'Incidents run you right now. The fastest fix is not another dashboard — it is a one-page card that tells whoever is closest what to do in the first 30 minutes: who to page, what to contain, what to tell customers.',first:'Fix first: write the first-30-minutes card. Use the free one as your base and edit the roles in.'};
+ if(s<=19)return{cls:'t-amber',name:'Stabilizing (12–19)',body:'You improvise well under pressure, but the improvisation lives in a few people\u2019s heads. Your gap is written structure: time-boxed escalation tiers and a triage rule that picks the playbook before opinions do.',first:'Fix first: write the escalation tier times (15 min / 30 min / 1 h / 4 h) and pin the playbook matrix where triage happens.'};
+ if(s<=27)return{cls:'t-green',name:'Systematizing (20–27)',body:'The structure exists — taxonomy, escalation, playbooks. What separates you from a proven operation is proof: scheduled simulations with scored results, and vendor incidents handled with SLA tracking instead of status-page watching.',first:'Fix first: schedule one scored game day this quarter and build the vendor contact matrix (cloud, payments, DNS, email).'};
+ return{cls:'t-blue',name:'Proven (28–36)',body:'You have a real system. The next level is making it portable and durable: a done-for-you runbook review against your actual stack, and an independent audit that ranks your gaps by business impact instead of by who complained last.',first:'Next level: external runbook review or a prioritized ops audit — cheap compared to one missed P1.'};
+}
+qs.forEach(function(q,i){
+ var opts=q.querySelectorAll('button');
+ opts.forEach(function(b,bi){
+  b.addEventListener('click',function(){
+   opts.forEach(function(x){x.classList.remove('on')});
+   b.classList.add('on');
+   var prev=q._val||0;q._val=bi;
+   score+=bi-prev;
+   answered=Array.prototype.filter.call(qs,function(x){return x._val!==undefined}).length;
+   document.getElementById('sc').textContent=score+'/36';
+   document.getElementById('fill').style.width=Math.round(score/36*100)+'%';
+   document.getElementById('tierlbl').textContent=labels[answered]||labels[labels.length-1];
+   if(answered===total){
+    var t=tierFor(score),el=document.getElementById('tier'),nx=document.getElementById('next');
+    el.className='tier '+t.cls;
+    el.innerHTML='<h3>'+t.name+'</h3><p>'+t.body+'</p><p><strong>'+t.first+'</strong></p>';
+    nx.innerHTML='<h3>Your 3 next steps</h3><ul>'+
+      (score<=19
+       ?'<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes?source=irscore" rel="nofollow">Grab the free First 30 Minutes card</a> and put your roles in.</li><li><a href="https://hive80-lab.github.io/ops-notes/incident-severity-matrix.html">Build the severity matrix</a> (one page, 60 seconds to call P1–P4).</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit?source=irscore" rel="nofollow">Install the Ops Starter Kit</a> — the whole basic system, done for you.</li>'
+       :score<=27
+       ?'<li><a href="https://hive80-lab.github.io/ops-notes/incident-response-pillars-overview.html">Read the 5-pillar overview</a> and adopt the triage matrix.</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2?source=irscore" rel="nofollow">Run Vol. 2 — advanced incident response</a> (escalation mesh + simulation reports).</li><li>Schedule one scored game day this quarter; write the after-action report even if the drill goes well.</li>'
+       :'<li><a href="https://hive80lab.gumroad.com/l/hkljh?source=irscore" rel="nofollow">Order the done-for-you Custom Incident Runbook</a> — severity matrix, 5 runbooks and comms templates against your real stack.</li><li><a href="https://hive80lab.gumroad.com/l/ljogci?source=irscore" rel="nofollow">Book the Small-Team Ops Audit</a> for an independent, prioritized findings list.</li><li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle?source=irscore" rel="nofollow">Fill the template gaps with the Mega Bundle</a> (all 5 kits, one checkout).</li>')+'</ul>'+
+      '<div class="pill"><li>Taxonomy '+(document.querySelectorAll('.q')[0]._val+document.querySelectorAll('.q')[1]._val)+'/6</li><li>On-call '+((document.querySelectorAll('.q')[2]._val||0)+(document.querySelectorAll('.q')[3]._val||0)+(document.querySelectorAll('.q')[4]._val||0))+'/9</li><li>Playbooks '+((document.querySelectorAll('.q')[5]._val||0)+(document.querySelectorAll('.q')[6]._val||0))+'/6</li><li>Drills '+((document.querySelectorAll('.q')[7]._val||0)+(document.querySelectorAll('.q')[8]._val||0))+'/6</li><li>Vendors '+((document.querySelectorAll('.q')[9]._val||0)+(document.querySelectorAll('.q')[10]._val||0))+'/6</li><li>First-30 '+(document.querySelectorAll('.q')[11]._val||0)+'/3</li></div>';
+    document.getElementById('result').style.display='block';
+    document.getElementById('result').scrollIntoView({behavior:'smooth'});
+   }
+  });
+ });
+});
+})();
+</script>
+</body>
+</html>
