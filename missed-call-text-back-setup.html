@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Missed Call Text Back Setup: Every Ring You Don't Answer Is a Job Handing Itself to the Next Listing</title>
+<meta name="description" content="A missed call text back setup checklist for small businesses: why 60%+ of calls to small businesses go unanswered and most callers never call back, the 60-second reply window, the one-time setup (the SMS rail, the ring-all rule, the overflow number), the four messages that cover every missed call (closed, busy, after hours, unknown number), the answer-time rule, what to do with the thread once it starts, the compliance lines (stop words, no cold blasts), the traps (the stale auto-reply, the number nobody monitors, the text with no name in it), the weekly audit, and the worked example &mdash; a two-chair barbershop whose lunchtime rings were the quiet leak in the books.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/missed-call-text-back-setup.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Missed Call Text Back Setup: Every Ring You Don't Answer Is a Job Handing Itself to the Next Listing</h1>
+<p>A customer calling a small business is already decided &mdash; they chose you off the card, the reviews, the map. The call is the last step, and it is also the most fragile: studies keep finding that a large share of calls to small businesses go unanswered at any given moment, and that most callers who hit a ringtone and nothing else do not leave a voicemail. They just dial the next listing. A missed call is not a lost moment &mdash; it is a lost customer with their phone still in their hand, and a text that arrives inside a minute can catch them before the next dial.</p>
+<p>This is the checklist for the whole loop: the reason the call was missed, the one-time setup that makes the text automatic, the four messages that cover every case, the compliance lines that keep it legal and human, the audit that stops the system rotting, and the worked example.</p>
+
+<h2>Why the call rings out: name the missed-call reasons before you automate</h2>
+<p>You cannot fix a leak until you know where the bucket has holes. Missed calls at a small business cluster into five causes, and each one needs its own answer &mdash; not one heroic fix.</p>
+<ul>
+<li><strong>Open hours, all hands busy</strong> &mdash; the most common. Two people, four hands, one customer in front of you and another on the line. The answer is not "try harder"; it is the <strong>ring-all rule</strong> (below) plus the busy auto-text.</li>
+<li><strong>After hours</strong> &mdash; the caller knows you're closed and is calling anyway to book ahead or leave a request. These are the easiest to save: the text writes itself.</li>
+<li><strong>Holidays, storms, sick days</strong> &mdash; the day the card says open and the door says otherwise. The auto-text must be able to change for the day; if your rail can't, the <a href="https://hive80-lab.github.io/ops-notes/delayed-opening-notice-template.html">delayed opening notice</a> and the <a href="https://hive80-lab.github.io/ops-notes/store-closure-temporary-notice.html">temporary closure notice</a> carry the public side, and the text points at them.</li>
+<li><strong>The phone nobody hears</strong> &mdash; the handset in a back room, the ring volume at zero since last spring, the mobile with the sim swapped and nobody told. Test it: call your own number from a phone that isn't yours, on a normal Tuesday, and see what happens. Most owners find at least one dead ringer.</li>
+<li><strong>Spam and unknown numbers</strong> &mdash; staff trained to ignore them stop answering everything. The fix is not stricter ignoring; it is a number policy: if it might be a customer, answer; if you can't, the auto-text does, and real customers reply.</li>
+</ul>
+
+<h2>The 60-second window: speed is the whole trick</h2>
+<p>The research on speed-to-lead is brutal and consistent: contact rates collapse as minutes pass &mdash; calling a new enquiry back within a minute can be many times more effective than waiting half an hour, and the odds keep falling from there. The missed-call text is not faster than answering; it is <em>instant</em>, every time, including the calls that ring at 7:04 pm.</p>
+<ul>
+<li><strong>The text must fire inside sixty seconds.</strong> If your rail is manual ("I'll text them back later"), it is not a rail &mdash; it is a to-do list nobody does. Automation is the product here.</li>
+<li><strong>Instant beats perfect.</strong> A plain, slightly plain-written text that arrives in 40 seconds beats a beautifully written one that arrives at 5 pm. Write for speed, then leave it alone.</li>
+<li><strong>The window applies to the human reply too:</strong> the text buys you minutes, not days. If the customer replies "do you have anything Thursday?", someone answers that thread the same morning. A thread answered a day late is a thread the competitor answered first.</li>
+</ul>
+
+<h2>The one-time setup: five things, one afternoon</h2>
+<p>Everything above is free or nearly free, and it takes one afternoon to stand up. Do these in order.</p>
+<ul>
+<li><strong>1. Pick the SMS rail.</strong> Three honest options: (a) your phone system's built-in missed-call text (most VoIP providers &mdash; the ones small businesses already pay &mdash; have a toggle for exactly this); (b) the carrier's/Android-iPhone level auto-reply if your setup is a single mobile; (c) a cheap automation rail that texts a template when a call goes unanswered. Use the toggle you already pay for first.</li>
+<li><strong>2. Make the phone ring everywhere it can.</strong> Ring-all: the front desk handset, the owner's mobile, the workshop speaker. Two people hearing the ring halves the missed rate before any text is sent. If your rail can't ring-all, forward after four rings to the mobile that lives in your pocket.</li>
+<li><strong>3. Write the four templates</strong> (next section) &mdash; closed, busy, after-hours, and the default. Store them where the rail reads them, not in someone's notes app.</li>
+<li><strong>4. Set the stop rule</strong> &mdash; the word a customer can text to make the messages stop ("STOP"), and where those replies land. Compliance is not optional and it is one line of setup.</li>
+<li><strong>5. Name an owner.</strong> Every text thread must land somewhere a named human reads it &mdash; the shared inbox, the till tablet, the owner's phone. A thread that lands in a rail nobody opens is a voicemail box nobody checks with extra steps.</li>
+</ul>
+
+<h2>The four messages: one text per case, written like a person</h2>
+<p>Every missed call is one of four situations, and each gets its own short message. Write them in the voice of the shop &mdash; plain, warm, no marketing. First name of the business, always; "Hi, it's <em>Maria</em> from <em>Northside Plumbing</em>" &mdash; because a text with no name in it reads like a scam, and a scam-looking text loses the customer the ringtone saved.</p>
+<ul>
+<li><strong>Closed for the day (it's 7:04 pm):</strong> "Hi, it's Maria from Northside Plumbing &mdash; we're closed right now, back 7 am tomorrow. Leave your name and what you need here and we'll call first thing. If it's urgent, the after-hours number is 04XX XXX XXX."</li>
+<li><strong>Open but busy (all hands on customers):</strong> "Hi, Maria from Northside Plumbing &mdash; we're with customers and couldn't grab the phone. Text me here what you need and I'll call you back within the hour."</li>
+<li><strong>After hours with a booking link:</strong> the same closed message, plus the link: "…or book straight in here: [link]." One link, straight to the calendar &mdash; never to a homepage.</li>
+<li><strong>The default (unknown number, unclear cause):</strong> "Hi, it's Maria from Northside Plumbing &mdash; sorry we missed you. What can we help with?" The default is the one that catches the days you didn't see coming &mdash; make sure the rail has it, not just the pretty cases.</li>
+</ul>
+<p>And the one message that is <strong>not</strong> allowed: the pre-holiday promo blast to a number that only ever called once. This rail is a service counter, not a mailing list; the day it starts selling, customers switch it off.</p>
+
+<h2>Compliance and manners: the lines that keep it legal and human</h2>
+<ul>
+<li><strong>The stop word.</strong> Somewhere in the setup there is a "reply STOP to opt out" line, and a place those replies go. In most jurisdictions unsolicited automated texts carry real legal exposure &mdash; the transactional reply to a customer's own missed call is the safe case, and a cold blast is the unsafe one. Stay in the safe case.</li>
+<li><strong>One text, not a sequence.</strong> One auto-reply per missed call. The customer who calls four times does not need four texts; the customer who calls once does not need a drip campaign.</li>
+<li><strong>Identify yourself every time.</strong> Business name in every message. If staff reply by hand, they say who they are: "it's Dan here."</li>
+<li><strong>Business hours in the message match the card.</strong> The text that says "back 7 am tomorrow" is a promise the <a href="https://hive80-lab.github.io/ops-notes/google-business-profile-optimization-checklist.html">Google Business Profile</a> card also makes. Keep the two in the same file and update them the same day &mdash; the one-star "Google said you were open" thread usually starts with a mismatch.</li>
+</ul>
+
+<h2>The thread once it starts: the text is the door, not the room</h2>
+<ul>
+<li><strong>Answer replies by a named human, same day.</strong> The automation starts the conversation; a person finishes it. "Do you have anything Thursday?" answered within the hour is a booking; answered tomorrow is a maybe.</li>
+<li><strong>Log the call-back.</strong> The promise "I'll call you back within the hour" goes on the same board as every other customer promise &mdash; the ones you write down are the ones you keep.</li>
+<li><strong>Escalate the urgent ones to a human phone call immediately.</strong> A text thread is the wrong tool for "my pipe is leaking right now" &mdash; the rail should make the urgent case obvious (the customer says the word), and the owner of the thread should ring, not text, back.</li>
+<li><strong>Watch the no-reply rate.</strong> If a month of texts shows most customers never reply, the message is probably reading as spam (wrong tone, no name, or the wrong number messaging) &mdash; rewrite the template, don't send more.</li>
+</ul>
+
+<h2>Traps: the four ways the system quietly stops working</h2>
+<ul>
+<li><strong>The stale auto-reply.</strong> The message still says "we're closed for the Christmas break" in March. Templates need a review date like anything else &mdash; the monthly audit (next section) exists for exactly this.</li>
+<li><strong>The number nobody monitors.</strong> Auto-texts fired from a virtual number whose inbox has no human. Replies pile up unanswered for weeks; the system is worse than nothing because it <em>looks</em> like service.</li>
+<li><strong>The text that answers nothing.</strong> "Thanks for calling!" &mdash; no name, no next step, no hours. Every message must contain: who you are, what happens next, and how to reach a human now.</li>
+<li><strong>The rail that messages every caller, including the ones you called.</strong> Missed-call text back means <em>inbound calls you didn't answer</em>. If the system texts people you rang and hung up on (suppliers, staff, your own family), the "STOP" replies will come from people who hate you for good reasons. Check the rail's trigger condition.</li>
+</ul>
+
+<h2>The weekly audit: four minutes, four questions</h2>
+<ul>
+<li><strong>How many calls were missed, and why?</strong> The phone log answers this. If the number is rising, the ring-all rule broke &mdash; a new starter didn't get the training, a handset was moved, the mobile is on silent.</li>
+<li><strong>Did every missed call get its text?</strong> Sample three dates. The rail has off days too.</li>
+<li><strong>How many threads got a same-day human reply?</strong> This is the number that actually converts. The text is plumbing; the reply is the business.</li>
+<li><strong>Do the templates still tell the truth?</strong> Hours, links, the after-hours number. Read them once a month like you read the door sign.</li>
+</ul>
+
+<h2>Worked example: the two-chair barbershop and the lunchtime leak</h2>
+<p>A two-chair barbershop, walk-ins and bookings by phone. The owner noticed the books had a soft spot: nobody could call between 12 and 1 &mdash; that's when both chairs were full and lunch happened &mdash; and the caller log from his VoIP provider showed a dozen missed calls a week, most clustered in exactly that hour.</p>
+<ul>
+<li><strong>The setup pass (one Sunday afternoon):</strong> turned on his provider's built-in missed-call text toggle; wrote two messages (busy and closed); set the front-desk handset and his mobile to ring together; pointed the closed message at the online booking page he'd built a year ago and never linked from anywhere.</li>
+<li><strong>Week one:</strong> 14 missed calls, 14 texts sent inside a minute, 6 replies. Four of the replies became bookings &mdash; three of them lunchtime rings that a year ago would have gone to the barbershop two doors down, whose Google card was one thumb-flick away.</li>
+<li><strong>The tuning:</strong> the busy message gained the words "within the hour" after the owner noticed customers asked "when will you call back?" &mdash; a promise in the text moved the reply burden onto the books, and he started clearing callbacks before the 1 pm chairs filled. The after-hours message gained the booking link after a fortnight of customers replying "what times have you got?"</li>
+<li><strong>Month one:</strong> missed calls down by half (ring-all did that), and of the misses that remained, roughly one in three was recovered by the text. The lunchtime hole in the books &mdash; invisible until he read the call log &mdash; had been a quiet, recurring, multi-hundred-dollar-a-month leak.</li>
+<li><strong>The habit that kept it alive:</strong> the four-minute weekly audit, done while the clippers charged. Four questions, four answers, one fix each week if needed.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/google-business-profile-optimization-checklist.html">Google Business Profile checklist</a> is where the caller found your number in the first place; the <a href="https://hive80-lab.github.io/ops-notes/lead-response-time-checklist.html">lead response time checklist</a> covers the speed rule for every enquiry, not just calls; the <a href="https://hive80-lab.github.io/ops-notes/staffing-shortage-coverage-plan.html">staffing shortage coverage plan</a> and the <a href="https://hive80-lab.github.io/ops-notes/delayed-opening-notice-template.html">delayed opening notice</a> are for the days the phone rings a place that isn't open.</em></p>
+</main>
+<footer>HIVE80lab &mdash; ops notes for small teams. <a href="index.html">All notes</a>.</footer>
+</body>
+</html>
