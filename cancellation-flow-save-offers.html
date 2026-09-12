@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cancellation Flow Save Offers for Small Teams &mdash; Turn a Cancel Click into a Pause, a Downgrade, or a Later Yes</title>
+<meta name="description" content="A cancellation flow that saves revenue without dark patterns: one-click cancel kept honest, a single one-question exit survey, the save ladder that matches the offer to the reason (downgrade for price, pause for not-using, concierge for complexity, honest goodbye for switchers), pause mechanics that do not become zombie accounts, the 30/60/90 win-back window, and the three numbers that tell you if the flow works.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/cancellation-flow-save-offers.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Cancellation Flow Save Offers for Small Teams</h1>
+<p class="lede">Every month a slice of customers clicks cancel, and most small teams treat that click as the end of the story. It is not. A cancel click is a customer telling you exactly what broke &mdash; price, usage, complexity, or a competitor &mdash; and a well-built flow answers with the one offer that fits: a downgrade for the price-sensitive, a pause for the not-using, a setup call for the stuck, an honest goodbye plus a win-back window for the already-decided. Done well, a cancellation flow saves 10&ndash;20% of would-be churners without a single dark pattern &mdash; and the ones you do not save hand you the churn data that fixes the product. This is the voluntary-churn counterpart to the <a href="failed-payment-dunning-sequence.html">failed-payment dunning sequence</a>: there the card broke, here the person did.</p>
+
+<h2>1. The math &mdash; why the cancel screen is the cheapest sales call you will ever make</h2>
+<p>Take a 60-seat SaaS at $40/month = $2,400 MRR, with 12 cancellations a month (a normal 5% logo churn). Every one of those customers already trusts you, already onboarded, and already costs you nothing to acquire. A save is therefore worth more than a new sale of the same size &mdash; no CAC attached. With no flow, all 12 leave: $14,400 of annual revenue walking out, plus the silent signal you never captured. With one screen, one question, and three pre-written offers, small teams routinely save 2&ndash;3 of those 12 (20&ndash;25% on the reason codes that are actually saveable: price and usage). That is $720&ndash;$1,440 a year from one afternoon of work &mdash; comparable in cost to writing the dunning sequence, and the same logic applies: the customer is not angry, they are leaving quietly. Compare with winning the revenue back through <a href="price-increase-announcement-template.html">price increases</a>, which works on the customers who stay. The cancel flow works on the ones who already said no.</p>
+
+<h2>2. The flow &mdash; one-click cancel stays; the save screen comes after</h2>
+<p>Rule one: the cancel button works. One click from settings to a final confirm, no phone call required, no chatbot maze, no &ldquo;contact support to cancel.&rdquo; Forced-path cancellation is why regulators wrote click-to-cancel rules, and it is why customers skip straight to <a href="chargeback-response-template.html">chargebacks</a> &mdash; a dispute is what a customer files when you made leaving harder than disputing. The save offer comes <em>after</em> the working cancel path, on one screen, once. Not a five-screen &ldquo;are you sure?&rdquo; gauntlet &mdash; every extra screen after the click converts anger into reviews. The screen has three elements: one question, the offer matched to the answer, and the working confirm button visible the whole time. If the customer ignores your offer and clicks confirm, the cancellation completes instantly, with a confirmation email that says exactly when access ends and what happens to their data.</p>
+
+<h2>3. The one question &mdash; reason codes that route the offer</h2>
+<p>One multiple-choice question, one answer allowed, optional free text: <em>&ldquo;What's the main reason you're leaving?&rdquo;</em> Five options, each wired to a specific save play:</p>
+<ul>
+<li><strong>Too expensive.</strong> &rarr; Offer a downgrade to the smaller plan, priced at what they said they'd pay. Never a one-off discount &mdash; discounts teach the market to threaten cancel at renewal; a plan change is a durable fix.</li>
+<li><strong>I'm not using it.</strong> &rarr; Offer a pause (see &sect;5). This customer likes the product and fears the lapse; the pause removes the guilt of paying for nothing.</li>
+<li><strong>Too complicated / couldn't get set up.</strong> &rarr; Offer a 30-minute concierge setup call before the cancellation takes effect. This is the highest-converting save of all &mdash; churn caused by onboarding is churn you caused, and can reverse.</li>
+<li><strong>Missing a feature.</strong> &rarr; Tell them the roadmap status honestly, offer a notification when it ships, and let them cancel cleanly. Roadmap honesty saves the feature-motivated and costs nothing with the rest.</li>
+<li><strong>Switching to another product.</strong> &rarr; No offer. Wish them well, make the export one click, ask permission to check in at 90 days. Switchers have decided; a discount here only reads as desperation, and the export help is what they mention in the comparison post.</li>
+</ul>
+<p>Log every answer with the plan, tenure, and MRR attached. The reason mix over six months is a product roadmap written by people who paid you and left &mdash; more honest than any survey of active users, who flatter you.</p>
+
+<h2>4. The downgrade play &mdash; a smaller plan, not a smaller price</h2>
+<p>&ldquo;Too expensive&rdquo; usually means &ldquo;I'm paying for more than I use.&rdquo; The save is a plan change, and the pitch is one sentence: <em>&ldquo;The Starter plan is $15 and covers everything you used last month &mdash; want me to switch you before this billing cycle ends?&rdquo;</em> That sentence works because it references their actual usage (you have the data), fixes the mismatch rather than the price, and keeps them inside the product. A 20% discount on a plan they do not use just moves the mismatch three months into the future, at a worse price. If the honest answer is &ldquo;we have no smaller plan,&rdquo; say so, offer annual-billing-at-monthly-rate as a stopgap if margin allows, and let them go &mdash; the reason code tells you a smaller plan exists in the market you are not serving, which is a build decision, not a retention hack.</p>
+
+<h2>5. The pause play &mdash; mechanics that do not create zombie accounts</h2>
+<p>The pause is the most abused save offer, so write its rules into the product, not the culture: a fixed maximum (3 months is the honest default), billing stopped, data retained, access frozen, and an automatic reactivation date both sides can see &mdash; with one email the week before it resumes. No indefinite pauses: an account paused since last winter is not a save, it is a zombie that inflates your numbers and pays nothing, and every seat-based vendor relationship you have inherits the same problem. At the end of the pause, auto-resume and send the one email: <em>&ldquo;Your pause ends Monday &mdash; billing resumes at your current plan. Need longer? Reply and we'll extend once.&rdquo;</em> One extension, once. The pause works because it converts &ldquo;I feel bad cancelling&rdquo; into &ldquo;I'll be back&rdquo; &mdash; the same psychology that makes the dunning sequence's pause-not-delete rule work on <a href="failed-payment-dunning-sequence.html">failed payments</a>, applied to the customer's decision instead of the card's.</p>
+
+<h2>6. The win-back window &mdash; 30, 60, 90 days, three emails, then stop</h2>
+<p>Churned customers are a warm list you already paid for, and they convert at 5&ndash;15% when the timing matches their reason code. Three emails, then silence: <strong>day 30</strong> &mdash; the &ldquo;we fixed the thing&rdquo; email, sent only if you actually shipped something relevant to their exit reason (feature-leavers and complexity-leavers only); <strong>day 60</strong> &mdash; the usage-trend email for pausers and not-users, if their old data shows the workflow they were building toward; <strong>day 90</strong> &mdash; one plain invitation back with a returning-customer path (old data restored, no re-onboarding). Switchers get nothing but the day-90 check-in you asked permission for in &sect;3. After 90 days the list goes cold; sending a fourth email converts a clean goodbye into a spam complaint, and the <a href="email-deliverability-spf-dkim-dmarc-checklist.html">deliverability setup</a> you maintain is worth more than one more win-back attempt.</p>
+
+<h2>7. The three numbers &mdash; weekly, one owner</h2>
+<p>The flow is measured like the dunning sequence: a short scorecard, one owner, one weekly read.</p>
+<ul>
+<li><strong>Save rate</strong> &mdash; saves &divide; cancel attempts, target 10&ndash;20%. Below 10% means the offers miss the reasons; check the mix.</li>
+<li><strong>Reason mix, rolling 90 days</strong> &mdash; the product signal. If &ldquo;too complicated&rdquo; crosses 30%, the fix is onboarding, not the cancel screen.</li>
+<li><strong>Reactivation rate</strong> &mdash; win-backs &divide; churned, target 5%+. Zero usually means the win-backs are off-reason or the pause is running indefinite.</li>
+</ul>
+<p>Review the scorecard in the same sitting as the <a href="monthly-close-checklist.html">monthly close</a>, so churn reads sit next to the failed-charge recovery and dunning numbers they belong with.</p>
+
+<h2>8. Worked example &mdash; the five-person team that saved $1,300 and one roadmap</h2>
+<p>A five-person team sells a scheduling tool at $40/month, 60 customers, 12 cancels a month. They ship the flow on a Tuesday afternoon: one-click cancel (it already worked), one question, three pre-written offers (downgrade sentence, pause with 3-month cap, concierge call), confirm button on the same screen. First month: 12 cancel attempts, 3 saves (one downgrade to Starter at $15, one pause, one concierge call that turned into a testimonial) &mdash; $720 of annual MRR kept, and the concierge call cost 30 minutes. Month two: the reason mix shows &ldquo;too complicated&rdquo; at 42%, so they rebuild the first-run checklist; complexity churn drops by half. Month three: 2 of the month-one churners return on the day-30 &ldquo;we fixed the thing&rdquo; email &mdash; another $960 a year. Total: $1,680 recovered annually, one roadmap decision made on real exit data, zero dark patterns, and the team's chargeback count stays at zero because leaving is easier than disputing.</p>
+
+<h2>9. Five mistakes that turn a save offer into a churn accelerant</h2>
+<ul>
+<li><strong>Burying the cancel button.</strong> The dark pattern does not retain customers; it retains complaints, chargebacks, and app-store review one-stars. One click, always.</li>
+<li><strong>Discounting before diagnosing.</strong> A discount thrown at &ldquo;too complicated&rdquo; saves nobody and teaches everybody to negotiate. Match the offer to the reason code.</li>
+<li><strong>The five-screen gauntlet.</strong> Every &ldquo;wait!&rdquo; screen after a sincere confirm burns goodwill you will need at the day-90 win-back.</li>
+<li><strong>The infinite pause.</strong> A pause with no end date is a zombie account and a lie in your MRR. Cap it, calendar the resume, send the one pre-resume email.</li>
+<li><strong>Ignoring the mix.</strong> A flow that saves 15% while &ldquo;too complicated&rdquo; climbs to 40% is a bandage on a product wound. The reason mix <em>is</em> the roadmap; read it in the monthly close.</li>
+</ul>
+
+<hr>
+<p><strong>A cancel click is not a goodbye; it is the most honest feedback your product will ever receive, attached to a customer you can still keep.</strong> Keep the cancel path one click, ask one question, match one offer to the answer, cap the pause, run the 30/60/90 win-back, and read three numbers weekly. The teams that do this keep 10&ndash;20% of the leaving revenue &mdash; and learn what the silent majority will not tell them until renewal day.</p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
