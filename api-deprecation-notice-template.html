@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Deprecation Notice Template (Sunset Versions Without Breaking Customers) &mdash; HIVE80lab</title>
+<meta name="description" content="An API deprecation notice template for small teams: the three notices (changelog, direct email, runtime warning headers), the T-90 to T-0 sunset timeline, the holdout ladder driven by real usage, the sunset email contents, and the versioning habits that make the next deprecation boring.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/api-deprecation-notice-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>The API deprecation notice template: sunsetting a version without breaking customers</h1>
+<p>Every API deprecation is a promise you are allowed to break exactly once &mdash; and only if you tell everyone before you do. Small teams usually fail at this in one of two ways: they never deprecate anything (versions pile up, every bug exists in four places at once), or they deprecate with a changelog entry nobody reads and a deadline nobody believed. The <a href="https://hive80-lab.github.io/ops-notes/outage-email-templates-customers.html">outage email templates</a> handle the incident you didn't plan; this template handles the breakage you did. The honest version has three notices, one timeline, and a holdout ladder driven by <em>actual usage</em>, not by who replied to your email.</p>
+
+<h2>1. The three notices (one message, three channels)</h2>
+<p>A deprecation is communicated three times because each channel reaches a different person:</p>
+<table>
+<tr><th>Channel</th><th>Reaches</th><th>When</th></tr>
+<tr><td><strong>The changelog entry</strong> &mdash; what is deprecated, the sunset date, the replacement, the migration note</td><td>People who read changelogs (your best integrators already do)</td><td>T&minus;90 days, and linked from every affected endpoint's docs page</td></tr>
+<tr><td><strong>The runtime warning</strong> &mdash; the <code>Deprecation</code> and <code>Sunset</code> headers (and <code>Link</code> to the docs) on every deprecated response</td><td>The code and the person watching logs &mdash; it reaches customers who never read anything you send</td><td>T&minus;90 through T&minus;0, on <em>every</em> request to the old version</td></tr>
+<tr><td><strong>The direct email</strong> &mdash; sent only to accounts that called the old version in the last 30 days</td><td>The owner of the integration, with a name attached</td><td>T&minus;60, and again at T&minus;30 only to accounts still calling</td></tr>
+</table>
+<p>The runtime header is the one small teams skip and the one that saves you: a warning that appears in the customer's own logs cannot be missed by the person whose code will break. One line of middleware &mdash; <code>Deprecation: true</code>, <code>Sunset: &lt;date&gt;</code> &mdash; is worth fifty emails.</p>
+
+<h2>2. The sunset timeline</h2>
+<table>
+<tr><th>Clock</th><th>What happens</th><th>Gate to pass</th></tr>
+<tr><td><strong>T&minus;90</strong></td><td>Changelog + docs banner + runtime headers live; first email to recent callers</td><td>The replacement must already exist and be documented. Deprecating before the replacement works is breaking, not deprecating</td></tr>
+<tr><td><strong>T&minus;60</strong></td><td>Usage dashboard reviewed: who is still calling? Migration guide published with copy-paste diffs</td><td>Every holdout has a named owner on your side tracking their switch</td></tr>
+<tr><td><strong>T&minus;30</strong></td><td>Second email to remaining callers, now with their own usage counts in the body ("your account made 41,000 calls to v1 last week")</td><td>Offer the 15-minute migration call to anyone still stuck</td></tr>
+<tr><td><strong>T&minus;7</strong></td><td>Final notice; write the fallback decision: hard-stop, or read-only grace window</td><td>Grace window is a decision made now, not improvised at sunset</td></tr>
+<tr><td><strong>T&minus;0</strong></td><td>Sunset: the endpoint returns <code>410 Gone</code> with a JSON body naming the replacement &mdash; never a naked 404</td><td>Sunset-day monitoring of 410s, so a spike means someone needs help, not silence</td></tr>
+<tr><td><strong>T+7</strong></td><td>Deprecation review: who migrated, how long it took them, what the next timeline should be</td><td>The review writes the next version's habits</td></tr>
+</table>
+<p>Ninety days is the small-team standard: long enough for a customer's own release cycle to absorb the change, short enough that the old version does not become permanent. If a customer's migration genuinely cannot land in ninety days, the exception is a <em>documented extension with a new date</em> &mdash; never a quiet indefinite extension, which is how dead versions survive forever.</p>
+
+<h2>3. The direct email: what it must contain</h2>
+<p>Five sentences, all of them specific, none of them marketing:</p>
+<ol>
+<li><strong>What is going away</strong> &mdash; the exact version and endpoints, not "some legacy endpoints."</li>
+<li><strong>When</strong> &mdash; one calendar date. "Early next quarter" is not a date; it is a shrug.</li>
+<li><strong>Why</strong> &mdash; one honest sentence (security patching, a bugfix that cannot ship to the old version, consolidation). Customers accept reasons; they do not accept silence.</li>
+<li><strong>What to do</strong> &mdash; the replacement endpoint and the migration guide link, with the diff between old and new shown, not described.</li>
+<li><strong>A human to reply to</strong> &mdash; a named engineer's address. "Reply to this email" counts if a person actually reads it.</li>
+</ol>
+<p>The subject line that works: <em>"Action needed: v1 API sunsets March 31 &mdash; your migration guide."</em> The two that don't: anything starting "We're excited to announce&hellip;" and anything burying the date below the fold.</p>
+
+<h2>4. The holdout ladder</h2>
+<p>Usage data, not email opens, decides the escalation:</p>
+<ul>
+<li><strong>Week 1 of sunset-minus-30:</strong> list every account still calling. Rank by call volume. The ten loudest are your whole problem &mdash; migrate them personally.</li>
+<li><strong>Long-tail silence:</strong> accounts making 3 calls a month are usually forgotten cron jobs, not customers. The migration guide link in the 410 body is their fix.</li>
+<li><strong>The zero-warning rule:</strong> never let T&minus;0 arrive for an account that never received a runtime header or a direct email. If your comms missed them, that is your incident, not their fault &mdash; extend their window and say so.</li>
+</ul>
+<p>This is the same discipline as the <a href="https://hive80-lab.github.io/ops-notes/overdue-invoice-collection-ladder.html">invoice collection ladder</a>: rank by exposure, escalate by evidence, and never treat the list as one blob.</p>
+
+<h2>5. Versioning habits that make the next deprecation boring</h2>
+<ul>
+<li><strong>Date or number your versions in the path or header</strong> &mdash; <code>/v2/</code> or <code>X-API-Version</code>. "Current" and "legacy" as version names mean every sunset is undefined.</li>
+<li><strong>Ship the <code>Deprecation</code>/<code>Sunset</code> headers from the day a version is superseded</strong> &mdash; not the week before the deadline.</li>
+<li><strong>Keep the migration guide alive after sunset.</strong> Integrators arrive at the 410 for months; the guide is part of the endpoint's grave marker.</li>
+<li><strong>Announce the <em>replacement's</em> release separately</strong> &mdash; a launch note and a deprecation note are different messages with different audiences.</li>
+<li><strong>Log every deprecation's holdout curve</strong> &mdash; it calibrates the next timeline better than any rule of thumb.</li>
+</ul>
+
+<h2>6. Common mistakes</h2>
+<ul>
+<li><strong>Announcing in the changelog only.</strong> A changelog entry is a legal fig leaf, not a communication. Customers who never read it will call the 410 an outage &mdash; and to them, it is one.</li>
+<li><strong>Deprecating before the replacement is live.</strong> "Migrate to v2" with no v2 documentation is a shutdown, not a migration.</li>
+<li><strong>The naked 404 at sunset.</strong> A <code>410 Gone</code> with a JSON body pointing at the replacement turns your sunset into their error handling; a 404 turns it into a support ticket and a tweet.</li>
+<li><strong>"Early next quarter" instead of a date.</strong> Dates are commitments; seasons are excuses. The <a href="https://hive80-lab.github.io/ops-notes/sla-slo-definition-template.html">SLO template</a> rule applies: numbers or nothing.</li>
+<li><strong>Sunset-day silence.</strong> Watching 410 counts on sunset day is the difference between "three forgotten crons need help" and "a customer churned and we read about it in a review."</li>
+</ul>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Three notices, one message.</strong> Changelog for readers, runtime headers for machines, direct email for owners &mdash; the header reaches people no email ever will.</li>
+<li><strong>Usage data runs the ladder.</strong> Rank holdouts by real call volume; the loudest ten are the migration.</li>
+<li><strong>Sunset loudly.</strong> 410 with a body, not 404; watch the 410s on the day; the deprecation review writes the next version's habits.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/api-key-leak-response-runbook.html">leaked API key runbook</a> covers the rotation you hope never to run, the <a href="https://hive80-lab.github.io/ops-notes/incident-response-changelog-automation.html">changelog automation</a> keeps the deprecation entry from living in someone's drafts, and the <a href="https://hive80-lab.github.io/ops-notes/vendor-outage-runbook.html">vendor outage runbook</a> is the mirror image &mdash; what you want <em>from</em> a vendor who is sunsetting something you depend on.</em></p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
