@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chargeback Response Template for Small Teams — the Evidence Pack That Beats the Dispute Clock</title>
+<meta name="description" content="A chargeback response template for small merchants: the dispute clock, reason codes and the evidence each one needs, a paste-in rebuttal letter, the five evidence rules, prevention that beats rebuttal, and when to accept the loss.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/chargeback-response-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>The Chargeback Response Template for Small Teams</h1>
+<p>A chargeback is not a refund. It is a dispute filed with the customer's bank, and if you do nothing, the bank rules against you by default &mdash; you lose the sale, the goods, and pay a fee on top. A chargeback response template is the difference between losing by silence and winning by paperwork: read the reason code, assemble one evidence pack, send one rebuttal letter before the deadline. Most small teams lose disputes they would have won, for the simple reason that nobody owned the reply.</p>
+
+<h2>1. The clock starts the day the dispute lands</h2>
+<ul>
+<li><strong>Respond in days, not weeks</strong> &mdash; processors give a window that is often 7 to 10 days from the dispute notice (it varies by processor and card network; check your dashboard's deadline and write it on the calendar the same hour). Evidence submitted on deadline day is evidence rushed; aim to submit at half-time.</li>
+<li><strong>The fee is real either way</strong> &mdash; winning the dispute usually does not refund the chargeback fee (commonly $15&ndash;$100 depending on processor). That fee is why refund-first beats dispute-fighting (see section 6).</li>
+<li><strong>Your ratio is watching</strong> &mdash; disputes divided by transactions is tracked by the card networks. Visa's monitoring threshold has historically sat at 0.9% and keeps moving lower. Cross it and you land in a monitoring program with fines and, in the worst case, a terminated merchant account. Log the ratio monthly; it takes two minutes.</li>
+<li><strong>One owner, named</strong> &mdash; disputes die in shared inboxes. Assign them to one person with a standing order: check the disputes tab every business day. The <a href="standing-orders-template.html">standing orders template</a> is where that check belongs.</li>
+</ul>
+
+<h2>2. Read the reason code before writing a word</h2>
+<p>Every dispute carries a reason code, and the code tells you which evidence wins. Answer the code, not your feelings.</p>
+<ul>
+<li><strong>Fraud / unauthorized (e.g. Visa 10.4)</strong> &mdash; the cardholder says it wasn't them. Winning evidence: proof of delivery to the address on file, matching AVS/CVV results, the customer's login IP and device data, prior undisputed orders from the same card.</li>
+<li><strong>Product not received (e.g. Visa 13.1)</strong> &mdash; winning evidence: tracking with delivery confirmation and signature, dated photos, the shipping address the customer entered at checkout.</li>
+<li><strong>Not as described / quality</strong> &mdash; winning evidence: the product page the customer saw (screenshot with date), listing copy and photos, any support conversation where expectations were set.</li>
+<li><strong>Subscription / recurring billed after cancel</strong> &mdash; winning evidence: the terms accepted at signup, the cancellation policy, usage logs after the alleged cancel date, and the self-serve cancel trail. If your cancellation truly requires an email, own it &mdash; see section 6.</li>
+<li><strong>Duplicate / amount wrong</strong> &mdash; usually a processing error on your side. Check first; if it's real, refund and don't fight. Fighting a correct claim burns the ratio for nothing.</li>
+</ul>
+
+<h2>3. The evidence pack: five items, one PDF</h2>
+<p>Processors read fast. Assemble a single PDF, five items or fewer, labeled in the order the reason code cares about:</p>
+<ol>
+<li><strong>Proof of fulfillment</strong> &mdash; tracking link, delivery confirmation, signature capture; for digital goods, download logs and access timestamps.</li>
+<li><strong>Transaction proof</strong> &mdash; order ID, timestamp, AVS/CVV match results, the IP and device used.</li>
+<li><strong>Customer history</strong> &mdash; prior undisputed purchases from the same card or account.</li>
+<li><strong>The terms they accepted</strong> &mdash; checkout screenshot or log showing refund policy, cancellation policy, and what the descriptor will look like on their statement.</li>
+<li><strong>The conversation</strong> &mdash; relevant emails or tickets, chronological, trimmed to the parts that matter.</li>
+</ol>
+<p>Some processors submit device and IP data for you automatically on Visa fraud disputes (compelling-evidence programs); ask yours what they send and build your pack for what's left.</p>
+
+<h2>4. The response template (paste in, fill brackets)</h2>
+<p>Keep it under 250 words. Decision-makers skim; the PDF carries the proof.</p>
+<blockquote>
+<p><strong>Re: Dispute [CASE ID] &mdash; order [ORDER ID], [AMOUNT], [DATE]</strong></p>
+<p>We believe this dispute should be reversed. The reason code given was [CODE &mdash; e.g., "fraud, card-absent"]. The evidence shows otherwise:</p>
+<ol>
+<li>The order was delivered on [DATE] to the address the cardholder entered at checkout; tracking [NUMBER] shows [DELIVERED / SIGNED BY NAME].</li>
+<li>AVS and CVV both matched ([RESULTS]), and the order was placed from IP [IP] using the account [ACCOUNT] that has [N] prior successful purchases on this card.</li>
+<li>The cardholder received the product and used it: [ACCESS LOG / DOWNLOAD / USAGE EVIDENCE, DATED].</li>
+<li>At checkout the cardholder accepted our [REFUND/CANCELLATION POLICY], disclosed before payment; the statement descriptor reads [DESCRIPTOR].</li>
+</ol>
+<p>We have never had prior contact from the cardholder about this order &mdash; no support ticket, email, or refund request. We remain happy to resolve this directly; our support address is [SUPPORT EMAIL].</p>
+<p>Evidence is attached as a single labeled PDF. Thank you for reviewing.</p>
+<p>[NAME, ROLE, BUSINESS]</p>
+</blockquote>
+<p>Adjust the numbered items to the reason code &mdash; a "product not received" dispute needs item 1 first, not item 2.</p>
+
+<h2>5. The five rules that win</h2>
+<ul>
+<li><strong>Answer the reason code</strong> &mdash; not the injustice you feel. Analysts match evidence to the code.</li>
+<li><strong>Facts, dates, numbers</strong> &mdash; no adjectives. "Delivered 14:32, signed by J. Alvarez" beats "we definitely shipped it."</li>
+<li><strong>Never pressure the customer</strong> &mdash; no "withdraw the dispute or else." Contacting a cardholder to argue a dispute can itself look like fraud and always looks like desperation. Offer normal support; let the evidence speak.</li>
+<li><strong>Submit at half-time, not at the wire</strong> &mdash; rushed packs miss items; late packs count for nothing.</li>
+<li><strong>Log every dispute</strong> &mdash; date, amount, code, outcome, evidence used. The log is your ratio dashboard and your prevention data (which products, which countries, which month).</li>
+</ul>
+
+<h2>6. Prevention beats rebuttal, every time</h2>
+<ul>
+<li><strong>A descriptor that says your name</strong> &mdash; register the statement descriptor with your processor so the charge line reads like you ([BRAND] + [PRODUCT]), not a legal entity nobody recognizes. Unrecognized descriptors cause a large share of "fraud" disputes that are really confusion.</li>
+<li><strong>AVS and CVV on</strong> &mdash; two checkboxes that kill most stolen-card attempts before they become disputes.</li>
+<li><strong>Receipt emails that orient</strong> &mdash; order summary, descriptor warning ("this will appear as X on your statement"), support link, delivery promise.</li>
+<li><strong>Refund-first policy</strong> &mdash; a refund costs the sale; a chargeback costs the sale plus a non-refundable fee plus ratio damage plus the goods. If a customer is angry, refund fast and log it. The <a href="payment-outage-playbook.html">payment outage playbook</a> uses the same triage logic when a backlog clears.</li>
+<li><strong>Self-serve cancellation</strong> &mdash; if canceling a subscription takes an email and three days, you are manufacturing "recurring billed after cancel" disputes. Make cancel a button.</li>
+<li><strong>Signature on big orders</strong> &mdash; anything over roughly $200 ships with signature confirmation. The fee is cheaper than one lost dispute.</li>
+</ul>
+
+<h2>7. When to accept the loss</h2>
+<p>Not every dispute deserves a fight. Accept it when the amount is smaller than the hours you'd spend, when the claim is plausibly right (fighting correct claims trains the bank to ignore you), or when the outcome is genuinely grey ("friendly fraud" where the household member ordered &mdash; real, common, and hard to prove). Accept means: refund mentally, eat the fee, <strong>add the card and email to your block list</strong>, and move on. A second dispute from the same customer is not a pattern to study; it is a pattern to prevent.</p>
+
+<h2>A worked example: the $480 order</h2>
+<p>A five-person store sells a $480 B2B order. Eleven days later, a Visa 10.4 dispute lands: unauthorized. The owner spends forty minutes: pulls tracking (delivered, signed at the customer's front desk), AVS/CVV (both matched), order IP (same city as the delivery address), and finds two prior orders on the same card, undisputed. He fills the template, numbers the evidence to the code, attaches one PDF, submits on day four of the ten-day window. The bank reverses the dispute in twelve days; the sale is kept; the fee is not returned &mdash; and the block-list habit plus the descriptor fix prevent the next one from arriving at all. Total cost: forty minutes and a $20 fee he would have paid anyway.</p>
+
+<h2>Related pages</h2>
+<ul>
+<li><a href="payment-outage-playbook.html">Payment Outage Playbook</a> &mdash; chargeback triage when a processor backlog clears</li>
+<li><a href="seasonal-peak-readiness-checklist.html">Seasonal Peak Readiness Checklist</a> &mdash; surge sales bring surge disputes</li>
+<li><a href="invoice-fraud-bec-prevention-checklist.html">Invoice Fraud / BEC Prevention Checklist</a> &mdash; the inbound-payment cousin of the dispute</li>
+<li><a href="daily-audit-checklist.html">Daily Ops Audit Checklist</a> &mdash; where the ten-minute disputes-tab check lives</li>
+<li><a href="admin-first-week-runbook.html">Admin First-Week Runbook</a> &mdash; wire the descriptor, AVS, and receipt email on day one</li>
+</ul>
+
+<hr>
+<p><strong>A chargeback is a paperwork fight with a deadline, and the paperwork wins.</strong> Read the reason code, send one labeled PDF at half-time with the paste-in letter, refund instead of fighting when a refund is the honest answer, and fix the descriptor so the next customer recognizes you on their statement. Small teams win disputes they prepare for &mdash; silence is the only move that always loses.</p>
+</main>
+</body>
+</html>
