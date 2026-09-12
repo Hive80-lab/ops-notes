@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor Renewal Calendar Template for Small Teams (Never Get Caught by an Auto-Renewal Again) &mdash; HIVE80lab</title>
+<meta name="description" content="A vendor renewal calendar that fits one page: the renewal table (vendor, product, annual cost, renewal date, notice window, decision owner), the 90/60/30 pipeline that turns renewals from surprises into decisions, the auto-renew kill list, seat trueing before you sign, the negotiate-at-60 rule, and four metrics. Worked example: a twelve-person firm that found $14k of silent renewals in one afternoon.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/vendor-renewal-calendar-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Vendor Renewal Calendar Template for Small Teams</h1>
+<p class="sub">One page. Every renewal you pay for, every notice window, every decision gate &mdash; so renewals become decisions instead of invoices that arrive too late to argue with.</p>
+
+<p>Renewals are the only operational risk that arrives with a dollar amount pre-attached. The pattern is always the same: a tool bought in a busy month by a person who has since left, on a card nobody watches, auto-renews at list price for a seat count that was true eighteen months ago. The contract had a 30-day cancellation window; the invoice arrives 45 days after it closed. Nothing about that is a technology problem &mdash; it is a <strong>calendar problem</strong>. A small team does not need procurement software; it needs one table with every vendor, the real renewal date, the notice window that actually cancels it, and a named person who decides at 60 days, not at invoice day. This template is that page. The contracts behind the rows get their terms checked in the <a href="vendor-contract-checklist.html">vendor contract checklist</a>; the vendors who go get their data out via the <a href="vendor-offboarding-data-deletion-checklist.html">offboarding &amp; data-deletion checklist</a>.</p>
+
+<h2>The renewal table, one page</h2>
+<table>
+<tr><th>Column</th><th>What goes in it</th><th>Why it exists</th></tr>
+<tr><td><strong>Vendor + product</strong></td><td>One line per product, not per vendor. Vendors sell bundles where you use one of four components &mdash; those are three dead lines and one live one.</td><td>Kills are per-product. You can't offboard half a vendor if your table only knows the vendor.</td></tr>
+<tr><td><strong>Annual cost</strong></td><td>List price at last renewal, plus the seat count you actually paid for.</td><td>You negotiate with last year's number in hand, not with a vague memory of "it was a few hundred."</td></tr>
+<tr><td><strong>Renewal date</strong></td><td>The date the contract renews &mdash; which is often <em>not</em> the date the invoice arrives. Check the contract, then the billing portal, then reconcile.</td><td>The renewal date is the deadline; the invoice date is a courtesy note about a decision already made.</td></tr>
+<tr><td><strong>Notice window</strong></td><td>Days of written notice required to cancel or downgrade without penalty, and the <em>calendar date</em> that implies (renewal date minus notice days).</td><td>"30-day notice" discovered on day 12 before renewal is a full-price year. Precompute the last safe day.</td></tr>
+<tr><td><strong>Decision owner</strong></td><td>One name who decides renew / downgrade / kill. Not a committee, not "whoever notices."</td><td>Renewals without owners are renewals by default &mdash; the vendor's favorite kind.</td></tr>
+<tr><td><strong>Usage evidence</strong></td><td>Monthly active users, last login of least-active seat, whether the workflow it supports still exists.</td><td>The renew/kill decision is arithmetic only when someone collected the numbers beforehand.</td></tr>
+</table>
+
+<h2>The 90/60/30 pipeline</h2>
+<p>Every renewal walks the same pipeline, and the calendar shows which stage each one is in:</p>
+<ul>
+<li><strong>T&minus;90 &mdash; Evidence.</strong> The decision owner pulls usage: seats vs. actual users, logins from the last 90 days, whether the original problem the tool solved still exists. No negotiation happens here; this is just honesty about whether anyone would notice if the tool vanished.</li>
+<li><strong>T&minus;60 &mdash; Decision.</strong> Renew, downgrade, or kill &mdash; decided and written down, one line. This is also the negotiation window: vendors discount hardest when cancellation is still cheap for you. A renewal conversation at T&minus;60 has leverage; the same conversation at T&minus;5 has none.</li>
+<li><strong>T&minus;30 &mdash; Execute.</strong> Signed, downgraded, or cancelled in writing (and the cancellation <em>confirmed</em>, not assumed &mdash; save the confirmation). Anything killed starts the <a href="vendor-offboarding-data-deletion-checklist.html">offboarding clock</a>.</li>
+<li><strong>T&minus;0 &mdash; Invoice audit.</strong> Compare the invoice to the table: same price? same seats? same term? Silent price increases and seat creep are caught here, in the one month they can still be disputed.</li>
+</ul>
+
+<h2>The auto-renew kill list</h2>
+<p>Some renewals should be re-decided every single year, by policy, because they are the ones that grow in the dark: month-to-month tools that quietly became annual; "trial" accounts that converted two restructurings ago; the security product bought during the incident that is now duplicated by the tool the platform vendor added free; the marketing tool whose champion left; anything billed to a personal card (if you find one of these, kill it this quarter &mdash; it is also how a departed employee holds a key to your data). The kill list is not a punishment for the tools on it. It is a statement that <em>renewal is a decision, not a default</em>. The tool that survives its kill-list review for three straight years is the one you actually needed.</p>
+
+<h2>Seat trueing before you sign</h2>
+<p>Seat-based contracts drift upward in only one direction. Before any seat-based renewal: count provisioned seats, count active users in the last 30 days, count the two <em>different</em> numbers and reconcile the gap. The gap is always people who left, accounts for departed staff that nobody reclaimed (which is also an <a href="user-access-review-checklist.html">access-review</a> finding, not just a budget one), and "just in case" seats nobody can justify. Downgrade to the true number at renewal &mdash; vendors rarely pro-rate mid-term, but they almost always accept a lower seat count at the renewal line. A twelve-person firm that does this once usually finds 10&ndash;20% of its SaaS spend was paying for former employees.</p>
+
+<h2>Four metrics that tell you if the calendar is real</h2>
+<ul>
+<li><strong>Renewals caught with &ge;30 days of notice</strong> &mdash; the pipeline metric. Below 90% means new purchases are not entering the table, which is how the next silent renewal is already scheduled.</li>
+<li><strong>Spend cut at renewals</strong> &mdash; dollars downgraded or killed, per quarter. A healthy quarter is non-zero; a zero quarter usually means the evidence step is being skipped, not that every tool is perfectly sized.</li>
+<li><strong>Orphans killed</strong> &mdash; products with zero logins in 90 days that got terminated instead of renewed. Track the cumulative number; it is the cleanest proof the table is real.</li>
+<li><strong>Invoices that matched the table</strong> &mdash; price, seats, and term all as agreed. Mismatches here are disputes you can still win; mismatches noticed next quarter are donations.</li>
+</ul>
+
+<h2>Worked example: the twelve-person firm with $14k of drift</h2>
+<p>A twelve-person professional-services firm ran this as a one-afternoon project after an auto-renewal doubled their project-management tool's price at a seat count of 22 (they employed twelve, had provisioned 31, and nobody knew why). The table took two hours: 23 lines, of which 17 were real. Findings from the first pass: a $2,400/yr analytics tool whose champion had left 14 months earlier (killed at T&minus;60 with no usage in the window), two overlapping password tools bought in different busy seasons (one killed, one kept as the password manager), a security product duplicated by features their platform vendor had since bundled free (downgraded at renewal), and 9 seats cut across three tools to match actual logins. Net result on the first cycle: $14,100/yr cut, every remaining contract has a named owner and a computed last-safe-cancellation date, and the quarterly 30-minute calendar review has found two more orphans since. Nothing about their tools got worse &mdash; they simply stopped paying for the ones nobody would have noticed losing.</p>
+
+<h2>Where this fits</h2>
+<p>The contract terms each line hides live in the <a href="vendor-contract-checklist.html">vendor contract checklist</a>; who to call at 2 a.m. is the <a href="vendor-incident-contacts-one-pager.html">vendor incident contacts one-pager</a>; the escalation order when a vendor stalls is the <a href="vendor-escalation-ladder.html">escalation ladder</a>; and the exit that follows a kill decision is the <a href="vendor-offboarding-data-deletion-checklist.html">offboarding &amp; data-deletion checklist</a>. The sprawl that puts vendors on this table in the first place is measured by the <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a>, and the security side of keeping a vendor is the <a href="vendor-security-review-checklist.html">vendor security review</a>. If you would rather have the whole loop &mdash; the audit that finds the gaps, the plan that closes them &mdash; run by an outside pair, that is the <a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> ($149, five-day turnaround), and it reads your vendor spend as part of the audit; when a vendor outage is the scenario that worries you most, the <a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> ($249, delivered in 48h) turns it into a procedure. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> ($14) covers the incident half; <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Vol. 2</a> ($27) covers the on-call rotation; and the free <a href="https://hive80lab.gumroad.com/l/first-30-minutes">First 30 Minutes</a> quick-start covers the first half-hour after any vendor breaks.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="security-audit-scorecard.html">Security Audit Scorecard</a> &mdash; free, 45 checks scored live in your browser, nothing uploaded.</li><li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li><li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; built from your estate, delivered in 48h &mdash; $249</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident pack for the on-call rotation</li></ul><p class="hint">20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p></aside>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
