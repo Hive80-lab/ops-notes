@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vendor Incident Contacts One-Pager for Small Teams &mdash; The 2am List That Turns an Outage into a Phone Call</title>
+<meta name="description" content="A vendor incident contacts one-pager for small teams: the eight fields per vendor (status page, security contact, account ID, support SLA, after-hours path, owner), filling it while it's calm, the five-minute escalation path when it's already broken, and the quarterly check that keeps it true.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/vendor-incident-contacts-one-pager.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Vendor Incident Contacts One-Pager for Small Teams</h1>
+<p class="lede">When your payment processor goes down on a Sunday morning, the fix is not in your codebase &mdash; it is in their support queue. The difference between a twenty-minute incident and a lost afternoon is almost never technical skill; it is whether the right human at the right vendor gets reached in the first five minutes. That only happens if you already have their emergency contact, your account ID, and your contract's response-time promise on one page, verified and ready. This is that page: <strong>one row per critical vendor, eight fields, filled while it's calm, tested once, reviewed quarterly</strong>.</p>
+
+<h2>1. The eight fields every critical vendor gets</h2>
+<p>One row per vendor that can stop revenue or stop work &mdash; your payment processor, your hosting, your SSO, your email, the two or three tools your customers touch. Eight fields, one line:</p>
+<table>
+<tr><th>Field</th><th>Why it matters mid-incident</th></tr>
+<tr><td><strong>Status page URL</strong></td><td>The first check: is it them or is it you? Thirty seconds, no login, no ticket needed.</td></tr>
+<tr><td><strong>Incident / security contact</strong> (email <em>and</em> phone)</td><td>Tier-1 chat queues melt exactly when everyone else's does. A direct escalation address cuts the line.</td></tr>
+<tr><td><strong>Account / customer ID</strong></td><td>The first thing every support engineer asks for. Hunting for it mid-outage costs minutes you don't have.</td></tr>
+<tr><td><strong>Plan tier + support SLA</strong></td><td>"We pay for 4-hour P1 response" turns a vague wait into a clock you can enforce and reference.</td></tr>
+<tr><td><strong>After-hours path</strong></td><td>Outages don't respect business hours. If the after-hours path is "none", that is a finding, not a field.</td></tr>
+<tr><td><strong>Named escalation contact</strong> (account manager, if any)</td><td>The person whose inbox skips the queue. Often arrives only after you ask &mdash; on paid tiers it's usually free.</td></tr>
+<tr><td><strong>Internal owner + backup</strong></td><td>Who calls. If the owner left the company or is on a flight, the backup needs the same page.</td></tr>
+<tr><td><strong>Last-verified date</strong></td><td>A contact list nobody has checked in a year is a wish list. The date makes staleness visible.</td></tr>
+</table>
+<p>Keep it in the repo or wiki where your runbooks live &mdash; next to the incident plan, not in someone's inbox. A contacts sheet that lives in one person's email is a single point of failure with a vacation mode.</p>
+
+<h2>2. Fill it while it's calm (30 minutes, total)</h2>
+<p>The numbers hide in predictable places, and every one is findable in peacetime:</p>
+<ul>
+<li><strong>The admin dashboard</strong> &rarr; support or help section: the ticket queue, tier, and usually the direct contact block.</li>
+<li><strong>The signed contract</strong> &rarr; the support schedule: SLA hours, response times, escalation names. This is the legally real copy.</li>
+<li><strong>The trust center / security page</strong> &rarr; security@ address, incident disclosure contact, sometimes a dedicated hotline.</li>
+<li><strong>The original welcome email</strong> from your account manager &mdash; the name that skips the queue is usually sitting in it.</li>
+</ul>
+<p>Then the part everyone skips: <strong>test the path once</strong>. Send one low-stakes ticket per vendor ("quick question about our plan") and write down how long the reply took. A contact you have never tested is a guess. The test also confirms the account ID works and shows you what their queue's real response time looks like &mdash; which is often different from the SLA in the brochure.</p>
+
+<h2>3. The five-minute path when it's already broken</h2>
+<ol>
+<li><strong>Status page first (30 seconds).</strong> If it's red, you just saved yourself an hour of debugging someone else's outage. If it's green and your users are broken anyway, that's a ticket-worthy incident &mdash; their monitoring missed it.</li>
+<li><strong>Tier-1 ticket, account ID pasted, facts only (2 minutes).</strong> Three lines: what's broken, when it started, what it affects. No essays &mdash; the first ticket sets the clock on your SLA.</li>
+<li><strong>Escalate on the contract's clock.</strong> No movement inside the SLA window &rarr; the escalation contact from the one-pager, quoting the SLA by name. Calm, dated, specific: "P1 opened 09:52, SLA is 4 hours, currently 4h20m without response."</li>
+<li><strong>Phone or chat for money-critical vendors.</strong> Payment rails down = phone call, not email. Voice gets a human; a queue gets a position.</li>
+<li><strong>Cross-check the world.</strong> Downdetector, the vendor's community forum, a search of their name in the last hour &mdash; if fifty other companies are posting, you have scope evidence for your own comms.</li>
+<li><strong>Post the internal note (1 minute).</strong> Who is affected, what vendor, ticket number, who owns the chase. Silence makes a technical incident a trust incident.</li>
+</ol>
+<p>Paste-in ticket opener, three lines:</p>
+<p><code>Account: [ID] &mdash; P1: [what is broken] since [time UTC]. Affects: [what/users/revenue]. Need: confirmation + ETA, escalation if no response within [SLA].</code></p>
+
+<h2>4. The quarterly ten-minute check that keeps it true</h2>
+<p>Contact sheets rot on a schedule you can predict: vendors get acquired, support pages move, account managers leave, plans get downgraded. Once a quarter, ten minutes:</p>
+<ul>
+<li>Every contact still replies? (The "still works" test is one low-stakes ticket per vendor.)</li>
+<li>Tier and SLA still what the contract says? Downgrades are quiet.</li>
+<li>Status page URL unchanged? Rebrands move them.</li>
+<li>Internal owner still at the company? Reassign on offboarding &mdash; this check belongs in the <a href="employee-offboarding-checklist.html">offboarding checklist</a>.</li>
+<li>Any vendor added this quarter? New row before the next incident, not during it.</li>
+</ul>
+<p>Stack the check onto an existing ritual &mdash; the <a href="annual-ops-budget-template.html">annual ops budget</a> review or the <a href="software-license-register.html">license register</a> prune &mdash; so it happens without a hero.</p>
+
+<h2>5. The mistakes that turn 20 minutes into a lost day</h2>
+<ul>
+<li><strong>The contacts live in one person's head (or inbox).</strong> The most common configuration, and the reason a simple outage becomes a search party. The page exists precisely so any two people can run the chase.</li>
+<li><strong>The account ID is unknown mid-incident.</strong> Five minutes of scrolling invoices while the queue clock runs. Paste it into the sheet the day you sign up.</li>
+<li><strong>No after-hours path on the payment-critical vendor.</strong> Discovered on a Sunday is the worst time. Discover it Tuesday instead &mdash; and fix it or accept it in writing.</li>
+<li><strong>The sheet was never tested.</strong> An untested contact is a guess wearing a formal outfit. One test ticket, once, converts it into a fact.</li>
+<li><strong>"We'll find the number when we need it."</strong> That is not a response plan; that is a scavenger hunt with stakes. The one-pager costs thirty minutes once a year. The outage without it costs the afternoon, every time.</li>
+</ul>
+
+<h2>Worked example: the Sunday processor outage</h2>
+<p>A five-person studio, Sunday 09:40: checkout fails, their own logs clean, tier-1 chat queue showing "we are experiencing higher than usual volume" &mdash; at the same time as everyone else's. Because the studio kept the one-pager, the founder did not debug: he opened the sheet, found the processor's escalation contact, pasted the account ID, sent the three-line P1 quoting the contract's 4-hour SLA, and posted the internal note at 09:52. An engineer called back in 38 minutes. Total incident: about two hours, with the customer-facing "payments are temporarily delayed, no action needed" message sent before the coffee went cold. The contrast case is the same studio a year earlier: no account ID, no escalation name, ninety minutes lost to a chat queue before anyone thought to check whether the outage was even theirs.</p>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>The contact sheet is an asset, not an admin chore.</strong> It converts the first five minutes of a vendor outage from a search party into a phone call.</li>
+<li><strong>Test it in peacetime or it doesn't count.</strong> One low-stakes ticket per vendor, once, with the response time written down.</li>
+<li><strong>The clock you enforce is the one in the contract.</strong> SLA + account ID + escalation name on one page is what makes "we pay for support" mean something.</li>
+</ul>
+
+<h2>Related notes</h2>
+<ul>
+<li><a href="vendor-escalation-ladder.html">Vendor Escalation Ladder</a> &mdash; the rungs to climb when tier-1 stalls; this page is what you climb it with.</li>
+<li><a href="vendor-outage-runbook.html">Vendor Outage Runbook</a> &mdash; what to run when the vendor's service is down and yours is collateral damage.</li>
+<li><a href="vendor-security-review-checklist.html">Vendor Security Review Checklist</a> &mdash; the evaluation that happens before you sign; the contacts sheet is what you build from it.</li>
+<li><a href="vendor-contract-checklist.html">Vendor Contract Checklist</a> &mdash; where the SLA and escalation clauses get written so the sheet has teeth.</li>
+<li><a href="payment-outage-playbook.html">Payment Outage Playbook</a> &mdash; the money-critical case where this page earns its keep fastest.</li>
+<li><a href="first-30-minutes-incident-response.html">First 30 Minutes of Incident Response</a> &mdash; the same five-minute discipline, for your own systems.</li>
+<li><a href="incident-commander-checklist.html">Incident Commander Checklist</a> &mdash; one name owns the chase; the one-pager is in their kit.</li>
+<li><a href="software-license-register.html">Software License Register</a> &mdash; the sibling register: one row per thing you pay for, reviewed on the same calendar.</li>
+<li><a href="annual-ops-budget-template.html">Annual Ops Budget Template</a> &mdash; where renewal dates live; stack the quarterly contact check onto it.</li>
+</ul>
+
+<hr>
+<p><strong>An outage at a vendor is not an excuse for a search party.</strong> One page, one row per critical vendor, eight fields &mdash; status page, security contact, account ID, SLA, after-hours path, escalation name, owner, last-verified date &mdash; filled while it's calm, tested once, reviewed quarterly. Small teams that can reach the right human in five minutes turn vendor outages into a two-hour footnote. Teams that improvise the contact search finance the outage twice: once in downtime, once in trust.</p>
+</main>
+</body>
+</html>
