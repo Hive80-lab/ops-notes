@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Metrics Report Template for Small Teams (Six Numbers on One Page) &mdash; HIVE80lab</title>
+<meta name="description" content="A monthly incident metrics report that fits one page: the four response numbers (MTTD, MTTA, MTTR, recurrence rate) computed as medians per severity level, the two health numbers (post-mortem action-closure rate, comms cadence-kept %), where each timestamp comes from, bands that separate a good month from a lucky one, and the do-not-measure list. Worked example: twelve-person payments SaaS, six incidents, MTTD 31 to 9 minutes, recurrence 33% to 17%, one page, twenty minutes, three decisions.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/incident-metrics-report-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Incident metrics report: six numbers, one page, twenty minutes</h1>
+<p>Ask a room how incident response is going and you will get vibes: <em>"feels like a rough month,"</em> <em>"I think things got better after the new alerts,"</em> <em>"wasn't that the same payment bug as June?"</em> Nobody can act on vibes, and the loudest anecdote in the room wins by default. The monthly incident metrics report exists to end that argument &mdash; six numbers, compiled in about twenty minutes from tables the team already keeps, each one pointing at a decision. The cap matters as much as the count: a metrics report that runs to a deck protects nobody, because nobody reads page two.</p>
+<p>This is the template: the four response numbers (MTTD, MTTA, MTTR, recurrence rate) and the rule that they are medians per severity, never a blended mean; the two health numbers (action-closure rate, cadence-kept %) that tell you whether the system is improving between incidents; where every timestamp comes from; the bands that separate a good month from a lucky one; the do-not-measure list; and the one-page layout that ends in a decision, not a shrug.</p>
+
+<h2>1. The argument the report ends</h2>
+<p>Every ops review drifts toward the same fight: one person is sure response got worse this month, another is sure the new monitoring fixed things, and both are arguing from memory. Six numbers settle it in ninety seconds &mdash; not because numbers are sacred, but because each one is <em>dated and sourced</em>. The rule that keeps the report alive is that every number ends in a decision. If a month produces six numbers and zero decisions, the report has become the deck it was invented to replace.</p>
+
+<h2>2. The four response numbers</h2>
+<p>Four numbers, each with a formula, a source, and a rule:</p>
+<table>
+<tr><th>Number</th><th>Formula</th><th>Where the timestamps come from</th></tr>
+<tr><td><strong>MTTD</strong> &mdash; time to detect</td><td>median minutes from impact start to detection</td><td>the incident timeline table (impact-start row vs detected row); provider dashboards; a first <em>customer</em> report counts as detection only if monitoring missed it &mdash; log that miss, it is your next detection purchase</td></tr>
+<tr><td><strong>MTTA</strong> &mdash; time to acknowledge</td><td>median minutes from alert fired to a human engaged (pager ack)</td><td>on-call ack timestamps</td></tr>
+<tr><td><strong>MTTR</strong> &mdash; time to restore</td><td>median minutes from detection to service restored</td><td>the timeline table; "restored" means customers can transact, not "fix deployed"</td></tr>
+<tr><td><strong>Recurrence rate</strong></td><td>% of incidents whose contributing factor matches one already logged in a prior post-mortem</td><td>the blameless review log &mdash; the only number that measures whether the team is actually learning</td></tr>
+</table>
+<p><strong>The rule that keeps all four honest: medians, per severity level.</strong> A mean blended across severities is a number that lies &mdash; one six-hour SEV1 and twenty five-minute SEV4s average into a fiction. Compute the median for each level the severity matrix defines; report the medians side by side. With fewer than five incidents at a level in the month, report the individual incidents instead of a median &mdash; a median of three is decoration.</p>
+
+<h2>3. The two health numbers</h2>
+<p>The response numbers say how the <em>machines</em> did. The health numbers say whether the <em>system around them</em> is improving:</p>
+<table>
+<tr><th>Number</th><th>Formula</th><th>Source</th></tr>
+<tr><td><strong>Action-closure rate</strong></td><td>% of post-mortem actions shipped by their due date</td><td>the five-action table each blameless review produces (the cap is what makes it countable)</td></tr>
+<tr><td><strong>Cadence-kept %</strong></td><td>% of incidents where every promised update went out inside its window</td><td>the incident communication timeline &mdash; each update row carries a promised next-update time; either it was kept or it was not</td></tr>
+</table>
+<p>Six numbers total. A seventh is a slide, and slides are how this report dies.</p>
+
+<h2>4. Where the timestamps come from</h2>
+<p>The metrics are downstream of two tables the team should already keep: the incident timeline table (written <em>during</em> incidents, not reconstructed afterwards) and the post-mortem action table. If the timeline table is not being filled in the moment, stop here and fix that first &mdash; reconstructed numbers are fiction with a confident font. This is also the report's first quality gate: the percentage of incidents with a <em>complete</em> timeline table is itself a metric (section 9). If it is under 100%, mark the month's report provisional and say why on the page.</p>
+
+<h2>5. What good looks like: bands, not targets</h2>
+<p>Targets invite gaming; bands invite diagnosis. Read each month's number against its band, and treat a move between bands as the decision trigger:</p>
+<table>
+<tr><th>Number</th><th>Healthy band</th><th>What the bad band means</th></tr>
+<tr><td>MTTD, SEV1</td><td>under 10 minutes &mdash; monitoring covered the path that broke</td><td>over 30 minutes means detection-by-customer: fund detection first (the 40% slice of the IR budget), do not buy anything else yet</td></tr>
+<tr><td>MTTA, paged incidents</td><td>under 5 minutes</td><td>over 15 is a rota or staffing problem, not a tooling one &mdash; no dashboard fixes it</td></tr>
+<tr><td>MTTR, SEV2</td><td>under 60 minutes is the small-team bar</td><td>any SEV1 over 4 hours generates one detection item and one rollback item, whatever the root cause</td></tr>
+<tr><td>Recurrence</td><td>top-3 causes do not repeat within the quarter</td><td>same cause twice means the action did not ship, or shipped and did not work &mdash; reopen it</td></tr>
+<tr><td>Action-closure</td><td>about 70% by due date is honest</td><td>100% every month means the actions were written to be sandbagged; tighten the due dates</td></tr>
+<tr><td>Cadence-kept</td><td>90% or better</td><td>each miss gets a line and a cause &mdash; the missed update at 2am is a rota finding, not a scolding</td></tr>
+</table>
+
+<h2>6. What not to measure</h2>
+<p>Small teams drown in dashboards by measuring things that can only be improved by lying. The do-not-measure list:</p>
+<ul>
+<li><strong>Uptime as a vanity number</strong> &mdash; five nines of a service nobody depends on is a certificate, not a metric; the SLO definition page covers the honest version, with an error budget attached.</li>
+<li><strong>Per-person response speed league tables</strong> &mdash; nothing kills a blameless review faster than a scoreboard. The moment MTTA becomes a contest, acks get gamed and the data becomes theatre.</li>
+<li><strong>Incidents per person</strong> &mdash; it measures who reports honestly, not who breaks things.</li>
+<li><strong>Ticket counts inflated by reclassification</strong> &mdash; if the number improves when someone recategorizes, it is not a metric.</li>
+<li><strong>Anything that can only improve by redefining "incident," "restore," or "due date."</strong> If a definition change would move the number, fix the definition first, then re-baseline &mdash; never compare across the change.</li>
+</ul>
+
+<h2>7. The one-page layout</h2>
+<p>The report is one page, and every block earns its place:</p>
+<ul>
+<li><strong>Header:</strong> month, total incidents, count by severity level.</li>
+<li><strong>The six numbers</strong> with a trend arrow against last month (&uarr;&darr;&rarr;) and the band each sits in. A number without its band is trivia.</li>
+<li><strong>Three lines, maximum:</strong> what moved and <em>why</em> &mdash; each line names the change that moved it (the new alert, the rollback runbook, the rota gap). A number that moved with no named cause is a mystery, not a win.</li>
+<li><strong>The action table:</strong> every open post-mortem action with owner and due date, the overdue count in bold. The overdue count is the most honest number on the page.</li>
+<li><strong>One question at the bottom:</strong> <em>what do we stop or start because of this page?</em> The report ends when the question has an answer, not when the page is printed.</li>
+</ul>
+
+<h2>8. Worked example: twelve-person payments SaaS, six incidents in August</h2>
+<p>The team had argued for a quarter about whether response was "getting better." The first report took twenty minutes to compile from the timeline tables they were already keeping:</p>
+<table>
+<tr><th>Number</th><th>July</th><th>August</th><th>Why</th></tr>
+<tr><td>MTTD, SEV1&ndash;2</td><td>31 min</td><td>9 min</td><td>queue-depth alert shipped after the July gateway outage (the detection line item from the IR budget)</td></tr>
+<tr><td>MTTA, paged</td><td>6 min</td><td>6 min</td><td>flat &mdash; Sunday rota gap, one engineer covering two services; became September's action</td></tr>
+<tr><td>MTTR, SEV2</td><td>71 min</td><td>44 min</td><td>rollback runbook written after the June deploy incident</td></tr>
+<tr><td>Recurrence</td><td>33%</td><td>17%</td><td>the config-change factor got a pre-deploy checklist; two of twelve incidents still touched it</td></tr>
+<tr><td>Action-closure</td><td>3/5</td><td>4/5</td><td>the fifth shipped four days late; the delay was the finding, not the failure</td></tr>
+<tr><td>Cadence-kept</td><td>4/6</td><td>5/6</td><td>the miss was a 2am SEV3 with one on-call; single-writer rule needs the rota fix too</td></tr>
+</table>
+<p>Three decisions came off the page: fund a Sunday rota slot (MTTA will not move otherwise), add the queue-depth alert to the vendor-onboarding checklist so new integrations inherit it, and stop the weekly ops sync &mdash; the numbers showed it had surfaced nothing the report did not. The meeting that used to run on vibes now runs twenty minutes with the page as the only agenda.</p>
+
+<h2>9. Metrics that keep the report honest</h2>
+<ol>
+<li><strong>Timeline completeness:</strong> % of incidents with a full timeline table. Under 100%, the report prints "provisional" &mdash; the input, not the math, is the gap.</li>
+<li><strong>Compiled within three business days of month end.</strong> A report that arrives on the 20th is a history lesson; by day three it is still a decision.</li>
+<li><strong>One decision per report, logged.</strong> Six numbers, zero decisions, two months running &mdash; either the numbers are fine (say so and shrink the report) or the report is decoration (kill it and fix the timeline table).</li>
+</ol>
+
+<h2>Where this fits</h2>
+<p>The severity matrix is what makes the medians meaningful &mdash; the <a href="incident-severity-matrix-template.html">severity matrix template</a> defines the levels the numbers are grouped into. The <a href="incident-communication-timeline-template.html">incident communication timeline</a> is the source of both the cadence-kept % and half the timestamps; the <a href="blameless-post-incident-review-template.html">blameless post-incident review</a> produces the action table that closure rate counts, and its contributing-factors log is where recurrence comes from. When a number refuses to move, the <a href="incident-response-budget-template.html">incident response budget</a> is how you buy the fix &mdash; detection first. And if the uptime number is doing all the talking, the <a href="sla-slo-definition-template.html">SLA/SLO definition template</a> replaces it with an error budget that has opinions.</p>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+<li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; done-for-you, built from your estate, 48h &mdash; $249</li>
+</ul>
+</main>
+</body>
+</html>
