@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Month-End Close Checklist for Small Teams — the Two-Hour Ritual That Catches Money Leaks</title>
+<meta name="description" content="A month-end close a five-person team actually finishes in two hours: four passes over money in, money out, reconciliation and access, the five-number close note, and the decision log that makes every following month faster.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/monthly-close-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Month-End Close Checklist for Small Teams</h1>
+<p class="lede">The monthly close is not accounting theater. It is the two hours a month when small money leaks are still small: the duplicate subscription in week two, the failed card you never retried, the payout that never landed, the seat that kept billing for someone who left in March. Big companies close because their auditors make them. Small teams should close because the leaks they carry are a bigger share of the money &mdash; and nobody is coming to make them.</p>
+
+<h2>Why close at all &mdash; the leaks this ritual catches</h2>
+<p>Four classes of leak hide inside an ordinary month, and none of them announce themselves. <strong>Money in leaks:</strong> a card fails on the 14th, the retry fails on the 15th, and the invoice quietly ages until it is a write-off. A dispute clock starts on a chargeback and the ten-day window burns while nobody is named to answer it. <strong>Money out leaks:</strong> the analytics tool you trialed in week one converted to $189/month; two seats still bill for people who left; the annual plan you forgot about hit the card like a small car. <strong>Reconciliation leaks:</strong> your books say one balance, the bank says another, and the difference is a payout that arrives next month &mdash; or an FX spread you never priced in. <strong>Access leaks:</strong> a leaver's admin login that still works, a card holder who joined the team and nobody told the bank. Every one of these is cheap to fix on day 3 and expensive to discover at tax time.</p>
+
+<h2>1. Book the box before the month starts</h2>
+<p>The close happens on a fixed day &mdash; day 3 to day 5 of the next month &mdash; because bank feeds and processor payouts lag one to two days behind reality. Close on the 1st and you reconcile against a moving floor. It has a <strong>named owner</strong> (one person; "finance" is not a name), a <strong>two-hour box</strong> on the calendar, and a defined escape hatch: if the owner is out, the close moves, it does not get skipped &mdash; a skipped close is a month you will audit blind. Two hours is the honest budget for a team under twenty. If your close takes six, you are doing an annual audit monthly; cut scope to the four passes below and let the <a href="annual-ops-budget-template.html">annual budget template</a> carry the deep work once a year.</p>
+
+<h2>2. Pass one &mdash; money in</h2>
+<p>Open three things side by side: what your books say you earned, what the payment processor says it settled, and what the bank actually received. Then hunt the four gaps. <strong>Failed charges:</strong> list every failed or retried payment and give each one an action &mdash; retry with a dated follow-up, dunning email, or a written decision to drop it. <strong>Refunds:</strong> every refund this month has a reason; three refunds for the same bug is not three refunds, it is a defect report. <strong>Disputes:</strong> any chargeback opened this month starts a clock with a named daily owner &mdash; see the <a href="chargeback-response-template.html">chargeback response template</a> for the paperwork that wins. <strong>Uninvoiced work:</strong> the quiet one. Check time logged, projects closed, or shipments made against invoices raised. The gap between them is work you paid for and did not bill. Revenue is not cash; the close exists because your books count promises and the bank counts cash.</p>
+
+<h2>3. Pass two &mdash; money out, line by line</h2>
+<p>Open the company card statement and name every single charge out loud. This sounds slow; it takes eleven minutes and it is the highest-yield eleven minutes of the ritual. Each charge gets one of three labels: <em>known and needed</em>, <em>known and kill</em>, or <em>unknown &mdash; investigate</em>. The killers found here are predictable: the trial that converted quietly, the second seat tier nobody downgraded, the annual renewal that hit on the 14th, the tool two teams pay for separately. Cross-check against the <a href="software-license-register.html">software license register</a> &mdash; any tool billing without a register entry is either a zombie or a shadow purchase, and both are findings. The <a href="saas-sprawl-audit-checklist.html">SaaS sprawl audit</a> is the deep version of this pass; the monthly pass is its tripwire. Receipts for anything over your policy threshold get attached now, while the person who bought it still remembers why.</p>
+
+<h2>4. Pass three &mdash; reconcile the three ledgers</h2>
+<p>Bank statement, books/spreadsheet, and processor payout report are three ledgers of the same month. Reconcile pairs, not totals: match the <em>count</em> of transactions, not just the sum &mdash; a +$412 refund and a &minus;$412 charge can cancel to a balance that "matches" while both lines are wrong. Processor payouts are the classic trap: your processor batches on the last business day and the bank lands it on the 2nd, so books and bank will differ by design. Keep a one-line payout-in-transit note so the difference is explained, not mysterious. Check the fee lines while you are there: FX spread on foreign sales, per-transaction fees against what you modeled, the reserve some processors hold silently. If the three ledgers disagree by more than rounding after this pass, the discrepancy gets a line item and an owner &mdash; reconciliation debt compounds exactly like interest.</p>
+
+<h2>5. Pass four &mdash; people, access, and new commitments</h2>
+<p>Three spot-checks, five minutes each. <strong>Joiners and leavers:</strong> anyone who joined got their card access, tool seats, and expense policy in week one; anyone who left had all three removed &mdash; cross-check against the <a href="employee-onboarding-checklist-template.html">onboarding</a> and offboarding lists. <strong>Access drift:</strong> pull the admin lists of your three most critical systems and compare against who is actually employed. The <a href="user-access-review-checklist.html">quarterly user access review</a> is the deep version; the monthly pass just catches the fresh drift. <strong>New commitments:</strong> every vendor signed this month goes into the <a href="vendor-contract-checklist.html">vendor contract checklist</a> file with its renewal date and auto-escalation clause. A contract you signed in month N and never recorded is a renewal you will be surprised by in month N+11.</p>
+
+<h2>6. Record the decisions, not just the numbers</h2>
+<p>A close that produces only numbers repeats its arguments every month. Decisions made during the close &mdash; "dropped the $189 analytics tool, keeping the $29 one", "wrote off the $140 failed invoice from the old client", "renegotiated the processor rate at next renewal" &mdash; go into the <a href="decision-log-template.html">decision log</a> with five fields: date, decision, owner, why, revisit date. Next month's close starts from the log, not from scratch, and the "why kill that tool?" argument dies its second death in one line instead of thirty minutes. This is what makes each close faster than the last one; a close that never gets faster is a close that never decides anything.</p>
+
+<h2>7. The close note: five numbers and five bullets</h2>
+<p>The output is one page, not a binder. Five numbers at the top: cash in, cash out, net, runway in months, and the top surprise &mdash; the one line that surprised you most, because next month's surprise is usually this month's ignored line. Below, five bullets of what changed (found leaks, killed subs, disputes opened/closed, reconciliation status). Archive it as <code>YYYY-MM-close.md</code> next to the decision log. The archive is the quiet payoff: twelve files later you have a trend line of your own business that no dashboard gives you, and new-month closes that start from last month's open items finish in half the time. Two hours, same day, same owner, one page out &mdash; that is the whole contract.</p>
+
+<h2>A worked example: the five-person team that found $2,140 a month</h2>
+<p>A five-person studio runs its first real close in March, after a year of "we check the bank app sometimes." Pass two, line by line: the session-analytics tool from the January hackathon is still billing $189 &mdash; nobody has logged in since February. Two former contractors still hold seats on the design suite, $114 a month. The "backup monitoring service" they signed at a conference is $89 and has never once fired an alert. Pass one finds a $460 invoice sent in week one that bounced the card and was never retried &mdash; a one-line dunning email recovers $412 of it. Pass three finds a $63 FX spread on EUR sales that the pricing page never accounted for. Total found: $2,140/month in leaks and one recovered invoice. The whole close took two hours and eleven minutes. The team's reaction &mdash; "we should have done this two years ago" &mdash; is the correct reaction, and it is also the wrong lesson: the right lesson is that it takes two hours, not two years.</p>
+
+<h2>Related pages</h2>
+<ul>
+<li><a href="annual-ops-budget-template.html">Annual Ops Budget Template</a> &mdash; the yearly plan this ritual feeds with real numbers</li>
+<li><a href="chargeback-response-template.html">Chargeback Response Template</a> &mdash; the dispute clock that pass one must never miss</li>
+<li><a href="decision-log-template.html">Decision Log Template</a> &mdash; where close decisions live so next month starts faster</li>
+<li><a href="software-license-register.html">Software License Register</a> &mdash; the register pass two checks charges against</li>
+<li><a href="saas-sprawl-audit-checklist.html">SaaS Sprawl Audit Checklist</a> &mdash; the quarterly deep-clean behind the monthly tripwire</li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a> &mdash; the quarterly deep version of pass five's spot-check</li>
+<li><a href="employee-onboarding-checklist-template.html">Employee Onboarding Checklist</a> &mdash; the joiner side of the access spot-check</li>
+<li><a href="vendor-contract-checklist.html">Vendor Contract Checklist</a> &mdash; where new commitments get recorded with renewal dates</li>
+<li><a href="invoice-fraud-bec-prevention-checklist.html">Invoice Fraud &amp; BEC Prevention Checklist</a> &mdash; because some line items should never be paid</li>
+<li><a href="company-card-compromised-runbook.html">Company Card Compromised Runbook</a> &mdash; the day the statement pass finds something worse than waste</li>
+<li><a href="weekly-review-checklist.html">Weekly Review Checklist</a> &mdash; the lighter weekly pass that keeps month-end boring</li>
+</ul>
+
+<hr>
+<p><strong>A money leak is a subscription to the past; the month-end close is the unsubscribe button.</strong> Book the box on day 3&ndash;5, run four passes &mdash; money in, money out, three-ledger reconciliation, people and access &mdash; record the decisions, ship the five-number note, and archive it where next month can find it. Small teams that close monthly find their leaks while they are line items; teams that do not, find them at tax time, when they are stories.</p>
+</main>
+</body>
+</html>
