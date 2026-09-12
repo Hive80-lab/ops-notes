@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RTO and RPO for Small Teams (The Two Numbers That Price Your Backups) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="RTO and RPO defined in customer terms for small teams: how much work disappears (RPO), how long until customers can work again (RTO), tier-based targets that are actually affordable, the restore drill that measures the gap, and the five traps that turn DR numbers into wishes.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/rto-rpo-small-teams.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>RTO and RPO for small teams: the two numbers that price your backups</h1>
+<p>Every disaster-recovery document has two acronyms in it, and most small teams copied them from an enterprise template: <em>RTO 4 hours, RPO 15 minutes.</em> Then the disk dies on a Thursday evening, and the real numbers turn out to be <em>RPO 22 hours</em> (the nightly dump ran at 02:00) and <em>RTO 19 hours</em> (nobody had ever restored it before). The declared numbers were not a plan; they were a mood. RTO and RPO are useful exactly when they are treated as prices: <em>RPO is how much work you can afford to lose, RTO is how long your customers can afford to wait, and every improvement in either costs real money every month.</em></p>
+<p>This note defines the two numbers in customer terms, sets them per service tier so they are affordable, shows the arithmetic that prices them, lists the five traps that make them lie, and gives a one-afternoon rollout anchored on a restore drill you can run this week.</p>
+
+<h2>1. What the two numbers actually mean</h2>
+<ul>
+<li><strong>RPO &mdash; recovery point objective &mdash; is how much work disappears.</strong> It is a clock-face gap: the distance between the last restorable copy and the moment of failure. RPO of 24 hours with a nightly dump means the customer loses a day of entered data, and support spends the next week re-keying it with them. The honest question to ask per service: <em>if N hours of data vanish, what does the customer actually lose, and who re-enters it?</em></li>
+<li><strong>RTO &mdash; recovery time objective &mdash; is how long until customers can work again.</strong> Not until the server boots: until the <a href="https://hive80-lab.github.io/ops-notes/service-catalog-template.html">service catalog</a>'s written promise (&ldquo;accepts payments&rdquo;) is being kept again. A VM that boots in 10 minutes and serves errors for six more hours has an RTO of six hours, no matter what the doc says.</li>
+<li><strong>The third number: measured RTO.</strong> The only RTO that exists is the one you have timed on a real restore. Declared minus measured is not a rounding error &mdash; it is the risk, and it never shrinks on its own.</li>
+</ul>
+
+<h2>2. Set them per tier, not per company</h2>
+<p>One pair of numbers for the whole company is a category error: the checkout database and the internal wiki do not have the same value per hour. Set RTO/RPO where the tiers already live &mdash; the <a href="https://hive80-lab.github.io/ops-notes/service-catalog-template.html">service catalog</a> &mdash; and let the tier do the arguing:</p>
+<ul>
+<li><strong>Tier 1</strong> (customers feel it in minutes): RPO in minutes &mdash; streaming replication or managed point-in-time recovery. RTO in tens of minutes &mdash; a failover that has been rehearsed, with the promotion steps on one page.</li>
+<li><strong>Tier 2</strong> (workaround exists): RPO up to 24 hours &mdash; a nightly dump with tested restore. RTO up to a business day.</li>
+<li><strong>Tier 3</strong> (internal): RPO a week, RTO best effort, said out loud. Pretending otherwise spends tier-1 money on tier-3 comfort.</li>
+</ul>
+<p>The test for each number is affordability: write down what the next 10&times; improvement costs &mdash; managed PITR vs nightly dumps vs a warm standby &mdash; and pick the cheapest number the business can actually absorb. A number you cannot afford to implement is not an objective; it is a wish with an acronym.</p>
+
+<h2>3. The arithmetic that prices the promise</h2>
+<ul>
+<li><strong>RPO costs storage and replication, monthly:</strong> a nightly dump is nearly free; hourly binlog shipping costs a little; continuous PITR costs the most. The bill is steady; the loss it prevents is lumpy and rare. That asymmetry is why the number gets decided calmly, on a Tuesday, instead of during the outage.</li>
+<li><strong>RTO costs capacity and rehearsal:</strong> a warm standby burns money monthly whether or not it ever fails over, and a cold restore costs the hours it takes to run &mdash; which you only know if you have run it. Rehearsal is the cheapest RTO you can buy.</li>
+<li><strong>Every 10&times; improvement is usually a different mechanism, not more of the same:</strong> 24h&rarr;1h is dump frequency; 1h&rarr;5min is replication; 1h&rarr;10min is a warm standby and runbooks. Price the jumps, then buy the one the tier needs.</li>
+</ul>
+
+<h2>4. The five traps</h2>
+<p><strong>Declaring enterprise numbers with small-team plumbing.</strong> RPO 15 minutes written above a nightly cron job is not ambition, it is fiction with a footer. Measure the current gap first (when did the last restorable copy happen?), then declare, then buy down if the tier needs it.</p>
+<p><strong>RTO measured to &ldquo;server up.&rdquo;</strong> The database host is back; the app now replays two days of queue, rebuilds search indexes, and support answers &ldquo;where did my Tuesday go?&rdquo; The customer clock runs until the promise is kept &mdash; the <a href="https://hive80-lab.github.io/ops-notes/incident-severity-matrix-template.html">severity language you already use</a> should end at the same line.</p>
+<p><strong>Backups that have never been restored.</strong> A backup is a hope until a restore has been run end to end &mdash; same law as the untested rollback script in the <a href="https://hive80-lab.github.io/ops-notes/change-advisory-board-template.html">change review</a>. The <a href="https://hive80-lab.github.io/ops-notes/backup-restore-drill-checklist.html">restore drill checklist</a> exists because the first drill almost always finds that the dump is fine and everything around it (credentials, network path, disk space, ordering) is not.</p>
+<p><strong>One number for the whole company.</strong> The DR PDF says 4 hours; the ingest pipeline's customers lose a day and the checkout queue loses nothing, because they have different tiers. Declare per service, per tier &mdash; or the number is an average of things that never happen.</p>
+<p><strong>Numbers that grew stale silently.</strong> The RTO was rehearsed when the database was 20 GB; two years later the restore takes nine hours and the dump window overlaps business hours. RTO/RPO decay as data grows &mdash; which is why the drill is a calendar event, not a memory.</p>
+
+<h2>5. Worked example</h2>
+<p>An eight-person B2B expense tool declares &ldquo;RTO 4h, RPO 1h&rdquo; in its security questionnaire. The plumbing underneath: a nightly database dump at 02:00, never restored, on the same availability zone as the primary. A disk failure on the database host lands at 18:40 on a Thursday. Recovery takes 22 hours &mdash; a new host, a permissions puzzle, a 14-hour dump restore &mdash; and the company loses 17 hours of customer receipts (the real RPO was 24h minus four).</p>
+<p>The redo takes one afternoon and $85/month. They restore the existing dump into a scratch host and <em>measure</em>: 3h40m, most of it dump-transfer. Tier-1 database moves to managed point-in-time recovery (RPO 5 minutes, measured by the provider's SLA and spot-checked monthly), and a read replica gets a rehearsed promotion runbook &mdash; promoted in a drill in 41 minutes end to end. New declared numbers, per tier: checkout RPO 5 min / RTO 1 hour; reporting RPO 24h / RTO 8h; internal tools RPO 7d / best effort. The next real failure &mdash; six weeks later, an hour-long provider outage &mdash; costs 40 minutes of replica lag and one status-page update. The counter-example is the competitor whose DR PDF promised RPO 15 minutes while the &ldquo;replication&rdquo; was an rsync cron job to a server in the same rack; their real outage lost three days, and the PDF survived as a sales artifact.</p>
+
+<h2>6. Metrics (for the metric itself)</h2>
+<ul>
+<li>Every tier 1&ndash;2 service has a declared RPO and RTO, one line each, traceable to its catalog tier.</li>
+<li>A restore is measured at least twice a year &mdash; and declared &ge; measured always; when measured exceeds declared, either fix or re-declare within the week.</li>
+<li>The monthly price of each number is written next to it, so the next downgrade-or-upgrade debate starts from money, not vibes.</li>
+<li>Drills are calendar events with owners, not crisis memories.</li>
+<li>The numbers are re-checked when data volume doubles &mdash; that is when quiet decay happens.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/disaster-recovery-plan-template-small-teams.html">disaster recovery plan template for small teams</a> is the document these two numbers anchor, the <a href="https://hive80-lab.github.io/ops-notes/backup-restore-drill-checklist.html">backup restore drill checklist</a> is how measured RTO gets its number, and the <a href="https://hive80-lab.github.io/ops-notes/backup-restore-test-template.html">restore test template</a> is the recurring version.</em></p>
+</main>
+</body>
+</html>

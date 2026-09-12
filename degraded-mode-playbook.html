@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Degraded Mode Playbook for Small Teams (Serve Something While the Dependency Is Down) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A degraded-mode playbook for small teams: pre-choose the reduced service per dependency (stale reads, queue-and-forward, read-only), put the switch within reach, and tell customers out loud &mdash; instead of deciding at 2am and landing on full outage.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/degraded-mode-playbook.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Degraded mode playbook for small teams: serve something while the dependency is down</h1>
+<p>When a dependency breaks, a small team really has two options: the reduced service it chose <em>in advance</em>, or a full outage it chose by default. At 2am nobody designs a fallback &mdash; they either improvise a risky one or freeze the whole product. Degraded mode is not heroic engineering; it is a one-page decision, made on a calm afternoon, per dependency: <em>if this goes down, we serve X, customers hear it from us, and one named switch flips it.</em> Teams that write the page down survive vendor outages with a banner. Teams that don't survive them with an apology email.</p>
+<p>This note gives the four-mode ladder, the kill-switch rule that makes degradation reachable in minutes, the customer conversation, the five traps, and a half-day rollout.</p>
+
+<h2>1. The mode ladder: pick one per dependency, in advance</h2>
+<pre>
+MODE 0  FULL          everything works (the normal state)
+MODE 1  STALE READS   serve last-known data + "may be up to N minutes old" banner
+MODE 2  QUEUE+ACK     accept the work, queue it, confirm with a timestamp:
+                      "received 14:22, will process when X returns"
+MODE 3  READ-ONLY     browsing and viewing work; anything that writes is off
+MODE 4  DOWN          honest full outage; status page carries the load
+</pre>
+<p>The rules that make the ladder real:</p>
+<ul>
+<li><strong>One written mode per tier-1 dependency.</strong> "We'd figure something out" is not a mode. The row reads: <em>address-validation vendor down &rarr; MODE 2 &rarr; queue shipments, validate on recovery &rarr; switch: FEATURE_ADDR_QUEUE=on</em> &mdash; with the owner's name beside it.</li>
+<li><strong>Mode is a floor, not a ceiling.</strong> Start at the pre-chosen mode; escalate up the ladder only with the same care. The pre-choice exists so the first five minutes are execution, not design.</li>
+<li><strong>Every mode change has a customer-visible signal.</strong> A banner in the product, a line on the <a href="status-page-template.html">status page</a>, or an email &mdash; chosen before the incident, not after the first "is this broken?" ticket.</li>
+<li><strong>The flip-back is planned too.</strong> Queued work drains, stale caches refresh, the flag returns to off, and someone owns verifying each step. Degraded modes that have no exit become the new normal.</li>
+<li><strong>Unbounded queues are a disguised outage.</strong> MODE 2 without a cap and a drain time is just a slower failure. Bound it, announce the drain estimate, and say what happens to work that won't fit.</li>
+</ul>
+
+<h2>2. The kill-switch rule</h2>
+<p>A degraded mode you cannot reach is a rumor. Every written mode must be reachable by a switch that:</p>
+<ul>
+<li><strong>Flips in under five minutes</strong> &mdash; a config change, a feature flag, or a cached-response toggle. Not a deploy; not a call to someone on holiday.</li>
+<li><strong>Has been pulled at least once</strong> &mdash; in a drill or a maintenance window. The switch nobody has ever thrown fails in exactly the way you'd expect: typo'd key, wrong environment, permission nobody has. The <a href="feature-flag-cleanup-checklist.html">flag cleanup pass</a> exists so the inventory stays small enough to actually test.</li>
+<li><strong>Has a named owner and a back-out.</strong> Who pulls it, who verifies the mode took effect, and what the switch-back looks like &mdash; one line each, in the same table.</li>
+<li><strong>Degrades one dependency, not the product.</strong> If flipping the switch takes the whole app down "temporarily," that is not a kill switch; that is a second outage waiting for the first.</li>
+</ul>
+
+<h2>3. The customer conversation</h2>
+<p>Silent degradation is discovered by customers, and discovery without explanation reads as betrayal. The playbook ships with the words, pre-written:</p>
+<ul>
+<li><strong>One product banner line per mode.</strong> Stale reads: <em>"Reports may be up to 15 minutes old &mdash; your data is safe and syncing."</em> Queue mode: <em>"We're receiving orders and will process them as soon as our payment partner recovers; you'll get a confirmation email either way."</em></li>
+<li><strong>The status page gets the same sentence</strong> plus a next-update time, using the standard <a href="status-page-template.html">status page format</a> &mdash; what is reduced, what still works, when the next update lands.</li>
+<li><strong>Recovery gets a closing note</strong>, including what happened to queued work. "All 214 queued orders processed by 16:40, three failed and were refunded" is the sentence that turns a degraded hour into a trust deposit. The <a href="outage-email-templates-customers.html">outage email templates</a> carry the same clocks.</li>
+</ul>
+
+<h2>4. The five traps</h2>
+<p><strong>The 2am design.</strong> The mode ladder written during the incident is a wish, not a plan &mdash; and it competes with actually putting out the fire. Degraded mode is an afternoon of calm work stored for an uncalm night; if it doesn't exist on paper yet, expect the default (full outage) to win.</p>
+<p><strong>The never-pulled switch.</strong> A flag added in a sprint six months ago, never flipped since, environment variable name guessed from memory. First real pull: typo, no effect, three wasted minutes that felt like thirty. Drill one switch a month.</p>
+<p><strong>Silent degradation.</strong> Serving stale data without a banner converts a technical state into a trust incident: customers make decisions on old numbers and find out from each other. If the mode is visible in the data, it must be visible in the product.</p>
+<p><strong>Queue without a receipt.</strong> Accepting writes into a queue that has no ack, no bound, and no drain announcement means customers don't know whether their order exists. The receipt with a timestamp is the product during degraded mode; the processing is a detail.</p>
+<p><strong>No way back.</strong> Read-only mode that no one owns exiting becomes permanent read-only, then a migration, then a post-mortem about the post-mortem. Every mode entry has a matching exit checklist: switch off, queue drained, cache refreshed, banner lifted, and someone's name on each line.</p>
+
+<h2>5. Worked example</h2>
+<p>A nine-person logistics SaaS routes shipments and validates addresses through a third-party API. When the vendor had a three-hour outage, their entire product went down with it &mdash; checkout included &mdash; because validation was on the critical path and nobody had ever decided it didn't have to be. Thirty-one support conversations and two lost customers later, they spent a half-day writing the ladder.</p>
+<p>They settled on: address-validation down &rarr; MODE 2 (accept shipments, queue validation, confirm with a timestamp) reachable by a config flag they tested that same week in a maintenance window; reporting feeds &rarr; MODE 1 (stale reads, 15-minute banner). When the same vendor degraded six weeks later, the flip took four minutes, the banner went up in three, and queued shipments were validated and confirmed by the end of the hour &mdash; support conversations: three, all forwarding the same receipt. The counter-example is their own earlier practice, preserved in the post-mortem: the bypass flag <em>existed</em> during the three-hour outage but had never been pulled in production, and the person who knew the variable name was asleep.</p>
+
+<h2>6. Metrics (for the mode itself)</h2>
+<ul>
+<li>100% of tier-1 dependencies have a written mode + switch + owner &mdash; one table, one screen, reviewed quarterly next to the <a href="service-catalog-template.html">service catalog</a>.</li>
+<li>One kill-switch drill per month; every switch pulled successfully at least once per quarter.</li>
+<li>Time-to-degrade under 10 minutes from alert to mode active (measured in the drill, not first tried in the incident).</li>
+<li>Zero silent degradations &mdash; every mode change has a banner/status/email event attached.</li>
+<li>100% of queued work gets a receipt, a bound, and a recovery report with counts.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/vendor-outage-runbook.html">vendor outage runbook</a> covers the dependency side, the <a href="https://hive80-lab.github.io/ops-notes/database-outage-runbook.html">database outage runbook</a> applies the same read-only and queue-and-ack pattern to your own writes, and the <a href="https://hive80-lab.github.io/ops-notes/internet-outage-runbook.html">internet outage runbook</a> is the degraded mode for the network itself.</em></p>
+</main>
+</body>
+</html>
