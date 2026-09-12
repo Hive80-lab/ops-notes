@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service Catalog for Small Teams (One Page That Says What You Run for Customers) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A one-screen service catalog template for small teams: one row per customer-facing service, three tiers that set paging, comms, and review cadence, a written 'up means' promise per tier-1 service, and the five traps that turn a catalog into CMDB theater.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/service-catalog-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Service catalog for small teams: one page that says what you run for customers</h1>
+<p>Every serious ops artifact a small team owns secretly depends on a document they never wrote: the list of services, who owns each one, and what &ldquo;working&rdquo; means for it. Incident severity fights happen without it (is the dashboard being slow a P1 or a P2? <em>says who?</em>), the status page drifts into forty-component theater without it, and capacity effort gets spread evenly across services of wildly different importance. A service catalog fixes the root. It does not need a CMDB tool &mdash; for a team under fifty, it needs one page with nine rows and a rule that everyone actually follows.</p>
+<p>This note gives the one-page catalog, the three-tier system that does the real work, the written &ldquo;up means&rdquo; promises that feed your status page, the five traps that turn catalogs into shelfware, and a one-afternoon rollout.</p>
+
+<h2>1. The catalog: one row per customer-facing service</h2>
+<table>
+<tr><th>Service</th><th>What the customer gets</th><th>Tier</th><th>Owner</th><th>&ldquo;Up&rdquo; means</th><th>Customers see</th></tr>
+<tr><td>Checkout API</td><td>can complete a purchase</td><td>1</td><td>Priya</td><td>accepts payments 99.9%/mo, <a href="https://hive80-lab.github.io/ops-notes/golden-signals-alerting.html">latency</a> p95 &lt; 800ms</td><td>status page row</td></tr>
+<tr><td>Ingest pipeline</td><td>their data appears in reports</td><td>1</td><td>Sam</td><td>queue drains &lt; 5 min behind</td><td>status page row</td></tr>
+<tr><td>Dashboard web</td><td>can log in and view reports</td><td>2</td><td>Marco</td><td>loads &lt; 3s for 99% of sessions</td><td>status page row</td></tr>
+<tr><td>Billing jobs</td><td>correct invoices on the 1st</td><td>2</td><td>Priya</td><td>runs complete by 06:00, zero missed accounts</td><td>email if missed</td></tr>
+<tr><td>Internal admin</td><td>staff tools only</td><td>3</td><td>Sam</td><td>best effort</td><td>nothing</td></tr>
+</table>
+<p>Each column earns its place:</p>
+<ul>
+<li><strong>What the customer gets</strong> is written in their words, not yours. &ldquo;Can complete a purchase,&rdquo; not &ldquo;payment API 200s.&rdquo; This column is what you tell customers during an incident, which is why it comes first.</li>
+<li><strong>Tier</strong> is the load-bearing column &mdash; it decides paging, comms, review cadence, and budget priority (section 2).</li>
+<li><strong>Owner is a person.</strong> A team cannot be paged at 3am with a clear conscience; a name can. Every row has a name and a backup name.</li>
+<li><strong>&ldquo;Up&rdquo; means</strong> is one measurable sentence per service. If you cannot write it, that service has no working definition of healthy &mdash; which is a finding about the monitoring, not about the sentence.</li>
+<li><strong>Customers see</strong> is the honesty column: either the service appears on the public <a href="https://hive80-lab.github.io/ops-notes/status-page-template.html">status page</a>, or it does not, and the row says which. No invisible tier-1 services.</li>
+</ul>
+
+<h2>2. Three tiers, and everything hangs off them</h2>
+<ul>
+<li><strong>Tier 1 &mdash; customers feel it in minutes.</strong> Defaults to P1 in the <a href="https://hive80-lab.github.io/ops-notes/incident-severity-matrix-template.html">severity matrix</a>, pages the on-call, requires a status-page update inside 15 minutes, gets weekly capacity rows, gets spend priority when headroom runs low.</li>
+<li><strong>Tier 2 &mdash; degraded, but a workaround exists or the pain is scheduled.</strong> P2 by default, fixes land same or next business day, monthly capacity check, no paging outside hours unless the promise above is breached.</li>
+<li><strong>Tier 3 &mdash; internal or cosmetic.</strong> No public promise, no paging, best-effort SLA, fixed when it blocks someone. Saying this out loud is the point: a team that treats all services as equally important spends its nights equalizing, not prioritizing.</li>
+</ul>
+<p>The tier decides behavior before the incident, which is the only moment it can be decided calmly. The catalog is where that decision is stored so nobody has to re-litigate it at 2am &mdash; the same pre-agreement logic as <a href="https://hive80-lab.github.io/ops-notes/standing-orders-delegation-template.html">standing orders</a>, applied to infrastructure.</p>
+
+<h2>3. &ldquo;Up&rdquo; means: the promise in one sentence</h2>
+<p>Tier 1 and 2 services each get a written promise &mdash; one measurable sentence, measured where the customer experiences it (the load balancer, the queue lag, the job completion time), not inside the process where everything looks healthy. The sentence does three jobs at once: it is the component description on the status page, the threshold the <a href="https://hive80-lab.github.io/ops-notes/error-budget-policy-template.html">error budget</a> spends against, and the definition of &ldquo;recovered&rdquo; in a post-mortem. Teams that skip this sentence discover during their first bad night that &ldquo;the service is up&rdquo; and &ldquo;customers can check out&rdquo; were never the same claim.</p>
+
+<h2>4. The five traps</h2>
+<p><strong>CMDB theater.</strong> Two hundred rows with owners like &ldquo;Platform&rdquo; and last-modified dates from two reorgs ago is not a catalog, it is a museum. If the page does not fit on one screen, it will not be read during an incident, which is the only time it matters. Nine rows that everyone knows beat ninety nobody maintains.</p>
+<p><strong>Tier inflation.</strong> Everything becomes tier 1 because every owner argues well. Then tier 1 stops meaning anything, paging spreads evenly, and the genuinely critical service waits behind a broken internal dashboard. The test is brutal and simple: can a tier-1 outage page a human at 3am with no discussion? If that is unremarkable, the list is wrong.</p>
+<p><strong>&ldquo;Up&rdquo; undefined.</strong> A catalog row without a measurable promise just relocates the argument from the incident to the post-mortem. One sentence, measured where the customer feels it, written before it is needed.</p>
+<p><strong>Teams as owners.</strong> &ldquo;Owned by Data Platform&rdquo; resolves to whoever is unluckiest in the room. A name and a backup, on the page, next to the row.</p>
+<p><strong>The catalog nobody consults.</strong> If incident severity is not assigned <em>by looking up the tier</em>, if the status page components are not the catalog rows, if capacity is not tracked per tier-1 service first &mdash; then the page is decoration, and it will rot. The catalog has to be the input to at least three processes you already run, or it is one more stale wiki page.</p>
+
+<h2>5. Worked example</h2>
+<p>A seven-person e-commerce enablement SaaS argues about severity during every incident, lists forty microservices on a status page nobody reads, and split its last quarter's reliability budget evenly across everything. They spend one afternoon on the catalog: nine rows, three tiers, named owners, one-sentence promises for the five tier-1/2 services. The forty-component status page collapses to five components &mdash; the five rows customers can actually hold.</p>
+<p>The next two incidents prove the page. A nightly ingest backlog that would previously have triggered a 2am all-hands is looked up, found to be tier 1 with a &ldquo;queue drains in 5 minutes&rdquo; promise, breached for 40 minutes &mdash; P2, status note posted at 9am, no page. Two weeks later, checkout 5xx at 14:10 on a Tuesday: tier 1, P1 by default, first status update at 14:22, engineer paged by name. Nobody argued about either severity. The quiet change is in the budget: capacity rows now exist only for tier 1&ndash;2 services, which is where the next infrastructure dollar goes. The counter-example is the sister company that bought a CMDB, seeded it with two hundred services, and held a quarterly review to discover the owners listed had all left.</p>
+
+<h2>6. Metrics (for the metric itself)</h2>
+<ul>
+<li>The catalog fits one screen; every row has a named owner and a backup.</li>
+<li>Every tier 1&ndash;2 row carries a one-sentence measurable &ldquo;up means.&rdquo;</li>
+<li>Severity assignments trace to tiers &mdash; spot-check the last ten incidents: zero relitigated.</li>
+<li>Status page components equal catalog rows one-for-one.</li>
+<li>The list is re-reviewed quarterly, when services are added or retired &mdash; the same pass that updates <a href="https://hive80-lab.github.io/ops-notes/capacity-planning-template.html">capacity rows</a>, so the two pages cannot drift apart.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/incident-severity-matrix-template.html">incident severity matrix</a> is what the tiers feed, the <a href="https://hive80-lab.github.io/ops-notes/status-page-template.html">status page template</a> is the public face of the same rows, and the <a href="https://hive80-lab.github.io/ops-notes/capacity-planning-template.html">capacity planning template</a> sizes them in the same weekly meeting.</em></p>
+</main>
+</body>
+</html>
