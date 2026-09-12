@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Post-Deploy Verification for Small Teams (Ten Minutes After Every Deploy) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A post-deploy verification checklist for small teams: the ten minutes after every deploy that close the loop &mdash; re-run the reproduction against production, watch the symptom metric one burn-down window, read the new-error stream, touch the adjacent path, check what the deploy wrote, fire the async paths, re-validate the rollback note, and declare it done with a timestamp.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/post-deploy-verification-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+
+<h1>Post-Deploy Verification for Small Teams</h1>
+<p class="lede">A green pipeline is the deploy&rsquo;s opinion of itself. It proves the build compiled and the scripts ran. It proves nothing about whether customers stopped hurting, whether the new code writes rows your reports can read, or whether the queue consumer three services away can still parse its payload. Verification is the <strong>ten minutes after every deploy</strong> that closes the loop: re-run the reproduction against production, watch the metric the customers feel, and only then say the word &ldquo;done.&rdquo; Without it, every deploy ships on faith &mdash; and regressions get discovered by support tickets.</p>
+
+<h2>The ten-minute loop: eight checks</h2>
+<ol>
+<li><strong>Re-run the reproduction &mdash; in production, from the ticket.</strong> The failing order flow succeeds, the wrong value is gone, the timeout stops timing out. Pull the reproduction from the ticket or the incident channel, not from memory: it must be the <em>customer&rsquo;s</em> failure re-run, not the developer&rsquo;s theory re-checked. For a feature deploy this is the acceptance path; for a fix it is the exact reproduction recorded before the fix.</li>
+<li><strong>Watch the symptom metric for one burn-down window.</strong> Ten minutes of the metric the <em>customers</em> feel: error rate, failed-payment rate, queue depth, p95 latency, sign-up conversion. Not CPU, not memory &mdash; the thing that was hurting. If nobody names the symptom metric before the deploy, the <a href="release-checklist.html">release checklist</a> box &ldquo;monitoring row for the change&rdquo; was skipped.</li>
+<li><strong>Read the new-error stream.</strong> The last ten minutes of exceptions and error logs, filtered to signatures that did not exist this morning. A deploy routinely fixes the loud bug and quietly ships a quieter one &mdash; a new stack trace at 4 per hour is invisible unless you look for <em>new</em>.</li>
+<li><strong>Touch the adjacent path.</strong> One request through whatever else calls the changed code: the other endpoint sharing the module, the report that reads the table you migrated, the mobile version of the endpoint you reshaped. Most deploy regressions are not in the path that was fixed &mdash; they are in the path that shares a wall with it.</li>
+<li><strong>Check what the deploy <em>wrote</em>.</strong> For migrations and backfills, running is not done: SELECT a sample of the new rows, count them against expectation, spot-check one row&rsquo;s shape. &ldquo;The migration completed&rdquo; and &ldquo;the data is right&rdquo; are different facts, and only one of them is visible in the pipeline.</li>
+<li><strong>Fire the async paths.</strong> Cron jobs, queue consumers, webhook receivers, nightly jobs &mdash; anything that runs the changed code <em>later</em>. A deploy can break only the code that executes at 2am, and nobody notices for six days. If the changed code has an async caller, force one run inside the verification window (or verify the last run&rsquo;s output shape).</li>
+<li><strong>Re-validate the rollback note.</strong> The one-line revert written before the deploy &mdash; still true? Command still correct, flag name unchanged, verification step for the revert still makes sense. If verification fails at minute nine, the revert must be one command, not archaeology. If it fails this check, treat the deploy as un-verified and go run the <a href="deployment-rollback-checklist.html">rollback checklist</a> now, while context is warm.</li>
+<li><strong>Declare it done, with a timestamp.</strong> In the channel, one line: <em>&ldquo;Deployed 14:12, verified 14:21 &mdash; reproduction passes, error rate flat, queue drained. Watching until 14:45.&rdquo;</em> The timestamp is not ceremony: it is what the <a href="incident-post-mortem-template.html">post-mortem</a>, the <a href="incident-metrics-report-template.html">incident metrics</a>, and the next on-call all read back.</li>
+</ol>
+
+<h2>Five traps</h2>
+<ul>
+<li><strong>Verifying the deploy, not the symptom.</strong> Green checks on the pipeline, &ldquo;shipped!&rdquo; in the channel &mdash; and nobody re-ran the thing the customer was doing. The pipeline proves the build works; only the symptom proves the <em>problem</em> is gone.</li>
+<li><strong><code>curl /healthz</code> theater.</strong> The health endpoint ran fine in every deploy, including the three that broke checkout. Health checks prove the process is alive. If the health check doesn&rsquo;t exercise the changed code, it verified nothing about this deploy.</li>
+<li><strong>Deploy-and-walk.</strong> The deploy lands at 5:50pm and the window is watched by nobody. The regression is discovered by a customer at 9am &mdash; twelve hours of damage that a ten-minute watch would have caught. The verification window is part of the deploy, not an optional add-on; it ends when someone has <em>looked</em>, not when the deploy button turns green.</li>
+<li><strong>Staging-only verification.</strong> Staging proves the code works <em>somewhere</em>. Production is a different shape: real data volumes, real third parties, real clock skew, real payloads from customers who ignored the docs. Verify in production &mdash; carefully, read-first, on the smallest real path.</li>
+<li><strong>Verification debt.</strong> There is no reproduction, so there is nothing to re-run, so the deploy ships on faith. This is the compound interest version: every un-reproducible deploy makes the next one less verifiable too. The fix is upstream &mdash; reproduction happens during the fix, and the <a href="release-checklist.html">release checklist</a> books the ten minutes as a box, not a hope.</li>
+</ul>
+
+<h2>Worked example</h2>
+<p>An eleven-person B2B invoicing SaaS fixed a payment-retry bug on a Tuesday. The old way: merge, green pipeline, &ldquo;shipped&rdquo; in the channel at 17:03, everyone logged off. The retry queue consumer couldn&rsquo;t parse the new payload shape and had been crashing since the deploy; 1,900 retries piled up over six days until a customer asked why their card hadn&rsquo;t been charged. Cost: one angry renewal call, an apology credit, and a week of &ldquo;is it fixed yet&rdquo; tickets.</p>
+<p>The rerun, next deploy: reproduction from the ticket re-run against prod &mdash; the failed invoice charges and flips to paid (check 1); error stream clean for the window, zero new signatures (check 3); adjacent dunning email path touched &mdash; still sending (check 4); retry consumer forced once &mdash; drained 214 queued jobs, queue depth flatlined, one poisoned message moved to the dead-letter queue with a ticket (check 6); rollback note re-read at 17:09 and still one command (check 7); declared in channel with both timestamps (check 8). Total: eleven minutes. The same loop, two weeks later, caught a webhook signature change in four minutes &mdash; the queue was watched, the poison message was quarantined, and the fix shipped the same evening.</p>
+
+<h2>Metrics (for the verification loop itself)</h2>
+<ul>
+<li>100% of deploys have a written verification &mdash; named symptom metric, named reproduction. Count it in the release checklist; anything else is aspiration.</li>
+<li>Median deploy-to-verified time. A growing median means the loop is decaying into &ldquo;green pipeline = done.&rdquo;</li>
+<li>% of fix deploys whose recorded reproduction was re-run in production. If the number is under 100%, the reproduction habit upstream is broken.</li>
+<li>Escapes caught in-window vs caught by support. The ratio is the whole point: every escape support finds first is a customer who did your verification for you, unhappily.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/hotfix-process-checklist.html">hotfix process</a> is where this loop runs fastest &mdash; check 7 lives here; the <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">deployment rollback checklist</a> is what happens when verification fails at minute nine; and the <a href="https://hive80-lab.github.io/ops-notes/release-checklist.html">release checklist</a> is where the ten minutes get booked as a box before anyone touches deploy.</em></p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
