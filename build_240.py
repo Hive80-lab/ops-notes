@@ -1,0 +1,165 @@
+import re, os
+os.chdir('/Users/haroonqamer/Swarm/hive/state/seo/ops-notes')
+PAGE = 'budget-vs-actuals-monthly-review.html'
+URL  = 'https://hive80-lab.github.io/ops-notes/budget-vs-actuals-monthly-review.html'
+TODAY = '2026-09-13'
+
+html = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Budget vs Actuals &mdash; The Monthly Hour That Tells You If You&rsquo;re Running the Business You Planned</title>
+<meta name="description" content="A budget vs actuals review small teams will actually run: three columns, a variance threshold, the five lines worth reading, the three honesty rules, and the five traps &mdash; plus the cleaning company whose payroll creep was two un-repriced contracts all along.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/budget-vs-actuals-monthly-review.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+<h1>Budget vs Actuals: The Monthly Hour That Tells You If You&rsquo;re Running the Business You Planned</h1>
+<p class="lede">Three columns (budget, actual, variance), a threshold that decides which numbers earn a question, the five lines worth reading, the three honesty rules that keep the comparison honest, and the five traps that turn it into a spreadsheet nobody opens again.</p>
+
+<p>Most small businesses write a budget once &mdash; in January, or when the bank asked, or in a burst of January-gym energy &mdash; and then never look at it again, because the number it predicted and the numbers on the statement have nothing to say to each other. The budget is not the point. The <em>comparison</em> is the point: once a month, for one hour, you sit the plan next to the actuals and read the differences. That hour is where a creeping cost is caught in month two instead of month ten, where a pricing mistake announces itself as a gross-margin variance, and where the <a href="annual-ops-budget-template.html">annual operating budget</a> stops being a document and becomes a steering wheel. It is the P&amp;L sibling of the <a href="13-week-cash-flow-forecast.html">13-week cash flow forecast</a>: the forecast answers <em>will the bank account survive the quarter</em>, the budget-vs-actual answers <em>is the business you planned the one you are actually running</em>. The actuals come from the <a href="monthly-close-checklist.html">month-end close</a> &mdash; which is why the close happens first and this hour happens second, same coffee.</p>
+
+<h2>1. The three columns &mdash; and the threshold that decides what earns a question</h2>
+<p>The whole review is one table: every line with its <strong>budget</strong>, its <strong>actual</strong>, and its <strong>variance</strong> (dollars and percent, sign included &mdash; under-budget is not automatically good). Then one rule keeps the hour to an hour:</p>
+<ul>
+<li><strong>The threshold:</strong> any line off by more than <strong>10% or $500, whichever is smaller</strong>, gets a written one-line cause and a one-line action. Everything else is noise this month.</li>
+<li><strong>Read the signal, not the line:</strong> a $180 variance on a $2,000 line is noise; a $180 variance on a $200 line is a fire. Percent catches small-line explosions, dollars catch big-line drift. Use both.</li>
+<li><strong>Every variance gets a name, not a mood:</strong> &ldquo;payroll over by $4,100 &mdash; two extra Saturdays, marina fit-out&rdquo; is a variance. &ldquo;Payroll seems high again&rdquo; is a complaint.</li>
+</ul>
+<p>The threshold is the whole trick. Without it, the review drowns in forty lines and dies; with it, three lines a month get read properly, and the other thirty-seven are allowed to be fine.</p>
+
+<h2>2. The five lines worth reading first &mdash; every time, before any other line</h2>
+<ol>
+<li><strong>Revenue</strong> &mdash; off by more than 10%? Either the plan was fiction or the market moved; both are worth knowing in month two, not at tax time.</li>
+<li><strong>Gross margin</strong> (revenue minus direct costs, as a percent) &mdash; the single most underrated line in small business. Materials and subcontractor creep hide here, invoiced revenue lags hide here, and this is the line that exposes a <a href="change-order-scope-creep-checklist.html">scope creep</a> you absorbed for free.</li>
+<li><strong>Payroll</strong> &mdash; usually the biggest line and the slowest to fix. A payroll variance is a schedule, a hire, or a pricing problem, and it compounds monthly.</li>
+<li><strong>Rent and fixed overhead</strong> &mdash; boring on purpose. These lines exist to be flat; movement here is a lease event or a surprise, and either way it is rare enough to always deserve the question.</li>
+<li><strong>One discretionary line</strong> &mdash; travel, software, marketing &mdash; rotated monthly. It is where budgets quietly leak, and where the <a href="expense-reimbursement-policy.html">expense policy</a> and the <a href="saas-sprawl-audit-checklist.html">SaaS register</a> feed you the answer.</li>
+</ol>
+<p>Forty-line variance reviews don&rsquo;t survive contact with a real month. Five lines, read with intent, do.</p>
+
+<h2>3. The monthly ritual &mdash; thirty minutes, same sitting as the close</h2>
+<ol>
+<li><strong>Pull the actuals</strong> from the finished close &mdash; not the bank feed, the closed books. Comparing against half-closed numbers is how phantom variances get born.</li>
+<li><strong>Mark every line past the threshold.</strong> In a healthy month that&rsquo;s two to five lines. More than eight means the chart of accounts or the budget itself is drifting &mdash; fix the instrument before trusting the reading.</li>
+<li><strong>Write the one-liner per line:</strong> cause, then action. &ldquo;Fuel +22% &mdash; two country jobs; recharge travel to those jobs at renewal.&rdquo; If the action takes more than one line, it goes on the task list, not the table.</li>
+<li><strong>Roll the lesson forward:</strong> a variance that is a permanent change (new supplier price, new wage rate) updates the <em>remaining months</em> of the budget. A variance that was a one-off (repair, event) does not &mdash; over-reacting to one-offs is how budgets stop matching reality within a quarter.</li>
+<li><strong>Feed the cash forecast:</strong> anything the comparison revealed as committed spend belongs in the <a href="13-week-cash-flow-forecast.html">13-week outflow rows</a> the same day. The two tools share one truth.</li>
+</ol>
+<p>Thirty minutes, once a month, calendar as immovable as <a href="debtor-days-monthly-review.html">debtor days day</a>. The month it feels skippable is always the month it would have paid for itself.</p>
+
+<h2>4. The three honesty rules</h2>
+<ul>
+<li><strong>The budget is a decision record, not a wish.</strong> If actuals beat the plan six months running, the plan was wrong in an interesting way &mdash; record why, don&rsquo;t quietly celebrate into ruin.</li>
+<li><strong>Never re-forecast the gap away.</strong> Mid-year &ldquo;re-baselines&rdquo; that move the budget down to meet the actuals are how a dying margin hides. A re-baseline is allowed once a year, in writing, with the reason named.</li>
+<li><strong>Classify once, consistently.</strong> The same invoice lands in the same line every month. Half the variances in small business are not performance at all &mdash; they are classification drift, and they vanish the day the coding is consistent (the <a href="purchase-order-process-small-teams.html">job code on the PO</a> is what buys this).</li>
+</ul>
+
+<h2>5. The five traps</h2>
+<ul>
+<li><strong>The budget built and shelved.</strong> Written in a fit of January energy, referenced never. A budget without a monthly hour is a New Year&rsquo;s gym membership.</li>
+<li><strong>Variance theatre.</strong> Reading all forty lines out loud every month. Forty lines read shallowly beats zero lines read deeply and loses to five lines read deeply.</li>
+<li><strong>Fixing the number instead of the cause.</strong> Reclassifying your way out of a payroll variance. The line goes green; the problem keeps drawing wages.</li>
+<li><strong>&ldquo;It&rsquo;s just timing.&rdquo;</strong> The most expensive sentence in the review. Sometimes true &mdash; but a revenue variance excused as timing three months in a row is a trend wearing a disguise.</li>
+<li><strong>Nobody owns a line.</strong> &ldquo;The budget&rdquo; belongs to everyone, so each variance belongs to no one. Every line that can move gets one name beside it &mdash; the same one-name-not-a-vibe rule the <a href="standing-orders-delegation-template.html">standing orders and delegation template</a> uses for approvals.</li>
+</ul>
+
+<h2>6. Worked example &mdash; the cleaning company&rsquo;s two un-repriced contracts</h2>
+<p>An eleven-person commercial cleaning business, $1.6M revenue, contracts across forty sites. Payroll was budgeted at 46% of revenue; month two&rsquo;s actual came in at 53% &mdash; a $5,800 variance, way past any threshold. The old way, that line would have been absorbed as &ldquo;wages went up&rdquo;. The new way, the one-liner forced a cause: two fixed-price contracts had quietly grown &mdash; a client added two floors and a weekend common-area service and the price never moved; the second had crept from three nights a week to five across a year of polite yeses. Together they were running 38% over contract hours. The fix: re-quoted both at renewal (+$3,100/month), a &ldquo;scope change = new price&rdquo; line added to the contract checklist, and the monthly one-liner ritual kept. Annual effect: roughly $37,000 of margin that had been leaking for an estimated fourteen months before the first review caught it. The owner&rsquo;s verdict: <em>&ldquo;The budget didn&rsquo;t find the problem. The hour did. I&rsquo;d just never given it the hour.&rdquo;</em></p>
+
+<h2>Kits</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="annual-ops-budget-template.html">annual ops budget template</a> is where the budget column comes from &mdash; this page is what makes it earn its keep twelve times a year; the <a href="monthly-close-checklist.html">month-end close</a> produces the actuals &mdash; never compare against half-closed books; the <a href="13-week-cash-flow-forecast.html">13-week cash flow forecast</a> is the cash-side twin &mdash; variance findings become forecast rows the same day; the <a href="debtor-days-monthly-review.html">debtor days monthly review</a> is the revenue-side cousin &mdash; same ritual, different line; and the <a href="supplier-payment-terms-checklist.html">supplier payment terms checklist</a> is where cost variances get renegotiated into terms instead of absorbed into margin.</em></p>
+
+</main>
+</body>
+</html>
+'''
+open(PAGE, 'w').write(html)
+
+# 1) index.html - TOP card
+card = ('<li><a href="' + PAGE + '">Budget vs Actuals: The Monthly Hour That Tells You If You&rsquo;re Running '
+        'the Business You Planned</a>'
+        '<div class="desc">Three columns (budget, actual, variance &mdash; sign included, under-budget is not '
+        'automatically good); the threshold that decides which lines earn a question (10% or $500, whichever is '
+        'smaller &mdash; percent catches small-line fires, dollars catch big-line drift); the five lines worth '
+        'reading first (revenue, gross margin, payroll, fixed overhead, one discretionary line on rotation); the '
+        'thirty-minute ritual bolted onto the month-end close; the three honesty rules (decision record not wish, '
+        'never re-forecast the gap away, classify once); and the five traps (built-and-shelved budgets, variance '
+        'theatre, fixing the number instead of the cause, &ldquo;it&rsquo;s just timing&rdquo;, lines nobody owns). '
+        'Worked example: the cleaning company whose 53%-vs-46% payroll variance was two un-repriced contracts '
+        '&mdash; re-quoted at renewal for +$3,100/month, ~$37k/year that had been leaking for fourteen months.</div></li>')
+idx = open('index.html').read()
+if PAGE not in idx:
+    m = re.search(r'(<h1>Ops notes</h1>\s*)(<li><a href="[^"]+\.html">)', idx)
+    assert m, 'index anchor missing'
+    idx = idx[:m.start(2)] + card + idx[m.start(2):]
+    open('index.html', 'w').write(idx)
+
+# 2) sitemap.xml - newest-first insert
+sm = open('sitemap.xml').read()
+if URL not in sm:
+    url = ('<url><loc>' + URL + '</loc><lastmod>' + TODAY + '</lastmod>'
+           '<changefreq>weekly</changefreq><priority>0.8</priority></url>')
+    m = re.search(r'(<urlset[^>]*>)', sm)
+    assert m, 'urlset missing'
+    sm = sm[:m.end()] + url + sm[m.end():]
+    open('sitemap.xml', 'w').write(sm)
+
+# 3) README.md - new entry on line 1
+readme = open('README.md').read()
+if URL not in readme:
+    entry = ('- **NEW: [Budget vs Actuals: The Monthly Hour That Tells You If You&rsquo;re Running the Business '
+             'You Planned](' + URL + ')** &mdash; three columns and a variance threshold, the five lines worth '
+             'reading first, the thirty-minute ritual bolted onto the close, the three honesty rules that keep '
+             'the comparison honest, and the five traps. Worked example: the cleaning company whose payroll '
+             'creep was two un-repriced contracts &mdash; $37k/year recovered.\\\\n')
+    open('README.md', 'w').write(entry + readme)
+
+def backlink(fname, rel):
+    t = open(fname).read()
+    if PAGE not in t:
+        if '</main>' in t:
+            t = t.replace('</main>', rel + '</main>', 1)
+        else:
+            m = re.search(r'(<footer>)', t); assert m, fname + ' footer missing'
+            t = t[:m.start()] + rel + t[m.start():]
+        open(fname, 'w').write(t)
+
+# 4) reciprocal backlinks
+backlink('annual-ops-budget-template.html',
+    '<p><em>Related: writing the budget is the once-a-year half; the <a href="' + URL + '">budget vs actuals '
+    'monthly review</a> is the twelve-times-a-year half &mdash; a budget that never meets its actuals is a wish, '
+    'not a plan.</em></p>\\n')
+backlink('monthly-close-checklist.html',
+    '<p><em>Related: the close produces the numbers the <a href="' + URL + '">budget vs actuals review</a> '
+    'reads &mdash; same sitting, close first, comparison second; never review against half-closed books.</em></p>\\n')
+backlink('13-week-cash-flow-forecast.html',
+    '<p><em>Related: the <a href="' + URL + '">budget vs actuals review</a> is the P&amp;L sibling of the '
+    '13-week forecast &mdash; one asks is the business the one you planned, the other asks will the bank account '
+    'survive the quarter; findings feed forecast rows the same day.</em></p>\\n')
+backlink('debtor-days-monthly-review.html',
+    '<p><em>Related: the <a href="' + URL + '">budget vs actuals review</a> and the debtor-days review are the '
+    'same ritual pointed at different lines &mdash; one reads the plan against the books, the other reads the '
+    'clock against the receivables.</em></p>\\n')
+
+# 5) linkcheck
+page = open(PAGE).read()
+hrefs = re.findall(r'href="([^"#]+?\.html)"', page)
+missing = [h for h in hrefs if not h.startswith('http') and not os.path.exists(h)]
+assert not missing, 'broken relative links: %r' % missing
+
+# 6) summary
+n = open('sitemap.xml').read().count('<url>')
+cards = open('index.html').read().count('<li><a href="')
+print('OK build_240: sitemap urls=%d, index cards~%d, page %d bytes, 0 coupon=%s'
+      % (n, cards, os.path.getsize(PAGE), 'HIVE20' not in page))
