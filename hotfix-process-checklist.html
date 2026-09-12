@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Hotfix Process for Small Teams (Eight Checks Between &ldquo;It&rsquo;s Bleeding&rdquo; and &ldquo;It&rsquo;s Fixed&rdquo;) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A hotfix process for small teams: the bar a production fire must clear before it earns an emergency deploy, eight checks that keep the fix fast but not reckless, the shortcut-trail cleanup after the fix lands, and the five traps (hotfix-as-culture, the bypass deploy, fixing a guess, the forgotten backport, hero mode).">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/hotfix-process-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+
+<h1>The Hotfix Process for Small Teams</h1>
+<p class="lede">A hotfix is an emergency deploy that skips the release train. The danger is not the speed &mdash; speed is the point. The danger is the <strong>shortcut trail</strong> a hotfix leaves behind: an unreviewed diff, skipped tests, a config changed by hand, a branch that never made it back to main. Next week's regular release steps on that trail and produces the next hotfix. The fix for this is not a committee. It is eight checks that take under ten minutes and keep an emergency deploy fast <em>and</em> survivable.</p>
+
+<h2>The bar: what earns a hotfix</h2>
+<p>Not every bug earns an emergency deploy. A hotfix is justified when <strong>production is losing money or trust right now</strong>, the normal release train is too slow to stop it, and the fix is smaller than the damage it prevents. Three questions, answered out loud before anyone touches a keyboard:</p>
+<ul>
+<li><strong>What is it costing per hour?</strong> A number &mdash; orders failing, wrong amounts charged, logins broken. &ldquo;It's bad&rdquo; is not a number. If nobody can name the cost, the fix can probably wait for the next release.</li>
+<li><strong>What is the smallest change that stops the bleeding?</strong> The hotfix is a tourniquet, not the surgery: disable the feature flag, revert the offending commit, cap the wrong value. The <em>real</em> fix goes through the normal release process.</li>
+<li><strong>Who is the single owner?</strong> One person drives; everyone else stays out of the repo. Two people pushing to a hotfix branch is how a 20-line fix becomes a 200-line incident.</li>
+</ul>
+
+<h2>The eight checks</h2>
+<ol>
+<li><strong>Name it.</strong> One line in the incident channel: symptom, cost, owner, hotfix branch name. Ten seconds. This is the receipt that the shortcut was deliberate &mdash; and the thread everyone can find when someone asks &ldquo;who changed the tax rate on a Friday?&rdquo;</li>
+<li><strong>Smallest diff that stops the bleeding.</strong> No drive-by cleanups, no refactors &ldquo;while we're in here.&rdquo; If the diff is over ~50 lines, split it: tourniquet now, fix through the normal train.</li>
+<li><strong>Reproduce first, even crudely.</strong> One test, one curl, one log line that shows the failure. Without this you are not fixing the bug &mdash; you are fixing your theory of the bug, and half of hotfix re-deploys are fixes for guesses.</li>
+<li><strong>One review, five minutes, async is fine.</strong> A second pair of eyes on the diff &mdash; not approval theater, just &ldquo;does this do what you think it does, and what else calls this path?&rdquo; The review happens while CI runs, so it costs zero minutes of wall time.</li>
+<li><strong>Rollback note before deploy.</strong> One line: <em>&ldquo;revert = <code>git revert &lt;sha&gt;</code> + flag back on; verify by X.&rdquo;</em> The <a href="deployment-rollback-checklist.html">rollback plan</a> for a hotfix is a sentence, but it must exist <em>before</em> the deploy, written by someone calm, not reconstructed at 2:40am by someone panicked.</li>
+<li><strong>Same pipeline, always.</strong> The hotfix goes through CI and the normal deploy path. The moment &ldquo;it's an emergency&rdquo; justifies pushing straight to prod from a laptop, you have unlearned every discipline the team owns &mdash; and the emergency deploy becomes the culture.</li>
+<li><strong>Verify against the symptom, not the deploy.</strong> Green pipeline means the build works, not that customers stopped hurting. Re-run the reproduction from check 3 against production: the failing order flow succeeds, the wrong value is gone. Then watch the error rate for one burn-down window before declaring victory.</li>
+<li><strong>Close the shortcut trail the same day.</strong> Merge or cherry-pick the fix back to main (never leave the hotfix branch diverged), revert any hand-edited config, re-enable anything disabled, write the post-mortem note while it's fresh &mdash; two paragraphs is enough this night; the full <a href="incident-post-mortem-template.html">post-mortem</a> can wait for the morning.</li>
+</ol>
+
+<h2>Five traps</h2>
+<ul>
+<li><strong>Hotfix as culture.</strong> If most deploys are hotfixes, you don't have an emergency process &mdash; you have no release process. Two hotfixes a week means something upstream is broken: test coverage, feature-flag hygiene, or the <a href="release-checklist.html">release checklist</a> being skipped. Fix the pipeline, not just the incident.</li>
+<li><strong>The bypass deploy.</strong> <code>ssh</code> into the box and restart with the new file &ldquo;just this once.&rdquo; Now prod runs code that exists in no repo, and the next deploy overwrites the hotfix in front of the customers it was saving. If it isn't in the pipeline, it didn't happen.</li>
+<li><strong>Fixing a guess.</strong> The most common hotfix failure is not a bad deploy &mdash; it's the <em>second</em> deploy, shipping because the first one fixed the wrong thing. Reproduction first. Ten minutes of proving the theory saves an hour of re-deploying.</li>
+<li><strong>The forgotten backport.</strong> Hotfix branch diverges from main, gets forgotten, and the next scheduled release quietly un-fixes the bug. The hotfix isn't done until main has it. Same day, always.</li>
+<li><strong>Hero mode.</strong> The same person always pages themselves, reviews their own diff, and ships alone. It works right up until the night their fix is wrong and nobody knows the context. Rotate the driver; the reviewer is never optional, even at 2am &mdash; <em>especially</em> at 2am.</li>
+</ul>
+
+<h2>Worked example</h2>
+<p>An eight-person e-commerce SaaS, Friday 4:40pm: the tax calculation started charging 0% on international orders. The old way: the on-call engineer found the cause (a config change in Thursday's release), pushed a fix straight from her laptop past a red pipeline because &ldquo;CI is broken anyway,&rdquo; told no one, and left. Monday, the next deploy overwrote the hand-edited config &mdash; the bug came back for six hours, 140 mis-billed orders, eleven support conversations, one chargeback.</p>
+<p>The rerun, three months later, same class of bug at the same hour: declare in channel (cost named: ~$2,300/hr in mis-billed orders), four-line diff behind a check already in the code, one failing-order reproduction recorded, five-minute review from the London engineer while CI ran, rollback note written before deploy, deployed through the normal pipeline at 4:58pm, reproduction re-run against prod, error rate watched one burn-down window. Monday's release cherry-picked the fix, config reverted, two-paragraph post-mortem posted that evening. Total: 22 minutes from declare to verified, zero re-deploys, two support emails &mdash; and the post-mortem flagged the underlying config gap, which shipped as a proper fix through the normal train the next week.</p>
+
+<h2>Metrics (for the hotfix process itself)</h2>
+<ul>
+<li>Hotfixes per ten deploys: trending toward 1&ndash;2 or fewer. A rising rate means the normal train is dropping the ball &mdash; investigate the <em>upstream</em>, not the hotfixes.</li>
+<li>100% of hotfixes had a written rollback note <em>before</em> deploy. Count it; anything else is aspiration.</li>
+<li>100% backported to main within 24 hours. Diverged hotfix branches are unexploded ordnance in the repo.</li>
+<li>Time from declare to <em>verified symptom gone</em> &mdash; not to &ldquo;deploy finished.&rdquo; Track the median; a growing median says the eight checks are decaying.</li>
+<li>Zero repeat hotfixes for the same symptom inside two weeks. A repeat means check 3 (reproduce first) was skipped.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist.html">deployment rollback checklist</a> is what check 5 points at when the tourniquet needs a real plan; the <a href="https://hive80-lab.github.io/ops-notes/change-freeze-window-policy.html">change freeze window policy</a> decides when &ldquo;wait for Monday&rdquo; beats &ldquo;ship the hotfix&rdquo;; and the <a href="https://hive80-lab.github.io/ops-notes/incident-post-mortem-template.html">post-mortem template</a> is where the two-paragraph note from check 8 grows up in the morning.</em></p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
