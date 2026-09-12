@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Response Budget Template for Small Teams (What to Fund First, and What Can Wait) &mdash; HIVE80lab</title>
+<meta name="description" content="An incident response budget that fits one page: the five line items small teams actually fund (detection, second copies, on-call time, practice, transfer), the 40/30/20/10 split, the funding rule (one bad afternoon pays for the whole year), the spending ladder, what NOT to buy first, and three metrics. Worked example: twelve-person SaaS, $0 IR budget and a $2,100 emergency invoice replaced by a $3,400/yr budget and $0 panic spend.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/incident-response-budget-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Incident Response Budget Template for Small Teams</h1>
+<p class="lede">Most small teams spend nothing on incident response until the incident &mdash; then spend everything at once, in a panic, on the wrong things. The honest budget has five lines and one split: <strong>fund detection first, second copies second, on-call time third, practice fourth, transfer last</strong>. One bad afternoon funds the whole year. This page is the one-page card, the split, the spending ladder, and what not to buy first.</p>
+
+<h2>1. The one-page IR budget card</h2>
+<p>One row per line item. If a row has no owner and no review date, it is a wish, not a budget line:</p>
+<table>
+<tr><th>Line item</th><th>What it buys</th><th>Annual band</th><th>Owner</th><th>Reviewed</th></tr>
+<tr><td><strong>Detection</strong> &mdash; monitors on the things customers notice first</td><td>Uptime, DNS, SSL/cert expiry, backup-job success, form checks</td><td>$0&ndash;$600</td><td>Named person</td><td>Quarterly</td></tr>
+<tr><td><strong>Second copies</strong> &mdash; the provider you fail over to</td><td>Second DNS provider, offsite backup storage, zone exports</td><td>$120&ndash;$900</td><td>Named person</td><td>Quarterly</td></tr>
+<tr><td><strong>On-call time</strong> &mdash; the hours you are asking someone to give</td><td>Stipend, time-in-lieu, or a written rotation with comp rules</td><td>$0&ndash;$2,400</td><td>Owner/ops lead</td><td>Quarterly</td></tr>
+<tr><td><strong>Practice</strong> &mdash; two tabletops + one restore drill per year</td><td>Half-days of team time, a facilitator, the drill log</td><td>$0&ndash;$1,000</td><td>Named person</td><td>Quarterly</td></tr>
+<tr><td><strong>Transfer</strong> &mdash; insurance and legal readiness</td><td>Cyber insurance quote, notification-duty review, retainer review</td><td>$0&ndash;$1,500</td><td>Owner</td><td>Annually</td></tr>
+</table>
+<p>Total band: roughly <strong>$120&ndash;$6,400 a year</strong> for a team under twenty. The total matters less than the split &mdash; teams that skip detection to buy response tools own alerts that never fire and retainers they can't trigger.</p>
+
+<h2>2. The 40/30/20/10 split</h2>
+<p>Divide whatever you decide to spend this way:</p>
+<ul>
+<li><strong>40% detection.</strong> Small teams don't die from incidents; they die from <em>late</em> incidents. An outage caught by a monitor costs minutes; the same outage caught by a customer tweet costs the afternoon and the trust.</li>
+<li><strong>30% response.</strong> On-call time, the escalation policy, the runbooks people actually open at 2am.</li>
+<li><strong>20% recovery.</strong> Tested backups, a second provider, the restore drill that proves both work.</li>
+<li><strong>10% practice.</strong> Tabletops and drills. It is always the first line cut &mdash; which is exactly why it is a line, not a leftover.</li>
+</ul>
+<p>The split is the budget. A team that spends 80% on tools and 0% on practice has bought equipment for a fire brigade that has never met.</p>
+
+<h2>3. The funding rule: one bad afternoon pays for the year</h2>
+<p>Don't benchmark against enterprise security budgets &mdash; benchmark against your own last incident. <strong>Set the annual IR budget at roughly what your last incident cost you</strong> (engineering hours &times; loaded rate, plus refunds, credits, churn, and the emergency invoice), then spend it <em>before</em> instead of after. If you have never measured the cost of an hour down, do that first &mdash; the <a href="uptime-downtime-budget.html">uptime/downtime budget</a> page has the arithmetic.</p>
+
+<h2>4. The spending ladder (in order, no skipping)</h2>
+<ol>
+<li><strong>Detection first ($0&ndash;$600).</strong> Monitors on the five signals customers hit first. Cheapest line, biggest return, and everything downstream depends on it.</li>
+<li><strong>Second copies second ($120&ndash;$900).</strong> A tested backup and a pre-configured second DNS/backup provider. Untested backups are a wish; the <a href="backup-restore-test-template.html">restore-test template</a> makes them evidence.</li>
+<li><strong>Practice third (time, not money).</strong> Two tabletops and one restore drill a year. This is where the <a href="incident-severity-matrix-template.html">severity labels</a> and runbooks get exercised before they're needed for real.</li>
+<li><strong>Tooling last.</strong> Buy automation only after two drills found the same gap. A tool bought to fix a gap you haven't drilled is a guess with an invoice.</li>
+<li><strong>Transfer when revenue justifies it.</strong> Cyber insurance and legal review after lines 1&ndash;3 exist &mdash; insurers ask what you already do, and "nothing" is the expensive answer.</li>
+</ol>
+
+<h2>5. What NOT to buy first</h2>
+<ul>
+<li><strong>A SIEM.</strong> Nobody under twenty people has the staff to read one. You need five monitors and one alert rule, not a data warehouse for logs.</li>
+<li><strong>An incident response retainer.</strong> Response firms bill for the response you can't yet trigger &mdash; without detection and tested backups, the retainer's first act is discovering what broke.</li>
+<li><strong>EDR + 24/7 SOC bundles.</strong> Real value at 200+ seats. Before that, it's monthly cost defending a house with no smoke alarms.</li>
+<li><strong>The premium monitoring tier.</strong> The $600 plan monitors things nobody agreed to respond to. Write the <a href="escalation-policy-template.html">escalation policy</a> before raising the monitoring bill.</li>
+</ul>
+<p>Every dollar of <em>emergency</em> spend during an incident is a budget line that was missing. That is the whole audit.</p>
+
+<h2>6. Three metrics</h2>
+<ul>
+<li><strong>MTTD (mean time to detect), trending down.</strong> The budget's first job is shortening the time between "broken" and "known." If MTTD isn't falling, the detection line is decoration.</li>
+<li><strong>Lines exercised %.</strong> The share of budget lines that fired in a real incident or were exercised in a drill this quarter. A line never exercised is a line you're renting, not using.</li>
+<li><strong>Emergency spend per incident.</strong> Target: $0. Panic invoices, emergency contractors, and overnight shipping of new tooling all mean the budget didn't reach the line that mattered.</li>
+</ul>
+
+<h2>Worked example: twelve-person SaaS, $0 budget to $3,400 and calm</h2>
+<p>A twelve-person B2B SaaS (payments integrations, nine engineering staff) spent exactly $0 on IR and $2,100 <em>one Saturday</em> &mdash; an emergency contractor re-building DNS at 11pm while support answered tickets with a spreadsheet. A quarter later a payment-processor API outage silently broke checkout for six hours before anyone noticed; the churn conversation that followed was pricier than the contractor.</p>
+<p>They wrote the one-page card: <strong>$3,400/year</strong> split 40/30/20/10 &mdash; $1,360 detection (uptime + DNS + cert + backup-job monitors), $1,020 on-call (a written rotation with time-in-lieu), $680 second copies (second DNS provider + offsite backups with quarterly restore checks), $340 practice (two half-day tabletops, one restore drill). Transfer deferred until renewal season. The next real incident &mdash; the same processor API flaking &mdash; was caught by the processor-health monitor in <strong>90 seconds</strong>, first customer update out in <strong>48 minutes</strong>, emergency spend <strong>$0</strong>. Same team, same vendors; the difference was $3,400 spent before instead of $2,100 spent after, plus the six silent hours they didn't have.</p>
+
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Fund detection first.</strong> Late incidents cost more than every line on this page combined.</li>
+<li><strong>Use the 40/30/20/10 split.</strong> The split is the budget; the total is negotiable, the order is not.</li>
+<li><strong>Benchmark against your last incident.</strong> One bad afternoon funds the whole year &mdash; spend it before, not after.</li>
+</ul>
+
+<p>---</p>
+<p>The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit"><strong>Ops Starter Kit ($14)</strong></a> turns this card into a fillable plan with the severity matrix and runbooks behind it, <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2"><strong>Vol. 2 ($27)</strong></a> adds the DR plan and evidence log for the review after, and the <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle"><strong>Mega Bundle</strong></a> is all five kits at one checkout. Score your current readiness free in two minutes with the <a href="ir-readiness-score.html">IR Readiness Score</a>.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="security-audit-scorecard.html">Security Audit Scorecard</a> &mdash; free, 45 checks scored live in your browser, nothing uploaded.</li><li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li><li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; built from your estate, delivered in 48h &mdash; $249</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident response &amp; comms</li></ul></aside>
+<aside class="related"><h2>Related notes</h2><ul>
+<li><a href="incident-severity-matrix-template.html">Incident Severity Matrix Template (P1&ndash;P4 on One Page)</a></li>
+<li><a href="uptime-downtime-budget.html">The Uptime Budget: How Much Downtime 99.9% Actually Buys</a> &mdash; the cost arithmetic that funds this budget.</li>
+<li><a href="backup-restore-test-template.html">Backup Restore Test Template</a> &mdash; where the second-copies line gets proven.</li>
+<li><a href="first-30-minutes-incident-response.html">First 30 Minutes of Incident Response (What to Do, In Order)</a></li>
+<li><a href="status-page-communication-template.html">Status Page Communication Template (Updates People Trust)</a></li>
+<li><a href="escalation-policy-template.html">Escalation Policy Template</a> &mdash; who gets woken, in what order, for which severity.</li>
+<li><a href="tabletop-exercise-failure-points.html">Tabletop Exercise: Finding Failure Points Before They Find You</a></li>
+<li><a href="ransomware-recovery-checklist.html">Ransomware Recovery Checklist</a></li>
+</ul></aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">kits</a> at <a href="https://hive80-lab.github.io/ops-notes/">hive80-lab.github.io/ops-notes</a>.</footer>
+</body>
+</html>
