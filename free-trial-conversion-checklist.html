@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Free Trial Conversion Checklist (Turn Trials Into Paid) &mdash; The 14-Day Contract That Ends With a Card on File</title>
+<meta name="description" content="A free-trial conversion checklist small teams actually run: define the activation event before launch, credit-card-upfront vs free-first (the honest numbers), the first win in one session on day 0, the day-7 silence alarm, upgrade prompts at value peaks not calendar days, the last-72-hours expiry ladder, and the weekly trial scorecard. Worked example: 120 trials a month, activation 38% to 64%, trial-to-paid 9% to 19%, ~$11,000/year added.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/free-trial-conversion-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>The Free Trial Conversion Checklist &mdash; Turning Trials Into Paying Customers Without Nagging</h1>
+<p><em>A trial is a 14-day contract: the prospect agrees to invest a little effort, you agree to deliver one working win. Trials die of quiet expiry, not of rejection &mdash; most never-converted trialists were never activated, never reached a value moment, and never got a reason to give you a card.</em></p>
+
+<p>This page is the front door of the revenue ladder. The <a href="customer-onboarding-first-30-days-checklist.html">first-30-days plan</a> is its paid twin &mdash; onboarding keeps customers, trial conversion creates them. Once they are customers, <a href="failed-payment-dunning-sequence.html">dunning</a> protects the card, the <a href="cancellation-flow-save-offers.html">save ladder</a> protects the cancel click, and the <a href="win-back-sequence-churned-customers.html">win-back sequence</a> recovers the ones who still walk. Miss this page and every page downstream inherits a smaller list.</p>
+
+<h2>1. Before launch: define the activation event</h2>
+<p>You cannot convert a trial you cannot see. Before the next trial cohort starts, write down one sentence:</p>
+<p><strong>Activated = [person] has [done the core job once, on real data] within [first 3 days].</strong></p>
+<p>Examples: &ldquo;imported one calendar and published one schedule,&rdquo; &ldquo;connected one inbox and tagged 50 messages,&rdquo; &ldquo;scanned one site and fixed one issue.&rdquo; One event, one owner, one number. Every email, in-product hint, and alarm below is aimed at that event. If you cannot name it, your trial emails are generic reminders about a product the prospect has not opened &mdash; that is noise with a deadline.</p>
+
+<h2>2. The two trial designs &mdash; and the honest tradeoff</h2>
+<ul>
+<li><strong>Credit-card-upfront (with reminder):</strong> converts 2&ndash;4&times; better than free-first (industry-typical 15&ndash;30% vs 5&ndash;10%) because asking for a card is itself a commitment filter, and the card makes day-14 a &ldquo;do nothing&rdquo; default. Cost: fewer trials start. Mitigation: a visible &ldquo;you will not be charged until day 14&rdquo; line and a one-click cancel-in-trial path.</li>
+<li><strong>Free-first (no card):</strong> maximizes top-of-funnel and word of mouth. Cost: day-14 is an active decision most prospects procrastinate on; conversion rides entirely on activation and the expiry ladder.</li>
+<li><strong>The hybrid that usually wins:</strong> free-first trial with a &ldquo;skip the line&rdquo; path &mdash; prospects who add a card during the trial get an immediate upgrade to paid features. You get reach and commitment-seekers in one funnel.</li>
+</ul>
+<p>Pick one design, write down the day-14 default for each, and stop redesigning it monthly. The design matters less than whether the activation event happens.</p>
+
+<h2>3. Day 0: the first win in one session</h2>
+<p>The single highest-leverage conversion asset is a trial that produces one visible result <em>on day zero</em>. Concretely:</p>
+<ul>
+<li><strong>No blank canvas.</strong> Pre-provision sample data, one template, one seeded project. The prospect&rsquo;s first open should show a working thing, not an empty state and a docs link.</li>
+<li><strong>One checklist in-product, three steps long.</strong> &ldquo;1. Connect the thing. 2. Run the first job. 3. See the result.&rdquo; Progress bars on real steps convert better than tours describing fake ones.</li>
+<li><strong>Log time-to-first-value.</strong> The minutes from signup to the activation event is the number that predicts conversion. If the median is above day 1, your trial is not a trial yet &mdash; it is a tour.</li>
+</ul>
+
+<h2>4. Days 1&ndash;7: the habit loop and the day-7 silence alarm</h2>
+<p>Activated trials still churn quietly. The fix is habit + alarm:</p>
+<ul>
+<li><strong>Habit:</strong> one small daily or weekly ritual the product creates &mdash; a Monday digest, a daily run, a weekly score. The trial that has run three times is a different animal from the trial that ran once.</li>
+<li><strong>The day-7 silence alarm:</strong> any trial with no login in 3+ days triggers one human-feeling email with one concrete next step (not &ldquo;just checking in&rdquo; &mdash; &ldquo;your sample project has 12 findings waiting; here is the two-minute path to them&rdquo;). This is the cheapest automation you will ever ship &mdash; if you automate nothing else, automate this. Set it up alongside the <a href="what-to-automate-first.html">automations worth doing first</a>.</li>
+</ul>
+
+<h2>5. Days 8&ndash;12: depth, not reminders</h2>
+<p>Mid-trial emails should deliver value, not countdowns:</p>
+<ul>
+<li><strong>Second use case:</strong> &ldquo;Teams like yours also use [feature] for [job].&rdquo; Single-use trials renew at the bottom of the funnel; two-use-case trials renew at multiples.</li>
+<li><strong>The teammate invite:</strong> one email &mdash; &ldquo;add a colleague, trials are team things.&rdquo; Multi-seat trials convert better and land as bigger contracts.</li>
+<li><strong>The save moment:</strong> &ldquo;your first 3 reports are saved and shareable &mdash; here&rsquo;s the link.&rdquo; Ownership of an artifact is the psychological bridge from trying to buying.</li>
+</ul>
+
+<h2>6. Upgrade moments at value peaks &mdash; not calendar days</h2>
+<p>The best upgrade prompt is delivered seconds after a win, when the perceived value is at its peak and the ask reads as a natural next step (&ldquo;that scan found 14 issues &mdash; the fix list is a paid feature; want to run it now?&rdquo;). Calendar-driven prompts (&ldquo;it&rsquo;s day 9, buy now&rdquo;) read as rent-seeking. Two rules:</p>
+<ul>
+<li><strong>Prompt after the win, once.</strong> A value-peak prompt converts; a repeated one trains the prospect to ignore you.</li>
+<li><strong>Honest pricing inside the product.</strong> The plan page must be reachable without a sales call. Hidden pricing inside a trial converts at zero and poisons word of mouth.</li>
+</ul>
+
+<h2>7. The last 72 hours: the expiry ladder</h2>
+<p>Day-12 to day-14 gets three emails, each with a job:</p>
+<ul>
+<li><strong>Day 12 &mdash; the work summary:</strong> &ldquo;here is everything your trial produced&rdquo; (the artifacts, the data, the results, with links). This is the highest-converting email in the funnel: it shows the prospect their own progress, not your enthusiasm.</li>
+<li><strong>Day 13 &mdash; the honest expiry note:</strong> what exactly happens at expiry &mdash; what they keep, what they lose, and the one-click path to keep it. Trials with a concrete, written expiry convert better than vague &ldquo;your trial will end soon&rdquo; warnings.</li>
+<li><strong>Day 14 &mdash; the decision:</strong> upgrade, or the graceful exit. If you run free-first, this is the one email where a modest, one-time offer is honest &mdash; it is not begging if it is the first discount of the relationship.</li>
+</ul>
+<p><strong>Extension rule:</strong> extend once, on request, by 7 days, no questions &mdash; and track it. A second extension request is not interest; it is a no with a polite face. Extensions earned by usage (they were on vacation, they hit the usage cap) are fine; extensions issued as mass mail are conversion theater.</p>
+
+<h2>8. After the trial: paid, declined, expired</h2>
+<p>The trial funnel has three exits, and each needs an owner:</p>
+<ul>
+<li><strong>Paid:</strong> hand them to the <a href="customer-onboarding-first-30-days-checklist.html">first-30-days plan</a> immediately &mdash; the habits built in the trial decide year one.</li>
+<li><strong>Card declined at conversion:</strong> this is a dunning event, not a lost sale &mdash; route it to the <a href="failed-payment-dunning-sequence.html">failed-payment sequence</a> within minutes. A surprising share of &ldquo;failed conversions&rdquo; are just a maxed-out card at 2am.</li>
+<li><strong>Expired:</strong> goes into the <a href="win-back-sequence-churned-customers.html">win-back window</a> with a reason code &mdash; never-activated, activated-but-no-fit, price, or timing &mdash; and your trial telemetry answers the exit question for them, honestly.</li>
+</ul>
+<p>Keep expired trial data for the window, same as customer data &mdash; the <a href="customer-data-deletion-request-checklist.html">deletion rules</a> still apply to anyone who asks.</p>
+
+<h2>9. The weekly trial scorecard &mdash; five numbers</h2>
+<ul>
+<li><strong>Activation rate:</strong> trials that hit the activation event &times; 100. Below ~40% on free-first and the day-0 experience is broken, not the pricing.</li>
+<li><strong>Time-to-first-value:</strong> signup &rarr; activation event, median. Hours, not days, is the target.</li>
+<li><strong>Day-7 active rate:</strong> share of trials still logging in at day 7. This predicts conversion more honestly than signup volume.</li>
+<li><strong>Trial-to-paid rate, by source and design:</strong> cc-upfront vs free-first, paid-ads vs organic vs referral. The overall number flatters you; the split pays you.</li>
+<li><strong>Extend rate:</strong> share of trials extended, and second-extension rate. Above ~15% extended and your 14 days is the wrong number, or your expiry ladder is writing checks.</li>
+</ul>
+<p>Read them next to revenue in the <a href="monthly-close-checklist.html">monthly close</a> so trial math sits on the same page as the money &mdash; trial-to-paid is the one growth number that is also a cash number.</p>
+
+<h2>10. Worked example &mdash; an analytics tool, 120 trials a month</h2>
+<p>A 40-customer analytics SaaS ran free-first, 14-day trials: ~120 trials a month, median time-to-first-value 2.4 days, day-7 active rate 22%, trial-to-paid 9% &mdash; 11 conversions &times; $79 &asymp; $870 MRR added per month, with the team blaming &ldquo;pricing&rdquo; and shipping discounts.</p>
+<p>The checklist ran in two weeks: sample project on day 0 (no blank canvas), the activation event written down (one dashboard, one share), the day-7 silence alarm with a two-minute next step, the work-summary email on day 12, and a value-peak upgrade prompt after the first share. Nothing about pricing changed. In the next cohort: time-to-first-value 2.4 days &rarr; 31 minutes, activation 38% &rarr; 64%, day-7 actives 22% &rarr; 51%, trial-to-paid 9% &rarr; 19% (cc-upfront segment 24%). Same 120 trials: 23 conversions &times; $79 &asymp; $1,820 MRR a month &mdash; roughly $11,000/year for one checklist, two emails, and one alarm. The discount program was retired.</p>
+
+<h2>11. Five mistakes that keep trials free</h2>
+<ul>
+<li><strong>Counting signups as progress.</strong> Trial volume is a vanity number; activation is the funnel. A thousand signups who never run the core job convert at zero and cost you email reputation.</li>
+<li><strong>Countdown spam.</strong> Five &ldquo;your trial ends soon&rdquo; emails teach prospects that day 14 is negotiable noise. Three emails, each with a job.</li>
+<li><strong>The blank canvas.</strong> Every empty state is a request for unpaid work. Seed the product; the prospect is evaluating, not building your onboarding for you.</li>
+<li><strong>Extending trials as a mass gesture.</strong> Universal extensions move the deadline without moving the decision. Extend on request, once, and measure it.</li>
+<li><strong>No reason codes on expiry.</strong> An expired trial with no telemetry is a dead lead; with telemetry it is a win-back list with a known objection. Track why trials expired &mdash; the <a href="win-back-sequence-churned-customers.html">win-back sequence</a> runs on exactly that code.</li>
+</ul>
+
+<hr>
+<p><strong>Trials convert when the product already worked.</strong> Define the activation event, deliver the first win in one session on day zero, alarm the silence on day 7, prompt at value peaks, run the 72-hour expiry ladder, and read five numbers weekly. Then keep the ladder honest behind it: <a href="failed-payment-dunning-sequence.html">dunning</a> for the card, the <a href="cancellation-flow-save-offers.html">save ladder</a> for the cancel click, and the <a href="win-back-sequence-churned-customers.html">win-back window</a> for the ones who got away &mdash; each stage feeding the next, none of it begging.</p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
