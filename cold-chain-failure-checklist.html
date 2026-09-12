@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cold Chain Failure Checklist: The Fridge That Warmed Up While Everyone Watched the Power</title>
+<meta name="description" content="A cold chain failure checklist for small businesses: the first thirty minutes when a walk-in warms up (doors shut, log the temps, triage by value), the two-hour rule and what to save vs discard, the monthly preventive checks (door seals, condenser coils, defrost cycles, alarms), and the traps that turn a $200 seal into a spoiled stock write-off.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/cold-chain-failure-checklist.html">
+</head>
+<body>
+<main>
+<h1>Cold Chain Failure Checklist: The Fridge That Warmed Up While Everyone Watched the Power</h1>
+
+<p><strong>The quick version:</strong> refrigeration fails in two different ways, and businesses usually prepare for only one of them. The power fails (that's the generator and <a href="ups-runtime-checklist.html">UPS</a> conversation) &mdash; or the machine fails while the power is perfect: a compressor that dies at 2&nbsp;am, a door seal that split on Tuesday, a defrost timer that stuck open. This page covers the second failure: the first thirty minutes when a walk-in or freezer starts warming, the two-hour rule and the save-vs-discard line, the monthly preventive checks that catch the $200 door seal before it becomes a $4,000 stock write-off, and the temperature log that quietly decides whether insurance pays.</p>
+
+<h2>What the cold chain actually has to do</h2>
+<p>Two things, in order. <strong>Hold</strong> &mdash; keep product below its safe threshold (4&deg;C/40&deg;F for the fridge line, -18&deg;C/0&deg;F for the freezer line) until it is sold or served. <strong>Prove</strong> &mdash; produce a record that it held, because when a fridge fails, the question everyone asks within the hour is <em>"was the stock safe?"</em>, and the only honest answer is a timestamped log. A fridge that holds product but cannot prove it has failed half its job &mdash; and the half that fails is the one that costs money twice: the spoiled stock, and the uninsurable claim.</p>
+
+<h2>The first thirty minutes (the triage that saves the stock)</h2>
+<p>The moment a fridge or walk-in is found warm, the clock starts. What you do in the first thirty minutes decides whether this is a service call or a write-off:</p>
+<ol>
+<li><strong>Shut the doors and keep them shut.</strong> An opened walk-in gains degrees in minutes; a closed one holds its cold for hours. Opening the door "to check" is the most expensive reflex in refrigeration. Read the external thermometer or crack the door once, log the reading, close it.</li>
+<li><strong>Put a thermometer in liquid, not air.</strong> Air temperature swings wildly when the door opens; a glass of water or a bottle of oil in the fridge tracks what the <em>product</em> is actually doing. If you only have air readings, you don't know what you have yet.</li>
+<li><strong>Triage by value and by tolerance.</strong> List what's inside before you move anything: high-value perishables first (proteins, dairy, prepared food), then produce, then condiments and drinks, which almost always ride through. Know which items are for today's service &mdash; those are the ones worth moving, not the walk-in's entire contents.</li>
+<li><strong>Call the refrigeration tech now, not at closing time.</strong> A compressor that died overnight is discovered at 5&nbsp;am; the tech who is called at 5&nbsp;am and the tech who is called at 4&nbsp;pm are working two different jobs. Have the number on the walk-in door, not in someone's phone.</li>
+<li><strong>Start the log on the first reading.</strong> Time, temperature, who read it, and what action was taken. This log &mdash; boring in the moment &mdash; is the document your insurer, your health inspector, and your supplier all ask for afterwards.</li>
+</ol>
+
+<h2>The two-hour rule and the save-or-discard line</h2>
+<p>The line most food businesses draw: <strong>perishable food held above 4&deg;C for more than two hours is discarded</strong>, not "kept and watched". The two hours do not need to be consecutive &mdash; accumulated warm time counts, which is why the log matters. A freezer that stayed shut is more forgiving: a full freezer holds a safe temperature for roughly 24&ndash;48 hours unopened, a half-full one for about half that. The discard decision is made against the log, not against how the product looks or smells &mdash; food that smells fine at 12&deg;C is still food you cannot sell, and "it looks okay" is the sentence that turns a stock loss into a customer-sickness claim.</p>
+<ul>
+<li><strong>Save:</strong> hard cheeses, whole produce, butter, unopened shelf-stable goods, anything still at or below 4&deg;C with log proof.</li>
+<li><strong>Move, don't discard yet:</strong> today's service ingredients, moved to a working fridge, a neighbour's walk-in, or packed coolers with ice &mdash; but move them <em>into</em> the log, with times, or you've converted a loss into a liability.</li>
+<li><strong>Discard:</strong> meat, poultry, seafood, dairy, cooked or ready-to-eat items above 4&deg;C for over two hours. Photograph the discard against the log before it leaves the building &mdash; the claim is built on those photos.</li>
+</ul>
+
+<h2>The monthly preventive checks (where failures are actually caught)</h2>
+<p>Most cold-chain failures announce themselves weeks early, in small readings nobody takes. Once a month, ten minutes per unit:</p>
+<ul>
+<li><strong>The door-seal test.</strong> Close the door on a banknote; if it slides out freely, the seal is leaking and the compressor is paying for it in run-hours. Split, perished, or loose seals are a $200 part and the number-one precursor to a warm walk-in.</li>
+<li><strong>The condenser coils.</strong> Dusty coils make the compressor run hot and die young. Vacuum or brush them monthly; a unit in a floury or greasy kitchen needs it more often.</li>
+<li><strong>Watch one full defrost cycle.</strong> Ice sheets on evaporator coils or a freezer building frost like a snowbank mean a defrost timer or heater is failing &mdash; the slow failure that shows up first as "the fridge runs all the time" and later as a warm morning.</li>
+<li><strong>The drain line.</strong> A blocked drain floods the floor or ices the coil. Flush it, confirm water actually exits.</li>
+<li><strong>Test the alarm.</strong> If the unit (or your monitoring) is supposed to alert on high temperature, make it alert on purpose and confirm a human receives it. An alarm that alerts nobody is decoration.</li>
+<li><strong>Calibrate the thermometer.</strong> Ice-point check: packed in crushed ice, it should read 0&deg;C. Off by more than one degree, adjust or replace it &mdash; every decision above rests on this instrument.</li>
+</ul>
+
+<h2>Monitoring that isn't a person with a clipboard</h2>
+<p>A once-a-day paper log catches yesterday's failure. A cheap USB or Bluetooth temperature logger (tens of dollars per unit) records every fifteen minutes and raises a phone alert at your thresholds &mdash; 4&deg;C for the fridge line, -18&deg;C for the freezer line, with the alert set a degree or two before the safety line so you get a <em>heads-up</em>, not a <em>post-mortem</em>. The logger is also your insurance evidence by default: a continuous timestamped trace beats a handwritten sheet every time. Pair it with the <a href="power-failure-it-checklist.html">power-failure IT checklist</a> mindset: the monitor watches while nobody is in the building, which is when refrigeration actually fails.</p>
+
+<h2>Worked example: the bakery's 5&nbsp;am log</h2>
+<p>A bakery with a walk-in and two upright fridges ran a 5&nbsp;am temperature log as part of the morning open. One Monday the walk-in read 9&deg;C at 5&nbsp;am &mdash; and, critically, the previous night's 11&nbsp;pm reading had been 3&deg;C, so the warm-up window was known to be about six hours, not "sometime over the weekend". The doors stayed shut. The baker called the refrigeration tech at 5:15, moved the day's dough and dairy into the two uprights (which had room because the monthly check kept them from being overpacked), and started the discard list against the log: everything protein or dairy above 4&deg;C for over two hours was photographed and binned &mdash; about $600 of stock.</p>
+<p>The tech found a split door seal and a compressor that had been short-cycling for weeks &mdash; the seal leaked, the compressor ran constantly, and it died on Sunday night. The seal was $200. The claim: the temperature log (continuous, from the logger, not just the paper sheet), the discard photos, and the repair invoice added up to a paid claim in under a month &mdash; and the <a href="reopening-notice-template.html">reopening notice</a> went out the same morning explaining the short menu for the day. The bakery that ran the same fridge without a log would have thrown out the same stock and absorbed the loss, because "we think it was cold until midnight" is not a claim; it's a shrug.</p>
+
+<h2>The four traps</h2>
+<ul>
+<li><strong>Door-check theatre.</strong> Opening the walk-in repeatedly to "see how it's doing" dumps the cold out and the doubt in. One reading, logged, doors shut.</li>
+<li><strong>Reading the dial, not the product.</strong> The thermostat dial says 3&deg;C; the product in the warmest corner says 9&deg;C. Thermometers belong in liquid and in the warmest spot, and they get calibrated monthly.</li>
+<li><strong>The overpacked fridge.</strong> Stock stacked against the evaporator and no air gap anywhere means cold air never circulates &mdash; the unit runs, the log looks fine at the sensor, and the corners are warm. Full is fine; blocked is a failure mode.</li>
+<li><strong>"Insurance will cover it" with no log.</strong> Spoilage cover typically wants proof of what was lost, when, and at what temperature. No log, no photos, no claim &mdash; the paperwork is part of the refrigeration, not an afterthought.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/generator-transfer-checklist.html">generator transfer checklist</a> covers the power side &mdash; keeping the walk-in fed when the grid drops; the <a href="https://hive80-lab.github.io/ops-notes/power-failure-it-checklist.html">power failure IT checklist</a> covers the machines that come back up in the wrong order after an outage; and the <a href="https://hive80-lab.github.io/ops-notes/reopening-notice-template.html">reopening notice template</a> covers the customer-facing morning after &mdash; what to say when yesterday's failure changes today's menu.</em></p>
+</main>
+</body>
+</html>
