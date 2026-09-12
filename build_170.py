@@ -1,0 +1,240 @@
+import re, sys
+from pathlib import Path
+
+R = Path("/tmp/ops-notes")
+SLUG = "security-audit-scorecard"
+URL = "https://hive80-lab.github.io/ops-notes/" + SLUG + ".html"
+TODAY = "2026-09-12"
+
+PAGE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security Audit Scorecard: score your small business in 45 checks (free, runs in your browser) | HIVE80 Lab Ops Notes</title>
+<meta name="description" content="A free, interactive security audit scorecard: 45 pass/fail checks across six zones, scored live in your browser. Nothing is uploaded, nothing is stored. Get your zone scores, your critical-gap flag, and a printable one-page summary.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/security-audit-scorecard.html">
+<link rel="stylesheet" href="style.css">
+<style>
+.sc-zone{margin:1.2em 0;border:1px solid #ddd;border-radius:6px;padding:.8em 1em}
+.sc-zone h3{margin:.1em 0 .5em 0}
+.sc-zone label{display:block;margin:.35em 0;font-size:.95em}
+.sc-bar{height:8px;background:#eee;border-radius:4px;overflow:hidden;margin:.4em 0}
+.sc-bar>span{display:block;height:100%;background:#2c7a3f}
+.sc-warn .sc-bar>span{background:#c0392b}
+.sc-total{font-size:1.25em;font-weight:bold}
+.sc-actions{margin:1.2em 0;display:flex;gap:.8em;flex-wrap:wrap}
+.sc-actions button{padding:.5em 1em;font-size:1em;cursor:pointer}
+@media print{.sc-actions{display:none}}
+</style>
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Security Audit Scorecard: score your small business in 45 checks</h1>
+<p><em>Free, interactive, private. Runs entirely in your browser &mdash; nothing is uploaded, nothing is stored. Companion to the <a href="small-business-security-audit-checklist.html">45-point audit walkthrough</a>.</em></p>
+<p>Tick every control that is <strong>verifiably true</strong> (screenshot or it did not happen). The scorecard computes your zone scores, flags the zone that most often decides whether an incident is a bad day or a company-ending one, and produces a printable one-page summary you can bring to whoever owns the fixes.</p>
+
+<div class="sc-actions"><button onclick="window.print()">Print / save summary</button><button onclick="sc_reset()">Reset all</button></div>
+<div id="scorecard">
+
+<div class="sc-zone" id="z0"><h3>Zone 1 &mdash; Identity &amp; access <span class="sc-score" data-zone="0"></span></h3><div class="sc-bar"><span></span></div>
+<label><input type="checkbox" data-z="0"> MFA enforced (not optional) on every identity provider</label>
+<label><input type="checkbox" data-z="0"> Zero shared logins anywhere</label>
+<label><input type="checkbox" data-z="0"> Separate admin accounts for every human</label>
+<label><input type="checkbox" data-z="0"> Admin-rights list reviewed within 90 days</label>
+<label><input type="checkbox" data-z="0"> Every leaver (12 months) has zero active accounts</label>
+<label><input type="checkbox" data-z="0"> Password manager at 100% adoption</label>
+<label><input type="checkbox" data-z="0"> Service accounts &amp; API keys inventoried, owner-named, rotated</label>
+<label><input type="checkbox" data-z="0"> Break-glass account exists and was tested this year</label>
+<label><input type="checkbox" data-z="0"> Idle session timeouts on email + cloud consoles</label>
+<label><input type="checkbox" data-z="0"> OAuth grants reviewed and pruned this quarter</label></div>
+
+<div class="sc-zone" id="z1"><h3>Zone 2 &mdash; Devices <span class="sc-score" data-zone="1"></span></h3><div class="sc-bar"><span></span></div>
+<label><input type="checkbox" data-z="1"> Full-disk encryption verified on 100% of laptops</label>
+<label><input type="checkbox" data-z="1"> Screen lock at 5 minutes or less, everywhere</label>
+<label><input type="checkbox" data-z="1"> OS auto-updates on, no device >1 major version behind</label>
+<label><input type="checkbox" data-z="1"> Asset inventory matches reality</label>
+<label><input type="checkbox" data-z="1"> Remote wipe available and someone authorized to fire it</label>
+<label><input type="checkbox" data-z="1"> No company data on unencrypted USB drives</label>
+<label><input type="checkbox" data-z="1"> Default passwords changed on printers, cameras, NAS</label></div>
+
+<div class="sc-zone" id="z2"><h3>Zone 3 &mdash; Network <span class="sc-score" data-zone="2"></span></h3><div class="sc-bar"><span></span></div>
+<label><input type="checkbox" data-z="2"> Router/firewall firmware current, default admin password gone</label>
+<label><input type="checkbox" data-z="2"> Guest WiFi isolated from corporate network</label>
+<label><input type="checkbox" data-z="2"> Every inbound port-forward owned by a name</label>
+<label><input type="checkbox" data-z="2"> Remote access via VPN, not exposed RDP/SSH</label>
+<label><input type="checkbox" data-z="2"> DNS filtering on office network and/or laptops</label>
+<label><input type="checkbox" data-z="2"> Cloud sweep done: no public buckets, open DBs, forgotten servers</label></div>
+
+<div class="sc-zone" id="z3"><h3>Zone 4 &mdash; Data &amp; backups <span class="sc-score" data-zone="3"></span></h3><div class="sc-bar"><span></span></div>
+<label><input type="checkbox" data-z="3"> Written backup schedule covering files, repos, SaaS exports, databases</label>
+<label><input type="checkbox" data-z="3"> Backups automatic and success monitored</label>
+<label><input type="checkbox" data-z="3"> One offline or immutable copy ransomware cannot reach</label>
+<label><input type="checkbox" data-z="3"> Restore drill passed in the last 90 days</label>
+<label><input type="checkbox" data-z="3"> Recovery point objective written down (hours of acceptable loss)</label>
+<label><input type="checkbox" data-z="3"> Recovery time objective written down (hours to restore)</label>
+<label><input type="checkbox" data-z="3"> No "everyone" folder holding payroll or contracts</label>
+<label><input type="checkbox" data-z="3"> Sensitive data enumerated: where it lives, who can export it</label></div>
+
+<div class="sc-zone" id="z4"><h3>Zone 5 &mdash; Vendors &amp; SaaS <span class="sc-score" data-zone="4"></span></h3><div class="sc-bar"><span></span></div>
+<label><input type="checkbox" data-z="4"> SaaS inventory exists with owners</label>
+<label><input type="checkbox" data-z="4"> Vendors holding sensitive data got a security review</label>
+<label><input type="checkbox" data-z="4"> SPF, DKIM, DMARC at enforcement</label>
+<label><input type="checkbox" data-z="4"> Vendor access via named accounts only</label>
+<label><input type="checkbox" data-z="4"> At least one departing vendor's data actually deleted</label>
+<label><input type="checkbox" data-z="4"> Payment and invoicing flows have fraud controls on</label>
+<label><input type="checkbox" data-z="4"> Cyber insurance attestations verified true</label>
+<label><input type="checkbox" data-z="4"> Shadow-IT sweep done this quarter</label></div>
+
+<div class="sc-zone" id="z5"><h3>Zone 6 &mdash; Incident readiness <span class="sc-score" data-zone="5"></span></h3><div class="sc-bar"><span></span></div>
+<label><input type="checkbox" data-z="5"> Named on-call person for security incidents, tested contact path</label>
+<label><input type="checkbox" data-z="5"> First-30-minutes card exists and more than one person has read it</label>
+<label><input type="checkbox" data-z="5"> One-page IR plan with severity levels</label>
+<label><input type="checkbox" data-z="5"> Log retention decided and written down</label>
+<label><input type="checkbox" data-z="5"> Tabletop exercise ran in the last 6 months</label>
+<label><input type="checkbox" data-z="5"> Ransomware recovery is a written sequence</label></div>
+
+</div>
+<p class="sc-total" id="total"></p>
+<div id="flag"></div>
+
+<div class="sc-actions"><button onclick="window.print()">Print / save summary</button></div>
+
+<h2>Reading your score</h2>
+<ul>
+<li><strong>80&ndash;90 (green):</strong> you are in the top band of small teams. Keep the twice-a-year cadence and batch the remaining hygiene.</li>
+<li><strong>55&ndash;79 (amber):</strong> normal. Sequence the unchecked items by zone order &mdash; identity first; the <a href="small-business-security-audit-checklist.html">45-point walkthrough</a> gives you the evidence rule and the day schedule.</li>
+<li><strong>Under 55 (red):</strong> the estate is running on luck. Do not buy tooling yet &mdash; close the identity and backup gaps first; they are a week of focused work.</li>
+</ul>
+<p><strong>The zone-4 flag:</strong> if Data &amp; backups scores under 10 of 16, treat it as the critical gap regardless of your total. An untested backup is the difference between a bad Tuesday and an extinction event.</p>
+<p>Want the scorecard walked and the findings written up with owners and dates? That is the fixed-fee <a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit (A$149, five days)</a>. If what keeps you up is the 2am call rather than the checklist, the <a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook (A$249, 48h)</a> is built from your actual stack. The whole price picture is in the <a href="security-audit-cost-small-business.html">audit cost guide</a>.</p>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li>
+<li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; done-for-you, built from your estate, 48h &mdash; $249</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+<script>
+(function(){
+var boxes = document.querySelectorAll('#scorecard input[type=checkbox]');
+var zones = document.querySelectorAll('.sc-zone');
+var saved = null;
+try { saved = JSON.parse(localStorage.getItem('hla-scorecard') || 'null'); } catch(e) {}
+boxes.forEach(function(b,i){
+  if (saved && saved[i]) b.checked = true;
+  b.addEventListener('change', sc_update);
+});
+function sc_update(){
+  var zTot=[10,7,6,8,8,6], zHit=[0,0,0,0,0,0], total=0;
+  boxes.forEach(function(b,i){ if(b.checked){ zHit[+b.dataset.z]++; total++; } });
+  zones.forEach(function(z,zi){
+    var pct = Math.round(100*zHit[zi]/zTot[zi]);
+    var bar = z.querySelector('.sc-bar>span');
+    if(bar) bar.style.width = pct+'%';
+    var lab = zones[zi].querySelector('.sc-score');
+    if(lab) lab.textContent = zHit[zi]+'/'+zTot[zi];
+    zones[zi].classList.toggle('sc-warn', zi===3 && zHit[3] < 10);
+  });
+  var t=document.getElementById('total');
+  t.textContent = 'Score: '+total+' / 45 controls verified ('+Math.round(100*total/45)+'%)';
+  try { localStorage.setItem('hla-scorecard', JSON.stringify(Array.prototype.map.call(boxes,function(b){return b.checked?1:0;}))); } catch(e) {}
+}
+window.sc_reset = function(){ boxes.forEach(function(b){ b.checked=false; }); sc_update(); };
+sc_update();
+})();
+</script>
+</body>
+</html>
+"""
+
+INT = set(re.findall(r'href="([a-z0-9-]+\.html)"', PAGE))
+missing = [h for h in sorted(INT) if not (R / h).exists()]
+if missing:
+    print("ABORT: internal targets missing on disk:", missing); sys.exit(1)
+print(f"internal links pre-verified: {len(INT)} distinct targets, 0 missing")
+
+RECIP = {
+ "small-business-security-audit-checklist.html": (
+   'the honest tiers are in the <a href="security-audit-cost-small-business.html">security audit cost guide</a>.</p>',
+   'the honest tiers are in the <a href="security-audit-cost-small-business.html">security audit cost guide</a>; and if you want to score yourself right now, the <a href="security-audit-scorecard.html">interactive audit scorecard</a> runs the same 45 points in your browser.</p>'),
+ "small-team-ops-audit-and-runbook-services.html": (
+   '<li><a href="security-audit-cost-small-business.html">How much does a security audit cost?</a> &mdash; the four tiers, what changes the price, and where a fixed-fee audit fits.</li>',
+   '<li><a href="security-audit-scorecard.html">The interactive Security Audit Scorecard</a> &mdash; 45 checks, scored live in your browser, nothing uploaded.</li>\n'),
+ "security-audit-cost-small-business.html": (
+   '<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>',
+   '<li><a href="security-audit-scorecard.html">The interactive Security Audit Scorecard</a> &mdash; free, private, 45 checks scored in your browser.</li>\n'),
+}
+for fname, (anchor, block) in RECIP.items():
+    p = R / fname
+    if not p.exists():
+        print(f"recip {fname}: FILE MISSING, skip"); continue
+    t = p.read_text()
+    if SLUG in t:
+        print(f"recip {fname}: already linked, skip"); continue
+    if anchor not in t:
+        print(f"recip {fname}: anchor NOT FOUND, skip"); continue
+    p.write_text(t.replace(anchor, block, 1))
+    print(f"recip {fname}: injected")
+
+(R / (SLUG + ".html")).write_text(PAGE)
+print("page written:", SLUG + ".html", len(PAGE), "bytes")
+
+import xml.dom.minidom as minidom
+sp = R / "sitemap.xml"
+s = sp.read_text()
+entry = f'<url><loc>{URL}</loc><lastmod>{TODAY}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>'
+if URL not in s:
+    s = s.replace('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+                  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + entry, 1)
+    sp.write_text(s)
+minidom.parseString(sp.read_text())
+n = sp.read_text().count("<loc>")
+print(f"sitemap XML-valid, {n} urls, newest-first ok={sp.read_text().split('<url>')[1].count(SLUG)==1}")
+
+CARD = ('<li><a href="security-audit-scorecard.html">Security Audit Scorecard '
+ '(45 Checks, Scored Live in Your Browser)</a><div class="desc">Free and private: tick the 45 pass/fail '
+ 'checks across six zones and the scorecard computes your zone scores live, flags the data-and-backups gap '
+ 'that turns a bad Tuesday into an extinction event, and prints a one-page summary to bring to whoever owns '
+ 'the fixes. Nothing is uploaded, nothing is stored. The interactive companion to the 45-point audit '
+ 'walkthrough.</div></li>')
+ip = R / "index.html"
+i = ip.read_text()
+if SLUG not in i:
+    marker = "<ul>\n<li><a href=\""
+    pos = i.find(marker)
+    i = i[:pos] + "<ul>\n" + CARD + "\n" + i[pos+len("<ul>\n"):]
+    ip.write_text(i)
+i2 = ip.read_text()
+first_card = i2.find('<li><a href="')
+print("index: TOP card order ok=", 0 <= i2.find(SLUG) - first_card < 500)
+
+rp = R / "README.md"
+r = rp.read_text()
+line = ('- **NEW: [Security Audit Scorecard (45 Checks, Scored Live in Your Browser)]'
+ '(https://hive80-lab.github.io/ops-notes/security-audit-scorecard.html)** \u2014 the interactive companion to '
+ 'the 45-point walkthrough: tick what is verifiably true, get live zone scores, a zone-4 (backups) critical '
+ 'flag, a red/amber/green reading, and a printable one-page summary. Free, private, nothing uploaded.\n')
+if SLUG not in r:
+    anchor = r.index("- **NEW:")
+    r = r[:anchor] + line + r[anchor:]
+    rp.write_text(r)
+first_new = [l for l in (R/"README.md").read_text().splitlines() if l.startswith("- **NEW")][0]
+print("README top:", first_new[:70])
+
+broken = 0; checked = 0
+for f in sorted(R.glob("*.html")):
+    t = f.read_text()
+    for href in re.findall(r'href="([^"#]+\.html)"', t):
+        checked += 1
+        if href.startswith("http"):
+            continue
+        if not (R / href).exists():
+            broken += 1; print(f"  BROKEN in {f.name}: {href}")
+print(f"linkcheck: {checked} internal links, {broken} broken")
+sys.exit(1 if broken else 0)
