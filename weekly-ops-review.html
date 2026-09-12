@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Weekly Ops Review &mdash; The Thirty Minutes That Keep a Small Operation Honest</title>
+<meta name="description" content="A weekly ops review small teams actually run: a fixed six-item agenda, the three inputs (numbers, incidents, promises), the two outputs (a decision or a date), the three honesty rules, and the five traps &mdash; plus the nine-person warehouse whose Friday review caught a pick-accuracy slide three weeks before it caught them.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/weekly-ops-review.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+<h1>Weekly Ops Review: The Thirty Minutes That Keep a Small Operation Honest</h1>
+<p class="lede">A fixed six-item agenda, thirty minutes, same slot every week. Three inputs (the numbers, the incidents, the promises), two outputs (a decision or a date), three honesty rules, and five traps. Plus the nine-person warehouse whose Friday review caught a pick-accuracy slide three weeks before it caught them.</p>
+
+<p>Operations fail in increments, not explosions. The pick accuracy that slides from 99.4% to 98.1% over three weeks is invisible on any single day; the refund rate that creeps from 1.2% to 2.8% is a rounding error on Monday and a churn cause by the quarter; the supplier who moved from 4-day to 9-day lead times did it one quiet week at a time. No dashboard alerts on a slide this gentle, because alerts watch thresholds and slides live <em>between</em> thresholds. The weekly ops review exists to catch the slide: one meeting, thirty minutes, the same six items in the same order, every week, where the operation is asked point-blank what changed &mdash; and the honest answer is written down before anyone moves on.</p>
+
+<p>This is not a status meeting. Status meetings report what already happened to people who could have read it. The weekly ops review is a <em>control</em> meeting: it compares this week against the plan and against last week, forces each divergence to get an owner and a next action, and produces exactly two kinds of output &mdash; a decision, or a date. Anything else (observations, vibes, "interesting") does not count as output, because output that changes nothing is just a meeting with better punctuation. It pairs with the financial cadences &mdash; the <a href="budget-vs-actuals-monthly-review.html">monthly budget vs actuals review</a>, the quarterly <a href="gross-margin-pricing-review.html">pricing review</a>, the weekly <a href="13-week-cash-flow-forecast.html">cash forecast update</a> &mdash; but it is not one of them: those read the money; this one reads the machine that earns it.</p>
+
+<h2>1. The agenda &mdash; six items, thirty minutes, never reordered</h2>
+<ol>
+<li><strong>The number that matters this quarter</strong> (5 min). One metric, chosen once per quarter, printed on the agenda itself. Pick accuracy, first-response time, on-time delivery, uptime &mdash; whatever the quarter is about. This week's value, last week's value, the trend arrow, one sentence of cause. If nobody can say why it moved, that <em>is</em> the finding, and it gets the action.</li>
+<li><strong>Incidents and near-misses</strong> (5 min). Every incident and every "we got lucky" from the week, one line each: what happened, what it cost, is it closed, does it go to a post-mortem. Near-misses count double &mdash; they are free tuition, and skipping them means paying full price later. Anything structural feeds the <a href="incident-post-mortem-template.html">post-incident review</a>, not this meeting.</li>
+<li><strong>The promises ledger</strong> (5 min). Open commitments from last week's review, read aloud, one line each: done, moving, or slipped. A slipped promise is not a scolding &mdash; it is a data point about either the promise (too big), the owner (wrong one), or the week (false capacity). Re-date it or shrink it; never silently carry it.</li>
+<li><strong>Process changes shipped this week</strong> (5 min). Anything that changed how work gets done &mdash; a new checklist, a tool switch, a rota change, a supplier swap &mdash; announced so the whole room knows the current truth. Unannounced process change is how teams end up running three different businesses. Each change gets a two-week check-in date: did it work, or did it just feel decisive?</li>
+<li><strong>The coming week's known pressure</strong> (5 min). The one or two things that will strain the operation &mdash; a volume spike, a key person out, a system migration, a supplier with a long weekend. Name them before they land, and pre-decide the mitigation while it is still cheap. This item is the whole reason the meeting lives <em>before</em> the week it reviews.</li>
+<li><strong>One improvement, chosen</strong> (5 min). Exactly one small improvement gets picked to actually happen this week &mdash; not the best improvement, the one that will really get done. One per week is fifty a year, which compounds; ten "someday" improvements per week is zero a year, which is what most teams actually run.</li>
+</ol>
+<p>Thirty minutes, hard stop. If an item needs more, it leaves with an owner and a time &mdash; the review is the triage, not the treatment. The order is the order because the first item is the trend and the last item is the future; flip the agenda and you get a status meeting with extra steps.</p>
+
+<h2>2. The three inputs &mdash; arrive with them or the meeting is fiction</h2>
+<ul>
+<li><strong>The numbers.</strong> The quarter's headline metric and two supporting ones (e.g. pick accuracy, orders shipped, refund rate), pulled before the meeting by the same person every week, against the same definitions every week. A metric whose definition drifts is a metric you cannot trend, and a trend you cannot trust is a slide you cannot catch. The numbers are the star; everyone else is supporting cast.</li>
+<li><strong>The incidents.</strong> The week's incident list and near-miss list, harvested from the channel where they actually happened (the support queue, the ops channel, the Friday "what almost went wrong" thread). If gathering incidents requires a forensic dig, the process for reporting them is broken &mdash; fix that first, because a review fed from memory reviews only what scared someone enough to remember.</li>
+<li><strong>The promises.</strong> Last week's outputs, verbatim. This is why the meeting must write things down: the promises ledger is the meeting's memory, and a review with no memory reviews nothing but the mood. If an item from three weeks ago keeps re-appearing with new wording, it has never once been real &mdash; call it, kill it or date it.</li>
+</ul>
+<p>Nobody prepares slides. The numbers person sends numbers; the incident owner sends lines; the chair pastes last week's ledger. Ten minutes of prep, and it is the same ten minutes every week, which is the only kind of prep that survives a busy quarter.</p>
+
+<h2>3. The two outputs &mdash; a decision or a date</h2>
+<p>Everything the meeting produces must be one of two things. <strong>A decision:</strong> "we stop offering same-day dispatch on orders after 3pm" &mdash; goes in the <a href="decision-log-template.html">decision log</a> the same day, with the date, the reason, and who was told. <strong>A date:</strong> "invoice factoring comparison lands Friday the 14th, Maya owns it" &mdash; goes on the promises ledger with an owner and a deadline. "We should look into that sometime" is neither, and it is the sound of a meeting not working. The chair's real job is not running the agenda; it is refusing to close any item without one of the two outputs, which is why the chair should not be the most senior person &mdash; seniority wants harmony, and the role needs friction.</p>
+<p>Write the outputs where the whole team can see them, in one searchable place. The weekly review's value compounds through its ledger: twelve weeks in, you can read the operation's biography &mdash; what it worried about, what it fixed, what it kept deferring, and what it eventually paid for. Six months of ledgers is the cheapest strategy document you will ever produce.</p>
+
+<h2>4. The three honesty rules</h2>
+<ul>
+<li><strong>Same definitions, every week.</strong> Pick accuracy is picked-right over picked-total, computed the same way, from the same system, by the same person. The week someone improves a metric by improving its definition is the week the trend dies. Definitions are written on the agenda, and changing one is announced like a process change, because it is one.</li>
+<li><strong>Bad weeks are reviewed the same as good ones.</strong> The meeting that gets skipped in a firefight is the meeting that was supposed to catch the fire early. Firefighting weeks are precisely when the review earns its keep &mdash; thirty minutes to ask "is this a blip or the new normal" beats three weeks of finding out by invoice.</li>
+<li><strong>One improvement per week, shipped.</strong> A review that ends with nine good ideas and zero owners was a brainstorm wearing a meeting's clothes. Choose the one that will actually happen, name its owner, and let the other eight wait in line with dignity. Throughput beats enthusiasm every single quarter.</li>
+</ul>
+
+<h2>5. The five traps</h2>
+<ul>
+<li><strong>The status meeting in disguise.</strong> Everyone reports, nobody compares. The tell: the meeting ends and nothing changed. If no output was ever refused for lacking a decision or a date, the meeting was theatre &mdash; the chair's job is to make at least one such refusal per week, early, so the room learns the rule.</li>
+<li><strong>The agenda that flexes to the loudest topic.</strong> One big customer issue eats all thirty minutes, the trend never gets read, and the slide continues in peace. The agenda is the agenda; hot topics get triaged out with an owner and a time, exactly like everything else.</li>
+<li><strong>The drifting definition.</strong> "On-time" quietly becomes "on-time-ish" becomes "shipped eventually." Six months of chart, no trend, no catches. Definitions live on the agenda; changing one is a process change, with a two-week check-in like any other.</li>
+<li><strong>The skipped week.</strong> "Nothing happened this week" is the exact week the slide is happening. Cancel the review only for a genuine all-hands crisis &mdash; and even then, run it async in the channel, fifteen lines, same six items. The rhythm is the instrument; a broken rhythm measures nothing.</li>
+<li><strong>The improvement list that never ships.</strong> Twelve items noted, zero shipped, every week, forever. The list becomes a graveyard everyone is politely afraid of. One per week, shipped, is the whole engine &mdash; fifty small true improvements a year outrun one grand reorganization that never happened, every time.</li>
+</ul>
+
+<h2>6. Worked example &mdash; the warehouse that caught its own slide</h2>
+<p>A nine-person e-commerce operation ran a Friday 09:30 ops review with the six-item agenda above. The quarter's number was pick accuracy. For two weeks it read 99.4%, then 98.9%, then 98.1% &mdash; small moves, invisible on any single day, but the trend arrow on the printed agenda turned orange and demanded its one sentence of cause. The cause took two questions to find: a new starter had been put on the pick line unsupervised during a holiday week, and the pick-face layout had been re-sequenced by a temp during the same crunch &mdash; two quiet changes, each sensible in isolation, compounding into roughly 40 mispicks a day. The review's outputs: a decision (new starters shadow-pair for two weeks; pick-face changes freeze without a second pair of eyes, logged in the <a href="decision-log-template.html">decision log</a>), a date (accuracy re-checked Friday, target back over 99%), and the week's one improvement (a five-minute end-of-shift count on the two worst SKUs). Three weeks later accuracy held 99.5%, refunds on wrong items had fallen from 2.8% to 0.9%, and the operation had spent exactly zero additional headcount on the fix. The counterfactual &mdash; no review &mdash; is the one most teams run: the slide continues until a big customer complains in week five, at which point the fix is the same decision, made under fire, wearing an apology.</p>
+
+<h2>Kits</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="budget-vs-actuals-monthly-review.html">budget vs actuals monthly review</a> reads the money monthly &mdash; this page reads the machine weekly, and a variance line that shows up there was usually visible here first; the <a href="13-week-cash-flow-forecast.html">13-week cash flow forecast</a> is the weekly number behind item 5's pressure list; the <a href="decision-log-template.html">decision log</a> is where the review's decisions live after the meeting ends; the <a href="one-on-one-meeting-template.html">one-on-one meeting template</a> is the people-side twin &mdash; this review is for the operation, that one is for the person; and the <a href="incident-post-mortem-template.html">incident post-mortem template</a> is where item 2's structural incidents go to become process changes.</em></p>
+
+</main>
+</body>
+</html>
