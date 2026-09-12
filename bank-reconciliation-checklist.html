@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bank Reconciliation: The 30-Minute Ritual That Keeps Your Cash Number Honest</title>
+<meta name="description" content="A bank reconciliation ritual small businesses actually run: the weekly thirty minutes that explains every dollar between the books' cash and the bank's cash &mdash; six steps, the five finds, three honesty rules, five traps, and the Shopify brand whose cash number had been overstated by $8,450 since April.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/bank-reconciliation-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+<h1>Bank Reconciliation: The 30-Minute Ritual That Keeps Your Cash Number Honest</h1>
+
+<p>Every business runs on two numbers that are both called cash. The first is the number in your books &mdash; what you believe you have. The second is the number on the bank statement &mdash; what actually cleared. They start together and drift apart from week one: a card fee here, a bounced direct debit there, a vendor paid twice, a deposit recorded on a promise that never landed. Nothing about the drift is malicious. All of it is expensive.</p>
+
+<p>A bank reconciliation is the ritual that explains every dollar of that difference. It is not accounting hygiene, and it is not something the accountant does in April. It is the weekly audit of the single number every other decision trusts &mdash; <a href="cash-runway-checklist.html">runway</a>, reorder timing, pricing, whether you can hire. If the cash number is wrong by $8,450, every decision downstream of it is wrong by $8,450 too.</p>
+
+<h2>1. The two cash numbers, and where the gap hides</h2>
+
+<p>The books say what you <em>did</em>. The statement says what <em>happened</em>. The gap between them is not noise &mdash; it is a to-do list, and every dollar in it is one of five things: money that left and the books missed, money the books recorded but that never arrived, a payment that happened twice, a timing difference that will clear, or theft.</p>
+
+<p>Small teams tolerate the gap because it feels like an accounting problem. It is a cash problem. The <a href="13-week-cash-flow-forecast.html">13-week cash flow forecast</a> has one iron rule &mdash; cash in only when it clears, the cheque not the promise &mdash; and reconciliation is what makes that rule enforceable. An unreconciled cash balance overstates the week-6 row by exactly the size of the gap.</p>
+
+<h2>2. The thirty-minute ritual &mdash; weekly beats monthly beats never</h2>
+
+<ol>
+<li><strong>Pull the statement and mark every line that cleared.</strong> Auto-match is allowed to propose; you are allowed to disagree. The easy 95% is not the work &mdash; do not let a clean import feel like a finished reconciliation.</li>
+<li><strong>Collect the statement lines with no book entry.</strong> The card fees nobody entered, the debit order nobody knew about, the failed payment that silently reversed, the interest, the chargeback. These are the outflows your books are missing.</li>
+<li><strong>Collect the book entries with no statement line.</strong> The invoice recorded but never paid, the direct debit that bounced, the deposit recorded the day the customer <em>promised</em>, the cheque still floating. These are the inflows your books invented.</li>
+<li><strong>Age the unmatched list.</strong> Anything two statements old or older is not timing &mdash; it is a hole. Timing differences get a date and an expected-clear date; holes get an owner and a deadline.</li>
+<li><strong>Fix the books, never the bank.</strong> Then fix the process that let each error through &mdash; a double-charge is a card-swap problem, a phantom receipt is an invoicing-on-promise problem. The error is the symptom; the process is the patient.</li>
+<li><strong>Feed the forecast and sign it.</strong> Anything the reconciliation learned becomes a row in the <a href="13-week-cash-flow-forecast.html">13-week forecast</a> the same day, and the reconciliation gets initials and a date. An unsigned reconciliation is a rumour.</li>
+</ol>
+
+<p>Thirty minutes a week. Monthly is the minimum that still counts; the month it feels skippable is always the month it was load-bearing.</p>
+
+<h2>3. The five finds &mdash; what reconciliation actually catches</h2>
+
+<ul>
+<li><strong>The duplicate payment.</strong> The vendor paid twice, the card swap that re-ran a subscription, the invoice and the card charge for the same thing. Dupes are found by matching, and matching is only done on a schedule.</li>
+<li><strong>The unrecorded outflow.</strong> Processor fees, debit orders, reversals, FX margins &mdash; the small recurring leak that never has an invoice, so it never has a book entry until someone reconciles.</li>
+<li><strong>The money that never landed.</strong> The failed direct debit still sitting as revenue, the deposit recorded on promise. Your receivables and your revenue are both overstated until this is caught.</li>
+<li><strong>The fraud seed.</strong> The $9.90 charge nobody recognises. Card testers and small skims start small precisely because nobody reconciles; the ritual is what makes the first charge the last one.</li>
+<li><strong>The honest timing.</strong> Outstanding cheques and in-flight transfers that are genuinely fine &mdash; dated, named, and expected. The ritual's job is to shrink this pile to near zero so the other four have nowhere to hide inside it.</li>
+</ul>
+
+<h2>4. The three honesty rules</h2>
+
+<ul>
+<li><strong>The bank is the truth; the books travel to meet it.</strong> Never adjust the statement to close a gap. A &ldquo;balancing adjustment&rdquo; with no explanation is a symptom written in numbers &mdash; permitted exactly never.</li>
+<li><strong>Unreconciled is a date, not a state.</strong> &ldquo;Unmatched since Sep 3&rdquo; ages and demands attention; &ldquo;unreconciled&rdquo; describes nothing and ages not at all. Write dates, not labels.</li>
+<li><strong>The reconciliation feeds the forecast or it is theatre.</strong> Findings that stay in the reconciliation sheet change nothing. Findings that become <a href="13-week-cash-flow-forecast.html">forecast rows</a> change decisions the same week.</li>
+</ul>
+
+<h2>5. The five traps</h2>
+
+<ul>
+<li><strong>The year-end big bang.</strong> Reconciling once a year is archaeology, not control: twelve months of drift, zero early catches, and the errors are found after the money is long gone.</li>
+<li><strong>Matching books to books.</strong> Reconciling the spreadsheet to the spreadsheet proves only that you copied consistently. The statement is the only independent witness in the room.</li>
+<li><strong>The small unrecognised charge, ignored forever.</strong> It is too small to chase and exactly the right size to test whether anyone is watching. The next one is never $9.90.</li>
+<li><strong>Auto-match trust.</strong> Importing the feed and calling it reconciled. The matches are the easy part; the exception list is the entire point.</li>
+<li><strong>Reconciling only when the accountant asks.</strong> The ritual belongs to the business, not to the tax calendar. April finds nothing that a weekly half hour would not have found in September.</li>
+</ul>
+
+<h2>6. Worked example &mdash; the nine-person Shopify brand with the $8,450 gap</h2>
+
+<p>A nine-person e-commerce brand, $2.1M revenue, reconciling &ldquo;whenever the accountant chased&rdquo;. Their books said $48,200 cash; the bank said $39,750 &mdash; an $8,450 gap that had been growing since April. The first real reconciliation found it all in one sitting: processor fees double-billed since April ($2,180 across six months), a customer direct debit that failed in July but still sat recorded as received ($1,900), a vendor invoice paid twice during a card swap ($2,600), a subscription nobody could identify still charging monthly ($340/month &mdash; $1,020 gone), and a pile of unrecorded debit orders ($770).</p>
+
+<p>The fixes: fees recovered from the processor, the duplicate refunded, the failed debit chased and re-collected, the mystery subscription killed. The bigger repair was to the <a href="13-week-cash-flow-forecast.html">forecast</a> &mdash; it had been overstated by $8,450 the whole time, and once the cash number was true, the week-6 row moved from comfortable to red and a reorder got deferred a week on purpose instead of by surprise. Weekly thirty-minute reconciliation ever since. The owner's verdict: <em>&ldquo;The number I was running the business on was six months old.&rdquo;</em></p>
+
+<h2>Kits</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="monthly-close-checklist.html">month-end close</a> starts from a reconciled balance &mdash; reconciliation is step one of the close, not a byproduct of it; the <a href="13-week-cash-flow-forecast.html">13-week cash flow forecast</a> runs on cleared-not-promised cash, which only a reconciliation can certify; the <a href="cash-runway-checklist.html">cash runway checklist</a> divides by a cash number that is only as honest as this ritual; and the <a href="budget-vs-actuals-monthly-review.html">budget vs actuals review</a> compares against closed, reconciled books &mdash; never against a bank feed.</em></p>
+
+</main>
+</body>
+</html>
