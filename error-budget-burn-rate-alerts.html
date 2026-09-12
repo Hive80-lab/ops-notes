@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Burn-Rate Alerts (Know You're Burning Before the Budget Is Gone) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="An error budget checked at window end is already gone. Burn-rate alerts watch the spending pace instead of the total: the one formula (fraction spent over fraction of window elapsed), the two-window pair that separates a real burn from a blip, page vs. ticket thresholds, and the worked math for a 121-minute budget.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/error-budget-burn-rate-alerts.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Burn-rate alerts: know you're burning before the budget is gone</h1>
+<p>An error budget checked at the end of its window is not a budget &mdash; it is an autopsy. The 28-day window ends, the number is red, and the only thing anyone learned is that the month is unsavable. Burn-rate alerts fix the timing: instead of watching the total, they watch the <em>pace</em> of spending against the budget, and they say something while there is still budget left to save. This page is the alerting math that makes an <a href="https://hive80-lab.github.io/ops-notes/error-budget-policy-template.html">error budget policy</a> fire on time; the <a href="https://hive80-lab.github.io/ops-notes/sla-slo-definition-template.html">SLO definition</a> sets the bar, this page builds the smoke alarm on it.</p>
+<p>Why not just alert when the error rate crosses the target? Because a 0.4% error rate on a 99.7% target means nothing on its own: for ten minutes it is a rounding error, for two days it is the whole budget. The <em>rate of spending</em> is the quantity that carries urgency, and pace is what burn-rate alerts measure.</p>
+
+<h2>1. The one formula</h2>
+<p><strong>Burn rate = fraction of budget spent &divide; fraction of window elapsed.</strong> A burn rate of 1.0 is exactly on pace to end the window with the budget spent to zero &mdash; technically a breach, practically a coin flip. Below 1.0 you are trending safe; above it you are spending faster than the month can afford, and the higher it goes, the fewer hours you have left:</p>
+<ul>
+<li><strong>1.0&times;</strong> &mdash; on pace. 121 bad minutes a month, arriving at 11 seconds an hour. No alarm; this is what &ldquo;healthy&rdquo; feels like.</li>
+<li><strong>6&times;</strong> &mdash; at this pace the budget is gone in about 4.7 days. Serious, not yet catastrophic. Ticket territory.</li>
+<li><strong>14.4&times;</strong> &mdash; budget gone in under 2 days. Something is actively wrong right now. This is where a pager goes off.</li>
+<li><strong>60&times;</strong> &mdash; budget gone in under 12 hours. This is an incident in progress; honestly, by this point your <a href="https://hive80-lab.github.io/ops-notes/paging-policy-what-deserves-a-page.html">paging policy</a> probably fired for the raw outage already.</li>
+</ul>
+<p>Do the arithmetic once, on one line, for your own budget: <em>B = 121 minutes over 28 days = 40,320 minutes, so allowed pace = 11s/hour. 14.4&times; = 2.6 minutes of badness per hour (2% of the budget). 6&times; = 6.5 bad minutes per 6-hour stretch.</em> Those two thresholds are the entire alert scheme.</p>
+
+<h2>2. Two windows, one truth</h2>
+<p>A single window cannot do the job. Long windows ignore disasters (a 24-hour burn barely moves a 28-day graph until it is too late); short windows amplify noise (one retry storm at 3 a.m. pages a human for nothing). The fix is a <strong>pair</strong>: a fast window to catch the spike, a slow window to confirm it is real. The alert fires only when <em>both</em> agree:</p>
+<ul>
+<li><strong>Fast window: 1 hour, threshold 14.4&times;</strong> (2% of the budget in an hour). Catches sudden regressions within the hour. Alone, it is flappy &mdash; so it never pages alone.</li>
+<li><strong>Slow window: 6 hours, threshold 6&times;</strong> (6% of the budget in six hours). Confirms the burn is sustained. A one-minute blip never crosses it; a steady regression crosses it within hours.</li>
+<li><strong>The pair rule:</strong> fast AND slow over threshold = page. Fast only = Slack note. Slow only = ticket. The pair is what turns a noisy metric into a trustworthy one: false alerts need to defeat two independent windows at once.</li>
+<li><strong>The slow-burn tier: 1 day, threshold 1&times;</strong>. If you are merely on pace, that is a weekly review item, not an alert. If a 24-hour window crosses 2&times;, open a ticket &mdash; a chronic drip will empty the budget without any single dramatic hour.</li>
+</ul>
+
+<h2>3. Thresholds you can defend in a review</h2>
+<ul>
+<li><strong>Page threshold: 14.4&times;/1h AND 6&times;/6h.</strong> The numbers come from the standard SRE scheme (2% of budget per hour, 5% per six hours) and they have a property worth saying out loud: they fire <em>early</em> &mdash; a page at 14.4&times; means ~2 days of budget remain, so the on-call is being woken to <em>save</em> the month, not to read its obituary.</li>
+<li><strong>Ticket threshold: 2&times;/24h</strong> (and slow-only 6&times;/6h if the fast window missed it). Tickets mean &ldquo;reliability debt is accumulating; look within a day.&rdquo;</li>
+<li><strong>Never alert below 1&times;.</strong> A green-trending budget is not a page. If your alerts fire when you are doing fine, the fix is the threshold, not the humans.</li>
+<li><strong>Alert on the budget's timeseries, not the raw error rate.</strong> Compute the SLI's bad-event counter into &ldquo;budget minutes spent, projected to window end&rdquo; and alert on that. A raw 0.4%-error-rate alert will flap with traffic; a burn rate normalizes spending against time, which is what you actually decide on.</li>
+</ul>
+
+<h2>4. Wiring it (one afternoon, not one quarter)</h2>
+<ul>
+<li><strong>You need one good counter.</strong> The SLI's &ldquo;bad events&rdquo; counter with real weight &mdash; the same good-test the <a href="https://hive80-lab.github.io/ops-notes/sla-slo-definition-template.html">SLO definition</a> wrote down. If the counter is fake (status-code 200s counted as good when the cart was empty), the burn rate is fake at a higher frequency.</li>
+<li><strong>Four expressions.</strong> spend_1h / (B/672) &ge; 14.4; spend_6h / (6&middot;B/672) &ge; 6; spend_24h / (24&middot;B/672) &ge; 2; and the pair condition (fast AND slow). Every monitoring system that can do a rate-over-window can do this.</li>
+<li><strong>Label the alert with the arithmetic.</strong> The page itself should say: &ldquo;Checkout SLO burning at 16&times; &mdash; 7 of 121 budget minutes spent, projected breach in ~26h if unchanged.&rdquo; An on-call who can read the stakes in five seconds makes a better decision than one who opens three dashboards.</li>
+<li><strong>Route by tier, announce the flip.</strong> Pair-fire goes to the pager; slow-only goes to a ticket; 24h-drift goes to the weekly review. If a threshold gets tuned after a flap, say so in the channel &mdash; silent tuning is how a team stops trusting its own alarm.</li>
+</ul>
+
+<h2>5. Worked example</h2>
+<p>A twelve-person SaaS, checkout SLO 99.7% &rarr; 121 budget minutes per 28 days. Saturday 14:00, a config change ships a regression that burns about 3 budget-minutes per hour. At 14:45 the 1-hour window crosses 14.4&times;; by 16:15 the 6-hour window crosses 6&times; &mdash; the pair fires, and the on-call gets one page with the projection line. He rolls back at 16:25. Total damage: 7 of 121 minutes. The month survives; the error budget policy never triggers; the post-mortem is a ten-minute doc about a bad config value.</p>
+<p>The counter-example is the same regression, same Saturday, at a team with no burn alerts: the raw error rate sits under the alert threshold all weekend (0.4% &lt; 1% alert line), the 28-day graph looks flat, and by Monday the budget has spent 40 minutes and the <a href="https://hive80-lab.github.io/ops-notes/error-budget-policy-template.html">policy pause</a> lands mid-sprint with no culprit and no graph that shows the moment it started. The difference between the two Saturdays is not discipline. It is an alert on the pace instead of the total.</p>
+
+<h2>6. Metrics</h2>
+<ul>
+<li>Every SLO row has burn-rate alerts wired: 100% &mdash; a budget without a pace alarm is an autopsy waiting to happen.</li>
+<li>Pair-flap rate: &lt;1 page per week false-fire; every flap produces a recorded threshold decision, never a silent mute.</li>
+<li>Median budget remaining at page time: &ge;80% &mdash; the alarm's whole job is firing while the month is still saveable.</li>
+<li>Window-end surprises: 0 &mdash; no breach should ever be discovered at the end of the window; the alerts should have said so days earlier.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/sla-slo-definition-template.html">SLO definition template</a> sets the bar these alerts watch, the <a href="https://hive80-lab.github.io/ops-notes/error-budget-policy-template.html">error budget policy</a> decides what happens when the budget burns through, and the <a href="https://hive80-lab.github.io/ops-notes/paging-policy-what-deserves-a-page.html">paging policy</a> decides which human the pair-fire wakes.</em></p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
