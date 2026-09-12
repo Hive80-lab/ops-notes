@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Change-Freeze Calendar Template for Small Teams (Stop Shipping Into the Peak) &mdash; HIVE80lab</title>
+<meta name="description" content="A change freeze that fits one page: the four windows small teams actually declare (peak season, quarter-close, migration week, event week), what still ships inside a freeze, the ninety-second exception loop with a named break-glass approver, and three metrics that keep the freeze honest. Worked example: a twelve-person SaaS company that went from a December 23 billing outage to eleven quiet on-call days.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/change-freeze-calendar-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Change-Freeze Calendar Template for Small Teams</h1>
+<p class="sub">One page. The windows when nobody ships to production, what still ships inside a freeze, and the exception loop that keeps the freeze honest.</p>
+
+<p>Most change freezes are a mood, not a calendar. Someone says &ldquo;no deploys until things calm down,&rdquo; and then the freeze erodes one urgent afternoon at a time &mdash; until somebody ships a pricing change at 4pm on December 23 and spends the quietest week of the year on a billing outage. The fix is not a stricter mood. It is <strong>one table on the wall</strong>: the windows you declare in advance, what is frozen inside each one, what still ships, and who can say yes when something truly cannot wait.</p>
+
+<h2>The freeze calendar, one page</h2>
+<p>A row per window, declared weeks ahead. If a window is not on this table, it does not exist:</p>
+<table>
+<tr><th>Window</th><th>Dates</th><th>What&rsquo;s frozen</th><th>Still ships</th><th>Break-glass approver</th></tr>
+<tr><td><strong>Peak-season blackout</strong> (Black Friday, December, your customers&rsquo; crunch)</td><td>Nov 18 &ndash; Jan 3</td><td>All production deploys; pricing; schema; infrastructure changes</td><td>Rank-1 security fixes, rollback-only patches, docs, monitoring</td><td>Named founder or on-call lead (one name, on the row)</td></tr>
+<tr><td><strong>Quarter-close</strong></td><td>Last 3 business days of the quarter</td><td>Billing, invoicing, anything touching financial data</td><td>Everything not finance-adjacent</td><td>Finance owner</td></tr>
+<tr><td><strong>Migration / major-release week</strong></td><td>The week of the cutover</td><td>Everything except the migration runbook itself</td><td>Rollbacks of the migration; nothing new on top</td><td>Migration lead</td></tr>
+<tr><td><strong>Event week</strong> (launch, conference, audit, customer go-live)</td><td>The 5 days around the date</td><td>Anything that could embarrass you in public</td><td>Content, docs, cosmetic fixes</td><td>Event owner</td></tr>
+</table>
+<p>Three columns do the real work. <strong>&ldquo;What&rsquo;s frozen&rdquo;</strong> is a scope, not the word &ldquo;everything&rdquo; &mdash; a vague freeze is an unenforceable one. <strong>&ldquo;Still ships&rdquo;</strong> is what keeps security clocks running during the freeze. <strong>&ldquo;Break-glass approver&rdquo;</strong> is one named human per window &mdash; never a committee, never &ldquo;ask in the channel,&rdquo; and never the person asking for the exception.</p>
+
+<h2>The four windows most small teams actually declare</h2>
+<p>Teams of 5&ndash;50 rarely need more than four windows a year. Declaring more than that means your regular process is broken &mdash; see the <a href="maintenance-window-policy.html">maintenance window policy</a> instead, and fix the lanes:</p>
+<ul>
+<li><strong>Peak-season blackout.</strong> Your revenue peak is not the time to find out what the new checkout code does. Freeze the whole production surface for the season your customers cannot afford an incident.</li>
+<li><strong>Quarter-close.</strong> Finance systems only. The engineering calendar does not stop, but nothing touches billing while the books are closing.</li>
+<li><strong>Migration week.</strong> One moving part at a time. Everything else waits until the migration has been stable for a week.</li>
+<li><strong>Event week.</strong> Launch, demo, audit, conference. Whatever you would not explain to a customer while it is on fire, do not ship it that week.</li>
+</ul>
+
+<h2>The freeze rule, stated as one line</h2>
+<p><strong>During a declared window, a production change needs one named approver&rsquo;s yes &mdash; the calendar is the policy, the approver is the exception.</strong> That is the whole rule. No freeze means &ldquo;nobody can ever ship&rdquo;; it means &ldquo;shipping now costs one conversation with the person whose name is on the row.&rdquo; A freeze without a named approver becomes a freeze that is broken in the channel by whoever argues hardest.</p>
+
+<h2>The exception loop: ninety seconds per request</h2>
+<p>Exceptions will happen. The loop keeps them rare, fast and logged:</p>
+<ul>
+<li><strong>Ask with three facts:</strong> what changes, why it cannot wait until the window ends, and the rollback if it goes wrong. A request without a rollback is a &ldquo;no&rdquo; by default.</li>
+<li><strong>Check the calendar row:</strong> is the change inside the frozen scope for this window? A billing fix during peak season may be fine; the same fix during quarter-close is not.</li>
+<li><strong>The named approver decides in ninety seconds.</strong> Yes, with a time-box (&ldquo;ship it today, done by 5&rdquo;), or no, with a slot (&ldquo;first thing after Jan 3&rdquo;). No third answer.</li>
+<li><strong>Log it in the row:</strong> date, change, approver, outcome. The log is how you audit the freeze &mdash; and how you notice that one team asks every single time.</li>
+</ul>
+
+<h2>What still ships during a freeze</h2>
+<p>The &ldquo;still ships&rdquo; column exists because some things must not stop:</p>
+<ul>
+<li><strong>Rank-1 security fixes.</strong> The severity clocks from the <a href="vulnerability-remediation-plan-template.html">vulnerability remediation plan</a> do not pause for a holiday. A critical patch ships inside a freeze; that is what the approver&rsquo;s yes is for.</li>
+<li><strong>Rollback-only fixes.</strong> If the fix is a revert, it ships. If the fix is a rewrite, it waits.</li>
+<li><strong>Docs, runbooks, monitoring.</strong> Writing never took production down. The <a href="runbook-template.html">runbook</a> you improve during the freeze is the one that saves the window after it.</li>
+<li><strong>Patch-lane work that was already scheduled</strong> in the <a href="patch-cadence-calendar.html">patch cadence calendar</a>, if the window&rsquo;s scope allows it &mdash; say so on the row instead of arguing each time.</li>
+</ul>
+
+<h2>Three metrics</h2>
+<p>Thirty seconds a month, in the same review as everything else:</p>
+<ul>
+<li><strong>Exceptions requested vs granted.</strong> A healthy freeze grants one in five. Grant nine in ten and the freeze is decoration; grant zero and it is a wall people will route around.</li>
+<li><strong>Incidents traced to a change made just before the window opened.</strong> This is the metric that justifies the freeze to skeptics &mdash; most peak-season incidents are pre-freeze changes detonating late.</li>
+<li><strong>Windows held.</strong> A freeze that silently stops being true is worse than no freeze, because everyone still believes it. The row is updated when the window ends: held, or broken, and why.</li>
+</ul>
+
+<h2>Worked example: from a December 23 outage to eleven quiet days</h2>
+<p>A twelve-person B2B SaaS company. The year before: a founder shipped a pricing-schema change at 4pm on December 23 because &ldquo;the freeze was just for the engineers.&rdquo; It corrupted invoicing for one customer segment; nobody noticed until January 2; the billing team started the year with three days of manual repair and one very patient customer.</p>
+<p>The next year they declared the window on November 20 &mdash; December 18 to January 3, full production scope, still-ships list exactly as above, the on-call lead as break-glass approver. Nine exceptions were requested across the window. Two were granted: both rank-1 security patches, both shipped same-day with the clock documented. Zero production incidents. The pricing change shipped January 6 with a rehearsed rollback, and the on-call rotation got eleven quiet days instead of a forensic accounting exercise. Total process cost: one table, one line in the weekly review, and ninety seconds per exception request.</p>
+
+<h2>Where this fits</h2>
+<p>The freeze calendar sits between the <a href="maintenance-window-policy.html">maintenance window policy</a> (the regular lanes that make freezes rare) and the <a href="seasonal-peak-readiness-checklist.html">seasonal peak readiness checklist</a> (everything else you do before your busiest weeks). Rollbacks for whatever slips through are rehearsed in the <a href="deployment-rollback-checklist.html">deployment rollback checklist</a>; the incident itself, if it happens anyway, follows the <a href="first-30-minutes-incident-response.html">first 30 minutes</a>. If you would rather have the whole change-control loop &mdash; windows, lanes, rollback drills, the freeze audit &mdash; run by an outside pair, that is the <a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a>; and when a frozen week still manages to catch fire, the <a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> turns the post-mortem into a procedure your team can run without you. The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> covers the incident half; <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Vol. 2</a> covers the on-call rotation that staffs the freeze.</p>
+
+<aside class="kit"><h2>Live from the HIVE80lab kit</h2><ul><li><a href="security-audit-scorecard.html">Security Audit Scorecard</a> &mdash; free, 45 checks scored live in your browser, nothing uploaded.</li><li><a href="https://hive80lab.gumroad.com/l/ljogci">Small-Team Ops Audit</a> &mdash; prioritized findings + fix plan, five-day turnaround &mdash; $149</li><li><a href="https://hive80lab.gumroad.com/l/hkljh">Custom Incident Runbook</a> &mdash; built from your estate, delivered in 48h &mdash; $249</li><li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; $14 incident response for small teams</li><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; $27 advanced incident pack for the on-call rotation</li></ul><p class="hint">20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p></aside>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
