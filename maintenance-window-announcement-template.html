@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maintenance Window Announcement Template (Communicate the Downtime You Chose) &mdash; HIVE80lab</title>
+<meta name="description" content="A maintenance window announcement template that makes planned downtime a promise instead of a surprise: the five facts on one line (what, when with timezone, duration cap, what is affected, where updates land), five announcement beats from T-7 days to the completed email, the cap rule that turns a silent overrun into an announced extension, what belongs in a window and what never does, and abort criteria written before the window starts. Worked example: a Sunday migration that ran 23 minutes over and produced zero confused tickets.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/maintenance-window-announcement-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>The maintenance window: communicate the downtime you chose</h1>
+<p>Planned downtime is the only outage you get to schedule, and it is the only one customers forgive &mdash; if you tell them the truth about it. The failure mode is never the 40 minutes of read-only mode; it is the <em>surprise</em>: the app that will not save at 2 a.m., the support inbox full of &ldquo;is this broken?&rdquo;, the <a href="https://hive80-lab.github.io/ops-notes/error-budget-policy-template.html">error budget</a> silently drained by downtime you did not announce. A maintenance window done right is a promise with five facts, five announcement beats, and a cap rule that keeps an overrun from becoming a silent one. The <a href="https://hive80-lab.github.io/ops-notes/database-outage-runbook.html">database outage runbook</a> covers the window that goes sideways anyway; this page covers the part you control before it starts.</p>
+<p>One distinction first: a maintenance window is downtime <strong>by appointment</strong>, and communicated windows do not spend the <a href="https://hive80-lab.github.io/ops-notes/error-budget-policy-template.html">error budget</a>. That is the deal &mdash; but the deal only holds if the communication is real. A window nobody heard about is just an outage you caused on purpose, which is worse, because you signed the change ticket.</p>
+
+<h2>1. One line, five facts</h2>
+<p>Every announcement &mdash; first notice, reminder, or completion &mdash; carries the same five facts on one line. If a reader can quote all five back to you, the announcement worked:</p>
+<ul>
+<li><strong>What:</strong> &ldquo;order history and saved carts will be read-only&rdquo; &mdash; the user-visible surface, not the internal ticket (&ldquo;PG 14&rarr;15 major version migration&rdquo; is for the changelog, not the customer).</li>
+<li><strong>When:</strong> date + clock time <strong>with the timezone named</strong>: &ldquo;Sunday 14 Sep, 02:00&ndash;04:00 ACST&rdquo;. &ldquo;2 a.m.&rdquo; is a timezone you assumed; a global customer base will not guess which one.</li>
+<li><strong>Duration cap:</strong> the window is a <strong>cap, not an estimate</strong>. You are promising to be done <em>by</em> 04:00, not around then. The cap is what makes the extension rule (below) enforceable.</li>
+<li><strong>What to expect:</strong> read-only? Offline? Working but slow, with writes queued? One sentence, plain language, no internal topology.</li>
+<li><strong>Where updates land:</strong> the <a href="https://hive80-lab.github.io/ops-notes/status-page-comms-templates.html">status page</a> URL and the one channel you will actually update. &ldquo;Follow us for updates&rdquo; is not a place; it is a shrug.</li>
+</ul>
+
+<h2>2. Five beats, one skeleton</h2>
+<p>The window has five communication beats. Each is two or three sentences, and each reuses the five-facts line so nobody has to remember an earlier email:</p>
+<ul>
+<li><strong>T&minus;7 days &mdash; first notice.</strong> The five facts plus one line of why: &ldquo;We're moving order history to a faster database. To do it safely, it'll be read-only for up to two hours.&rdquo; Email + in-app banner + status page scheduled entry. Anything that touches money or identity gets T&minus;14 instead.</li>
+<li><strong>T&minus;24 hours &mdash; reminder.</strong> Same line, unchanged. Do not improve the wording between beats &mdash; a changed fact reads as a changed plan, and someone will quote the old one back at you.</li>
+<li><strong>T&minus;1 hour &mdash; starting soon.</strong> &ldquo;Window starts in one hour (02:00 ACST). Next update when it's done, or at the 04:00 cap, whichever comes first.&rdquo; That last clause is doing real work: it names the next-update clock so silence has a deadline.</li>
+<li><strong>During &mdash; start, done, or extended.</strong> At 02:00: &ldquo;Started on time.&rdquo; When finished: &ldquo;Done at 03:41 &mdash; 19 minutes under the cap. Writes are live; if anything looks wrong, reply here.&rdquo; Only if the cap arrives first: the extension message (below).</li>
+<li><strong>After &mdash; completed note.</strong> Same five facts plus what changed: &ldquo;Completed at 03:41 ACST, 19 minutes under the two-hour cap. Order history is on the new database &mdash; faster search, same URLs. No action needed from you.&rdquo;</li>
+</ul>
+<p>Five beats is not over-communication. The alternative is a customer who set an alarm to finish a report at 03:00 discovering a read-only app with no answer in the inbox &mdash; and drafting the cancellation email while they wait.</p>
+
+<h2>3. The cap rule: extensions are announced, overruns are not</h2>
+<p>The duration cap exists for one rule: <strong>you may run over, you may never run over silently.</strong> The mechanics:</p>
+<ul>
+<li><strong>Done early?</strong> Announce it. &ldquo;Done at 03:41, 19 minutes under cap&rdquo; builds the credibility you will spend the day a real outage happens.</li>
+<li><strong>Cap reached, work incomplete?</strong> At the cap minute &mdash; not fifteen after &mdash; send the extension: &ldquo;02:00&ndash;04:00 window has hit its 04:00 cap. Migration is 80% done and data is safe; we're extending to <strong>04:30</strong> (new cap). Next update at 04:30 at the latest.&rdquo; A named new cap converts an overrun into a plan.</li>
+<li><strong>Second cap reached?</strong> <strong>Abort.</strong> Roll back to the pre-window state, announce &ldquo;we're stopping and rescheduling&rdquo; with the reason and the make-good date, and post-mortem the estimate in daylight. A third extension is not persistence; it is a team that cannot read its own progress, operating on a system that customers are actively using.</li>
+</ul>
+<p>The one unforgivable version is the silent overrun: work quietly until 05:20, announce &ldquo;done!&rdquo; &mdash; and never mention that for 80 minutes every status page and every promise was a lie. Customers forgive announced extensions. They churn on silent ones, because the silent overrun tells them what you will do during a real incident.</p>
+
+<h2>4. What belongs in a window &mdash; and what never does</h2>
+<p>A window is expensive: it costs announcement effort, customer attention, and an on-call Sunday. Spend it on work that needs it:</p>
+<ul>
+<li><strong>Belongs:</strong> major version migrations; failover and PITR-restore drills; storage re-shards; anything whose rollback is measured in hours, not seconds. If the <a href="https://hive80-lab.github.io/ops-notes/database-outage-runbook.html">restore path</a> is the safety net, do it in a window.</li>
+<li><strong>Never belongs:</strong> routine deploys that roll back in seconds; config flips behind a flag; anything you could ship Tuesday afternoon without anyone noticing. If the change can be made invisible with a canary, making customers sit through a window for it is malpractice dressed as caution.</li>
+<li><strong>The test:</strong> if the change fails, is the rollback faster than the next window? Fast rollback &rarr; normal deploy. Slow rollback &rarr; window. That is the whole decision.</li>
+</ul>
+
+<h2>5. Abort criteria, written before the window</h2>
+<p>Every window opens with abort criteria written down <em>before</em> it starts, and a named person who owns the abort call:</p>
+<ul>
+<li><strong>Time trigger:</strong> &ldquo;if the migration has not reached step 4 by 03:15, abort and roll back&rdquo; &mdash; not &ldquo;if things feel slow.&rdquo; Feelings negotiate; a clock time does not.</li>
+<li><strong>Verification trigger:</strong> the post-change verification query (row counts, checksum sample, a real order through a test cart) defines done. If it fails twice, that is an abort, not a third attempt.</li>
+<li><strong>Named authority:</strong> one person on the call can say &ldquo;abort&rdquo; and everyone executes. If the person who wants the migration to succeed is the only one allowed to stop it, you do not have an abort rule &mdash; you have a gambler.</li>
+</ul>
+<p>Write the rollback entry point next to it: which command, which snapshot, how long it takes. The <a href="https://hive80-lab.github.io/ops-notes/database-outage-runbook.html">database runbook's</a> state-capture step applies here too &mdash; if the window aborts, the capture becomes the post-mortem's best evidence.</p>
+
+<h2>6. Worked example</h2>
+<p>A twelve-person SaaS schedules its order-database major-version migration for Sunday 02:00&ndash;04:00 ACST. T&minus;7 email has the five facts; T&minus;24 reminder is unchanged; T&minus;1h names the next-update clock. The window starts on time. At 04:00 the migration is at 80% &mdash; the extension goes out at 04:00 exactly, new cap 04:30, reason named. Done at 04:23; the completed note reports the extension, the reason, and one sentence of what changed. Zero confused support tickets, two replies that said &ldquo;thanks for the updates,&rdquo; and the error budget untouched &mdash; the window was communicated, so it was downtime by appointment, not spend.</p>
+<p>The counter-example: the same team, six months earlier, had scheduled a &ldquo;quick 30-minute&rdquo; window that ran 90 minutes over with no updates. Forty support tickets, one churned account that cited &ldquo;we couldn't tell what was happening,&rdquo; and a retrospective that produced this exact template. The engineering work in both cases was similar; the difference was entirely in the promises kept.</p>
+
+<h2>7. Metrics</h2>
+<ul>
+<li>Announcement lead time &ge;72 hours for every window (money-touching: &ge;7 days).</li>
+<li>Extension announcements: 100% &mdash; every cap arrival produces a message, every time.</li>
+<li>Silent overruns: zero. This metric is binary and it is the reputation metric.</li>
+<li>Windows finishing under cap: &ge;90% &mdash; chronic overruns mean the estimates (or the scope) need fixing, not the comms.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/change-freeze-window-policy.html">change freeze window policy</a> covers the dates when <em>no</em> changes go out at all, the <a href="https://hive80-lab.github.io/ops-notes/error-budget-policy-template.html">error budget policy</a> explains why a communicated window is the one kind of downtime that doesn't spend the budget, and the <a href="https://hive80-lab.github.io/ops-notes/database-outage-runbook.html">database outage runbook</a> is for when the carefully announced window turns into the real thing.</em></p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
