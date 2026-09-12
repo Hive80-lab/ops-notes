@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tech Debt Register for Small Teams (One Screen, Ten Rows, an Owner and a Trigger on Each) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A tech debt register for small teams: one screen, ten rows max, each row carrying the interest it charges (rework hours, deploy minutes, incidents), a named owner and a repayment trigger. Paydown rides the next feature PR &mdash; never a big-bang refactor quarter.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/tech-debt-register.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+
+<h1>Tech Debt Register for Small Teams</h1>
+<p class="lede">Tech debt is not a moral failing; it is a loan. Every shortcut you shipped bought speed that day and has been charging interest ever since &mdash; rework on every change that touches it, minutes added to every deploy, one more way a 2am page can happen. A register is not a shame list. It is the <strong>amortization table</strong>: which loans you are still paying interest on, who holds each one, and what event forces repayment. One screen, ten rows. If it does not fit on one screen, you are not tracking debt &mdash; you are archiving guilt.</p>
+
+<h2>The register: one screen, ten rows, six fields</h2>
+<p>One row per debt. Six fields, no more:</p>
+<ul>
+<li><strong>What</strong> &mdash; one sentence, in code terms a new hire could find: "payments retry logic duplicated across three services."</li>
+<li><strong>Where</strong> &mdash; repo, module, or both. A location, not a vibe.</li>
+<li><strong>Interest</strong> &mdash; how the debt charges you, in units you already track: hours of rework per month, minutes added to deploys, incidents attributable to it. This column decides priority &mdash; two debts of identical size can charge wildly different interest.</li>
+<li><strong>Owner</strong> &mdash; a name. "The team" owns nothing.</li>
+<li><strong>Repayment trigger</strong> &mdash; the event that forces paydown: "next feature that touches payments," "third on-call engineer joins," "next dependency upgrade of X." Debt is repaid when the trigger fires &mdash; not when a refactor sprint magically appears.</li>
+<li><strong>Size</strong> &mdash; honest hours or days. Not story points; a size is for scheduling, an interest is for priority.</li>
+</ul>
+<p>Ten rows visible, maximum. The eleventh row goes to an archive section &mdash; not because it does not matter, but because a register nobody can read in one glance is a graveyard, and graveyards do not get paid.</p>
+
+<h2>The interest column is the whole point</h2>
+<p>Size alone tells you nothing: a two-day debt charging four rework hours a month outranks a two-week debt charging nothing because nobody touches that module anymore. Measure interest in evidence the team already produces &mdash; rework hours from the last month, added deploy minutes from the last ten deploys, incident count the post-mortems attribute to it. If you cannot name the interest, the row is a preference, not a debt &mdash; and preferences live in the backlog, not the register.</p>
+
+<h2>Paydown rides feature work, on trigger</h2>
+<p>The register does not schedule a refactoring quarter. When a row's trigger fires &mdash; the next feature touches that module anyway &mdash; the debt is paid <em>inside the feature PR</em>, expand-then-contract style: additive module or interface with parity tests first, delete the old path in the follow-up PR. The person who touches the debt pays the interest or refinances the loan. A row whose trigger has fired and whose feature shipped without paydown gets re-scored at the next weekly review &mdash; paid, or escalated with a reason.</p>
+
+<h2>Cadence: the weekly review, no new meeting</h2>
+<p>The register is reviewed inside the meeting you already run &mdash; five minutes at the end of the <a href="weekly-review-checklist.html">weekly review</a>: re-score interest on any row that caused rework this week, check triggers, archive rows paid since last week with the PR that paid them. Paid rows are not deleted silently; the receipt (the PR link) is the register's credibility.</p>
+
+<h2>Five traps</h2>
+<ul>
+<li><strong>The graveyard spreadsheet.</strong> A hundred-row register with no interest column and no owners, never paid, dying of shame. Ten rows, each with terms, beats a museum of good intentions.</li>
+<li><strong>Debt as shame list.</strong> If the register is where shortcuts are used to win arguments, engineers will stop reporting shortcuts &mdash; and you will lose the early warning. Reward the report; the debt existed the moment the shortcut shipped, not when it was written down.</li>
+<li><strong>The big-bang refactor quarter.</strong> Refactors scheduled away from production pressure drift for months and get cut the first time the quarter gets busy. Pay on trigger, inside the PR that was going to touch the code anyway.</li>
+<li><strong>Size without interest.</strong> A backlog of estimates tells you nothing about priority. Interest decides; size only schedules.</li>
+<li><strong>Ownerless rows.</strong> A row without a name is an unpaid loan nobody holds. Owner or archive &mdash; nothing lives in between.</li>
+</ul>
+
+<h2>Worked example</h2>
+<p>A nine-person fintech SaaS, three-year-old codebase. The feared item: payment retry logic duplicated across three services after a rushed migration two years ago. The old way, this would be "the payments rewrite" &mdash; a quarter nobody could schedule. Instead the register carries ten rows; the duplicated retry logic shows interest of roughly six rework hours a month plus two near-miss incidents in two quarters, owner: the payments engineer, trigger: "next feature touching payments." The trigger fired six weeks later. Paydown shipped as two PRs inside the feature work: the new shared retry module with parity tests against both old paths, then deletion of the duplicates a week later. Total added to the feature: nine days. Result: zero payment incidents the following quarter, and the register lost its highest-interest row with a receipt. Two smaller rows (a deprecated retry library, an unmaintained PDF generator) were paid the same way when their triggers fired.</p>
+
+<h2>Metrics (for the register itself)</h2>
+<ul>
+<li>Ten rows visible or fewer; everything else archived.</li>
+<li>Every row has owner + trigger + interest. A row missing any of the three is deleted, not "fixed later" &mdash; a loan without terms is not a loan.</li>
+<li>Interest measured in units the team already tracks (rework hours, deploy minutes, incident count).</li>
+<li>Every paid row cites the PR that paid it; every new row cites the shortcut PR that created it.</li>
+<li>The register is reviewed inside the existing weekly review. If reviewing it needs a new meeting, the register has become the debt.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/capacity-planning-template.html">capacity planning template</a> is the same discipline for infrastructure &mdash; one row per service, a limit, a trigger; the <a href="https://hive80-lab.github.io/ops-notes/error-budget-policy-template.html">error budget policy</a> is where debt shows up as spent reliability, and the <a href="https://hive80-lab.github.io/ops-notes/weekly-review-checklist.html">weekly review checklist</a> is the meeting where the register gets its five minutes.</em></p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
