@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Standing Orders Template for Small Teams (Who Decides When You're Off the Grid) &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="Standing orders are pre-authorized decisions: what the on-call may do, alone, while the decision-maker is unreachable. The five sections of one page (scope, decision-rights ladder, spend and blast-radius caps, comms commitments, expiry), the traps, and a worked example.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/standing-orders-delegation-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>Standing orders: who decides when you're off the grid</h1>
+<p>Every small team has a moment where the on-call engineer faces a decision, the person who normally makes it is on a plane, and the incident clock is running. Without written authority, the choice collapses into one of two bad modes: improvise (and hope), or wait (and watch the damage compound). Standing orders fix this the way the military fixed it centuries ago: <em>pre-authorized decisions, in writing, with limits</em>. The leader's intent is on paper, so the person on the spot can act fast within it &mdash; and knows exactly where the line is. This page is the one-page template that pairs with the <a href="https://hive80-lab.github.io/ops-notes/incident-severity-matrix-template.html">severity matrix</a> (which says how loud an incident is) and the <a href="https://hive80-lab.github.io/ops-notes/paging-policy-what-deserves-a-page.html">paging policy</a> (which says who gets woken); standing orders say what that woken human may do before anyone else answers.</p>
+<p>Standing orders are not a RACI. A <a href="https://hive80-lab.github.io/ops-notes/raci-matrix-template.html">RACI matrix</a> assigns owners for planned work. Standing orders govern the unplanned: they answer &ldquo;while the owner is unreachable, what is <em>already approved</em>?&rdquo; If your RACI says the CTO decides on customer refunds and the CTO is asleep, your incident needs a refund decision at 3 a.m., standing orders are the only thing standing between your on-call and a coin flip.</p>
+
+<h2>1. The five sections of one page</h2>
+<p>One page. If it takes two, it will not be read at 3 a.m.</p>
+<ul>
+<li><strong>Scope and duration.</strong> Which situations the orders cover (production incidents, sev1&ndash;sev2, customer-impacting events) and when they lapse. Standing orders without an expiry are how a improvisation from one bad Friday becomes permanent policy.</li>
+<li><strong>The decision-rights ladder.</strong> Four tiers, written as verbs: <em>Tier 0</em> &mdash; act alone, no notice needed (restart the stuck worker). <em>Tier 1</em> &mdash; act, then notify within 30 minutes in the incident channel (fail over to the replica). <em>Tier 2</em> &mdash; ask first if anyone is reachable within 15 minutes, act alone if not (drop the feature-flag default, extend a maintenance window). <em>Tier 3</em> &mdash; never act alone; escalate and contain (issue customer refunds, take the whole service offline, communicate a breach).</li>
+<li><strong>Spend and blast-radius caps.</strong> The numbers that make the ladder real: up to $200 emergency spend without approval; up to 10% of customers affected before consulting; data deletions are always Tier 3, no exceptions. A ladder without caps is a slogan.</li>
+<li><strong>Comms commitments.</strong> Who is told what, within how long, in which channel. The on-call's duty does not end at acting &mdash; an action taken under Tier 1 that nobody hears about until standup is a trust debt with interest.</li>
+<li><strong>Expiry and review trigger.</strong> Every order carries a review date (quarterly is enough) and an automatic review trigger: any use of a Tier 1/2 authority gets ten minutes in the next post-mortem, and any order used twice in a month is either promoted into process or killed.</li>
+</ul>
+
+<h2>2. Wiring it in one afternoon</h2>
+<ul>
+<li><strong>List the last 90 days of on-call decisions</strong> from incident channels and post-mortems. You already have the real list &mdash; standing orders just formalize what people did anyway. Ten rows is a good start.</li>
+<li><strong>Write the ladder for your five most common calls.</strong> Restart/retry/rollback are usually Tier 0&ndash;1. Anything touching money, data, or customer communication starts at Tier 2&ndash;3 until proven otherwise.</li>
+<li><strong>Name the caps with the person who owns the money</strong> (spend) and the person who owns the customers (blast radius). Caps written without them will be overridden in the first real incident, and overridden limits teach everyone that limits are suggestions.</li>
+<li><strong>Publish where the incident runs.</strong> Link it from the severity matrix, the on-call handbook, and the incident template. Orders that live in a doc nobody can find are essays.</li>
+<li><strong>Drill once.</strong> Fifteen minutes in the next game day: hand the on-call a scenario, no decision-maker reachable, watch them find the ladder. The drill is not for them &mdash; it is for the page, which will fail the first drill in an embarrassing and useful way.</li>
+</ul>
+
+<h2>3. The traps</h2>
+<ul>
+<li><strong>The hero clause.</strong> &ldquo;Use your judgment&rdquo; everywhere is not delegation, it is abdication with a nicer name &mdash; and it lands hardest on your most junior on-call, who will choose &ldquo;wait&rdquo; every time. Real limits are kinder than fake freedom.</li>
+<li><strong>Orders that contradict the RACI.</strong> If the RACI says the platform lead decides rollbacks and the standing orders say Tier 1, the on-call will lose that argument mid-incident. Reconcile the two on the same day you publish.</li>
+<li><strong>Silent expiry.</strong> Orders written for a migration that finished in March still authorizing database changes in December is how authority drifts. Review dates are not bureaucracy; they are the difference between standing orders and stale ones.</li>
+<li><strong>Caps so low they are theater.</strong> A $0 spend cap means every real decision escalates and the ladder gets ignored. Set caps slightly wider than comfortable &mdash; the review trigger catches abuse better than a straitjacket does.</li>
+</ul>
+
+<h2>4. Worked example: a nine-person payments team</h2>
+<p>A nine-person payments company ran on-call with no written authority. A Friday-night incident (duplicate charges appearing on a subset of transactions) needed exactly one decision: pause the charging job. The on-call waited 40 minutes for the CTO, who was driving. The job ran 40 more minutes; 212 customers were double-charged instead of ~60, and the apology + refund batch took two weeks. The standing orders page they wrote afterwards was 1.5 pages: pause/rollback = Tier 1 (act, notify within 30 min), refunds = Tier 3 (never alone), emergency comms to affected customers = Tier 2 with the template pre-drafted. Six weeks later a similar incident ran the other way: on-call paused the job in 4 minutes under Tier 1, 19 customers affected, refunds done the same night, CTO read about it in the incident channel at 7 a.m. &mdash; exactly as designed.</p>
+
+<h2>5. Metrics</h2>
+<ul>
+<li>Share of incident decisions made under written authority: target &gt;90% by the second month &mdash; the ladder should cover the decisions that actually recur.</li>
+<li>Median time-to-decision for Tier 0&ndash;1 calls: minutes, not hours. Track it before and after; the delta is the whole ROI of the page.</li>
+<li>Orders past their review date: 0. An expired order is worse than none &mdash; it has the aura of authority without the validity.</li>
+<li>Escalations that come back as &ldquo;you should have just decided&rdquo;: every one is a missing row in the ladder. Log them; that is your backlog.</li>
+</ul>
+
+<h2>From the HIVE80lab kit</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="https://hive80-lab.github.io/ops-notes/raci-matrix-template.html">RACI matrix template</a> assigns owners for planned work &mdash; standing orders cover the gap when that owner is unreachable, the <a href="https://hive80-lab.github.io/ops-notes/incident-severity-matrix-template.html">severity matrix</a> sets how loud the incident is, and the <a href="https://hive80-lab.github.io/ops-notes/paging-policy-what-deserves-a-page.html">paging policy</a> decides which human gets woken and sees the ladder first.</em></p>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
