@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Incident Post-Mortem Template for Small Teams — the Document That Stops the Repeat</title>
+<meta name="description" content="An incident post-mortem template small teams will actually finish: the 48-hour window, blameless by format, a timeline rebuilt from logs, five whys that stop at the fixable layer, action items with owners and verification, and a five-bullet read-out.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/incident-post-mortem-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>The Incident Post-Mortem Template for Small Teams</h1>
+<p>An incident that ends without a written post-mortem will happen again. Not because your team is careless &mdash; because memory decays, the people who were there move on, and the fix that lived in someone's head quietly retired with them. A post-mortem template is the difference between paying for an incident once and paying for it on a subscription. This is the one-page version a five-person team can actually finish in an hour &mdash; not the twelve-section enterprise ritual that gets abandoned by section three.</p>
+
+<h2>1. The 48-hour window</h2>
+<p>Write the post-mortem within 48 hours of resolution, while the timeline is still retrievable and the feelings have cooled enough to be useful. Past 48 hours, the logs rotate, the chat scrolls away, and two people will remember the order of events differently &mdash; and neither will be wrong enough to notice. The rule that works: the incident commander (or whoever closed the ticket) books a 45-minute post-mortem slot <em>before</em> closing the incident. If it is not on the calendar before the all-clear, it does not happen.</p>
+
+<h2>2. Blameless is a format, not a feeling</h2>
+<p>Blameless does not mean nobody was involved &mdash; it means the document interrogates systems, not people. The test is simple: every sentence in the contributing-factors section must survive having the person's name replaced with the role. "The on-call engineer forgot to extend the certificate" becomes "the certificate-expiry check had no calendar escalation, so a renewal task could silently expire." The first version teaches nobody anything. The second version is a fix you can ship. You are not writing an alibi &mdash; you are writing the design change that makes the mistake structurally hard to repeat.</p>
+
+<h2>3. The one-page structure: six fields, no more</h2>
+<p>The whole post-mortem fits on one page. Six fields:</p>
+<ul>
+<li><strong>Summary</strong> &mdash; two sentences: what broke, who noticed. "Checkout returned 502s for 34 minutes after the payment gateway rotated keys. First customer report at 03:12; monitoring page at 03:19."</li>
+<li><strong>Impact</strong> &mdash; numbers, not adjectives. Orders failed, revenue lost, customers affected, minutes down. "11 orders failed, ~$480, 41 customers saw errors."</li>
+<li><strong>Timeline</strong> &mdash; UTC-stamped events from first trigger to verified fix (see section 4).</li>
+<li><strong>Contributing factors</strong> &mdash; the five whys output (section 5).</li>
+<li><strong>What went well</strong> &mdash; the parts of the response that worked. This field is not decoration; it tells you what to protect when you change the system.</li>
+<li><strong>Action items</strong> &mdash; each with an owner, a due date, and how you will verify it closed (section 6).</li>
+</ul>
+<p>One page forces ranking. If it does not fit, you have two incidents, not one.</p>
+
+<h2>4. Rebuild the timeline from logs, not memory</h2>
+<p>Memory gives you a story; logs give you a timeline. Pull events from four sources and merge them by UTC timestamp: the alerting system (what fired, when, with what latency), the application/service logs (the actual failure moments), the chat channel (decisions and handoffs &mdash; "03:41 decided to roll back"), and the deploy/change log (what changed in the 24 hours before &mdash; this is where most causes hide). Every line gets a timestamp and an event; no line gets a name with an adjective attached. "03:07 config deploy #4821 applied" &mdash; not "03:07 someone pushed a bad config."</p>
+
+<h2>5. Five whys &mdash; but stop at the fixable layer</h2>
+<p>Ask "why" five times, writing each answer down. Stop the chain at the first layer you can actually change this month. Below that, you find physics, vendor economics, or headcount &mdash; true, but not actionable, and a post-mortem that ends at "we need more staff" changes nothing. Example: the disk filled (why) because log rotation failed (why) because the rotation config was overwritten (why) by a deploy that shipped its own config (why) because there is no check that deploys preserve ops config. That last layer &mdash; a pre-deploy config check &mdash; is shippable in a day. "We need a better server" was the layer-zero answer that would have guaranteed the repeat.</p>
+
+<h2>6. Action items that actually close</h2>
+<p>An action item is not a wish. It has four fields: <strong>what</strong> (one concrete change), <strong>owner</strong> (a name, never "the team"), <strong>due date</strong> (a real date inside 30 days), and <strong>verification</strong> (how you will know it closed &mdash; "the check fires in staging," not "we discussed it"). The honest ratio: if fewer than 80% of last quarter's action items closed on time, your post-mortems are producing paperwork, not prevention. Put the open action items in the weekly ops review until they close. An action item still open at 30 days gets re-decided, not silently renewed &mdash; either it matters enough to do or it mattered enough to write down why you are not doing it.</p>
+
+<h2>7. The read-out and the archive</h2>
+<p>Two closes, both cheap. The read-out: five bullets to whoever was not awake for it &mdash; what broke, impact, root cause, the fix shipped, the fix pending. This goes in the channel everyone reads, not a meeting nobody attends. The archive: the post-mortem file lives in the repo next to the runbook it changes, named <code>YYYY-MM-DD-short-name-post-mortem.md</code>. Before the next incident, the responder greps this folder &mdash; half the time the incident you are fighting has a predecessor with its fix already written down. Six months of archived post-mortems is the cheapest runbook library you will ever build.</p>
+
+<h2>A worked example: the Tuesday 3 a.m. disk-full</h2>
+<p>A three-person team's checkout dies at 03:10 on a Tuesday. The on-call clears the disk in nine minutes and &mdash; because the template was booked before the all-clear &mdash; files the post-mortem the next morning. Summary: log rotation failed, disk hit 100%, checkout 502 for 9 minutes. Impact: 3 orders failed, ~$140. Timeline rebuilt from alerts and deploy log: 02:50 deploy shipped an overwriting logrotate config; 03:04 disk alert fired to an unmonitored channel; 03:10 first customer error; 03:19 on-call paged by a customer tweet; 03:29 disk cleared, verified. Five whys land on "no deploy check preserves ops config." Action items: config-preservation check in CI (owner: the on-call engineer, due Friday, verified by a red test in staging); disk alert re-routed to the main channel (due Wednesday, verified by a test alert); runbook updated with the rotate-now command (done same day). Three weeks later a near-identical deploy runs &mdash; and the CI check rejects it in 40 seconds. The repeat cost: one red build instead of one outage.</p>
+
+<h2>Related pages</h2>
+<ul>
+<li><a href="incident-response-drill-schedule-template.html">Incident Response Drill Schedule Template</a> &mdash; rehearse before the real one writes the post-mortem for you</li>
+<li><a href="disk-full-incident-runbook.html">Disk-Full Incident Runbook</a> &mdash; the worked cause of this template's example incident</li>
+<li><a href="uptime-downtime-budget.html">Uptime &amp; Downtime Budget</a> &mdash; how many minutes your tier actually allows</li>
+<li><a href="runaway-automation-runbook.html">Runaway Automation Runbook</a> &mdash; when the system that broke is one you built</li>
+<li><a href="daily-audit-checklist.html">Daily Ops Audit Checklist</a> &mdash; where the ten-minute check catches the next one early</li>
+</ul>
+
+<hr>
+<p><strong>An incident is tuition; the post-mortem is the receipt that proves you learned something.</strong> Write it inside 48 hours, keep it to one page and six fields, interrogate systems instead of people, close the action items like tickets, and archive where the next responder will look. Small teams that write post-mortems stop having the same incident twice &mdash; small teams that skip them get to have it again, with feeling.</p>
+</main>
+</body>
+</html>
