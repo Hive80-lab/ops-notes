@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>No-Show Reminder Sequence for Client Appointments (Templates That Fill the Calendar) &mdash; HIVE80lab</title>
+<meta name="description" content="A no-show reminder sequence for small businesses: the 3-touch ladder (48-hour confirm, 24-hour text, 2-hour logistics), the one-word reply-to-confirm mechanic, the no-show policy written once, the same-day rescue script, the two-strike prepay rule, and five weekly numbers. Worked example: physio clinic, 22% no-shows down to 6% in six weeks with zero awkward conversations.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/no-show-reminder-sequence.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>No-Show Reminder Sequence</h1>
+<p class="desc">An empty chair is the most expensive inventory in a service business: the hour exists once, the cost is fixed, and a no-show makes it evaporate. This is the reminder ladder that makes clients show up &mdash; without a single awkward phone call.</p>
+
+<h2>1. The math of an empty chair</h2>
+<p>A solo physio with 30 appointment slots a week and a 22% no-show rate loses 6.6 hours of billable time every week &mdash; a third of a working week, unpaid, unrecoverable, repeated 48 weeks a year. Nobody budgets for it because it never appears on an invoice. It appears as a vibe: "we were busy but money was short."</p>
+<ul>
+<li><strong>No-shows are a systems problem, not a character problem.</strong> The client who no-showed on Tuesday remembers their dentist appointment because the dentist's software texted them twice. The same client forgets yours because your reminder is a calendar entry <em>they</em> set and never open.</li>
+<li><strong>Reminders are not nagging.</strong> Survey any service business after installing a reminder ladder: clients thank them. "Sorry, I completely lost track &mdash; thanks for the reminder" is the normal response. The awkwardness exists only before the first one is sent.</li>
+<li><strong>The sequence costs less than one recovered appointment per month.</strong> Any reminder system that saves a single slot a month has paid for its setup time for the quarter.</li>
+</ul>
+
+<h2>2. The 3-touch ladder</h2>
+<p>Three touches, each with a different job. More than three and you train clients to ignore you; fewer and you are betting the slot on their memory.</p>
+<ul>
+<li><strong>T&minus;48 hours &mdash; the confirm (email).</strong> States the appointment, asks for a one-word reply, and gives the reschedule link. This is the touch that catches "actually, Tuesday doesn't work anymore" while there is still time to refill the slot. Subject line: <em>"Confirming Tuesday 2:00 pm &mdash; reply YES or reschedule"</em>. Reply-bait, not decoration.</li>
+<li><strong>T&minus;24 hours &mdash; the commitment (SMS).</strong> Short, from a number replies reach: <em>"Hi Sam &mdash; Northside Physio here. You're booked tomorrow 2:00 pm with Dr. Patel. Reply C to confirm or R to reschedule. See you then!"</em> A reply to a text is a commitment device; SMS reply rates on a one-tap question run several times the email rate for exactly this reason.</li>
+<li><strong>T&minus;2 hours &mdash; the logistics (SMS).</strong> Parking, door, floor, what to bring: <em>"See you at 2:00 &mdash; we're on Level 2, free parking behind the building. Bring your referral letter if you have it handy."</em> This touch reduces late arrivals almost as much as no-shows; "running 20 minutes late" is a rescued slot, not a lost one.</li>
+</ul>
+<p>The ladder only works as a ladder: the 48-hour touch gives room to reschedule politely, the 24-hour touch converts intention into a reply, and the 2-hour touch removes friction. Skip the first and every cancellation lands as a silent no-show; skip the last and "where do I park?" becomes the reason someone arrives at 2:25 to a slot that was rebooked at 2:10.</p>
+
+<h2>3. The reply-to-confirm mechanic</h2>
+<p>The difference between a reminder and a confirmation request is a question. A reminder that only <em>states</em> ("See you Tuesday!") gets filed mentally under "already handled." A reminder that asks for one word &mdash; YES, C, R &mdash; forces a micro-decision, and the micro-decision is what sticks in memory.</p>
+<ul>
+<li><strong>One word only.</strong> Every extra requested keystroke halves the reply rate. "Reply YES" beats "please confirm your attendance at your upcoming appointment" by a mile.</li>
+<li><strong>Track the replies.</strong> The confirm list is your attendance forecast: clients who replied C virtually never no-show; no-shows come almost entirely from the silent column. Silence at T&minus;24h is the signal &mdash; a personal "we're holding your slot, shall we lock it in?" text recovers a meaningful share of them.</li>
+<li><strong>Reschedule is a win.</strong> Every "actually, can we move it?" at T&minus;48h is a slot you can refill. The ladder's real product is early cancellations, which is why the reschedule link rides along in every touch. The same principle as the <a href="quote-follow-up-sequence.html">quote follow-up sequence</a>: give the client a graceful exit ramp early, and fewer of them take the ugly one later.</li>
+</ul>
+
+<h2>4. The no-show policy, written once</h2>
+<p>A policy that lives in the owner's head comes out as an improvisation, and improvisations sound like anger. Write it once, put it in the booking confirmation email, and let it do the talking:</p>
+<blockquote><strong>Heads up:</strong> appointments not cancelled at least 12 hours ahead may be charged 50% of the session fee, and repeat no-shows are rebooked with a card on file. Life happens &mdash; reply R to your reminder any time and the slot moves free of charge. We just ask for the 12 hours so someone else can use it.</blockquote>
+<ul>
+<li><strong>The forgiveness clause is the policy.</strong> "Reply R any time and the slot moves free" is what makes the fee credible rather than hostile. Clients accept consequences they could have avoided with one tap.</li>
+<li><strong>Deposits beat fees.</strong> For high-value slots (consults, tattoo sessions, project kickoffs), take a deposit at booking instead of chasing a fee after the fact &mdash; the mechanism is identical to the <a href="upfront-deposit-checklist.html">upfront deposit checklist</a>: money reserves the slot, and unfunded slots stay negotiable in the client's head.</li>
+<li><strong>Enforce the 12 hours, forgive the human.</strong> The policy exists so the conversation is "per our booking policy" instead of "I'm annoyed at you." Applied inconsistently it becomes a mood; applied consistently it becomes a fact &mdash; the same rule as the reply-by date on the <a href="overdue-invoice-collection-ladder.html">invoice collection ladder</a>.</li>
+</ul>
+
+<h2>5. The same-day rescue script</h2>
+<p>The no-show happened. The slot is empty. The window between "they didn't show" and "the day moved on" is fifteen minutes long, and one text fits inside it:</p>
+<blockquote>"Hi Sam &mdash; we held your 2:00 pm today but didn't see you. No stress. Want to grab the 4:00 today, or Thursday 10:00? Reply with a number and it's yours."</blockquote>
+<p>Three things to notice: <em>no stress</em> removes the shame spiral that makes people ghost, two concrete times make replying easier than not replying, and the slot is still being sold &mdash; today, not "whenever." About a third of same-day no-shows reply to this text, and half of those become a billed appointment within the week. The ones who don't reply get the reschedule offer once more in tomorrow's reminder slot, then the two-strike rule takes over.</p>
+<ul>
+<li><strong>Never lecture.</strong> "You missed your appointment" as an opener guarantees silence. The rescue script's only job is to make the next yes easy.</li>
+<li><strong>Bill the fee quietly.</strong> If the policy applies, the invoice goes out with standard payment terms &mdash; same tone as any other invoice. A fee that arrives as drama is a fee you'll waive; a fee that arrives as administration is a fee that teaches.</li>
+</ul>
+
+<h2>6. The two-strike rule for repeat offenders</h2>
+<p>Most clients no-show once a year, at most. A small group no-shows a great deal, and they are a math problem, not a morality play:</p>
+<ul>
+<li><strong>Strike one:</strong> rescue script, fee if the policy says so, warm welcome back. Humans forget.</li>
+<li><strong>Strike two:</strong> "So we can hold a slot for you, we'll take the booking fee as a deposit at booking from now on &mdash; it comes straight off your appointment total." The prepay requirement is framed as slot protection, which is exactly what it is.</li>
+<li><strong>The data:</strong> in almost every service business, the top 10% of no-showers account for 40&ndash;50% of lost slots. Two-strike prepay, applied to that group alone, cuts the no-show rate by a third &mdash; with zero change for everyone else.</li>
+</ul>
+
+<h2>7. Worked example: the clinic that stopped losing Fridays</h2>
+<p>A two-room physio clinic, 60 booked slots a week, 22% no-show rate &mdash; 13 empty beds a week, concentrated on Friday afternoons where "I'll decide after lunch" was the house style. Reception spent real hours on reminder calls nobody answered.</p>
+<p>Six weeks after the ladder went live:</p>
+<ul>
+<li><strong>No-shows fall from 22% to 6%</strong> &mdash; and half the remainder are same-day rescues converted to billed appointments by the rescue text.</li>
+<li><strong>Early reschedules triple.</strong> The T&minus;48h "reply R" link moves conflicts to where they can be refilled; Friday afternoons run at 85% booked because empty slots get offered the moment they open.</li>
+<li><strong>Reception drops the call list entirely</strong> &mdash; about five hours a week back, spent at the front desk instead.</li>
+<li><strong>Two clients hit strike two</strong> and accept prepay without friction; one of them becomes a weekly regular, because the reminder text was the only thing their memory needed all along.</li>
+</ul>
+<p>Nothing about the clinical work changed. The only change: the appointment got a memory of its own, and the client got three chances to move it instead of one chance to miss it.</p>
+
+<h2>8. Five weekly numbers</h2>
+<ul>
+<li><strong>No-show rate by service</strong> (no-shows / booked slots &mdash; target: under 8%; watch any service or day drifting above the rest &mdash; Friday afternoon is the usual suspect).</li>
+<li><strong>Confirm rate</strong> (C-replies / 24h texts sent &mdash; the leading indicator; when confirm rate falls, no-shows rise about a week later).</li>
+<li><strong>Same-day rescue rate</strong> (rescued slots / no-shows &mdash; the rescue text is working if this sits above 25%).</li>
+<li><strong>Early reschedule share</strong> (reschedules &gt;12h ahead / all cancellations &mdash; refills live here; rising early reschedules with falling no-shows is the ladder working, not a problem).</li>
+<li><strong>Prepay penetration on strike-two clients</strong> (target: 100% &mdash; every repeat offender on deposit or prepay, so the aggregate number stops depending on anyone's memory).</li>
+</ul>
+
+<h2>Keep reading</h2>
+<p>The reminder ladder is the front door of calendar hygiene; the money side of the same discipline lives in the <a href="overdue-invoice-collection-ladder.html">invoice collection ladder</a> and the <a href="quote-follow-up-sequence.html">quote follow-up sequence</a> &mdash; both are the same idea (the deadline does the asking) pointed at cash instead of appointments. If your no-shows cluster around first appointments, the cause is usually upstream in the <a href="lead-response-time-checklist.html">lead response time checklist</a>: a lead booked fast is a lead invested in the slot.</p>
+
+<h2>This checklist is part of the kit line</h2>
+<p>This checklist is part of the <strong>Hive80 Lab ops kit line</strong> &mdash; field-tested, instantly downloadable:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start</li>
+<li><a href="https://hive80lab.gumroad.com/l/rtodsv">Ops Field Cards</a> &mdash; 12 printable incident checklists &mdash; $4</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; full incident-response kit for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $29</li>
+</ul>
+</main>
+<footer><a href="index.html">&larr; All ops notes</a></footer>
+</body>
+</html>
