@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurement Framework: Make Better Buying Decisions in 60 Minutes</title>
+    <meta name="description" content="A structured procurement framework that ensures every purchase decision is data-driven, cost-effective, and aligned with your business goals. One-hour evaluation for every major purchase over $5,000.</p>
+    
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/293-procurement-framework.html">
+    <link rel="stylesheet" href="https://hive80-lab.github.io/ops-notes/style.css">
+    <style>
+        .procurement { max-width: 900px; margin: 0 auto; }
+        .frame { margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea; }
+        .criteria { background: #e3f2fd; padding: 1rem; border-radius: 6px; margin: 1rem 0; font-weight: bold; color: #1565c0; }
+        .cost { background: #e8f5e9; padding: 1rem; border-radius: 6px; margin: 1rem 0; color: #2e7d32; }
+        .framework { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; }
+        .framework h3 { margin: 0 0 1rem 0; }
+        .framework p { margin: 0 0 1.5rem 0; opacity: 0.9; }
+        .framework button { display: inline-block; background: white; color: #667eea; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 6px; font-weight: bold; }
+        .tool { background: #fff3e0; padding: 1rem; border-radius: 6px; margin: 1rem 0; color: #ef6c00; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Procurement Framework</h1>
+        <p class="subtitle">Make Better Buying Decisions in 60 Minutes</p>
+        <div class="framework">
+            <h3>Use the Procurement Decision Matrix for Every Purchase Over $5,000</h3>
+            <p>One-hour evaluation. 10 criteria. Objective decision. No more "I like them."</p>
+            <a href="https://hive80-lab.github.io/ops-notes/292-supply-chain-contingency.html" style="text-decoration: none; color: white; font-weight: bold;">← Back to Supply Chain Contingency</a>
+        </div>
+    </header>
+
+    <section class="procurement">
+        <h2>What This Is</h2>
+        <p>Every purchase is an investment in your business. The question is whether it's a good one. This framework gives you a structured process to evaluate every procurement opportunity: define requirements, score vendors, compare total cost of ownership, and make an objective decision.</p>
+
+        <h3>When to Use This Framework</h3>
+        <ul style="margin-left: 2rem; line-height: 1.8;">
+            <li><strong>Major purchases:</strong> Over $5,000 in initial cost</li>
+            <li><strong>Multi-year contracts:</strong> 12+ month commitments</li>
+            <li><strong>Recurring spend:</strong> Monthly/yearly costs > $1,000</li>
+            <li><strong>Strategic vendors:</strong> Those that touch customers or core operations</li>
+        </ul>
+
+        <h2>Step 1: Define Requirements (15 Minutes)</h2>
+        <p>Don't evaluate vendors until you know what you need. A clear requirements document prevents scope creep and false starts.</p>
+        
+        <div class="frame">
+            <h4>Requirements Template</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr>
+                    <th>Requirement Category</th>
+                    <th>Requirements</th>
+                    <th>Must-Have / Nice-to-Have</th>
+                </tr>
+                <tr>
+                    <td>Technical</td>
+                    <td>[e.g., Integration with X, API access, 99.9% uptime]</td>
+                    <td>[M / N]</td>
+                </tr>
+                <tr>
+                    <td>Functional</td>
+                    <td>[e.g., 10 users, role-based access, reporting]</td>
+                    <td>[M / N]</td>
+                </tr>
+                <tr>
+                    <td>Performance</td>
+                    <td>[e.g., Response time < 2 seconds, 100K requests/day]</td>
+                    <td>[M / N]</td>
+                </tr>
+                <tr>
+                    <td>Security</td>
+                    <td>[e.g., SOC 2 Type II, encryption at rest, audit log]</td>
+                    <td>[M / N]</td>
+                </tr>
+                <tr>
+                    <td>Scalability</td>
+                    <td>[e.g., Support 10x current volume in 12 months]</td>
+                    <td>[M / N]</td>
+                </tr>
+                <tr>
+                    <td>Support</td>
+                    <td>[e.g., 24/7 phone, 4-hour response SLA]</td>
+                    <td>[M / N]</td>
+                </tr>
+                <tr>
+                    <td>Compliance</td>
+                    <td>[e.g., GDPR, HIPAA, industry-specific regulations]</td>
+                    <td>[M / N]</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2>Step 2: Qualify Vendors (30 Minutes)</h2>
+        <p>Not all vendors are created equal. Filter out the bad ones before you evaluate them.</p>
+        
+        <div class="frame">
+            <h4>Vendor Qualification Checklist</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Financial health:</strong> Do they have the runway to survive your contract?</li>
+                <li><strong>Reputation:</strong> What do customers say about them? Check G2, Capterra, Glassdoor.</li>
+                <li><strong>References:</strong> Ask for 3 recent customers. Contact them directly.</li>
+                <li><strong>Certifications:</strong> Do they have the required credentials (SOC 2, ISO, etc.)?</li>
+                <li><strong>Capacity:</strong> Can they handle your volume right now?</li>
+                <li><strong>Fit:</strong> Do their values align with yours?</li>
+            </ul>
+        </div>
+
+        <h2>Step 3: Score Vendors (15 Minutes)</h2>
+        <p>Rate each vendor on your requirements. Use a weighted scorecard to ensure the most important criteria carry the most weight.</p>
+        
+        <div class="frame">
+            <h4>Scorecard Template</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr>
+                    <th>Criteria</th>
+                    <th>Weight</th>
+                    <th>Vendor A Score (1-10)</th>
+                    <th>Vendor B Score (1-10)</th>
+                    <th>Vendor C Score (1-10)</th>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>25%</td>
+                    <td>[10]</td>
+                    <td>[8]</td>
+                    <td>[7]</td>
+                </tr>
+                <tr>
+                    <td>Performance</td>
+                    <td>20%</td>
+                    <td>[9]</td>
+                    <td>[8]</td>
+                    <td>[10]</td>
+                </tr>
+                <tr>
+                    <td>Support</td>
+                    <td>20%</td>
+                    <td>[8]</td>
+                    <td>[9]</td>
+                    <td>[8]</td>
+                </tr>
+                <tr>
+                    <td>Technical</td>
+                    <td>15%</td>
+                    <td>[9]</td>
+                    <td>[10]</td>
+                    <td>[9]</td>
+                </tr>
+                <tr>
+                    <td>Security</td>
+                    <td>10%</td>
+                    <td>[10]</td>
+                    <td>[7]</td>
+                    <td>[8]</td>
+                </tr>
+                <tr>
+                    <td>Fit</td>
+                    <td>10%</td>
+                    <td>[8]</td>
+                    <td>[9]</td>
+                    <td>[7]</td>
+                </tr>
+                <tr style="background: #f8f9fa; font-weight: bold;">
+                    <td>Total</td>
+                    <td>100%</td>
+                    <td>[8.65]</td>
+                    <td>[8.35]</td>
+                    <td>[8.00]</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="criteria">
+            <strong>Scoring Rules:</strong>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li>Must-have criteria: 0 = Fail, 1-10 = Score (80% weight if must-have)</li>
+                <li>Nice-to-have criteria: 1-10 = Score (20% weight if nice-to-have)</li>
+                <li>Weighted score = Σ(Criteria Score × Weight)</li>
+                <li>Must-haves must all pass. If any fails, vendor fails regardless of total score.</li>
+            </ul>
+        </div>
+
+        <h2>Step 4: Calculate Total Cost of Ownership (TCO) (10 Minutes)</h2>
+        <p>Don't just look at the sticker price. Add in implementation, training, maintenance, and upgrade costs. Compare apples to apples.</p>
+        
+        <div class="cost">
+            <strong>TCO Calculation Template:</strong>
+            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr>
+                    <th>Cost Category</th>
+                    <th>Vendor A</th>
+                    <th>Vendor B</th>
+                    <th>Vendor C</th>
+                </tr>
+                <tr>
+                    <td>Initial Cost</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                </tr>
+                <tr>
+                    <td>Implementation</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                </tr>
+                <tr>
+                    <td>Training</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                </tr>
+                <tr>
+                    <td>Annual Maintenance</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                </tr>
+                <tr>
+                    <td>Upgrade/Support</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                </tr>
+                <tr>
+                    <td>Disposal</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                    <td>$[Amount]</td>
+                </tr>
+                <tr style="background: #e8f5e9; font-weight: bold;">
+                    <td>3-Year TCO</td>
+                    <td>$[Total]</td>
+                    <td>$[Total]</td>
+                    <td>$[Total]</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="tool">
+            <strong>Pro Tip:</strong> Ask vendors for their TCO breakdown. If they refuse, that's a negative signal. Transparency is a good sign.
+        </div>
+
+        <h2>Step 5: Make the Decision (5 Minutes)</h2>
+        <p>Choose the vendor that wins on your weighted score and has the best TCO. Document your decision with rationale.</p>
+        
+        <div class="frame">
+            <h4>Decision Log Template</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr>
+                    <th>Project</th>
+                    <td>[Project Name]</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>[Date]</td>
+                </tr>
+                <tr>
+                    <th>Winner</th>
+                    <td>[Vendor Name]</td>
+                </tr>
+                <tr>
+                    <th>Runner-Up</th>
+                    <td>[Vendor Name]</td>
+                </tr>
+                <tr>
+                    <th>Weighted Score</th>
+                    <td>[Vendor A: 8.65 / Vendor B: 8.35]</td>
+                </tr>
+                <tr>
+                    <th>TCO (3 Years)</th>
+                    <td>$[Amount]</td>
+                </tr>
+                <tr>
+                    <th>Key Rationale</th>
+                    <td>[e.g., Better performance, stronger support, higher security]</td>
+                </tr>
+                <tr>
+                    <th>Assumptions</th>
+                    <td>[e.g., Annual maintenance won't increase beyond X%]</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2>Step 6: Monitor and Review (Ongoing)</h2>
+        <p>After you buy, track the vendor's performance against the criteria you used to score them. Meet monthly to review progress.</p>
+        
+        <div class="frame">
+            <h4>Post-Procurement Review Template</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Performance vs. target:</strong> Did they meet their scores?</li>
+                <li><strong>Cost variance:</strong> Did implementation cost more than expected?</li>
+                <li><strong>Usability:</strong> Is the solution actually usable, or is it "cheap but bad"?</li>
+                <li><strong>Suitability:</strong> Do you still need this solution, or did you overbuy?</li>
+                <li><strong>Future requirements:</strong> What are you adding in 6 months?</li>
+            </ul>
+        </div>
+
+        <h2>Common Pitfalls</h2>
+        <div class="criteria">
+            <strong>1. Lowest Price Wins (Price-Only Decision)</strong>
+            <p>Short-term savings become long-term costs. Cheaper vendors often have worse support, worse security, and higher implementation costs.</p>
+        </div>
+        <div class="criteria">
+            <strong>2. Scope Creep</strong>
+            <p>Requirements change mid-evaluation. Re-evaluate with new requirements and rerun the scorecard if needed.</p>
+        </div>
+        <div class="criteria">
+            <strong>3. Short-Term Thinking</strong>
+            <p>Focusing on the first 12 months and ignoring TCO. 3+ year TCO often reveals the real winner.</p>
+        </div>
+        <div class="criteria">
+            <strong>4. No Follow-Up</strong>
+            <p>Sign and forget. You won't know if you overpaid or if the vendor underdelivered until it's too late to do anything about it.</p>
+        </div>
+
+        <div class="framework">
+            <h3>Next Step: Strengthen Your Supply Chain</h3>
+            <p>Use this procurement framework to choose better vendors. Then secure your supply chain with redundancy and contingency planning.</p>
+            <a href="https://hive80-lab.github.io/ops-notes/292-supply-chain-contingency.html" class="cta-button">→ Back to Supply Chain Contingency</a>
+        </div>
+
+        <h2>Worked Example</h2>
+        <div class="frame">
+            <h4>The $15,000 Upgrade Mistake</h4>
+            <p>A company wanted to upgrade their CRM. Three vendors submitted proposals:</p>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Vendor A:</strong> $8,000 implementation, $500/month. 24/7 support, 99.9% uptime.</li>
+                <li><strong>Vendor B:</strong> $10,000 implementation, $700/month. 4-hour support, 99.5% uptime.</li>
+                <li><strong>Vendor C:</strong> $5,000 implementation, $300/month. 72-hour support, 99% uptime.</li>
+            </ul>
+            <p>The company chose Vendor C because of the low price. Six months later, they realized they needed 24/7 support but were paying for 72-hour support. Their customers were frustrated. The company paid $15,000 for 24/7 support without realizing it (upgrade cost + extra 6 months of cheaper plan).</p>
+            <p><strong>The fix:</strong> They use this framework to score vendors on TCO. Vendor A wins by 3-year TCO. They upgrade to Vendor A. Total cost of ownership is 22% lower than Vendor C.</p>
+        </div>
+
+        <h2>Next Steps</h2>
+        <div class="frame">
+            <h4>Immediate Actions (Next 1 Week)</h4>
+            <ol style="margin-left: 2rem; line-height: 1.8;">
+                <li>Create a procurement template folder with scorecard, requirements, and TCO templates</li>
+                <li>Apply the framework to your last 3 major purchases (what should you have done differently?)</li>
+                <li>Use the framework to evaluate your top 5 upcoming purchases</li>
+            </ol>
+        </div>
+    </section>
+
+    <footer>
+        <p>This framework is part of the <a href="https://hive80-lab.github.io/ops-notes/">Ops Notes library</a> — 293 pages of practical business operations guides, templates, and runbooks.</p>
+    </footer>
+</body>
+</html>

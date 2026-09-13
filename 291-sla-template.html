@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Level Agreement (SLA) Template: Define Clear Performance Expectations in 45 Minutes</title>
+    <meta name="description" content="A complete SLA template that captures uptime, response time, quality metrics, and dispute resolution. One-hour setup to eliminate ambiguous vendor expectations and protect your business.</p">
+    
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/291-sla-template.html">
+    <link rel="stylesheet" href="https://hive80-lab.github.io/ops-notes/style.css">
+    <style>
+        .sla { max-width: 900px; margin: 0 auto; }
+        .section { margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea; }
+        .metric { background: #e3f2fd; padding: 1rem; border-radius: 6px; margin: 1rem 0; font-weight: bold; color: #1565c0; }
+        .penalty { background: #ffebee; padding: 1rem; border-radius: 6px; margin: 1rem 0; color: #c62828; }
+        .dispute { background: #fff3e0; padding: 1rem; border-radius: 6px; margin: 1rem 0; color: #ef6c00; }
+        .table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .table th, .table td { padding: 0.75rem; border: 1px solid #ddd; text-align: left; }
+        .table th { background: #667eea; color: white; }
+        .table tr:nth-child(even) { background: #f8f9fa; }
+        .warning { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; }
+        .warning h3 { margin: 0 0 1rem 0; }
+        .warning p { margin: 0 0 1.5rem 0; opacity: 0.9; }
+        .warning button { display: inline-block; background: white; color: #667eea; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 6px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Service Level Agreement (SLA) Template</h1>
+        <p class="subtitle">Define Clear Performance Expectations in 45 Minutes</p>
+        <div class="warning">
+            <h3>Fill in the [BRACKETS] to create your SLA</h3>
+            <p>This template takes 45 minutes to complete. Use it with any vendor (SaaS, consulting, managed services, infrastructure).</p>
+            <a href="https://hive80-lab.github.io/ops-notes/290-vendor-management-playbook.html" style="text-decoration: none; color: white; font-weight: bold;">← Back to Vendor Management Playbook</a>
+        </div>
+    </header>
+
+    <section class="sla">
+        <h2>Introduction</h2>
+        <p>This Service Level Agreement (SLA) defines the performance expectations between <strong>[VENDOR_NAME]</strong> and <strong>[YOUR_COMPANY]</strong> for the services provided under the contract signed on <strong>[CONTRACT_DATE]</strong>.</p>
+
+        <h3>Purpose</h3>
+        <ul style="margin-left: 2rem; line-height: 1.8;">
+            <li>Define measurable performance metrics</li>
+            <li>Establish penalties for underperformance</li>
+            <li>Create a dispute resolution process</li>
+            <li>Ensure service continuity and quality</li>
+        </ul>
+
+        <div class="section">
+            <h2>1. Scope of Services</h2>
+            <p>Effective from <strong>[START_DATE]</strong> through <strong>[END_DATE]</strong>, [VENDOR_NAME] provides the following services:</p>
+            <table class="table">
+                <tr>
+                    <th>Service</th>
+                    <th>Description</th>
+                    <th>Frequency</th>
+                    <th>Pricing</th>
+                </tr>
+                <tr>
+                    <td>[Service 1]</td>
+                    <td>[Detailed description]</td>
+                    <td>[e.g., Daily / Monthly / On-demand]</td>
+                    <td>[Price]</td>
+                </tr>
+                <tr>
+                    <td>[Service 2]</td>
+                    <td>[Detailed description]</td>
+                    <td>[e.g., Weekly / Quarterly]</td>
+                    <td>[Price]</td>
+                </tr>
+                <tr>
+                    <td>[Service 3]</td>
+                    <td>[Detailed description]</td>
+                    <td>[e.g., As needed]</td>
+                    <td>[Price]</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>2. Performance Metrics</h2>
+            <p>Each metric below is measured monthly. Failure to meet the target constitutes a performance violation.</p>
+            
+            <div class="metric">
+                <strong>Uptime / Availability</strong>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Metric</th>
+                    <th>Target</th>
+                    <th>Calculation Method</th>
+                </tr>
+                <tr>
+                    <td>[System/System Name]</td>
+                    <td>[e.g., 99.9%]</td>
+                    <td>[(Total Time - Downtime) / Total Time] × 100</td>
+                </tr>
+                <tr>
+                    <td>[Database/Database Name]</td>
+                    <td>[e.g., 99.95%]</td>
+                    <td>[(Total Time - Downtime) / Total Time] × 100</td>
+                </tr>
+            </table>
+
+            <div class="metric">
+                <strong>Response Time</strong>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Type of Incident</th>
+                    <th>Target Response</th>
+                    <th>Target Resolution</th>
+                </tr>
+                <tr>
+                    <td>P1 - Critical</td>
+                    <td>[e.g., 15 minutes]</td>
+                    <td>[e.g., 2 hours]</td>
+                </tr>
+                <tr>
+                    <td>P2 - High</td>
+                    <td>[e.g., 30 minutes]</td>
+                    <td>[e.g., 4 hours]</td>
+                </tr>
+                <tr>
+                    <td>P3 - Moderate</td>
+                    <td>[e.g., 2 hours]</td>
+                    <td>[e.g., 1 business day]</td>
+                </tr>
+                <tr>
+                    <td>P4 - Low</td>
+                    <td>[e.g., 8 hours]</td>
+                    <td>[e.g., 2 business days]</td>
+                </tr>
+            </table>
+
+            <div class="metric">
+                <strong>Quality Metrics</strong>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Metric</th>
+                    <th>Target</th>
+                    <th>Measurement Period</th>
+                </tr>
+                <tr>
+                    <td>[e.g., Bug count]</td>
+                    <td>[e.g., 0 critical bugs / month]</td>
+                    <td>[e.g., Monthly]</td>
+                </tr>
+                <tr>
+                    <td>[e.g., Customer satisfaction]</td>
+                    <td>[e.g., 4.5/5]</td>
+                    <td>[e.g., Quarterly]</td>
+                </tr>
+                <tr>
+                    <td>[e.g., Feature delivery]</td>
+                    <td>[e.g., 100% on time]</td>
+                    <td>[e.g., Sprint/project based]</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>3. Penalties for Underperformance</h2>
+            <p>When a metric falls below the target, the following penalties apply automatically. No claim is required; penalties are applied to the next invoice.</p>
+            
+            <div class="penalty">
+                <strong>Penalty Calculation:</strong>
+                <table class="table">
+                    <tr>
+                        <th>Violation Count</th>
+                        <th>Penalty Amount</th>
+                    </tr>
+                    <tr>
+                        <td>1st violation in a 30-day period</td>
+                        <td>[e.g., 5% of invoice]</td>
+                    </tr>
+                    <tr>
+                        <td>2nd violation in a 30-day period</td>
+                        <td>[e.g., 10% of invoice]</td>
+                    </tr>
+                    <tr>
+                        <td>3rd violation in a 30-day period</td>
+                        <td>[e.g., 15% of invoice]</td>
+                    </tr>
+                    <tr>
+                        <td>4+ violations in a 30-day period</td>
+                        <td>[e.g., 25% of invoice]</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="penalty">
+                <strong>Penalty Cap:</strong>
+                <p>No single penalty may exceed <strong>[MAX_PENALTY_PERCENTAGE]%</strong> of a single invoice. Cumulative penalties across multiple invoices are capped at <strong>[TOTAL_PENALTY_CAP]</strong> annually.</p>
+            </div>
+
+            <div class="penalty">
+                <strong>Example:</strong>
+                <p>Monthly invoice: $10,000</p>
+                <ul style="margin-left: 2rem; line-height: 1.8;">
+                    <li>1st downtime violation: -$500 (5%)</li>
+                    <li>2nd response-time violation: -$1,000 (10%)</li>
+                    <li>3rd quality violation: -$1,500 (15%)</li>
+                    <li>Total penalty: -$3,000</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. Monitoring and Reporting</h2>
+            <p>[VENDOR_NAME] agrees to provide the following reports:</p>
+            <table class="table">
+                <tr>
+                    <th>Report Type</th>
+                    <th>Delivery Frequency</th>
+                    <th>Content</th>
+                </tr>
+                <tr>
+                    <td>Monthly Performance Report</td>
+                    <td>5th business day of each month</td>
+                    <td>Uptime, response times, quality metrics</td>
+                </tr>
+                <tr>
+                    <td>Incident Log</td>
+                    <td>Weekly</td>
+                    <td>All incidents > 15 minutes</td>
+                </tr>
+                <tr>
+                    <td>Quarterly Review</td>
+                    <td>Last week of each quarter</td>
+                    <td>Full performance analysis, improvement plan</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>5. Dispute Resolution</h2>
+            <div class="dispute">
+                <strong>When to Escalate:</strong>
+                <p>If either party believes the other has violated this SLA, the following escalation path applies:</p>
+            </div>
+            
+            <ol style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Internal escalation (2 business days):</strong> Contact the vendor's designated point of contact and your company's account manager. Document everything in writing.</li>
+                <li><strong>Signed incident report (5 business days):</strong> Create a formal incident report signed by both parties summarizing the issue, the agreed timeline for resolution, and the expected outcome.</li>
+                <li><strong>Arbitration (30 business days):</strong> If the issue is unresolved, submit to arbitration by <strong>[Arbitration Provider]</strong>. The arbitrator's decision is final and binding.</li>
+            </ol>
+
+            <div class="dispute">
+                <strong>Example Dispute Process:</strong>
+                <ul style="margin-left: 2rem; line-height: 1.8;">
+                    <li>Day 1: You notice 98% uptime when target is 99.9%</li>
+                    <li>Day 2: You email the vendor's POC; they respond "We'll investigate"</li>
+                    <li>Day 7: No resolution; you create a formal incident report</li>
+                    <li>Day 12: Vendor agrees to fix but doesn't apologize</li>
+                    <li>Day 14: You submit to arbitration with evidence of underperformance</li>
+                    <li>Day 44: Arbitrator rules in your favor; vendor must pay penalties</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. Communication Channels</h2>
+            <table class="table">
+                <tr>
+                    <th>Incident Level</th>
+                    <th>Primary Channel</th>
+                    <th>Secondary Channel</th>
+                </tr>
+                <tr>
+                    <td>P1 - Critical</td>
+                    <td>[e.g., Phone / Emergency hotline]</td>
+                    <td>[e.g., SMS / Pager]</td>
+                </tr>
+                <tr>
+                    <td>P2 - High</td>
+                    <td>[e.g., Slack / Email]</td>
+                    <td>[e.g., Phone]</td>
+                </tr>
+                <tr>
+                    <td>P3 - Moderate</td>
+                    <td>[e.g., Email / Ticket system]</td>
+                    <td>[e.g., Slack]</td>
+                </tr>
+                <tr>
+                    <td>P4 - Low</td>
+                    <td>[e.g., Ticket system]</td>
+                    <td>[e.g., Email]</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>7. Termination</h2>
+            <p>Either party may terminate this SLA with <strong>[TERMINATION_NOTICE_PERIOD]</strong> written notice for the following reasons:</p>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li>Repeated violations of this SLA (≥3 violations in a 90-day period)</li>
+                <li>Failure to deliver services as specified</li>
+                <li>Material breach of contract</li>
+                <li>Unpaid invoices beyond 30 days</li>
+            </ul>
+
+            <p>Notice must be sent to the contact listed in the main contract. Termination does not waive penalties for prior performance violations.</p>
+        </div>
+
+        <h2>Signatures</h2>
+        <div class="section">
+            <h4>For [YOUR_COMPANY]</h4>
+            <p>_________________________</p>
+            <p>Name: <strong>[Name]</strong></p>
+            <p>Title: <strong>[Title]</strong></p>
+            <p>Date: <strong>[Date]</strong></p>
+
+            <h4>For [VENDOR_NAME]</h4>
+            <p>_________________________</p>
+            <p>Name: <strong>[Name]</strong></p>
+            <p>Title: <strong>[Title]</strong></p>
+            <p>Date: <strong>[Date]</strong></p>
+        </div>
+
+        <div class="warning">
+            <h3>Next Step: Implement This Template</h3>
+            <p>Fill in the [BRACKETS] to create your SLA. Use the vendor management playbook to assign tiers and schedule your first monthly review.</p>
+            <a href="https://hive80-lab.github.io/ops-notes/290-vendor-management-playbook.html" style="text-decoration: none; color: white; font-weight: bold;">→ Back to Vendor Management Playbook</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>This template is part of the <a href="https://hive80-lab.github.io/ops-notes/">Ops Notes library</a> — 291 pages of practical business operations guides, templates, and runbooks.</p>
+    </footer>
+</body>
+</html>

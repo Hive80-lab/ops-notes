@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain Contingency Plan: Your Business Won't Collapse When Things Break</title>
+    <meta name="description" content="A complete supply chain contingency playbook: identify single points of failure, create backup vendors, test your recovery plans, and survive disruptions without operational collapse.">
+    
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/292-supply-chain-contingency.html">
+    <link rel="stylesheet" href="https://hive80-lab.github.io/ops-notes/style.css">
+    <style>
+        .contingency { max-width: 900px; margin: 0 auto; }
+        .plan { margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea; }
+        .impact { background: #ffebee; padding: 1rem; border-radius: 6px; margin: 1rem 0; color: #c62828; }
+        .backup { background: #e8f5e9; padding: 1rem; border-radius: 6px; margin: 1rem 0; color: #2e7d32; }
+        .alert { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; }
+        .alert h3 { margin: 0 0 1rem 0; }
+        .alert p { margin: 0 0 1.5rem 0; opacity: 0.9; }
+        .alert button { display: inline-block; background: white; color: #667eea; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 6px; font-weight: bold; }
+        .risk-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .risk-table th, .risk-table td { padding: 0.75rem; border: 1px solid #ddd; text-align: left; }
+        .risk-table th { background: #667eea; color: white; }
+        .risk-table tr:nth-child(even) { background: #f8f9fa; }
+        .test { background: #fff3e0; padding: 1rem; border-radius: 6px; margin: 1rem 0; color: #ef6c00; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Supply Chain Contingency Plan</h1>
+        <p class="subtitle">Your Business Won't Collapse When Things Break</p>
+        <div class="alert">
+            <h3>Start with the Critical Supplier Risk Matrix</h3>
+            <p>One-hour assessment. 10-minute drill. Zero catastrophic surprises.</p>
+            <a href="https://hive80-lab.github.io/ops-notes/293-procurement-framework.html" class="cta-button">→ Go to Procurement Framework</a>
+        </div>
+    </header>
+
+    <section class="contingency">
+        <h2>What This Is</h2>
+        <p>A supply chain is just a collection of vendors that each deliver one piece of your business. If any piece fails, you're broken. This playbook gives you a systematic way to identify where you're vulnerable, build redundancy, and run a 30-minute disaster drill every quarter to keep your plans fresh.</p>
+
+        <h3>Why You Need This</h3>
+        <ul style="margin-left: 2rem; line-height: 1.8;">
+            <li><strong>Collapse risk:</strong> Single supplier failure can shut your operations within hours. Don't assume it can't happen to you.</li>
+            <li><strong>Fatigue:</strong> When a disruption hits, you're stressed and prone to bad decisions. Planning removes the panic.</li>
+            <li><strong>Insurance evidence:</strong> Most contracts require documented continuity plans. This is your proof.</li>
+            <li><strong>Customer confidence:</strong> Clients trust you when they know you have backups.</li>
+        </ul>
+
+        <h2>Step 1: Map Your Supply Chain (30 Minutes)</h2>
+        <p>A supply chain map shows every vendor that delivers a product or service you use. List them in this format:</p>
+        
+        <div class="plan">
+            <h4>Supply Chain Map Template</h4>
+            <table class="risk-table">
+                <tr>
+                    <th>Vendor Name</th>
+                    <th>Product/Service</th>
+                    <th>Monthly Spend</th>
+                    <th>Tier (Critical/High/Moderate/Low)</th>
+                    <th>Current Backup</th>
+                    <th>Last Review</th>
+                </tr>
+                <tr>
+                    <td>[Vendor Name]</td>
+                    <td>[Product/Service]</td>
+                    <td>$[Amount]</td>
+                    <td>[Tier]</td>
+                    <td>[None / Vendor Name]</td>
+                    <td>[Date]</td>
+                </tr>
+                <tr>
+                    <td>[Vendor Name]</td>
+                    <td>[Product/Service]</td>
+                    <td>$[Amount]</td>
+                    <td>[Tier]</td>
+                    <td>[None / Vendor Name]</td>
+                    <td>[Date]</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2>Step 2: Identify Single Points of Failure (30 Minutes)</h2>
+        <p>After you map your supply chain, identify which vendors have no backup. These are your single points of failure.</p>
+        
+        <div class="plan">
+            <h4>Failure Impact Calculator</h4>
+            <p>For each critical/high-tier vendor, calculate the impact if they fail:</p>
+            
+            <table class="risk-table">
+                <tr>
+                    <th>Vendor</th>
+                    <th>Failure Probability (1-5)</th>
+                    <th>Impact Level (1-5)</th>
+                    <th>Risk Score (Prob × Impact)</th>
+                </tr>
+                <tr>
+                    <td>[Vendor Name]</td>
+                    <td>[1-5]</td>
+                    <td>[1-5]</td>
+                    <td>[Score]</td>
+                </tr>
+                <tr>
+                    <td>[Vendor Name]</td>
+                    <td>[1-5]</td>
+                    <td>[1-5]</td>
+                    <td>[Score]</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="impact">
+            <strong>Risk Score Interpretation:</strong>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li>Score 5-10: Moderate risk. Focus on improving availability/backup.</li>
+                <li>Score 11-25: High risk. Get backup immediately or accept the risk.</li>
+                <li>Score 26+: Critical risk. Do something or rename your business "High-Risk."</li>
+            </ul>
+        </div>
+
+        <h2>Step 3: Build Backup Vendors (Ongoing)</h2>
+        <p>For every critical/high-risk vendor, identify a backup vendor before you need them. This usually means qualifying 2-3 vendors and signing a small trial contract.</p>
+        
+        <div class="plan">
+            <h4>Backup Qualification Checklist</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Capacity check:</strong> Can they handle your volume?</li>
+                <li><strong>Capability check:</strong> Can they deliver what you need?</li>
+                <li><strong>Cost check:</strong> Do you have budget for them?</li>
+                <li><strong>Credential check:</strong> Do they have the necessary certifications?</li>
+                <li><strong>Availability check:</strong> Can they start immediately?</li>
+                <li><strong>Documentation check:</strong> Can they provide the same reports and SLA?</li>
+            </ul>
+        </div>
+
+        <div class="backup">
+            <strong>Example Backup Implementation:</strong>
+            <p>Your hosting provider fails. You have an emergency backup vendor. They can spin up your servers in 2 hours because you qualified them 3 months ago and already have a small "rescue" account. Your business doesn't miss a beat.</p>
+        </div>
+
+        <h2>Step 4: Create Recovery Playbooks (2 Hours)</h2>
+        <p>For every critical supplier, write a 1-page playbook that tells you exactly what to do when they fail. Update it every quarter.</p>
+        
+        <div class="plan">
+            <h4>Recovery Playbook Template</h4>
+            <table class="risk-table">
+                <tr>
+                    <th>Supplier</th>
+                    <th>[Vendor Name]</th>
+                </tr>
+                <tr>
+                    <th>Failure Symptom</th>
+                    <td>[e.g., Website down, no access to servers]</td>
+                </tr>
+                <tr>
+                    <th>Activation Checklist</th>
+                    <td>
+                        <ol style="margin-left: 2rem; line-height: 1.8;">
+                            <li>Confirm failure with customer support</li>
+                            <li>Document timeline and severity</li>
+                            <li>Notify stakeholders (internal + external)</li>
+                            <li>Initiate backup vendor contract</li>
+                            <li>Assign POCs to both primary and backup</li>
+                            <li>Set up daily status meetings</li>
+                        </ol>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Communication Template</th>
+                    <td>
+                        <strong>To:</strong> Stakeholders<br>
+                        <strong>From:</strong> Supply Chain Team<br>
+                        <strong>Subject:</strong> [Vendor Name] Failure - Active Response<br>
+                        <p>We are actively managing a failure with [Vendor Name]. Here's what we know:</p>
+                        <ul style="margin-left: 2rem; line-height: 1.8;">
+                            <li><strong>When:</strong> [Timestamp]</li>
+                            <li><strong>What:</strong> [Failure description]</li>
+                            <li><strong>Impact:</strong> [Customer impact]</li>
+                            <li><strong>Response:</strong> [Action items and timeline]</li>
+                        </ul>
+                        <p>We will provide updates every [timeframe]. Questions? Contact [Name/Title].</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Success Criteria</th>
+                    <td>[e.g., Systems operational within 4 hours, customer impact below 5%, no data loss]</td>
+                </tr>
+                <tr>
+                    <th>Post-Incident Report</th>
+                    <td><em>Complete within 3 days: timeline, root cause, what we learned, changes to prevent recurrence.</em></td>
+                </tr>
+            </table>
+        </div>
+
+        <h2>Step 5: Run Monthly Disaster Drills (30 Minutes)</h2>
+        <p>A plan that's never tested is a plan that won't work. Pick one critical supplier and simulate their failure. See how long it takes you to activate your backup.</p>
+        
+        <div class="test">
+            <strong>Drill Agenda (30 Minutes)</strong>
+            <ol style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Selection (5 min):</strong> Pick the most vulnerable supplier this month.</li>
+                <li><strong>Simulation (10 min):</strong> Pretend they've failed. Call their support line. Document response time.</li>
+                <li><strong>Backup Activation (10 min):</strong> Activate your backup vendor. How long? What's broken? What needs fixing?</li>
+                <li><strong>Review (5 min):</strong> What did we learn? Update the playbook if needed.</li>
+            </ol>
+        </div>
+
+        <div class="backup">
+            <strong>Drill Example:</strong>
+            <p>You simulate your primary payment processor failing. You activate the backup processor in 47 minutes. The backup is 23% slower for integrations. You identify that you need to refactor your payment flow or qualify another processor. Problem solved before the real failure happens.</p>
+        </div>
+
+        <h2>Step 6: Inventory and Buffer Stock (For Physical Goods)</h2>
+        <p>If your business relies on physical goods, you need safety stock and buffer inventory. The rule of thumb: keep 2-3 weeks of critical supplies on hand.</p>
+        
+        <div class="plan">
+            <h4>Buffer Stock Guidelines</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Critical items:</strong> 4-6 weeks of supply on hand (minimum 2)</li>
+                <li><strong>High-impact items:</strong> 2-3 weeks of supply on hand</li>
+                <li><strong>Moderate items:</strong> 1 week of supply on hand</li>
+                <li><strong>Low-impact items:</strong> No buffer stock (replenish after each order)</li>
+            </ul>
+        </div>
+
+        <h2>Step 7: Financial Contingency Planning</h2>
+        <p>If a supply chain disruption costs you 30 days, do you have the cash flow to survive it? Map your break-even point and keep a contingency fund.</p>
+        
+        <div class="plan">
+            <h4>Break-Even Analysis</h4>
+            <table class="risk-table">
+                <tr>
+                    <th>Fixed Costs / Day</th>
+                    <td>[Calculate: rent, salaries, utilities, software, etc.]</td>
+                </tr>
+                <tr>
+                    <th>Gross Revenue / Day</th>
+                    <td>[Your actual number]</td>
+                </tr>
+                <tr>
+                    <th>Break-Even Point</th>
+                    <td>[Fixed Costs / Gross Revenue]</td>
+                </tr>
+                <tr>
+                    <th>Contingency Days</th>
+                    <td>[Break-Even × 2]</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="impact">
+            <strong>Example:</strong>
+            <p>You have $10,000 in fixed costs daily and generate $15,000 in revenue daily. Your break-even point is 66%. If a disruption costs you 30 days, you need $300,000 in cash. Set aside $350,000 in your contingency fund.</p>
+        </div>
+
+        <div class="alert">
+            <h3>Next Step: Implement Your Supply Chain Contingency Plan</h3>
+            <p>Map your supply chain, identify single points of failure, and build backup vendors. Then proceed to the procurement framework to get better at choosing vendors in the first place.</p>
+            <a href="https://hive80-lab.github.io/ops-notes/293-procurement-framework.html" class="cta-button">→ Go to Procurement Framework</a>
+        </div>
+
+        <h2>Worked Example</h2>
+        <div class="plan">
+            <h4>The $4.2M Warning Shot</h4>
+            <p>Your primary warehouse provider commits to 99% uptime. You have no backup. Six months later, a storm knocks out their power for 48 hours. Your inventory is stuck. Revenue drops 82%. You lose $4.2M in sales that quarter.</p>
+            <p><strong>The fix:</strong> You qualified 3 backup warehouse providers. Within 4 hours of the outage, you moved your entire inventory to Backup Provider A. You signed a 6-month contract with Backup Provider A and Backup Provider B (keeping them on retainer). You still lost 4 days of sales, but you reduced the revenue impact by 76%.</p>
+            <p><strong>Lesson:</strong> You never know when a disruption will hit. Plan for it anyway.</p>
+        </div>
+
+        <h2>Key Metrics to Track</h2>
+        <ul style="margin-left: 2rem; line-height: 1.8;">
+            <li><strong>Single Point of Failure (SPoF) Count:</strong> Number of critical suppliers with no backup. Target: 0</li>
+            <li><strong>Drill Pass Rate:</strong> Percentage of drills where you hit your target recovery time. Target: 100%</li>
+            <li><strong>Recovery Time (MTTR):</strong> Mean Time to Recover from a supplier failure. Target: Under 4 hours for critical items</li>
+            <li><strong>Stockout Rate:</strong> Frequency of running out of critical inventory. Target: 0% for critical items</li>
+            <li><strong>Contingency Fund Utilization:</strong> How often you use your contingency fund. Use this to adjust sizing.</li>
+        </ul>
+
+        <h2>Next Steps</h2>
+        <div class="plan">
+            <h4>Immediate Actions (Next 1 Week)</h4>
+            <ol style="margin-left: 2rem; line-height: 1.8;">
+                <li>Complete your supply chain map (all critical/high-tier vendors)</li>
+                <li>Identify single points of failure</li>
+                <li>Start qualifying backup vendors (aim for 2 per supplier)</li>
+                <li>Write recovery playbooks for your top 5 risks</li>
+            </ol>
+        </div>
+    </section>
+
+    <footer>
+        <p>This playbook is part of the <a href="https://hive80-lab.github.io/ops-notes/">Ops Notes library</a> — 292 pages of practical business operations guides, templates, and runbooks.</p>
+    </footer>
+</body>
+</html>

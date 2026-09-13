@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Management Playbook: Keep Your Supply Chain Secure and Your Costs Controlled</title>
+    <meta name="description" content="A comprehensive vendor management playbook: onboarding process, risk assessment, contract templates, vendor performance scoring, and the monthly review system that catches hidden costs before they become emergencies.">
+    
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/290-vendor-management-playbook.html">
+    <link rel="stylesheet" href="https://hive80-lab.github.io/ops-notes/style.css">
+    <style>
+        .playbook { max-width: 900px; margin: 0 auto; }
+        .phase { margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea; }
+        .action-item { display: flex; align-items: flex-start; margin: 1rem 0; }
+        .action-item input[type="checkbox"] { margin-right: 1rem; margin-top: 0.25rem; }
+        .score { background: #e3f2fd; padding: 1rem; border-radius: 6px; margin: 1rem 0; font-weight: bold; color: #1565c0; }
+        .risk { background: #fff3e0; padding: 1rem; border-radius: 6px; margin: 1rem 0; color: #ef6c00; }
+        .cta-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; }
+        .cta-box h3 { margin: 0 0 1rem 0; }
+        .cta-box p { margin: 0 0 1.5rem 0; opacity: 0.9; }
+        .cta-button { display: inline-block; background: white; color: #667eea; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 6px; font-weight: bold; }
+        .tier { display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .tier-badge { padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.875rem; font-weight: bold; }
+        .tier-critical { background: #ffebee; color: #c62828; }
+        .tier-high { background: #fff3e0; color: #ef6c00; }
+        .tier-moderate { background: #e8f5e9; color: #2e7d32; }
+        .tier-low { background: #e3f2fd; color: #1565c0; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Vendor Management Playbook</h1>
+        <p class="subtitle">Keep Your Supply Chain Secure and Your Costs Controlled</p>
+        <div class="cta-box">
+            <h3>Start with the Quarterly Vendor Review Checklist</h3>
+            <p>One hour per quarter. Five key questions. Zero surprises.</p>
+            <a href="https://hive80-lab.github.io/ops-notes/291-sla-template.html" class="cta-button">Download SLA Template →</a>
+        </div>
+    </header>
+
+    <section class="playbook">
+        <h2>What This Is</h2>
+        <p>A vendor is any external provider you pay to do something you don't have the team, time, or expertise to do yourself. This playbook turns "I guess they're doing a good job" into a measurable system: onboarding, performance scoring, renewal decisions, and the monthly vendor meeting that catches hidden costs before they become emergencies.</p>
+
+        <h3>Key Components</h3>
+        <div class="phase">
+            <h4>Core Framework</h4>
+            <ul>
+                <li><strong>Vendor tiering:</strong> Critical, High, Moderate, Low</li>
+                <li><strong>Onboarding checklist:</strong> 12 items, 90 minutes to get a supplier up to speed</li>
+                <li><strong>Performance scorecard:</strong> 8 metrics, weighted based on tier</li>
+                <li><strong>Risk matrix:</strong> Probability × Impact = Risk Score</li>
+                <li><strong>Contract template:</strong> SLA + Termination + Escalation clauses</li>
+                <li><strong>Monthly vendor meeting:</strong> 30 minutes, five questions</li>
+                <li><strong>Quarterly review:</strong> Scorecard review, renewal decision</li>
+            </ul>
+        </div>
+
+        <h2>Step 1: Tier Your Vendors (1 Hour)</h2>
+        <p>Not all vendors are equal. The critical ones deserve separate treatment. A tier system keeps you from over-managing the trivial and under-managing the important.</p>
+        <div class="phase">
+            <h4>Critical Vendor</h4>
+            <p><strong>Definition:</strong> Eliminating this vendor for even a week creates a business-critical outage or revenue loss.</p>
+            <div class="tier">
+                <span class="tier-badge tier-critical">Examples: Hosting provider, core payment processor, key SaaS platform</span>
+                <span class="tier-badge tier-critical">Management frequency: Weekly</span>
+            </div>
+        </div>
+        <div class="phase">
+            <h4>High Vendor</h4>
+            <p><strong>Definition:</strong> Their failure creates a measurable disruption but the business can survive short-term. High opportunity cost.</p>
+            <div class="tier">
+                <span class="tier-badge tier-high">Examples: Customer support vendor, marketing agency, warehouse space</span>
+                <span class="tier-badge tier-high">Management frequency: Bi-weekly</span>
+            </div>
+        </div>
+        <div class="phase">
+            <h4>Moderate Vendor</h4>
+            <p><strong>Definition:</strong> Failure creates some inconvenience but business continues.</p>
+            <div class="tier">
+                <span class="tier-badge tier-moderate">Examples: Office cleaning, graphic designer, IT managed services</span>
+                <span class="tier-badge tier-moderate">Management frequency: Monthly</span>
+            </div>
+        </div>
+        <div class="phase">
+            <h4>Low Vendor</h4>
+            <p><strong>Definition:</strong> Failure is annoying but not critical. Maintenance only.</p>
+            <div class="tier">
+                <span class="tier-badge tier-low">Examples: Coffee service, office supplies, miscellaneous subscriptions</span>
+                <span class="tier-badge tier-low">Management frequency: Quarterly</span>
+            </div>
+        </div>
+
+        <h2>Step 2: The Vendor Onboarding Checklist (90 Minutes)</h2>
+        <p>A bad vendor onboarding process is the #1 source of vendor disasters. You don't know what you don't know until something goes wrong.</p>
+        <div class="action-list">
+            <div class="action-item"><input type="checkbox"> Commercial check: Contract signed, payment terms, renewal dates</div>
+            <div class="action-item"><input type="checkbox"> Access check: Non-disclosure agreement (NDA) signed, rights granted</div>
+            <div class="action-item"><input type="checkbox"> Technical check: Credentials, SLA guarantees, uptime commitments</div>
+            <div class="action-item"><input type="checkbox"> Security check: SOC 2 report reviewed, penetration testing history</div>
+            <div class="action-item"><input type="checkbox"> On-call check: Who to call in an emergency, escalation path</div>
+            <div class="action-item"><input type="checkbox"> Reporting check: Monthly reporting template agreed, delivery frequency</div>
+            <div class="action-item"><input type="checkbox"> Offboarding check: Cancellation process documented, data portability clause</div>
+            <div class="action-item"><input type="checkbox"> Timeline: Schedule the first follow-up meeting (14 days)</div>
+        </div>
+
+        <h2>Step 3: Vendor Performance Scoring (Monthly)</h2>
+        <p>Assign a score (1-10) to each metric. Average the scores for a vendor's monthly score. Use this score for renewal decisions and to escalate underperforming vendors.</p>
+        <div class="phase">
+            <h4>Performance Scorecard by Tier</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr style="background: #e3f2fd;">
+                    <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #667eea;">Metric</th>
+                    <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #667eea;">Weight</th>
+                    <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #667eea;">Target (10)</th>
+                    <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #667eea;">Critical</th>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Uptime/Availability</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">35%</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">99.9%</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd; color: #c62828;">Yes</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Response Time</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">20%</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">4 hours</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd; color: #ef6c00;">Yes</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Quality</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">15%</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">85%</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">No</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Cost Control</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">15%</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Within budget</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">No</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Compliance</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">15%</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">100%</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd; color: #ef6c00;">Yes</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="score">
+            <strong>Scoring rule:</strong> If a metric hits 7 or below, flag it. If the average is below 7, initiate a performance improvement plan.
+        </div>
+
+        <h2>Step 4: The Monthly Vendor Meeting (30 Minutes)</h2>
+        <p>A 30-minute meeting with every vendor you pay more than $1,000/month. No fluff. Just the five questions that expose hidden costs and performance gaps.</p>
+        <div class="phase">
+            <h4>The Five Questions</h4>
+            <ol style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>What did we get this month that we didn't expect?</strong> Look for unexpected value, new features, or unadvertised services.</li>
+                <li><strong>What's broken and when will it be fixed?</strong> Don't ask vague questions. Demand dates.</li>
+                <li><strong>What costs more than last month and why?</strong> Rate increases, unused add-ons, hidden fees. Force transparency.</li>
+                <li><strong>What have you delivered that wasn't billed?</strong> Extra support, bug fixes, training. Ask for it next month.</li>
+                <li><strong>Is there anything we should have asked that we didn't?</strong> This is how you find new things the vendor won't tell you voluntarily.</li>
+            </ol>
+        </div>
+
+        <h2>Step 5: The Quarterly Review (2 Hours)</h2>
+        <p>Compare the actual scores to the target scores. Make a renewal decision. If you're letting a high-tier vendor go, give them 60 days notice and start the onboarding process for a replacement.</p>
+        <div class="phase">
+            <h4>Quarterly Review Agenda</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr style="background: #e8f5e9;">
+                    <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #2e7d32;">Question</th>
+                    <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #2e7d32;">Action Item</th>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">What was the actual score vs. target?</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Calculate and flag gaps</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Is renewal still justified?</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Yes/No + timeline</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">What changed since last quarter?</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Document for next review</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">What did we learn?</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #ddd;">Update onboarding checklist</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="cta-box">
+            <h3>Upgrade Your Vendor Management</h3>
+            <p>Download the SLA template to get contract clarity with your vendors.</p>
+            <a href="https://hive80-lab.github.io/ops-notes/291-sla-template.html" class="cta-button">Get SLA Template →</a>
+        </div>
+
+        <h2>Worked Example</h2>
+        <div class="phase">
+            <h4>The $150,000 Mistake</h4>
+            <p>A SaaS vendor was delivering at 98% uptime (target 99.9%). The company didn't flag it because they were "happy with the service." When the vendor increased prices by 25% six months later, the team realized they had been overpaying for a service they didn't realize they were getting only 98% of.</p>
+            <p><strong>The fix:</strong> Monthly vendor meeting exposed the uptime gap. A 1.9% difference looks small until you multiply it by $60,000 in annual spend. The company renegotiated, installed a competitor during the contract term, and reduced costs by 18%.</p>
+        </div>
+
+        <h2>Next Steps</h2>
+        <div class="phase">
+            <h4>Immediate Actions (Next 2 Weeks)</h4>
+            <ol style="margin-left: 2rem; line-height: 1.8;">
+                <li>Score all vendors in your system (create a spreadsheet if you don't have one)</li>
+                <li>Assign tiers based on the tiering framework</li>
+                <li>Schedule the first monthly vendor meeting with your top 10 vendors by spend</li>
+                <li>Download the SLA template to upgrade the 3 worst contracts</li>
+            </ol>
+        </div>
+
+        <div class="risk">
+            <strong>Common Pitfall:</strong> Thinking vendors will tell you when they're underperforming. They won't. The monthly meeting is the only way to catch gaps before they become exits.
+        </div>
+    </section>
+
+    <footer>
+        <p>This playbook is part of the <a href="https://hive80-lab.github.io/ops-notes/">Ops Notes library</a> — 290 pages of practical business operations guides, templates, and runbooks.</p>
+    </footer>
+</body>
+</html>
