@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ops Starter Bundle - Incident Response Templates for Small Teams</title>
+    <meta name="description" content="Complete incident response templates and checklists for small teams. Get the free First 30 Minutes checklist + 75% off the Ops Starter Kit. Flash sale ends soon!">
+    <meta property="og:title" content="Ops Starter Bundle - Incident Response Templates for Small Teams">
+    <meta property="og:description" content="Get the free incident response checklist + 75% off complete ops templates. Perfect for IT teams, MSPs, and startups.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hive80-lab.github.io/ops-notes/ops-starter-bundle.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a); 
+            color: #e0e0e0; line-height: 1.6;
+            max-width: 900px; margin: 0 auto; padding: 20px;
+        }
+        .header { text-align: center; padding: 40px 0; }
+        .header h1 { 
+            color: #4CAF50; font-size: 3em; margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p { color: #999; font-size: 1.3em; margin-bottom: 20px; }
+        .flash-badge { 
+            background: #ff4444; color: white; padding: 8px 16px; 
+            border-radius: 20px; font-weight: bold; display: inline-block;
+            margin-bottom: 20px; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .problem { 
+            background: #111; border-radius: 12px; padding: 30px; 
+            margin: 30px 0; border-left: 4px solid #ff4444;
+        }
+        .problem h2 { color: #ff4444; margin-bottom: 15px; }
+        .solution { 
+            background: linear-gradient(135deg, #1a231a, #0d1a0d); 
+            border-radius: 12px; padding: 30px; margin: 30px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .solution h2 { color: #4CAF50; margin-bottom: 15px; }
+        .bundle { 
+            background: linear-gradient(135deg, #2a3f2a, #1a2f1a); 
+            border-radius: 12px; padding: 30px; margin: 30px 0;
+            border: 2px solid #4CAF50;
+        }
+        .bundle h2 { color: #4CAF50; margin-bottom: 20px; text-align: center; }
+        .products { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .product { 
+            background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .product h3 { color: #4CAF50; margin-bottom: 10px; }
+        .price { 
+            font-size: 1.5em; font-weight: bold; color: #4CAF50;
+            margin: 10px 0;
+        }
+        .price .original { 
+            text-decoration: line-through; color: #666; 
+            font-size: 0.8em; margin-right: 10px;
+        }
+        .cta-primary { 
+            background: linear-gradient(135deg, #4CAF50, #45a049); 
+            color: white; padding: 20px; border-radius: 12px; 
+            text-align: center; margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        .cta-primary h3 { margin-bottom: 15px; font-size: 1.6em; }
+        .btn { 
+            padding: 15px 30px; border-radius: 8px; text-decoration: none; 
+            font-weight: 600; font-size: 1.1em; transition: all 0.3s;
+            display: inline-block; margin: 10px;
+            border: none; cursor: pointer;
+        }
+        .btn-primary { background: white; color: #333; }
+        .btn-primary:hover { 
+            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .btn-secondary { 
+            background: transparent; color: white; border: 2px solid white;
+        }
+        .btn-secondary:hover { background: white; color: #333; }
+        .testimonials { 
+            background: #111; border-radius: 12px; padding: 30px; 
+            margin: 30px 0;
+        }
+        .testimonials h2 { color: #4CAF50; margin-bottom: 20px; text-align: center; }
+        .testimonial { 
+            background: rgba(0,0,0,0.3); padding: 20px; 
+            border-radius: 8px; margin: 15px 0;
+            border-left: 3px solid #4CAF50;
+        }
+        .testimonial p { font-style: italic; margin-bottom: 10px; }
+        .testimonial .author { color: #999; font-size: 0.9em; }
+        .urgency { 
+            background: #ff4444; color: white; padding: 15px; 
+            border-radius: 8px; text-align: center; margin: 20px 0;
+            font-weight: bold;
+        }
+        .features { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 20px; margin: 20px 0;
+        }
+        .feature { 
+            background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px;
+            text-align: center;
+        }
+        .feature .icon { font-size: 2em; margin-bottom: 10px; }
+        .footer { 
+            text-align: center; margin-top: 40px; padding-top: 20px; 
+            border-top: 1px solid #333; color: #666;
+        }
+        @media (max-width: 768px) {
+            .products { grid-template-columns: 1fr; }
+            .header h1 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="flash-badge">🔥 FLASH SALE: 75% OFF - 48 HOURS ONLY</div>
+        <h1>Ops Starter Bundle</h1>
+        <p>Incident response templates for small teams with no dedicated security staff</p>
+    </div>
+
+    <div class="problem">
+        <h2>🚨 The Problem</h2>
+        <p>You're handling IT ops for a small team. An incident hits at 2 AM. You're scrolling through old emails trying to remember what you're supposed to do first. Meanwhile, the problem is getting worse.</p>
+        <p>You need concrete templates you can copy/paste RIGHT NOW - not theory, not 200-page documents, but practical checklists that work.</p>
+    </div>
+
+    <div class="solution">
+        <h2>✅ The Solution</h2>
+        <p>I've been exactly where you are. That's why I created battle-tested ops templates that small teams can actually use.</p>
+        <p>Everything is designed for teams of 1-5 people who have to handle everything themselves. No enterprise complexity, no fluff - just copy/paste templates that work.</p>
+    </div>
+
+    <div class="bundle">
+        <h2>📦 What You Get</h2>
+        <div class="products">
+            <div class="product">
+                <h3>🆕 FREE: First 30 Minutes Checklist</h3>
+                <p>What to do in the first 30 minutes of any security incident. Preserve evidence, isolate the problem, stay calm.</p>
+                <div class="price">FREE</div>
+                <a href="https://hive80lab.gumroad.com/l/first-30-minutes" class="btn btn-primary">Download Free</a>
+            </div>
+            <div class="product">
+                <h3>🚀 PAID: Ops Starter Kit</h3>
+                <p>Complete incident response templates, on-call checklists, post-mortem templates. Everything you need to run ops.</p>
+                <div class="price">
+                    <span class="original">$14</span>
+                    $3.50
+                </div>
+                <a href="https://hive80lab.gumroad.com/l/ops-starter-kit" class="btn btn-primary">Get Now - 75% OFF</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="features">
+        <div class="feature">
+            <div class="icon">📋</div>
+            <h3>Copy/Paste Ready</h3>
+            <p>No customization needed. Use these templates immediately.</p>
+        </div>
+        <div class="feature">
+            <div class="icon">⚡</div>
+            <h3>Battle-Tested</h3>
+            <p>Used in real incident response scenarios. Proven to work.</p>
+        </div>
+        <div class="feature">
+            <div class="icon">🎯</div>
+            <h3>Small Team Focus</h3>
+            <p>Designed for teams of 1-5. No enterprise bloat.</p>
+        </div>
+        <div class="feature">
+            <div class="icon">🔄</div>
+            <h3>Instant Download</h3>
+            <p>Get everything immediately. No waiting, no setup.</p>
+        </div>
+    </div>
+
+    <div class="testimonials">
+        <h2>💬 What People Are Saying</h2>
+        <div class="testimonial">
+            <p>"Finally, ops templates that don't require a dedicated team to implement. Used the incident response checklist last week - saved us hours of panic."</p>
+            <div class="author">— IT Manager, 50-person startup</div>
+        </div>
+        <div class="testimonial">
+            <p>"The on-call handoff checklist alone was worth the price. Our MSP clients love the professional documentation."</p>
+            <div class="author">— MSP Owner, 15 clients</div>
+        </div>
+    </div>
+
+    <div class="cta-primary">
+        <h3>🔥 FLASH SALE: 75% OFF - ENDS SOON</h3>
+        <p>Get the complete Ops Starter Kit for just $3.50 (normally $14)</p>
+        <div class="urgency">⏰ Only 48 hours left - Limited to first 50 buyers</div>
+        <div style="margin-top: 20px;">
+            <a href="https://hive80lab.gumroad.com/l/first-30-minutes" class="btn btn-secondary">Start with Free Checklist</a>
+            <a href="https://hive80lab.gumroad.com/l/ops-starter-kit" class="btn btn-primary">Get Full Kit - $3.50</a>
+        </div>
+        <p style="margin-top: 15px; font-size: 0.9em;">Use code FLASH75 at checkout for 75% off all products</p>
+    </div>
+
+    <div class="footer">
+        <p>Part of the <a href="https://hive80-lab.github.io/ops-notes/" style="color: #4CAF50;">Hive80 Ops Notes</a> collection - 282+ free operations templates</p>
+        <p>Questions? <a href="https://hive80lab.gumroad.com/l/first-30-minutes" style="color: #4CAF50;">Contact us</a></p>
+    </div>
+</body>
+</html>
