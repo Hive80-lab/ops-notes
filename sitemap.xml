@@ -1,1227 +1,1196 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://hive80-lab.github.io/ops-notes/first-30-minutes-checklist.html</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/13-week-cash-flow-forecast</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/288-cloud-cost-optimization-playbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/289-quarterly-business-review-template</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/290-vendor-management-playbook</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/291-sla-template</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/292-supply-chain-contingency</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/293-procurement-framework</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/294-insurance-claims-playbook</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/295-supplier-quality-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/296-customer-complaint-response-template</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/297-employee-onboarding-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/297-opsmate-template</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/298-api-key-rotation-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/299-incident-response-template</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/300-cash-runway-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/301-revenue-recovery-plan</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/302-customer-acquisition-strategy</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/303-automatic-sales-boost</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/304-conversion-rate-optimization-guide</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/305-scalable-revenue-channels</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/49-cybersecurity-awareness-training-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/access-request-offboarding-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/admin-first-week-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/after-action-report-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ai-agent-failure-postmortem</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ai-agent-ops-playbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ai-agent-permission-boundaries</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ai-automation-templates-solo-founders</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ai-powered-incident-response-system</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ai-prompt-templates-for-creators</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/alert-fatigue-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/annual-leave-coverage-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/annual-ops-budget-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/annual-security-review-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/api-deprecation-notice-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/api-key-leak-response-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/api-key-rotation-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/asset-inventory-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/backup-encryption-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/backup-key-escrow-recovery</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/backup-restore-drill-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/backup-restore-test-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/backup-restore-test-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/backup-verification-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/badge-access-control-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/bank-reconciliation-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/blameless-post-incident-review-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/break-glass-account-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/browser-extension-security-audit</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/budget-vs-actuals-monthly-review</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/business-continuity-plan-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/byod-policy-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/cancellation-flow-save-offers</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/capacity-planning-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/cash-runway-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/change-advisory-board-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/change-freeze-calendar-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/change-freeze-window-policy</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/change-management-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/change-order-scope-creep-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/chargeback-response-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/client-offboarding-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/client-onboarding-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/cloud-cost-spike-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/cold-chain-failure-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/company-card-compromised-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/configuration-drift-audit-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/content-calendar-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/contractor-security-onboarding-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/critical-spare-parts-list</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/cron-job-monitoring-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/customer-complaint-response-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/customer-data-deletion-request-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/customer-onboarding-first-30-days-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/customer-security-questionnaire-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/customer-support-escalation-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/customer-vendor-incident-comms</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/cyber-insurance-claim-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/cyber-insurance-requirements-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/daily-audit-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/daily-operations-checklist-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/data-breach-first-24-hours</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/data-breach-notification-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/database-migration-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/database-outage-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/debtor-days-monthly-review</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/decision-log-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/degraded-mode-playbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/delayed-opening-notice-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/delegation-of-authority-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/delivery-receiving-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/deployment-rollback-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/disaster-recovery-plan-template-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/discovery-call-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/disk-full-incident-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/dns-filtering-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/dns-outage-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/domain-hijack-protection-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/door-code-rotation-policy</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/dora-metrics-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/email-deliverability-spf-dkim-dmarc-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/email-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/employee-offboarding-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/employee-onboarding-checklist-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/equipment-downtime-log</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/error-budget-burn-rate-alerts</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/error-budget-policy-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/escalation-policy-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/expansion-revenue-playbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/expense-reimbursement-policy</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/failed-payment-dunning-sequence</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/feature-flag-cleanup-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/file-share-permissions-audit</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/first-30-minutes-incident-response</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/food-cost-percentage-tracker</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/free-trial-conversion-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/generator-transfer-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/github-repository-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/golden-signals-alerting</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/google-business-profile-optimization-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/google-workspace-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/greyscale-mockup-workflow</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/gross-margin-pricing-review</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/home-office-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/hot-spare-loaner-laptop-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/hotfix-process-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-commander-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-communication-templates</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-communication-timeline-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-metrics-report-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-post-mortem-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-response-budget-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-response-changelog-automation</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-response-cheat-sheet</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-response-drill-schedule-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-response-pillars-overview</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-response-plan-template-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-response-playbook-matrix</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-response-template-small-team-guide</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-severity-matrix-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-taxonomy-business-impact-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-taxonomy-category-matrix</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-taxonomy-root-cause-categorization</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/incident-timeline-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/index</loc>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/internet-outage-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/invoice-fraud-bec-prevention-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/iot-device-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ir-readiness-score</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/it-asset-inventory-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/key-inventory-register</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/key-person-dependency-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/lead-response-time-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/log-retention-policy-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/lost-or-stolen-laptop-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/maintenance-window-announcement-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/maintenance-window-policy</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/maintenance-work-order-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/mfa-device-lost-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/mfa-rollout-checklist-small-business</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/microsoft-365-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/missed-call-text-back-setup</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/monthly-close-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/monthly-ops-report-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/negative-review-response-playbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/new-laptop-provisioning-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/no-show-reminder-sequence</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/notion-vs-spreadsheet-checklists</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/office-closure-weather-day-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/office-move-it-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/old-hardware-disposal-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/on-call-compensation-policy</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/on-call-handoff-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/on-call-handover-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/on-call-rotation-schedule-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/oncall-escalation-path-tiers</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/oncall-escalation-rotation-cadence</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/oncall-escalation-slack-structure</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/oncall-onboarding-new-hires-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/one-on-one-meeting-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/open-restaurant-incident-response-system-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ops-mega-bundle</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ops-starter-bundle</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ops-starter-kit-landing</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/outage-email-templates-customers</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/overdue-invoice-collection-ladder</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/overdue-invoice-letters</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/paging-policy-what-deserves-a-page</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/passkeys-rollout-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/password-manager-rollout-small-business</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/patch-cadence-calendar</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/patch-management-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/payment-outage-playbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/penetration-test-scope-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/pest-control-service-log</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/phishing-response-checklist-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/physical-key-handover-register</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/physical-security-office-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/playbook-selection-rules</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/playbook-triage-decision-flow</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/post-deploy-verification-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/post-incident-action-item-tracker</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/postmortem-template-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/power-failure-it-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/preventive-maintenance-schedule-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/price-increase-announcement-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/printer-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/process-documentation-best-practices</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/purchase-order-process-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/quarterly-business-review-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/quote-follow-up-sequence</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/raci-matrix-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ransomware-recovery-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/referral-request-sequence</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/refrigeration-temperature-log</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/release-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/release-notes-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/remote-work-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/reopening-notice-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/restaurant-customer-feedback-loop-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/restaurant-daily-sales-report-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/restaurant-inventory-par-levels</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/restaurant-kpi-dashboard-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/restaurant-menu-engineering-worksheet</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/restaurant-staff-scheduling-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/retainer-renewal-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/role-permission-matrix-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/rto-rpo-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/runaway-automation-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/runbook-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/saas-sprawl-audit-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/scope-of-work-sow-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/seasonal-peak-readiness-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/secrets-rotation-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/security-audit-cost-small-business</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/security-audit-preparation-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/security-audit-report-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/security-audit-scorecard</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/security-questionnaire-answer-bank</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/server-decommissioning-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/server-hardening-checklist-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/server-monitoring-checklist-small-teams</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/server-room-environment-monitoring</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/service-catalog-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/severity-matrix-3-levels</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/shadow-it-audit-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/shift-handover-log-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/shift-handover-log</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/simulation-after-action-report</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/simulation-execute-and-observe</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/simulation-preparation-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/single-point-of-failure-audit-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/single-point-of-failure-audit</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/sla-slo-definition-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/slack-workspace-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/small-business-automation-ideas</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/small-business-security-audit-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/small-team-ops-audit-and-runbook-services</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/software-license-register-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/software-license-register</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/software-supply-chain-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/sop-checklist-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ssl-certificate-expiry-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ssl-certificate-expiry-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/sso-outage-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://hive80-lab.github.io/ops-notes/staff-onboarding-playbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/staffing-shortage-coverage-plan</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/standard-operating-procedure-examples-small-business</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/standing-orders-delegation-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/standing-orders-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/status-page-communication-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/status-page-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/stocktake-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/store-closure-temporary-notice</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/supplier-concentration-risk</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/supplier-payment-terms-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/tabletop-exercise-failure-points</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/tech-debt-register</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/the-2am-test-incident-handoff</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/travel-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/upfront-deposit-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/ups-runtime-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/uptime-downtime-budget</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/user-access-review-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vendor-contract-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vendor-escalation-ladder</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vendor-escalation-protocols</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vendor-incident-contact-matrix</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vendor-incident-contacts-one-pager</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vendor-offboarding-data-deletion-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vendor-outage-runbook</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vendor-renewal-calendar-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vendor-security-review-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/visitor-log-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/voicemail-greeting-script</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vpn-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/vulnerability-remediation-plan-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/walk-in-cooler-maintenance-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/website-maintenance-checklist-small-business</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/weekly-ops-review</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/weekly-review-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/weekly-status-report-template</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/what-to-automate-first</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/wifi-security-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/win-back-sequence-churned-customers</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/workflow-automation-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
   </url>
   <url>
     <loc>https://hive80-lab.github.io/ops-notes/year-end-close-checklist</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/297-opsmate-template.html</loc>
+    <lastmod>2026-09-13T19:44:00Z</lastmod>
+  </url>
+</urlset>  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/290-vendor-management-playbook.html</loc>
+    <lastmod>2026-09-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/291-sla-template.html</loc>
+    <lastmod>2026-09-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/292-supply-chain-contingency.html</loc>
+    <lastmod>2026-09-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/293-procurement-framework.html</loc>
+    <lastmod>2026-09-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/294-insurance-claims-playbook.html</loc>
+    <lastmod>2026-09-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/295-supplier-quality-checklist.html</loc>
+    <lastmod>2026-09-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/297-opsmate-template.html</loc>
+    <lastmod>2026-09-13T19:44:00Z</lastmod>
   </url>
 </urlset>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/top-5-sales-pages.html</loc>
+    <lastmod>2026-09-24</lastmod>
+  </url>

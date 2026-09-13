@@ -1,0 +1,54 @@
+
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<h1>First 30 Minutes Incident Response Checklist</h1>
+<p class="lead">What ops teams do when an incident hits: stabilize, measure, gather facts. Zero-fluff, time-boxed, repeatable.</p>
+
+<h2>Phase 0: The first 30 minutes (time boxed)</h2>
+<p>The first 30 minutes are about <strong>stabilization and measurement</strong>, not root cause. Do not try to solve everything at once. Focus on keeping the situation under control and collecting enough data to make the next hours productive.</p>
+<h3>0–5 minutes: Gather the facts</h3>
+<p>Who, what, when, where, how serious. No opinions yet.</p>
+<ul>
+<li><strong>Identify the incident.</strong> What happened? Check status pages, alerts, and logs.</li>
+<li><strong>Confirm scope.</strong> Which systems, users, or customers are affected?</li>
+<li><strong>Identify owners.</strong> Who is responsible for the affected systems? Which person oncall or squad needs to know?</li>
+<li><strong>Collect the baseline.</strong> What was normal before? Capture current performance (latency, error rate, uptime).</li>
+<li><strong>Document.</strong> Create a short note: date, time, observed behavior, affected scope, owners.</li>
+</ul>
+<h3>5–15 minutes: Stabilize</h3>
+<p>Limit the blast radius, protect the rest of the system, and reduce user impact.</p>
+<ul>
+<li><strong>Isolate or route.</strong> Disable the failing component, route traffic away, or add a failsafe.</li>
+<li><strong>Minimize exposure.</strong> Temporarily freeze new signups, pause non-critical features, or show a maintenance page.</li>
+<li><strong>Communicate internally.</strong> Notify the team and oncall. If applicable, trigger the incident runbook channel.</li>
+<li><strong>Preserve evidence.</strong> Take screenshots, capture logs, or start a stack trace before you make changes.</li>
+<li><strong>Measure impact.</strong> Collect concrete metrics: total users affected, lost revenue (if any), duration so far.</li>
+</ul>
+<h3>15–30 minutes: Measure and prepare</h3>
+<p>Quantify the situation and align on next steps.</p>
+<ul>
+<li><strong>Complete the impact summary.</strong> How many users affected? Which features down? Is the problem growing?</li>
+<li><strong>Set the recovery plan.</strong> Identify two to three potential solutions. Don't pick one yet—just list options.</li>
+<li><strong>Prepare the communication.</strong> Draft an internal note and, if needed, a customer communication.</li>
+<li><strong>Escalate.</strong> If you need security, legal, or PR involvement, trigger the appropriate process now.</li>
+<li><strong>Document the decision.</strong> Record the chosen path and who is responsible for executing it.</li>
+</ul>
+
+<hr>
+<h2>Next steps after the first 30 minutes</h2>
+<p>By the end of the 30-minute window, you should have:</p>
+<ul>
+<li><strong>A factual summary</strong> of what happened, when, and who it affected</li>
+<li><strong>A stabilization plan</strong> that contains the system is safe and impact is under control</li>
+<li><strong>Prepared options</strong> for the next stages (investigation, escalation, or workaround)</li>
+<li><strong>A named owner</strong> for each next step and a clear time box for the next phase</li>
+</ul>
+<p>The full Ops Starter Kit Vol 2 includes a 3-day incident response runbook, decision trees, playbooks, and cultural guidance to turn this initial stabilization into repeatable fixes. Get the complete kit at <a href="https://docs.ops-notes.com/ops-starter-kit-vol-2">https://docs.ops-notes.com/ops-starter-kit-vol-2</a>.</p>
+<div class="cta-box" style="margin:32px 0 8px;padding:18px 20px;border:2px solid #0a7d5a;border-radius:10px;background:#f2faf6;">
+<p style="margin:0 0 6px;"><strong>Put this to work.</strong> <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">The Ops Starter Kit</a> bundles the highest-leverage templates &mdash; incident response, runbooks, onboarding, checklists &mdash; into one download ($14).</p>
+<p style="margin:0;">Free start: grab the <a href="https://hive80lab.gumroad.com/l/first-30-minutes">First 30 Minutes</a> incident-response checklist, or <a href="https://hive80-lab.github.io/ops-notes/email-capture.html">get the free template library by email</a>.</p>
+</div>
+</main>
+</body>
+</html>
