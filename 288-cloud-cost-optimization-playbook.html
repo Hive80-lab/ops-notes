@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Cost Optimization Playbook: Cut Your Cloud Bill by 30% in 90 Days Without Breaking Anything</title>
+    <meta name="description" content="Step-by-step playbook to reduce cloud spend by 30% in 90 days. Rightsizing, scheduling, reserved instances, storage cleanup, and monitoring that actually works.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hive80-lab.github.io/ops-notes/288-cloud-cost-optimization-playbook.html">
+    <meta property="og:title" content="Cloud Cost Optimization Playbook: Cut Your Cloud Bill by 30% in 90 Days Without Breaking Anything">
+    <meta property="og:description" content="Step-by-step playbook to reduce cloud spend by 30% in 90 days. Rightsizing, scheduling, reserved instances, storage cleanup, and monitoring that actually works.">
+    <meta property="og:image" content="https://hive80-lab.github.io/ops-notes/images/cloud-costs.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://hive80-lab.github.io/ops-notes/288-cloud-cost-optimization-playbook.html">
+    <meta property="twitter:title" content="Cloud Cost Optimization Playbook: Cut Your Cloud Bill by 30% in 90 Days Without Breaking Anything">
+    <meta property="twitter:description" content="Step-by-step playbook to reduce cloud spend by 30% in 90 days. Rightsizing, scheduling, reserved instances, storage cleanup, and monitoring that actually works.">
+    <meta property="twitter:image" content="https://hive80-lab.github.io/ops-notes/images/cloud-costs.jpg">
+
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/288-cloud-cost-optimization-playbook.html">
+    <link rel="stylesheet" href="https://hive80-lab.github.io/ops-notes/style.css">
+    <style>
+        .playbook { max-width: 900px; margin: 0 auto; }
+        .phase { margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea; }
+        .action-item { display: flex; align-items: flex-start; margin: 1rem 0; }
+        .action-item input[type="checkbox"] { margin-right: 1rem; margin-top: 0.25rem; }
+        .savings { background: #e8f5e8; padding: 1rem; border-radius: 6px; margin: 1rem 0; font-weight: bold; color: #2e7d32; }
+        .risk { background: #fff3e0; padding: 1rem; border-radius: 6px; margin: 1rem 0; color: #ef6c00; }
+        .cta-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; }
+        .cta-box h3 { margin: 0 0 1rem 0; }
+        .cta-box p { margin: 0 0 1.5rem 0; opacity: 0.9; }
+        .cta-button { display: inline-block; background: white; color: #667eea; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 6px; font-weight: bold; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .metric { text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px; }
+        .metric-number { font-size: 2rem; font-weight: bold; color: #667eea; }
+        .metric-label { font-size: 0.875rem; color: #666; }
+        .timeline { display: flex; justify-content: space-between; margin: 2rem 0; }
+        .timeline-item { text-align: center; flex: 1; }
+        .timeline-dot { width: 20px; height: 20px; background: #667eea; border-radius: 50%; margin: 0 auto 0.5rem; }
+        .timeline-label { font-size: 0.875rem; color: #666; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cloud Cost Optimization Playbook</h1>
+        <p class="subtitle">Cut Your Cloud Bill by 30% in 90 Days Without Breaking Anything</p>
+    </header>
+
+    <main class="playbook">
+        <div class="metrics">
+            <div class="metric">
+                <div class="metric-number">30%</div>
+                <div class="metric-label">Typical Savings</div>
+            </div>
+            <div class="metric">
+                <div class="metric-number">90</div>
+                <div class="metric-label">Days to Implement</div>
+            </div>
+            <div class="metric">
+                <div class="metric-number">0</div>
+                <div class="metric-label">Downtime Incidents</div>
+            </div>
+            <div class="metric">
+                <div class="metric-number">4</div>
+                <div class="metric-label">Phases to Success</div>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label">Days 1-15<br>Discovery</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label">Days 16-45<br>Quick Wins</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label">Days 46-75<br>Optimization</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-label">Days 76-90<br>Automation</div>
+            </div>
+        </div>
+
+        <section class="phase">
+            <h2>Phase 1: Discovery & Baseline (Days 1-15)</h2>
+            <p>Know where your money goes before you try to save it.</p>
+            
+            <div class="action-item">
+                <input type="checkbox" id="1-1">
+                <label for="1-1"><strong>Export last 90 days of billing data</strong> from all cloud providers</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="1-2">
+                <label for="1-2"><strong>Tag all resources</strong> with project, environment, and owner tags</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="1-3">
+                <label for="1-3"><strong>Identify top 10 cost centers</strong> by service and resource</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="1-4">
+                <label for="1-4"><strong>Map resource utilization</strong> (CPU, memory, storage, network)</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="1-5">
+                <label for="1-5"><strong>Review reserved instances</strong> vs actual usage</label>
+            </div>
+            
+            <div class="savings">Expected savings from this phase: 0% (preparation)</div>
+        </section>
+
+        <section class="phase">
+            <h2>Phase 2: Quick Wins (Days 16-45)</h2>
+            <p>Easy fixes that won't break anything but save money immediately.</p>
+            
+            <div class="action-item">
+                <input type="checkbox" id="2-1">
+                <label for="2-1"><strong>Shut down non-production environments</strong> nights and weekends</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="2-2">
+                <label for="2-2"><strong>Delete unused volumes and snapshots</strong> older than 30 days</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="2-3">
+                <label for="2-3"><strong>Rightsize oversized instances</strong> based on actual utilization</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="2-4">
+                <label for="2-4"><strong>Move infrequent storage to cheaper tiers</strong> (S3 IA, Glacier)</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="2-5">
+                <label for="2-5"><strong>Enable auto-scaling</strong> for predictable workloads</label>
+            </div>
+            
+            <div class="savings">Expected savings from this phase: 10-15%</div>
+        </section>
+
+        <section class="phase">
+            <h2>Phase 3: Deep Optimization (Days 46-75)</h2>
+            <p>Strategic changes that require planning but deliver significant savings.</p>
+            
+            <div class="action-item">
+                <input type="checkbox" id="3-1">
+                <label for="3-1"><strong>Purchase reserved instances</strong> for baseline workloads (1-3 year terms)</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="3-2">
+                <label for="3-2"><strong>Implement spot instances</strong> for fault-tolerant workloads</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="3-3">
+                <label for="3-3"><strong>Consolidate accounts</strong> to take advantage of volume discounts</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="3-4">
+                <label for="3-4"><strong>Optimize data transfer</strong> (use CDNs, regional endpoints)</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="3-5">
+                <label for="3-5"><strong>Review and reduce software licenses</strong> (monitoring, security tools)</label>
+            </div>
+            
+            <div class="savings">Expected savings from this phase: 15-20%</div>
+        </section>
+
+        <section class="phase">
+            <h2>Phase 4: Automation & Governance (Days 76-90)</h2>
+            <p>Build systems that prevent cost creep going forward.</p>
+            
+            <div class="action-item">
+                <input type="checkbox" id="4-1">
+                <label for="4-1"><strong>Set up budget alerts</strong> at 50%, 75%, 90% of monthly spend</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="4-2">
+                <label for="4-2"><strong>Implement cost allocation tags</strong> for department chargebacks</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="4-3">
+                <label for="4-3"><strong>Create resource approval workflows</strong> for production deployments</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="4-4">
+                <label for="4-4"><strong>Schedule regular cost reviews</strong> (weekly operations, monthly finance)</label>
+            </div>
+            
+            <div class="action-item">
+                <input type="checkbox" id="4-5">
+                <label for="4-5"><strong>Build cost optimization into CI/CD</strong> (rightsize checks, tag enforcement)</label>
+            </div>
+            
+            <div class="savings">Expected savings from this phase: 5-10% (ongoing)</div>
+        </section>
+
+        <section>
+            <h2>Common Pitfalls to Avoid</h2>
+            
+            <div class="risk">
+                <strong>Don't optimize in production without testing</strong> – Always test changes in staging first. A 10% savings isn't worth a production outage.
+            </div>
+            
+            <div class="risk">
+                <strong>Don't forget about egress costs</strong> – Data transfer out often costs more than the compute. Use regional endpoints and CDNs.
+            </div>
+            
+            <div class="risk">
+                <strong>Don't ignore security requirements</strong> – Cheaper instances might lack required security features. Factor in compliance costs.
+            </div>
+            
+            <div class="risk">
+                <strong>Don't set and forget</strong> – Cloud usage patterns change. Review optimizations quarterly.
+            </div>
+        </section>
+
+        <section>
+            <h2>Tools That Actually Help</h2>
+            <ul>
+                <li><strong>Native tools:</strong> AWS Cost Explorer, Azure Cost Management, GCP Cost Dashboard</li>
+                <li><strong>Third-party:</strong> CloudHealth, Cloudability, ParkMyCloud (automation)</li>
+                <li><strong>Open source:</strong> CloudCheckr, CloudHealth (free tier), custom scripts</li>
+                <li><strong>Monitoring:</strong> Datadog cost tracking, New Relic infrastructure costs</li>
+            </ul>
+        </section>
+
+        <div class="cta-box">
+            <h3>Ready to Cut Your Cloud Bill?</h3>
+            <p>Get the complete Small-Team Ops Kit with checklists, runbooks, and templates for predictable operations that don't break the bank.</p>
+            <a href="https://hive80lab.gumroad.com/l/ops-starter-kit" class="cta-button">Get Ops Starter Kit ($14)</a>
+            <p style="font-size: 0.875rem; margin-top: 1rem;">Use code <strong>LAUNCH50</strong> for 50% off everything</p>
+        </div>
+    </main>
+
+    <footer>
+        <p><a href="https://hive80-lab.github.io/ops-notes/">← Back to Ops Notes</a></p>
+        <p>Part of the <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Small-Team Ops Kit</a> – practical operations for teams that ship.</p>
+    
+<section>
+    <h2>Related Ops Resources</h2>
+    <ul>
+        <li><a href="alert-fatigue-checklist.html">Alert Fatigue Checklist</a></li>
+        <li><a href="supplier-concentration-risk.html">Supplier Concentration Risk</a></li>
+        <li><a href="password-manager-rollout-small-business.html">Password Manager Rollout Small Business</a></li>
+        <li><a href="database-migration-checklist.html">Database Migration Checklist</a></li>
+    </ul>
+</section>
+</footer>
+</body>
+</html>
