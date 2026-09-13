@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Shift Handover Log &mdash; The Ten-Minute Sheet That Stops the Next Shift Paying for This One&rsquo;s Surprises</title>
+<meta name="description" content="A one-page shift handover log for restaurants, shops and small teams: every open issue, work order, staff absence and supplier problem written down before the outgoing shift leaves &mdash; seven lines, five minutes at the crossover, the walk-the-floor rule that beats the notebook, the &ldquo;no surprises after you leave&rdquo; clause, and the 30-second morning answer for the arriving manager &mdash; plus the 40-seat restaurant whose 4&nbsp;p.m. handover caught the walk-in flag from lunch before it became Tuesday&rsquo;s $7,300 stock loss.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/shift-handover-log.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+
+<h1>The Shift Handover Log: The Ten-Minute Sheet That Stops the Next Shift Paying for This One&rsquo;s Surprises</h1>
+<p>A shift handover log is not paperwork; it is a firewall. Every shift ends with knowledge only the outgoing crew holds &mdash; the walk-in that read warm at lunch, the dishwasher that&rsquo;s making the new noise, the porter who didn&rsquo;t show, the supplier who called about Monday&rsquo;s delivery. When that knowledge leaves in people&rsquo;s heads instead of on a sheet, the next shift rediscovers it the hard way, hours later, at full price. Five minutes at the crossover, seven lines, and the day&rsquo;s surprises get handed over <em>before</em> they become the next shift&rsquo;s emergencies. The <a href="equipment-downtime-log.html">equipment downtime log</a> records what broke and what it cost; the handover log is what stops the breaking from happening in the first place.</p>
+
+<h2>1. Why the crossover &mdash; the five-minute arithmetic</h2>
+<p>Problems do not respect shift boundaries, but they do follow the cheapest path: the cheapest person to tell is whoever just noticed it, and the cheapest time to act on a problem is while the person who understands it is still standing on the floor. A walk-in that flagged at lunch is a thirty-second recheck at handover; the same walk-in discovered by the dinner crew at 6&nbsp;p.m. is a stock decision, a work order and a bad night. The log moves every open issue across the boundary while it is still cheap &mdash; and it does it in writing, because &ldquo;I told the manager&rdquo; is the most expensive sentence in operations. It is the same reason the <a href="maintenance-work-order-template.html">work order</a> exists: verbal problems stay verbal until they cost money.</p>
+
+<h2>2. The log itself &mdash; seven lines per handover</h2>
+<p>One sheet at the crossover point (the office desk, not a shared drive nobody opens), dated and initialed by both shifts, seven lines:</p>
+<ol>
+<li><strong>Date, shift, and both initials.</strong> The outgoing shift signs for what it leaves; the incoming shift signs for what it accepts. Both names in the same row is what turns a note into a contract.</li>
+<li><strong>Open work orders.</strong> Every ticket from the <a href="maintenance-work-order-template.html">work order</a> queue that is still open, with its number and current state &mdash; so a ticket opened at 11&nbsp;a.m. doesn&rsquo;t quietly die with the crew that opened it.</li>
+<li><strong>Equipment watching.</strong> Anything behaving oddly but not yet broken &mdash; &ldquo;walk-in #2 air read 43&deg;F at lunch, food OK, recheck pending&rdquo; &mdash; the front line of the <a href="refrigeration-temperature-log.html">temperature log</a> workflow.</li>
+<li><strong>People.</strong> Absences, late starts, no-shows, and the one person on the floor who covers a gap. This is the line the <a href="staffing-shortage-coverage-plan.html">coverage plan</a> reads the next morning.</li>
+<li><strong>Suppliers and deliveries.</strong> The phone call about Monday&rsquo;s order, the short delivery accepted at the door, the invoice dispute opened &mdash; things that decay badly overnight.</li>
+<li><strong>Money.</strong> The till variance, the refund issued, the invoice flagged. Unexplained variances age like milk.</li>
+<li><strong>The one thing the next shift must know.</strong> The single most important line, written even when it is &ldquo;nothing &mdash; good shift.&rdquo; An empty &ldquo;must know&rdquo; line means someone stopped thinking, and the log&rsquo;s value dies the day it becomes a rubber stamp.</li>
+</ol>
+
+<h2>3. The walk-the-floor rule</h2>
+<p>The handover is not a document exchange; it is a five-minute walk. The outgoing and arriving leads stand <em>at the machine</em>, not at the desk: recheck the flagged walk-in together, listen to the odd dishwasher noise together, open the chiller together. Two people at the problem cuts the mis-transfer rate to near zero &mdash; the incoming shift hears it, sees it and owns it in the same minute. A handover note that says &ldquo;something weird with the ice machine&rdquo; transfers nothing; a walk that ends with &ldquo;the pump cycles every ninety seconds, work order #0144 is open&rdquo; transfers everything.</p>
+
+<h2>4. The no-surprises clause</h2>
+<p>One rule, said out loud at the crossover: <strong>nothing discovered after the handover is blamed on the incoming shift.</strong> In exchange, anything the outgoing shift knew and did not write down is theirs to come back for. The clause isn&rsquo;t about punishment; it&rsquo;s about incentives &mdash; it makes writing things down the cheap option and withholding them the expensive one. Teams without the clause develop the worst handover habit of all: the deliberate silence, where a bad afternoon gets quietly handed to the night crew like a hot pan without a handle.</p>
+
+<h2>5. The morning answer &mdash; 30 seconds</h2>
+<p>The arriving manager opens the sheet and answers three questions in thirty seconds: What is broken or pending? What is today&rsquo;s risk? What did yesterday&rsquo;s shift already handle, so I don&rsquo;t redo it? Every line with a name and a number is actionable; every line without one is a story. The log also feeds the <a href="monthly-ops-report-template.html">monthly ops report</a> &mdash; a month of handover lines is a month of near-misses, absences and equipment drift in one stack, the raw material the trends are made of.</p>
+
+<h2>6. The five traps</h2>
+<ul>
+<li><strong>The notebook in the drawer.</strong> A handover that lives anywhere but the crossover point gets skipped exactly on the chaotic days it matters most.</li>
+<li><strong>Verbal-only handover.</strong> &ldquo;I told her&rdquo; is not a transfer; it is a rumor with a time stamp.</li>
+<li><strong>The rubber stamp.</strong> Seven &ldquo;all good&rdquo; lines in a row means nobody is thinking. A blank &ldquo;must know&rdquo; line is the canary.</li>
+<li><strong>The blame-transfer sheet.</strong> When the log becomes a list of accusations, the next shift stops writing honest lines and starts writing defensive ones.</li>
+<li><strong>No follow-through.</strong> Every open item hands forward until someone closes it &mdash; a line carried across three handovers with no name attached is a work order in disguise; give it one.</li>
+</ul>
+
+<h2>7. Worked example &mdash; the 40-seat restaurant&rsquo;s 4 p.m.</h2>
+<p>Lunch service on the Tuesday: walk-in #2 read air 43&deg;F at 11:40 (<a href="refrigeration-temperature-log.html">temperature log</a> flagged, recheck pending). The lunch lead writes the handover&rsquo;s equipment line before leaving &mdash; &ldquo;walk-in #2 flagged 43&deg;F/41&deg;F, recheck at 16:15, work order #0143 open, gasket on order.&rdquo; The dinner lead walks to the walk-in at the crossover, rechecks, finds it stable at 41&deg;F, and signs on. Total transfer cost: four minutes. The alternative &mdash; the flag left in a lunch crew&rsquo;s memory that clocks out at 4 &mdash; is the same walk-in discovered during Friday&rsquo;s $7,300 stock quarter, which is exactly the outcome the previous quarter&rsquo;s <a href="equipment-downtime-log.html">downtime log</a> shows it costs. The handover log is the cheapest link in that whole chain.</p>
+
+---
+
+<h2>Kits</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="equipment-downtime-log.html">equipment downtime log</a> is where every confirmed failure gets costed &mdash; the handover catches the early signs, the downtime log prices the misses; the <a href="maintenance-work-order-template.html">maintenance work order</a> is what a carried-forward line becomes &mdash; one page, one ticket, one close-out; the <a href="refrigeration-temperature-log.html">refrigeration temperature log</a> is the most common source of handover flags &mdash; air and food in the same row; the <a href="staffing-shortage-coverage-plan.html">staffing shortage coverage plan</a> is what the people line feeds the next morning &mdash; absences written down become coverage decided; the <a href="incident-response-plan-template-small-teams.html">incident response plan</a> is the playbook a serious handover line activates &mdash; one line on a sheet, one page of steps; and the <a href="open-restaurant-incident-response-system-checklist.html">open-restaurant incident response checklist</a> is the three-day playbook that keeps the doors open while the fix happens.</em></p>
+</main>
+</body>
+</html>
