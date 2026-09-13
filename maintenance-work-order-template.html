@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Maintenance Work Order &mdash; The One-Page Ticket That Turns &ldquo;It&rsquo;s Making a Noise&rdquo; Into &ldquo;Fixed, Costed, Prevented&rdquo;</title>
+<meta name="description" content="A one-page maintenance work order for small teams: a number for every job, the operator's own words, a P1&ndash;P3 priority set by downtime cost instead of loudness, parts reserved against the ticket, and a close-out that isn't finished until the downtime log, the spare-parts shelf and the preventive maintenance schedule all agree &mdash; plus the 40-seat restaurant whose third 'just tell Dave' became a two-and-a-half-hour P1 with a $45 part.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/maintenance-work-order-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+
+<h1>The Maintenance Work Order: The One-Page Ticket That Turns &ldquo;It&rsquo;s Making a Noise&rdquo; Into &ldquo;Fixed, Costed, Prevented&rdquo;</h1>
+<p class="lede">One page per job: a number, the asset, the operator&rsquo;s own words, a priority set by downtime cost instead of loudness, a named tech, the parts reserved against the ticket, and a close-out that isn&rsquo;t done until the <a href="equipment-downtime-log.html">downtime log</a>, the <a href="critical-spare-parts-list.html">spare-parts shelf</a> and the <a href="preventive-maintenance-schedule-template.html">maintenance schedule</a> all agree. The work order is what a logged breakdown becomes &mdash; the ledger finds the pain; the ticket is what actually fixes it, on the record.</p>
+
+<p>The <a href="equipment-downtime-log.html">equipment downtime log</a> counts what broke and what it cost. The <a href="preventive-maintenance-schedule-template.html">preventive maintenance schedule</a> books what should happen next. The work order is the piece between them that most small operations never write down: the actual job. Not a text message, not a shout across the floor, not &ldquo;I&rsquo;ll get Dave to look at it&rdquo; &mdash; a numbered, one-page ticket that says who owns it, what it will take, and whether it ended. The difference is not bureaucracy. It is the difference between a $45 gasket and a $7,300 quarter, because the gasket job that gets a ticket gets a close-out, and the close-out is where the prevention lives.</p>
+
+<h2>1. The eight fields &mdash; written at hand-off, not from memory</h2>
+<p>A work order filled in on Friday about something that happened on Tuesday is a short story. The eight fields take eight minutes while the job is still warm:</p>
+<ol>
+<li><strong>Number and date.</strong> Every ticket gets a number, even the fifteen-minute ones. The number is what the invoice, the part, and the downtime log line all reference &mdash; without it the paper trail forks.</li>
+<li><strong>Asset and number.</strong> The machine and its asset ID, in the same words the downtime log uses. &ldquo;The walk-in&rdquo; is not an asset; &ldquo;Walk-in cooler #2, 2019 Beck&rdquo; is.</li>
+<li><strong>The complaint in the operator&rsquo;s own words.</strong> &ldquo;It&rsquo;s making a noise again&rdquo; is data &mdash; it is the symptom the tech actually gets. Quote it; do not translate it into jargon until the diagnosis line is written.</li>
+<li><strong>Priority.</strong> P1, P2 or P3, set by downtime cost. Not by loudness, not by rank, not by who is standing closest.</li>
+<li><strong>Assigned tech and parts.</strong> A named person &mdash; &ldquo;whoever&rsquo;s free&rdquo; is nobody &mdash; and the parts reserved from the <a href="critical-spare-parts-list.html">critical spares list</a> against this ticket number, so the shelf answers the ticket instead of the loudest shout.</li>
+<li><strong>Work performed.</strong> What was actually done, in words the next tech could repeat without calling you: replaced, torqued, tested, observed for one full cycle.</li>
+<li><strong>Downtime hours and cost.</strong> Both clocks &mdash; lost production and wrench time &mdash; matching the downtime log line, so the monthly roll-up doesn&rsquo;t have to reconcile two truths.</li>
+<li><strong>Preventable, Y/N, plus one line.</strong> The sentence that feeds the schedule: &ldquo;torn door gasket &mdash; add weekly gasket + defrost check&rdquo;. If the line is blank, the ticket closed a job but taught nothing.</li>
+</ol>
+
+<h2>2. Priority is arithmetic, not volume</h2>
+<ul>
+<li><strong>P1 &mdash; down now, or about to be.</strong> Production stopped, a safety issue, or the cold chain at risk. Everything drops, parts come off the shelf, and the downtime log line opens the same hour.</li>
+<li><strong>P2 &mdash; inside 48 hours.</strong> Degraded, intermittent, or the failure mode that ended another machine last quarter. Scheduled within 48 hours, parts ordered, the shift lead told.</li>
+<li><strong>P3 &mdash; the schedule&rsquo;s next slot.</strong> Cosmetic, noisy but running, or pure prevention. It goes on the <a href="preventive-maintenance-schedule-template.html">PM schedule</a> and stops occupying anyone&rsquo;s head.</li>
+</ul>
+<p>The rule that makes the three levels real: <em>the <a href="equipment-downtime-log.html">downtime log&rsquo;s cost column</a> decides, not the loudest voice in the room</em>. A P1 that gets called for a squeaky fan while the cold chain quietly drifts is priority inflation &mdash; and it costs the same as having no priorities at all.</p>
+
+<h2>3. Close-out &mdash; the machine running is not the job done</h2>
+<p>A work order is finished when four things are true, and not before:</p>
+<ul>
+<li>the <a href="equipment-downtime-log.html">downtime log</a> line is closed with hours and cost;</li>
+<li>the parts used are off the shelf, the reorder placed, and the fiche back in the drawer;</li>
+<li>the preventable line has become a task on the <a href="preventive-maintenance-schedule-template.html">PM schedule</a>;</li>
+<li>the invoice is attached to the ticket number.</li>
+</ul>
+<p>No close-out, no ticket &mdash; an open ticket with a running machine is a lie the backlog tells, and it is how December arrives with forty tickets &ldquo;still open&rdquo; and nobody able to say which ones are real.</p>
+
+<h2>The five traps</h2>
+<ul>
+<li><strong>Verbal work orders.</strong> &ldquo;Just tell Dave&rdquo; is how a repeat failure stays invisible: no ticket, no number, no line in the ledger, no prevention. If it isn&rsquo;t on a page it didn&rsquo;t happen &mdash; and it will happen again on a Saturday.</li>
+<li><strong>The ticket without a close-out.</strong> Half the tickets open in December are finished jobs nobody closed. The close-out is the product; the repair is just its middle.</li>
+<li><strong>Priority inflation.</strong> When everything is P1, the word stops meaning &ldquo;drop everything&rdquo; and the genuinely-down machine waits behind a squeaky fan. Three levels, arithmetic, done.</li>
+<li><strong>One giant ticket.</strong> &ldquo;Fix the kitchen&rdquo; is not a work order; it is a wish. One page per job, per asset &mdash; otherwise nothing can be costed, assigned, or closed.</li>
+<li><strong>The invisible backlog.</strong> Tickets scattered across a whiteboard, three texts and someone&rsquo;s notebook can&rsquo;t be triaged, because no one can see them in one place. One numbered list &mdash; a spreadsheet is fine &mdash; or the <a href="uptime-downtime-budget.html">uptime budget</a> is being spent by whoever shouts first.</li>
+</ul>
+
+<h2>Worked example &mdash; the 40-seat restaurant&rsquo;s third &ldquo;just tell Dave&rdquo;</h2>
+<p>The walk-in cooler has stopped three times in six weeks; the <a href="equipment-downtime-log.html">Friday triage</a> has already flagged it as a repeat offender. Monday, 07:10: the prep cook logs &ldquo;compressor short-cycling again, food temp creeping.&rdquo; Work order #0142, priority P1 &mdash; cold chain at risk, not because the cook shouted. 07:20 it is assigned to Dave by name, with the spare gasket reserved from the <a href="critical-spare-parts-list.html">critical spares shelf</a> against ticket #0142. 08:00 the door gasket is off, torn along the hinge edge &mdash; the same failure mode as last time, now undeniable. New gasket on, door seal tested with the dollar-bill test, one full defrost cycle observed. 10:30 close-out: downtime log line closed at 2.5 lost-production hours (brunch service moved to ice chests, 40 covers saved), $45 part plus 90 minutes of Dave, invoice stapled to #0142, and the line that pays for the whole page: <em>preventable Y &mdash; add weekly door-gasket and defrost check to the <a href="cold-chain-failure-checklist.html">cold-chain walk</a>; reorder spare gasket (bin empty)</em>.</p>
+<p>Total paperwork: one page, eight minutes. The alternative &mdash; the third &ldquo;just tell Dave&rdquo; with no ticket &mdash; is exactly how the first quarter became six events and $7,300 of lost revenue with nobody able to prove the pattern. The ticket didn&rsquo;t fix the cooler; the gasket did. The ticket is why the <a href="preventive-maintenance-schedule-template.html">schedule</a> learned, the shelf got refilled, and the <a href="uptime-downtime-budget.html">downtime budget</a> shows where the money went.</p>
+
+<h2>Kits</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="equipment-downtime-log.html">equipment downtime log</a> is where every P1 starts and ends &mdash; the work order carries its event; the <a href="preventive-maintenance-schedule-template.html">preventive maintenance schedule</a> is what the close-out&rsquo;s preventable line becomes &mdash; each scheduled task runs as its own work order; the <a href="critical-spare-parts-list.html">critical spare parts list</a> is what gets reserved against the ticket number &mdash; the shelf answers tickets, not shouts; the <a href="uptime-downtime-budget.html">uptime budget</a> is the pot every P1 spends from; and the <a href="generator-transfer-checklist.html">generator transfer checklist</a> rides on a P1 work order so the switchgear leaves a paper trail too.</em></p>
+</main>
+</body>
+</html>
