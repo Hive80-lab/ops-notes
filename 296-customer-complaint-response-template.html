@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Complaint Response Template: Resolve Issues in Hours, Not Days</title>
+    <meta name="description" content="A structured template for resolving customer complaints quickly and professionally. Track issues, assign owners, set SLAs, and turn negative experiences into loyalty.">
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/296-customer-complaint-response-template.html">
+    <link rel="stylesheet" href="https://hive80-lab.github.io/ops-notes/style.css">
+    <style>
+        .complaint { max-width: 900px; margin: 0 auto; }
+        .template { margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea; }
+        .section { background: #e3f2fd; padding: 1rem; border-radius: 6px; margin: 1rem 0; font-weight: bold; color: #1565c0; }
+        .escalation { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; }
+        .escalation h3 { margin: 0 0 1rem 0; }
+        .escalation p { margin: 0 0 1.5rem 0; opacity: 0.9; }
+        .template-button { display: inline-block; background: white; color: #667eea; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 6px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Customer Complaint Response Template</h1>
+        <p class="subtitle">Resolve Issues in Hours, Not Days</p>
+        <div class="escalation">
+            <h3>Use This Template for Every Complaint</h3>
+            <p>Track issues, assign owners, set SLAs, and turn negative experiences into loyalty. One page, fifteen minutes per complaint.</p>
+            <a href="https://hive80-lab.github.io/ops-notes/291-sla-template.html" class="template-button">← Back to SLA Template</a>
+        </div>
+    </header>
+
+    <section class="complaint">
+        <h2>What This Is</h2>
+        <p>A customer complaint is a data point about what you're doing right and what you're getting wrong. This template gives you a repeatable process for responding quickly, tracking the root cause, and measuring your response quality. Every complaint becomes a lesson, not a problem to hide.</p>
+
+        <h3>Why You Need This</h3>
+        <ul style="margin-left: 2rem; line-height: 1.8;">
+            <li><strong>Faster resolution:</strong> Respond within 2 hours for urgent issues, 24 hours for non-urgent.</li>
+            <li><strong>Consistency:</strong> Every customer gets the same service, regardless of who answers.</li>
+            <li><strong>Root cause capture:</strong> Track what broke so you can fix it permanently.</li>
+            <li><strong>Loyalty recovery:</strong> 65% of customers will do business again if you resolve their complaint quickly.</li>
+        </ul>
+
+        <h2>Complaint Response Form (15 Minutes per Complaint)</h2>
+        <p>For every complaint received, fill this out. Use a shared spreadsheet or ticketing system. Make this a standing agenda item for the first 5 minutes of every morning.</p>
+
+        <div class="template">
+            <h4>Complaint Tracking Fields</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>[ ] Complaint Date:</strong> When did it arrive?</li>
+                <li><strong>[ ] Channel:</strong> Email, phone, chat, support ticket?</li>
+                <li><strong>[ ] Customer ID:</strong> Who complained?</li>
+                <li><strong>[ ] Product/Service:</strong> What are we being blamed for?</li>
+                <li><strong>[ ] Severity:</strong> URGENT, HIGH, MEDIUM, LOW</li>
+                <li><strong>[ ] Root Cause:</strong> What went wrong? (Be specific)</li>
+                <li><strong>[ ] Immediate Fix:</strong> What did you do right now?</li>
+                <li><strong>[ ] Owner:</strong> Who is accountable for the full resolution?</li>
+                <li><strong>[ ] SLA Due:</strong> Target resolution time (24h, 48h, 7d)</li>
+                <li><strong>[ ] Follow-up Date:</strong> When will you check back?</li>
+            </ul>
+        </div>
+
+        <h2>The Response Email Template</h2>
+        <div class="template">
+            <h4>Subject: RE: [Original Subject] - Quick Update</h4>
+            <p>Hi [Customer Name],</p>
+            <p>Thank you for contacting us about [specific issue]. I'm sorry this happened — this is definitely not the experience we aim to provide.</p>
+            <p>I've assigned [Owner Name] to this immediately. They're working on [brief explanation of the fix]. Expected resolution: [timeframe].</p>
+            <p>I'll follow up with you directly by [follow-up date] to confirm everything is resolved.</p>
+            <p>Thanks for your patience while we sort this out.</p>
+            <p>Best,[Your Name]</p>
+        </div>
+
+        <h2>Escalation Rules</h2>
+        <ul style="margin-left: 2rem; line-height: 1.8;">
+            <li><strong>URGENT:</strong> Money lost, security compromised, service down → escalate to your manager immediately.</li>
+            <li><strong>HIGH:</strong> Upset VIP client, negative public review, recurring issue → escalate within 1 hour.</li>
+            <li><strong>MEDIUM:</strong> Missing order, incorrect invoice, minor delay → assign ownership, monitor progress.</li>
+            <li><strong>LOW:</strong> Wrong color, small delay, minor complaint → resolve during next routine check.</li>
+        </ul>
+
+        <h2>Post-Complaint Checklist</h2>
+        <div class="template">
+            <h4>Resolution Verification</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>[ ] Original issue fixed?</strong></li>
+                <li><strong>[ ] Customer satisfied?</strong> (Ask directly: "Is there anything else I can help with?")</li>
+                <li><strong>[ ] Root cause captured?</strong> (Was there a system or process failure?)</li>
+                <li><strong>[ ] Preventive action taken?</strong> (How will this not happen again?)</li>
+                <li><strong>[ ] Follow-up completed?</strong> (Did you check back by the agreed date?)</li>
+            </ul>
+        </div>
+
+        <h2>Worked Example</h2>
+        <p>A subscription SaaS startup tracked their complaints for 30 days. Issues fell into three categories:</p>
+        <ul style="margin-left: 2rem; line-height: 1.8;">
+            <li>Onboarding confusion (45% of complaints)</li>
+            <li>Payment declined (30%)</li>
+            <li>Feature request backlog (25%)</li>
+        </ul>
+        <p>They added a self-serve tutorial (fixing 40% of onboarding complaints), updated payment help text (reducing declines by 60%), and created a feature voting board (moving that category to "request" instead of "complaint").</p>
+        <p><em>Result:</em> 30-day complaint rate dropped from 12% to 3%. Net promoter score improved by 22 points.</p>
+    </section>
+</body>
+</html>

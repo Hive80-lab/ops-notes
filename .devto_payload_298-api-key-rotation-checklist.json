@@ -1,0 +1,13 @@
+{
+  "article": {
+    "title": "API Key Rotation Checklist: Prevent Data Exposures Before They Happen",
+    "body_markdown": "Excerpt from API Key Rotation Checklist: Prevent Data Exposures Before They Happen: Read the full template and checklist at https://hive80-lab.github.io/ops-notes/298-api-key-rotation-checklist.html\n\n# Operations Management\n\nPractical templates and checklists for small teams. Get the complete Ops Starter Kit: https://hive80lab.gumroad.com/l/ops-starter-kit",
+    "published": false,
+    "tags": [
+      "operations",
+      "management",
+      "templates",
+      "checklists"
+    ]
+  }
+}

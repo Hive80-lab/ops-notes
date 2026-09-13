@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Response Template: Contain, Recover, Learn — Then Move On</title>
+    <meta name="description" content="A structured incident response template for managing emergencies — data breaches, service outages, security incidents. Contain, recover, learn, then move on.">
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/299-incident-response-template.html">
+    <link rel="stylesheet" href="https://hive80-lab.github.io/ops-notes/style.css">
+    <style>
+        .incident { max-width: 900px; margin: 0 auto; }
+        .timeline { margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea; }
+        .phase { background: #e3f2fd; padding: 1rem; border-radius: 6px; margin: 1rem 0; font-weight: bold; color: #1565c0; }
+        .alert { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; }
+        .alert h3 { margin: 0 0 1rem 0; }
+        .alert p { margin: 0 0 1.5rem 0; opacity: 0.9; }
+        .timeline-button { display: inline-block; background: white; color: #667eea; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 6px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Incident Response Template</h1>
+        <p class="subtitle">Contain, Recover, Learn — Then Move On</p>
+        <div class="alert">
+            <h3>Follow This 5-Phase Framework</h3>
+            <p>Containment, eradication, recovery, post-incident activity. One page, structured decision-making during emergencies. 60 minutes per incident from start to finish.</p>
+            <a href="https://hive80-lab.github.io/ops-notes/291-sla-template.html" class="timeline-button">← Back to SLA Template</a>
+        </div>
+    </header>
+
+    <section class="incident">
+        <h2>What This Is</h2>
+        <p>Every organization faces incidents. The difference between a disaster and a manageable event is preparation. This template gives you a repeatable structure for containing damage, restoring service, and learning from what happened. Use it to turn chaos into data.</p>
+
+        <h3>Why You Need This</h3>
+        <ul style="margin-left: 2rem; line-height: 1.8;">
+            <li><strong>Faster containment:</strong> Clear roles and responsibilities reduce response time by 50-70%.</li>
+            <li><strong>Less damage:</strong> Structured communication prevents panic and escalation.</li>
+            <li><strong>Legal protection:</strong> A documented response shows due diligence in the event of audit or litigation.</li>
+            <li><strong>Psychological safety:</strong> Team members who know their role handle stress better.</li>
+        </ul>
+
+        <h2>Phase 1: Detection & Containment (15 Minutes)</h2>
+        <p>The first 15 minutes matter most. Confirm the incident, isolate it, and limit the blast radius.</p>
+        <div class="timeline">
+            <h4>Step-by-Step</h4>
+            <ol style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Confirm the incident:</strong> Is this a real event or a false alarm? Use data, not fear.</li>
+                <li><strong>Identify the scope:</strong> Which systems, services, users, or data are affected?</li>
+                <li><strong>Stop the bleeding:</strong> Shut down access, disconnect compromised systems, or revert recent changes.</li>
+                <li><strong>Document what you know:</strong> Time, source, initial impact. Write it down immediately.</li>
+                <li><strong>Notify the incident response team:</strong> Appropriate stakeholders get notified based on severity.</li>
+            </ol>
+        </div>
+
+        <h2>Phase 2: Eradication (30-60 Minutes)</h2>
+        <p>Remove the root cause and close the vulnerability. This phase can take hours to days depending on complexity.</p>
+        <div class="timeline">
+            <h4>Eradication Steps</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Root cause analysis:</strong> How did this happen? Who did it? Did we miss a signal?</li>
+                <li><strong>Remove the threat:</strong> Delete malware, patch vulnerabilities, revoke compromised credentials.</li>
+                <li><strong>Verify the fix:</strong> Test that the issue is truly resolved. Don't guess.</li>
+                <li><strong>Restore from backups:</strong> Roll back to a clean state if possible. Monitor closely for reinfection.</li>
+                <li><strong>Restart systems:</strong> If you shut down services, bring them back up. Watch for regression.</li>
+            </ul>
+        </div>
+
+        <h2>Phase 3: Recovery (15-30 Minutes)</h2>
+        <p>Return to normal operations, but do it carefully. Don't rush and don't skip validation.</p>
+        <div class="timeline">
+            <h4>Recovery Checklist</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Partial restoration:</strong> Restore non-critical systems first. Monitor before bringing up everything.</li>
+                <li><strong>Full restoration:</strong> Bring up all services. Verify each one works correctly.</li>
+                <li><strong>Failover verification:</strong> If you had backup systems, confirm they were used correctly.</li>
+                <li><strong>User notification:</strong> Tell customers/users what happened, what you're doing, and when service will be back.</li>
+                <li><strong>Performance monitoring:</strong> Watch for unexpected behavior. Slow systems are often the next symptom.</li>
+            </ul>
+        </div>
+
+        <h2>Phase 4: Post-Incident Activity (30-60 Minutes)</h2>
+        <p>The incident is over. Now learn from it so it doesn't happen again. This is the most important phase.</p>
+        <div class="timeline">
+            <h4>Post-Incident Steps</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Write an incident report:</strong> What happened, why, how it was handled, what changed going forward. This is your legal evidence and your learning record.</li>
+                <li><strong>Conduct a blameless postmortem:</strong> What should we do differently? Who should we talk to? What systems should we improve? No blame — focus on process.</li>
+                <li><strong>Implement preventive changes:</strong> Patch vulnerabilities, update policies, improve monitoring, schedule rotation.</li>
+                <li><strong>Notify stakeholders:</strong> Executives, board, clients, legal. Be honest about impact.</li>
+                <li><strong>Document lessons learned:</strong> Update your incident response playbook. Archive the report for future reference.</li>
+            </ul>
+        </div>
+
+        <h2>Decision Tree: When to Escalate</h2>
+        <div class="timeline">
+            <h4>Escalation Triggers</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Legal/PDPA breach:</strong> Personal data exposed → engage legal immediately.</li>
+                <li><strong>Financial loss:</strong> $10,000+ lost or at risk → notify finance and legal.</li>
+                <li><strong>Public impact:</strong> Customer-facing outage, brand damage → executive notification.</li>
+                <li><strong>Regulatory violation:</strong> Health data, payment data, or other regulated data → regulator notification.</li>
+                <li><strong>Long duration:</strong> Service down > 4 hours → executive notification.</li>
+            </ul>
+        </div>
+
+        <h2>Worked Example</h2>
+        <p>A SaaS company's authentication service was compromised. Here's how their incident response played out:</p>
+        <p><em>0:00:</em> The monitoring system detected failed login attempts from multiple IP addresses.</p>
+        <p><em>0:05:</em> Security team confirmed it was an automated attack. They disabled the affected API keys and blocked the attacker IPs.</p>
+        <p><em>0:15:</em> Customer-facing sign-up was down. They isolated the affected service and restored it with a known-good backup from 15 minutes ago.</p>
+        <p><em>1:00:</em> Service restored. They resumed monitoring and confirmed no data was exposed.</p>
+        <p><em>2:00:</em> Root cause analysis: the old API key had a weak hash algorithm. They rotated all keys and updated the secret rotation policy to use SHA-256 going forward.</p>
+        <p><em>3:00:</em> Blameless postmortem revealed: no one knew API key rotation was required. They updated the security handbook and added a 90-day rotation policy.</p>
+        <p><em>Result:</em> Customer notification was sent 10 minutes after discovery. Customer churn dropped from 8% to 3%. External audit later praised their response as "professional and timely."</p>
+    </section>
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Acquisition Strategy: 7-Channel Framework</title>
+    <meta name="description" content="A 7-channel customer acquisition framework to systematically grow your customer base. Mix of organic, paid, and partner channels with templates and metrics.">
+    <meta name="keywords" content="customer acquisition, growth strategy, marketing channels, sales strategy, customer acquisition plan">
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/302-customer-acquisition-strategy.html">
+    <meta name="author" content="Hive80-lab Ops Notes">
+    <meta name="robots" content="index, follow">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #f1f1f1;
+            --text-muted: #a0a0a0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--primary);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px 50px;
+            background: var(--secondary);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        h1 { color: var(--highlight); margin-top: 0; }
+        h2 { color: #4db5ff; border-bottom: 1px solid var(--accent); padding-bottom: 10px; }
+        h3 { color: #6ee7b7; margin-top: 25px; }
+        p, ul, ol { margin-bottom: 20px; }
+        ul, ol { padding-left: 25px; }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .metric-card {
+            background: var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .metric-card h4 { margin: 0 0 10px 0; color: var(--highlight); }
+        .metric-card .value { font-size: 28px; font-weight: bold; color: #fff; }
+        .metric-card .unit { font-size: 14px; color: var(--text-muted); }
+        .chart-container { margin: 30px 0; padding: 20px; background: var(--accent); border-radius: 8px; }
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .channel-card {
+            background: var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 4px solid var(--highlight);
+        }
+        .channel-card h4 { margin-top: 0; color: var(--highlight); }
+        .channel-card .status { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+        .status.active { background: #4db5ff; color: #000; }
+        .status.planned { background: #e94560; color: #fff; }
+        .channel-card .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .channel-card .metric { font-size: 14px; }
+        .channel-card .metric strong { color: #4db5ff; }
+        .channel-card .metric .value { color: #fff; font-weight: bold; }
+        .template-box {
+            background: #0a0a1a;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid var(--accent);
+        }
+        .template-box pre {
+            background: #000;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .template-box code { color: #4db5ff; }
+        .template-box .tag { color: #e94560; }
+        .warning { background: rgba(233, 69, 96, 0.15); border-left: 4px solid var(--highlight); padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .success { background: rgba(78, 181, 255, 0.15); border-left: 4px solid #4db5ff; padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        a { color: var(--highlight); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--accent); color: var(--text-muted); font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Customer Acquisition Strategy: 7-Channel Framework</h1>
+        <p>Growing your customer base requires a balanced mix of acquisition channels. This framework provides 7 proven channels—organic, paid, and partner-based—with templates and metrics to build a scalable, sustainable growth engine.</p>
+
+        <div class="success">
+            <strong>Key Insight:</strong> No single channel can sustain growth alone. The most successful companies mix channels that balance reach (reachability), cost (CAC), and conversion (velocity). Start with 2-3 channels, master them, then scale.
+        </div>
+
+        <h2>Channel Mix Overview</h2>
+        <p>Build a 7-channel foundation that covers all acquisition vectors:</p>
+
+        <div class="channel-grid">
+            <div class="channel-card">
+                <h4>1. Content Marketing</h4>
+                <span class="status active">Active</span>
+                <p>High-intent traffic through blogs, videos, and guides.</p>
+                <div class="metrics">
+                    <div class="metric"><strong>Velocity:</strong><br><span class="value">Slow</span></div>
+                    <div class="metric"><strong>CAC:</strong><br><span class="value">Low</span></div>
+                </div>
+            </div>
+            <div class="channel-card">
+                <h4>2. Paid Advertising</h4>
+                <span class="status active">Active</span>
+                <p>Short-term traffic with control over budget and targeting.</p>
+                <div class="metrics">
+                    <div class="metric"><strong>Velocity:</strong><br><span class="value">Fast</span></div>
+                    <div class="metric"><strong>CAC:</strong><br><span class="value">Medium</span></div>
+                </div>
+            </div>
+            <div class="channel-card">
+                <h4>3. SEO (Search Engine Optimization)</h4>
+                <span class="status planned">Planned</span>
+                <p>Long-term organic traffic from search engines.</p>
+                <div class="metrics">
+                    <div class="metric"><strong>Velocity:</strong><br><span class="value">Slow</span></div>
+                    <div class="metric"><strong>CAC:</strong><br><span class="value">Low</span></div>
+                </div>
+            </div>
+            <div class="channel-card">
+                <h4>4. Email Marketing</h4>
+                <span class="status planned">Planned</span>
+                <p>High-conversion nurturing through owned channels.</p>
+                <div class="metrics">
+                    <div class="metric"><strong>Velocity:</strong><br><span class="value">Medium</span></div>
+                    <div class="metric"><strong>CAC:</strong><br><span class="value">Low</span></div>
+                </div>
+            </div>
+            <div class="channel-card">
+                <h4>5. Referrals</h4>
+                <span class="status active">Active</span>
+                <p>Credible, high-conversion organic acquisition.</p>
+                <div class="metrics">
+                    <div class="metric"><strong>Velocity:</strong><br><span class="value">Medium</span></div>
+                    <div class="metric"><strong>CAC:</strong><br><span class="value">Very Low</span></div>
+                </div>
+            </div>
+            <div class="channel-card">
+                <h4>6. Partnerships</h4>
+                <span class="status planned">Planned</span>
+                <p>Collaborative reach to complementary audiences.</p>
+                <div class="metrics">
+                    <div class="metric"><strong>Velocity:</strong><br><span class="value">Variable</span></div>
+                    <div class="metric"><strong>CAC:</strong><br><span class="value">Variable</span></div>
+                </div>
+            </div>
+            <div class="channel-card">
+                <h4>7. Direct Sales / Cold Outreach</h4>
+                <span class="status planned">Planned</span>
+                <p>High-value B2B acquisition through personalized outreach.</p>
+                <div class="metrics">
+                    <div class="metric"><strong>Velocity:</strong><br><span class="value">Slow</span></div>
+                    <div class="metric"><strong>CAC:</strong><br><span class="value">Medium</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="channelChart"></canvas>
+        </div>
+
+        <h2>Channel Performance Metrics</h2>
+        <p>Track the following metrics for each channel:</p>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h4>Cost per Acquisition</h4>
+                <div class="value" id="cac">--</div>
+                <div class="unit">$ per customer</div>
+            </div>
+            <div class="metric-card">
+                <h4>Conversion Rate</h4>
+                <div class="value" id="conversion">--</div>
+                <div class="unit">% of leads</div>
+            </div>
+            <div class="metric-card">
+                <h4>Customer Lifetime Value</h4>
+                <div class="value" id="clv">--</div>
+                <div class="unit">$ over LTV</div>
+            </div>
+            <div class="metric-card">
+                <h4>ROI per Channel</h4>
+                <div class="value" id="roi">--</div>
+                <div class="unit">% return</div>
+            </div>
+        </div>
+
+        <h2>Channel Templates & Playbooks</h2>
+
+        <div class="template-box">
+            <h4>Content Marketing Template</h4>
+            <pre>
+<code>
+# Content Marketing Playbook
+
+## Content Types
+- [ ] Blog Posts: 1/week (SEO-focused)
+- [ ] Videos: 1/quarter (YouTube)
+- [ ] Guides: 2/year (High-value)
+
+## SEO Strategy
+- [ ] Keyword research: 50-100 target keywords
+- [ ] Title + Meta description per post
+- [ ] Internal linking: 2-3 links per post
+- [ ] Publish date: Schedule for 3 AM EST
+
+## Metrics to Track
+- [ ] Organic traffic per post
+- [ ] Backlinks acquired
+- [ ] Time on page
+- [ ] Conversion rate from post
+</code>
+            </pre>
+        </div>
+
+        <div class="template-box">
+            <h4>Referral Program Template</h4>
+            <pre>
+<code>
+# Referral Program Setup
+
+## Incentive Structure
+- [ ] Referrer: $10 credit per referral
+- [ ] Referee: $5 credit on signup
+
+## Program Prompts
+- [ ] Onboarding email: "Invite a colleague"
+- [ ] Post-purchase email: "Share your experience"
+- [ ] In-app banner: "Earn credits by referring"
+
+## Tracking
+- [ ] Unique referral codes per user
+- [ ] Referral attribution window: 30 days
+- [ ] Credit redemption: First purchase only
+</code>
+            </pre>
+        </div>
+
+        <div class="template-box">
+            <h4>Channel Rollout Checklist</h4>
+            <pre>
+<code>
+# Launch Channel X
+
+Pre-Launch
+- [ ] Define target audience segments
+- [ ] Set budget and timeline
+- [ ] Create campaign assets (copy, graphics, videos)
+- [ ] Set up tracking pixel and UTM parameters
+- [ ] Test on staging environment
+
+Go-Live
+- [ ] Publish landing pages
+- [ ] Enable tracking and analytics
+- [ ] Submit to IndexNow for SEO
+- [ ] Announce on social channels
+
+Post-Launch
+- [ ] Monitor metrics daily for 7 days
+- [ ] A/B test ad copy weekly
+- [ ] Adjust targeting based on performance
+- [ ] Scale winners within budget
+</code>
+            </pre>
+        </div>
+
+        <h2>Channel Scaling Strategy</h2>
+        <p>Scale channels in order of maturity:</p>
+
+        <ol>
+            <li><strong>Master the Basics:</strong> Before scaling, master the fundamentals of each channel. Know your target audience, content strategy, and creative framework.</li>
+            <li><strong>Identify Winners:</strong> After 2-4 weeks of testing, identify which channels have the best ROI and conversion rates. Double down on them.</li>
+            <li><strong>Scale Gradually:</strong> Increase budget and resource allocation incrementally (20% at a time). Always test first.</li>
+            <li><strong>Automate Where Possible:</strong> Use tools to automate content creation, ad management, and email sequences to free up time for experimentation.</li>
+            <li><strong>Balance Mix:</strong> As you scale, maintain a balanced mix of channels to avoid over-reliance on any single channel.</li>
+        </ol>
+
+        <h2>Common Pitfalls</h2>
+
+        <div class="warning">
+            <strong>Channel Over-Reliance:</strong> Don't pin all your growth on one channel. Diversification reduces risk and ensures sustainable growth.
+        </div>
+
+        <div class="warning">
+            <strong>Ignoring CAC:</strong> Always track CAC alongside conversion rate. High conversion with high CAC can still be unprofitable.
+        </div>
+
+        <h2>Summary</h2>
+        <p>A customer acquisition strategy is not a one-time setup—it's an ongoing optimization cycle. Start with 2-3 channels, master them, track metrics closely, and scale winners while maintaining a balanced mix. With this framework, you can build a predictable, scalable growth engine that compounds over time.</p>
+
+        <footer>
+            <p><strong>Version:</strong> 1.0 | <strong>Author:</strong> Hive80-lab Ops Notes | <strong>Last Updated:</strong> 2026-09-24</p>
+            <p><strong>Related:</strong> <a href="301-revenue-recovery-plan.html">Revenue Recovery Plan</a> | <a href="303-automatic-sales-boost.html">Automatic Sales Boost</a> | <a href="304-conversion-rate-optimization-guide.html">Conversion Rate Optimization Guide</a></p>
+        </footer>
+
+        <script>
+            const ctx = document.getElementById('channelChart').getContext('2d');
+            const channelChart = new Chart(ctx, {
+                type: 'bar',
+                {
+                    labels: ['Content', 'Paid', 'SEO', 'Email', 'Referral', 'Partner', 'Direct'],
+                    datasets: [{
+                        label: 'ROI %',
+                        [250, 300, 500, 400, 600, 350, 280],
+                        backgroundColor: '#e94560'
+                    }, {
+                        label: 'CAC $',
+                        [15, 30, 10, 12, 5, 20, 25],
+                        backgroundColor: '#4db5ff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#f1f1f1' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#a0a0a0' },
+                            grid: { color: '#1a1a2e' }
+                        },
+                        y: {
+                            ticks: { color: '#a0a0a0' },
+                            grid: { color: '#1a1a2e' }
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Key Rotation Checklist: Prevent Data Exposures Before They Happen</title>
+    <meta name="description" content="A systematic checklist for rotating API keys, managing secrets, and preventing unauthorized access. Reduce risk exposure and stay compliant.">
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/298-api-key-rotation-checklist.html">
+    <link rel="stylesheet" href="https://hive80-lab.github.io/ops-notes/style.css">
+    <style>
+        .security { max-width: 900px; margin: 0 auto; }
+        .checklist { margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea; }
+        .schedule { background: #e3f2fd; padding: 1rem; border-radius: 6px; margin: 1rem 0; font-weight: bold; color: #1565c0; }
+        .alert { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; }
+        .alert h3 { margin: 0 0 1rem 0; }
+        .alert p { margin: 0 0 1.5rem 0; opacity: 0.9; }
+        .checklist-button { display: inline-block; background: white; color: #667eea; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 6px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>API Key Rotation Checklist</h1>
+        <p class="subtitle">Prevent Data Exposures Before They Happen</p>
+        <div class="alert">
+            <h3>Rotate Keys Regularly, Before They're Exposed</h3>
+            <p>A compromised key lets an attacker access your data forever unless it's revoked and rotated. This checklist keeps your secrets fresh. One page, 30 minutes per rotation cycle.</p>
+            <a href="https://hive80-lab.github.io/ops-notes/291-sla-template.html" class="checklist-button">← Back to SLA Template</a>
+        </div>
+    </header>
+
+    <section class="security">
+        <h2>What This Is</h2>
+        <p>API keys and secrets are the keys to your kingdom. If they're stolen, anyone can read your data, delete your resources, or impersonate your services. Rotation isn't just a best practice — it's the only way to limit the damage of a breach. This checklist gives you a repeatable process for keeping your secrets fresh and your systems secure.</p>
+
+        <h3>Why You Need This</h3>
+        <ul style="margin-left: 2rem; line-height: 1.8;">
+            <li><strong>Limit breach impact:</strong> The sooner you rotate, the fewer records an attacker can access.</li>
+            <li><strong>Compliance requirement:</strong> Many regulations (PCI-DSS, HIPAA, SOC 2) mandate regular rotation.</li>
+            <li><strong>Automated testing:</strong> Rotation is the perfect time to verify your secrets flow works end-to-end.</li>
+            <li><strong>Psychological security:</strong> Regular rotation makes security part of the daily rhythm, not an afterthought.</li>
+        </ul>
+
+        <h2>Pre-Rotation Preparation (15 Minutes)</h2>
+        <p>Don't rotate in the dark. Gather everything you need first.</p>
+        <div class="checklist">
+            <h4>Pre-Rotation Checklist</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>[ ] Identify all keys to rotate:</strong> APIs, databases, cloud services, third-party integrations.</li>
+                <li><strong>[ ] Map key to service:</strong> Which app/service depends on each key? Document this.</li>
+                <li><strong>[ ] Schedule downtime:</strong> Can you rotate during off-hours? Or do you need a brief outage?</li>
+                <li><strong>[ ] Notify stakeholders:</strong> Operations, DevOps, engineering, any external partners.</li>
+                <li><strong>[ ] Backup key mappings:</strong> If you can't back up keys, you'll reconfigure by hand — slow and error-prone.</li>
+                <li><strong>[ ] Create new keys first:</strong> Rotate in order: rotating order matters to avoid breaking dependencies.</li>
+                <li><strong>[ ] Test write access:</strong> Verify new keys work before you revoke old ones.</li>
+            </ul>
+        </div>
+
+        <h2>During Rotation (30-60 Minutes)</h2>
+        <p>Follow this order to minimize disruption. Rotate in the right direction: add new before removing old.</p>
+        <div class="checklist">
+            <h4>Rotation Sequence</h4>
+            <ol style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Add new keys to config:</strong> Deploy updated configs with fresh keys to all environments.</li>
+                <li><strong>Update service restarts:</strong> Restart services to pick up new configs. Do this in order of dependency.</li>
+                <li><strong>Verify in staging first:</strong> Test that new keys work correctly before touching production.</li>
+                <li><strong>Add cooldown period:</strong> Wait 5-10 minutes after each service restart to ensure stability.</li>
+                <li><strong>Roll out to production:</strong> Gradually rotate each key, one at a time.</li>
+                <li><strong>Verify endpoints:</strong> Test critical endpoints manually or via automated smoke tests.</li>
+            </ol>
+        </div>
+
+        <h2>Post-Rotation Verification (10 Minutes)</h2>
+        <p>Don't assume it worked. Verify with data, not hope.</p>
+        <div class="checklist">
+            <h4>Post-Rotation Checklist</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>[ ] Check logs:</strong> No failed auth attempts? No 403 errors?</li>
+                <li><strong>[ ] Functional test:</strong> Use the key to perform a real operation in staging.</li>
+                <li><strong>[ ] Monitoring alerts:</strong> Did security alerts fire incorrectly? Adjust thresholds.</li>
+                <li><strong>[ ] Data verification:</strong> Are you seeing the same data you saw before rotation?</li>
+                <li><strong>[ ] Key deletion:</strong> Once verified, delete old keys from your secret store.</li>
+                <li><strong>[ ] Archive old key:</strong> Keep a backup for audit purposes. Delete only after a retention period.</li>
+                <li><strong>[ ] Document the rotation:</strong> Which key, when, why, any issues. This is your audit trail.</li>
+            </ul>
+        </div>
+
+        <h2>Rotation Schedule Guidelines</h2>
+        <p>How often should you rotate? The rule of thumb: rotate before credentials are likely to be compromised.</p>
+        <div class="schedule">
+            <h4>Schedule by Risk Level</h4>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>High risk (internal, admin):</strong> Every 90 days minimum.</li>
+                <li><strong>Medium risk (user-facing API):</strong> Every 180 days.</li>
+                <li><strong>Low risk (read-only integrations):</strong> Annually, but always rotate on breach.</li>
+                <li><strong>Temporary keys:</strong> Always rotate immediately after use.</li>
+            </ul>
+        </div>
+
+        <h2>Worked Example</h2>
+        <p>A fintech startup lost $120,000 when an old API key was stolen and used to withdraw funds. The key had been created 2 years earlier and never rotated.</p>
+        <p>They implemented this rotation schedule: internal admin keys every 90 days, user-facing API keys every 6 months. They automated the rotation process using a GitOps workflow: a PR with new keys → automated testing → merge → deployment. Failed tests → no rotation. Success → rotation complete.</p>
+        <p><em>Result:</em> After one year, they had 12 rotations with zero incidents. Their security team confidently reported: "We can't fix stolen credentials, but we control how long they're valid."</p>
+    </section>
+</body>
+</html>
