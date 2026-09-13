@@ -1,0 +1,15 @@
+HIVE80lab — Ops notes: practical checklists, runbooks & templates for small teams
+
+Web: https://hive80-lab.github.io/ops-notes/
+Email: hcchb@proton.me
+GitHub: https://github.com/hive80lab
+Twitter/X: https://x.com/hive80lab
+
+---
+
+This is a community-curated collection of operational excellence resources for small teams. Built for founders, ops leads, and anyone who wants to move fast without breaking things.
+
+Support: hcchb@proton.me
+License: MIT (check individual pages for specifics)
+
+Built with ❤️ by the Hive80lab community
