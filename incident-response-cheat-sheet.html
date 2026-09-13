@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Response Cheat Sheet - One Page Guide for IT Teams</title>
+    <meta name="description" content="Complete incident response cheat sheet for IT teams. One-page guide with immediate actions, communication templates, and recovery steps. Bookmark this - you'll need it.">
+    <meta property="og:title" content="Incident Response Cheat Sheet - One Page Guide for IT Teams">
+    <meta property="og:description" content="Complete incident response cheat sheet for IT teams. One-page guide with immediate actions, templates, and recovery steps.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hive80-lab.github.io/ops-notes/incident-response-cheat-sheet.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a; color: #e0e0e0; line-height: 1.5;
+            max-width: 1000px; margin: 0 auto; padding: 15px;
+        }
+        .header { text-align: center; padding: 20px 0; border-bottom: 2px solid #333; margin-bottom: 20px; }
+        .header h1 { color: #4CAF50; font-size: 2.2em; margin-bottom: 10px; }
+        .header p { color: #999; font-size: 1.1em; }
+        .cheat-sheet { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        @media (max-width: 768px) { .cheat-sheet { grid-template-columns: 1fr; } }
+        .section { 
+            background: #111; border-radius: 8px; padding: 20px; 
+            border-left: 4px solid #4CAF50;
+        }
+        .section.urgent { border-left-color: #ff4444; }
+        .section.communication { border-left-color: #2196F3; }
+        .section.recovery { border-left-color: #FF9800; }
+        .section h3 { color: #4CAF50; margin-bottom: 12px; font-size: 1.1em; }
+        .section.urgent h3 { color: #ff4444; }
+        .section.communication h3 { color: #2196F3; }
+        .section.recovery h3 { color: #FF9800; }
+        .action-item { 
+            margin: 8px 0; padding: 8px; border-radius: 4px;
+            display: flex; align-items: flex-start;
+            transition: background 0.2s;
+        }
+        .action-item:hover { background: rgba(255,255,255,0.05); }
+        .time { 
+            background: #4CAF50; color: white; padding: 2px 6px; 
+            border-radius: 3px; font-size: 0.8em; font-weight: bold;
+            margin-right: 8px; flex-shrink: 0;
+            min-width: 40px; text-align: center;
+        }
+        .time.urgent { background: #ff4444; }
+        .time.communication { background: #2196F3; }
+        .time.recovery { background: #FF9800; }
+        .template { 
+            background: rgba(33, 150, 243, 0.1); border-left: 3px solid #2196F3;
+            padding: 12px; margin: 10px 0; border-radius: 4px;
+        }
+        .template strong { color: #2196F3; }
+        .checklist { 
+            background: rgba(76, 175, 80, 0.1); border-radius: 4px;
+            padding: 10px; margin: 10px 0;
+        }
+        .checklist-item { 
+            margin: 5px 0; display: flex; align-items: center;
+        }
+        .checklist-item:before { 
+            content: "□"; color: #4CAF50; margin-right: 8px;
+            font-weight: bold;
+        }
+        .cta { 
+            background: linear-gradient(135deg, #4CAF50, #45a049); 
+            color: white; padding: 25px; border-radius: 12px; 
+            text-align: center; margin: 30px 0;
+        }
+        .cta h3 { margin-bottom: 15px; font-size: 1.4em; }
+        .btn { 
+            padding: 12px 24px; border-radius: 6px; text-decoration: none; 
+            font-weight: 600; transition: all 0.2s;
+            display: inline-block; margin: 8px;
+        }
+        .btn-primary { background: white; color: #333; }
+        .btn-primary:hover { transform: translateY(-2px); }
+        .print-friendly { 
+            background: #f5f5f5; color: #333; padding: 15px; 
+            border-radius: 8px; margin: 20px 0;
+            text-align: center;
+        }
+        .print-friendly a { color: #4CAF50; text-decoration: none; font-weight: bold; }
+        @media print {
+            body { background: white; color: black; }
+            .cta, .print-friendly { display: none; }
+            .section { border: 1px solid #ccc; break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚨 Incident Response Cheat Sheet</h1>
+        <p>One-page guide for IT teams. Bookmark this - you'll need it.</p>
+    </div>
+
+    <div class="print-friendly">
+        <strong>🖨️ Print this page</strong> - Keep it by your desk for when incidents hit<br>
+        <a href="javascript:window.print()">Print Now</a> | 
+        <a href="https://hive80-lab.github.io/ops-notes/incident-response-cheat-sheet.html">Direct Link</a>
+    </div>
+
+    <div class="cheat-sheet">
+        <div class="section urgent">
+            <h3>🔥 FIRST 5 MINUTES - Stop the Bleeding</h3>
+            <div class="action-item">
+                <span class="time urgent">0:00</span>
+                <div><strong>DON'T PANIC</strong> - Take 30 seconds to breathe. Panic leads to mistakes.</div>
+            </div>
+            <div class="action-item">
+                <span class="time urgent">0:30</span>
+                <div><strong>DOCUMENT</strong> - Screenshot everything. Note times, error messages, affected systems.</div>
+            </div>
+            <div class="action-item">
+                <span class="time urgent">1:00</span>
+                <div><strong>ISOLATE</strong> - Unplug affected machines from network if you can't identify source.</div>
+            </div>
+            <div class="action-item">
+                <span class="time urgent">2:00</span>
+                <div><strong>PRESERVE</strong> - Don't reboot servers. Don't delete logs. Take memory dumps if possible.</div>
+            </div>
+            <div class="action-item">
+                <span class="time urgent">3:00</span>
+                <div><strong>CONTAIN</strong> - Change passwords. Block IPs. Disable compromised accounts.</div>
+            </div>
+            <div class="action-item">
+                <span class="time urgent">4:00</span>
+                <div><strong>ASSESS</strong> - What's affected? What's the impact? Who needs to know?</div>
+            </div>
+            <div class="action-item">
+                <span class="time urgent">5:00</span>
+                <div><strong>START LOGBOOK</strong> - Document every action, time, and decision from here.</div>
+            </div>
+        </div>
+
+        <div class="section communication">
+            <h3>📞 COMMUNICATION TEMPLATES</h3>
+            <div class="template">
+                <strong>Immediate Alert (to management):</strong><br>
+                "Security incident detected at [time]. Affecting [systems]. We're containing now. Impact: [brief impact]. ETA for update: [time]."
+            </div>
+            <div class="template">
+                <strong>Customer Notification:</strong><br>
+                "We're investigating a technical issue. Your data is secure. We'll provide updates every [X hours]. Thank you for your patience."
+            </div>
+            <div class="template">
+                <strong>Team Alert:</strong><br>
+                "INCIDENT: [brief description]. All hands on deck. Channel: [Slack/Teams]. Do not post publicly. Follow incident response plan."
+            </div>
+            <div class="template">
+                <strong>Status Update:</strong><br>
+                "Incident update: [What we know]. [What we're doing]. [Expected timeline]. [Impact on users]. Next update at [time]."
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🔍 INVESTIGATION CHECKLIST</h3>
+            <div class="checklist">
+                <div class="checklist-item">Review logs for unusual activity</div>
+                <div class="checklist-item">Check firewall logs for blocked/allowed connections</div>
+                <div class="checklist-item">Analyze authentication logs</div>
+                <div class="checklist-item">Review recent changes/deployments</div>
+                <div class="checklist-item">Check for unauthorized user accounts</div>
+                <div class="checklist-item">Verify backup integrity</div>
+                <div class="checklist-item">Scan for malware on affected systems</div>
+                <div class="checklist-item">Review access permissions</div>
+                <div class="checklist-item">Check data exfiltration indicators</div>
+            </div>
+        </div>
+
+        <div class="section recovery">
+            <h3>🔄 RECOVERY STEPS</h3>
+            <div class="action-item">
+                <span class="time recovery">+1hr</span>
+                <div><strong>ERADICATE</strong> - Remove malware. Patch vulnerabilities. Clean systems.</div>
+            </div>
+            <div class="action-item">
+                <span class="time recovery">+2hr</span>
+                <div><strong>RESTORE</strong> - Recover from clean backups. Verify integrity.</div>
+            </div>
+            <div class="action-item">
+                <span class="time recovery">+3hr</span>
+                <div><strong>VALIDATE</strong> - Test systems. Confirm no backdoors. Monitor closely.</div>
+            </div>
+            <div class="action-item">
+                <span class="time recovery">+4hr</span>
+                <div><strong>HARDEN</strong> - Implement new security controls. Update configs.</div>
+            </div>
+            <div class="action-item">
+                <span class="time recovery">+24hr</span>
+                <div><strong>REVIEW</strong> - What went well? What failed? Update procedures.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>📋 POST-INCIDENT CHECKLIST</h3>
+            <div class="checklist">
+                <div class="checklist-item">Document complete timeline</div>
+                <div class="checklist-item">Identify root cause(s)</div>
+                <div class="checklist-item">List all affected systems/data</div>
+                <div class="checklist-item">Calculate business impact</div>
+                <div class="checklist-item">Review response effectiveness</div>
+                <div class="checklist-item">Update security procedures</div>
+                <div class="checklist-item">Schedule follow-up activities</div>
+                <div class="checklist-item">Conduct team debrief</div>
+                <div class="checklist-item">Share lessons learned</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>⚡ QUICK REFERENCE</h3>
+            <div class="action-item">
+                <span class="time">R</span>
+                <div><strong>Ransomware?</strong> Isolate network immediately. Don't pay. Contact authorities.</div>
+            </div>
+            <div class="action-item">
+                <span class="time">D</span>
+                <div><strong>Data Breach?</strong> Preserve evidence. Notify legal. Follow breach notification laws.</div>
+            </div>
+            <div class="action-item">
+                <span class="time">DDoS</span>
+                <div><strong>DDoS Attack?</strong> Enable DDoS protection. Contact ISP. Monitor for secondary attacks.</div>
+            </div>
+            <div class="action-item">
+                <span class="time">I</span>
+                <div><strong>Insider Threat?</strong> Preserve logs. Secure accounts. Contact HR/legal.</div>
+            </div>
+            <div class="action-item">
+                <span class="time">M</span>
+                <div><strong>Malware?</strong> Isolate. Scan. Rebuild from scratch if needed.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta">
+        <h3>🔥 Get the Complete Template Package</h3>
+        <p>This cheat sheet is just the beginning. Get the complete incident response template package with detailed procedures, communication templates, and automation guides.</p>
+        <div style="margin-top: 15px;">
+            <a href="https://hive80lab.gumroad.com/l/first-30-minutes" class="btn btn-primary">Download Free Templates</a>
+            <a href="https://hive80-lab.github.io/ops-notes/ops-starter-bundle.html" class="btn btn-primary" style="background: transparent; color: white; border: 2px solid white;">Get Complete Kit - 75% OFF</a>
+        </div>
+        <p style="margin-top: 10px; font-size: 0.9em;">🔥 FLASH SALE: 75% OFF - Limited time only</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #333; color: #666;">
+        <p>Part of the <a href="https://hive80-lab.github.io/ops-notes/" style="color: #4CAF50;">Hive80 Ops Notes</a> collection - 284+ free operations templates</p>
+        <p>Share this cheat sheet with your team. It might save you someday.</p>
+    </div>
+</body>
+</html>
