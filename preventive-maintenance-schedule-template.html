@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Preventive Maintenance Schedule Template &mdash; The One-Page Plan That Stops Surprise Breakdowns</title>
+<meta name="description" content="A preventive maintenance schedule a five-person shop actually keeps: the top-ten asset list ranked by failure pain, five frequency tiers with one owner per asset, the what-done-looks-like line and the parts line, and the downtime log that tunes the schedule &mdash; plus the bakery that cut unplanned oven downtime from six events a quarter to one.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/preventive-maintenance-schedule-template.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main>
+<h1>Preventive maintenance schedule: the one-page plan that stops surprise breakdowns</h1>
+<p class="lede">A schedule a five-person shop actually keeps &mdash; ten machines, five frequency words, one owner per asset, and the downtime log that tunes it. Not the sixty-line spreadsheet that dies in week three.</p>
+
+<h2>Why most PM schedules die in week three</h2>
+<p>Because they are built backwards. Someone downloads a template with sixty tasks, prints it, pins it to the wall, and for two glorious weeks the shop hums. Then a rush order lands, the sixty lines sit unchecked for four days, and the wall art becomes a monument to good intentions. The failure is not discipline &mdash; it is design. A schedule with sixty tasks of equal weight has no priority, so everything is important and nothing is owned. The schedule that survives covers the ten machines that can actually stop the business, puts the rest on an explicit run-to-failure decision, and fits inside slots that already exist in the week.</p>
+
+<h2>1. The asset list &mdash; ten machines, not the whole plant</h2>
+<p>Walk the floor and list every machine. Then rank each one by <strong>failure pain</strong>, not by age or price:</p>
+<ul>
+<li><strong>Stops revenue</strong> if it dies &mdash; the oven in a bakery, the espresso machine in a cafe, the printer in a print shop, the booking system everywhere. These are the schedule&rsquo;s core.</li>
+<li><strong>Creates safety or liability</strong> &mdash; the walk-in door closer, the van&rsquo;s brakes, the extractor fan, the ladder everyone shares. Next tier in.</li>
+<li><strong>Just annoys</strong> &mdash; the label printer with a spare in the drawer, the second card reader. These get a note, not a schedule: <em>run to failure, spare on the shelf</em>. That is a decision made on purpose, and writing it down is what stops it from eating maintenance hours.</li>
+</ul>
+<p>The top ten get PM lines. One line per asset, three columns: the asset, what stops if it dies, and <strong>peak dependency</strong> &mdash; the window when the business cannot survive it being down. The bakery&rsquo;s deck oven is not most critical at 2pm; it is most critical at 5am Saturday. The schedule is built backwards from that window: anything risky gets done at 2pm Saturday, never 6pm Friday.</p>
+
+<h2>2. The frequency tiers &mdash; five words, not a matrix</h2>
+<p>Five tiers, each with a hard time budget that keeps the tier honest:</p>
+<ul>
+<li><strong>Daily</strong> (two minutes, folded into opening or closing): clean, look, listen. Folded into the existing close checklist, never a separate ritual.</li>
+<li><strong>Weekly</strong> (fifteen to thirty minutes, same slot every week): lube, filter, drain, one test run. The dead hour &mdash; for a bakery, Saturday 2pm &mdash; not the hour before the rush.</li>
+<li><strong>Monthly</strong> (about an hour): gaskets, belts, calibration checks, the deep clean behind the machine nobody opens.</li>
+<li><strong>Quarterly</strong> (half a day, booked like a job): the professional service visit, wear-limit parts, anything needing two people.</li>
+<li><strong>Annual</strong> (the shutdown day): the strip-down you can only do when the doors close &mdash; planned, not discovered.</li>
+</ul>
+<p>The rule that keeps tiers real: <strong>if a tier holds more than six tasks, move tasks down a tier until it fits its slot.</strong> A weekly tier with eleven tasks is not a schedule; it is a wishlist with a reminder attached. Moving a task down is not neglect &mdash; it is prioritizing with the tier time budget as the honest constraint.</p>
+
+<h2>3. Two lines per task &mdash; what done looks like, and the parts line</h2>
+<p>&ldquo;Check the oven&rdquo; is not a task; it is a mood. A task is checkable by someone who was not in the room:</p>
+<ul>
+<li><strong>What done looks like:</strong> <em>Door gasket: close the door on a dollar bill at four points &mdash; even resistance all round, no cracks at the corners. Replace if the bill slides or the corners crumble.</em> Ten seconds to check, unambiguous to verify.</li>
+<li><strong>The parts line:</strong> the part number, where the spare lives, and the reorder point. <em>Gasket kit #OV-2291 &mdash; spare in the parts drawer, second shelf &mdash; reorder when the spare is used.</em> A PM that finds a cracked gasket with no gasket on the shelf has not prevented a breakdown; it has scheduled one with better lighting. The spare in the drawer is what converts a three-day supplier wait into a twenty-minute swap.</li>
+</ul>
+<p>And one owner per asset &mdash; a name, not &ldquo;the team.&rdquo; &ldquo;The team&rdquo; owns nothing. The owner is the person whose name is on the line when the tier slot arrives, and the name rotates monthly so the knowledge spreads instead of pooling in one person&rsquo;s head.</p>
+
+<h2>4. The downtime log &mdash; the part that tunes the schedule</h2>
+<p>The schedule you write in January is a guess. The downtime log is what corrects it. Four fields on a clipboard (or a shared note) by the machine: <strong>date, machine, what failed, minutes down.</strong> Nothing else &mdash; a log with more fields than that collects nothing.</p>
+<p>Twenty minutes a month, three rules:</p>
+<ul>
+<li>Two or more entries on the same machine in a quarter &rarr; raise its frequency one tier, <em>or</em> fix the design: the part that keeps failing gets replaced with a better part, not lubed a fourth time.</li>
+<li>Zero entries for a full year &rarr; lower the frequency one tier. This is where the schedule starts paying for itself: minutes move off machines that do not need them.</li>
+<li>Any entry in a peak-dependency window &rarr; the fix moves permanently to the off-peak slot, and the parts for that failure join the drawer.</li>
+</ul>
+
+<h2>Five traps</h2>
+<ul>
+<li><strong>The wall of tasks.</strong> Sixty lines because the template came with sixty lines. Ten owned tasks beat sixty aspirational ones &mdash; the schedule is a ranking, not a museum.</li>
+<li><strong>PM without parts.</strong> Finding the crack and having no gasket means the breakdown still happens; only the calendar moved. The parts line is not optional paperwork &mdash; it is the point.</li>
+<li><strong>No owner.</strong> A schedule with &ldquo;the team&rdquo; in the owner column has no owner, and by March it has no schedule either.</li>
+<li><strong>The schedule that never tunes.</strong> Frequencies set in January and defended forever &mdash; machines over-serviced while others quietly rot. The downtime log exists precisely so the schedule is allowed to be wrong and then corrected.</li>
+<li><strong>Backfilled checkmarks.</strong> The weekly box ticked on Friday for the whole month, from memory. Backfilled checkmarks destroy the only signal the log carries &mdash; if the slot was missed, the box stays empty and that empty box is information.</li>
+</ul>
+
+<h2>Worked example &mdash; the bakery that got its Saturdays back</h2>
+<p>A 22-cover neighbourhood bakery ran on a 1998 deck oven &mdash; single unit, no backup, every bake through one chamber &mdash; plus a prover and a stand mixer. Six unplanned events in the first quarter: two seized door hinges (each closing the Saturday bake forty minutes late), a cracked gasket found mid-bake (twelve batches remade), a drifting prover thermostat (slow proofs, one lost wholesale tray), and a mixer belt squeal that was ignored twice and then snapped mid-dough. Roughly nineteen hours of unplanned downtime in thirteen weeks &mdash; every hour of it inside the windows the ovens matter most.</p>
+<p>They built the one-page schedule: the daily two-minute clean-and-listen folded into the existing closing checklist; the weekly slot at Saturday 2pm &mdash; the dead hour &mdash; with lube, drain, and a test run; a monthly line for gasket, hinges, and the prover thermostat with the dollar-bill test written out verbatim; a quarterly tech visit booked like a wholesale order; and the four-field downtime log on a clipboard by the oven, with the gasket and belt spares in the drawer from day one. Second quarter: one unplanned event &mdash; the prover thermostat drifted again, caught on the monthly line, twenty-five minutes to adjust instead of a lost morning. The hinge lube on schedule meant the second Saturday closure never happened; the spare gasket turned a would-be three-day supplier wait into a twenty-minute swap. The oven carries roughly $2,800 of Saturday revenue; the schedule is one page, and it costs about forty minutes a week. The counterfactual is the Q1 path continued: the belt snaps during the Saturday rush instead of the 2pm test run, four thousand dollars of dough goes to the bin, and the queue of regulars learns to buy their loaf somewhere else.</p>
+
+<h2>Kits</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="generator-transfer-checklist.html">generator transfer checklist</a> is the five-minute drill that proves the backup power actually transfers; the <a href="ups-runtime-checklist.html">UPS runtime checklist</a> covers the minutes-scale bridge; the <a href="backup-restore-drill-checklist.html">backup restore drill</a> applies the same prove-it-works discipline to data instead of machines; the <a href="incident-post-mortem-template.html">post-mortem template</a> is where a breakdown that reached customers gets its root cause written; and the <a href="delayed-opening-notice-template.html">delayed opening notice</a> is the customer-facing message for the morning the schedule could not save.</em></p>
+
+</main>
+</body>
+</html>
