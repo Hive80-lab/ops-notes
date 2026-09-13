@@ -1,0 +1,16 @@
+# Reciprocal backlinks for 49-cybersecurity-awareness-training-checklist.html
+
+1. Link from: incident-response-cheat-sheet.html
+   Add to resources section: <a href="49-cybersecurity-awareness-training-checklist.html">Cybersecurity Awareness Training</a>
+
+2. Link from: incident-response-template-small-team-guide.html
+   Add to prevention section: <a href="49-cybersecurity-awareness-training-checklist.html">Team Security Training</a>
+
+3. Link from: ops-starter-bundle.html
+   Add to security module: <a href="49-cybersecurity-awareness-training-checklist.html">Security Awareness Training</a>
+
+4. Link from: backup-verification-checklist.html
+   Add to human factors section: <a href="49-cybersecurity-awareness-training-checklist.html">Human Firewall Training</a>
+
+5. Link from: user-access-review-checklist.html
+   Add to training section: <a href="49-cybersecurity-awareness-training-checklist.html">Security Awareness Program</a>
