@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Refrigeration Temperature Log &mdash; The Twice-a-Day Sheet That Keeps the Stock Alive and the Inspector Happy</title>
+<meta name="description" content="A one-page refrigeration temperature log for restaurants, cafes and food trucks: every cold-holding unit, twice a day, air and food readings in the same row, a 15-minute recheck rule for any out-of-range flag, the Sunday gasket-and-coil walk that catches the failure a week early, and the 30-second inspector answer &mdash; plus the 40-seat restaurant whose 43&deg;F Tuesday reading became work order #0143 before the stock ever hit the danger zone.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/refrigeration-temperature-log.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+
+<h1>The Refrigeration Temperature Log: The Twice-a-Day Sheet That Keeps the Stock Alive and the Inspector Happy</h1>
+<p>A refrigeration temperature log is not paperwork; it is a smoke detector. Cold-holding units fail slowly &mdash; a torn gasket, a blocked condenser, a tired compressor &mdash; and every one of them sends a warning reading days before the food is at risk. Twice a day, thirty seconds per unit, one row per reading: the log turns those warnings into a fix before the stock dies. And on inspection day, six months of unbroken rows answers the one question every inspector asks &mdash; <em>show me</em> &mdash; before your best excuse finishes its first sentence.</p>
+
+<h2>1. Why twice a day &mdash; the drift arithmetic</h2>
+<p>A walk-in with a failing gasket does not jump from 38&deg;F to 55&deg;F overnight; it creeps &mdash; 38 on Monday, 40 by Wednesday, 43 by Friday morning, and by Friday dinner the milk is past saving. One check a day can still miss a full day of drift, and the unit that warms overnight is the classic: checked at 07:00 and 16:00, an overnight compressor failure surfaces at the morning read, not at the smell. Two reads a day cap the exposure window at roughly twelve hours; a morning read plus a pre-service read also catches the one failure mode that matters most &mdash; <strong>a unit that was fine at close and dead by open</strong>, which is exactly when the stock is fullest and the day is busiest. The <a href="cold-chain-failure-checklist.html">cold-chain failure checklist</a> is what you run when a read goes bad; the log is how you almost never have to.</p>
+
+<h2>2. The log itself &mdash; one row per unit, per check</h2>
+<p>One sheet on a clipboard by the walk-in door (a spreadsheet works, but the sheet that lives on the floor is the one that gets filled), eight columns:</p>
+<ol>
+<li><strong>Date and time.</strong> The actual time of the reading, not the &ldquo;correct&rdquo; time. 07:05 logged as 07:00 is the first small lie, and small lies are where logs die.</li>
+<li><strong>Unit and ID.</strong> Named exactly as the maintenance records name it &mdash; &ldquo;Walk-in #2&rdquo;, not &ldquo;the big fridge&rdquo; &mdash; so the log line, the <a href="equipment-downtime-log.html">downtime log</a> line and the work order all tell one story.</li>
+<li><strong>Air temperature.</strong> The unit&rsquo;s own display or a probe on a shelf mid-height, door closed two minutes first.</li>
+<li><strong>Food temperature.</strong> The probe into a product or a thermal bottle standing in the worst spot &mdash; see &sect;3. This is the number the health code cares about.</li>
+<li><strong>Initials.</strong> A real person, every read. Accountability is not distrust; it is the difference between a log and a decoration.</li>
+<li><strong>OK / flag.</strong> One checkbox. A flag is not a failure &mdash; it is a recheck (&sect;5).</li>
+<li><strong>Action line.</strong> Only when flagged: what was done, what was found. &ldquo;Door ajar since prep &mdash; reseated, recheck 15 min, back in range&rdquo; is a log earning its keep.</li>
+</ol>
+
+<h2>3. Air versus food &mdash; the two readings that disagree usefully</h2>
+<ul>
+<li><strong>Air temperature swings on purpose.</strong> Every door opening, every defrost cycle, every hot sheet pan parked in front of the evaporator moves the air read by 5&ndash;10 degrees for twenty minutes. Air is the <em>early</em> signal, noisy by design.</li>
+<li><strong>Food temperature is the truth.</strong> Product warms and cools slowly; it averages the swings. Probe the warmest realistic load &mdash; the door shelf, the top rail, the milk at the front &mdash; not the back corner where the air never touches.</li>
+</ul>
+<p>The pair is what makes the log diagnostic: <em>air high, food fine</em> is usually behavior (door discipline, a blocked evaporator fan, the lunchtime traffic) and gets a recheck; <em>air high and food climbing</em> is a machine losing &mdash; gasket, coil, refrigerant, compressor &mdash; and starts the clock (&sect;5). Logging only the air gives you a week of false alarms; logging only the food gives you a week of silence before a real failure. You want both numbers in the same row.</p>
+
+<h2>4. The limits &mdash; the numbers and the danger-zone clock</h2>
+<ul>
+<li><strong>Cold holding: 41&deg;F (5&deg;C) or below</strong> for TCS foods (the stuff that grows bugs: dairy, meat, cut produce, cooked rice, dressings). The walk-in target is 38&deg;F or below so the unit has headroom before it breaks the limit.</li>
+<li><strong>Freezer: 0&deg;F (&minus;18&deg;C) or below</strong> for quality; freezer burn is a cost problem, not a safety one &mdash; but a freezer drifting warm usually means a door or a defrost timer, and it is usually also about to cost you a compressor.</li>
+<li><strong>The 4-hour rule:</strong> TCS food above 41&deg;F for under four hours can be moved and rechilled; past four hours in the danger zone, it is a write-off &mdash; and the log line is the proof of when the clock started. Guessing &ldquo;it was probably fine&rdquo; is how small operations gamble a health-department letter against a few hundred dollars of stock.</li>
+</ul>
+<p>Write the three numbers on the log sheet itself. The person holding the thermometer at 07:05 should not need to remember the rule &mdash; the sheet is the rule.</p>
+
+<h2>5. The flag rule &mdash; what happens on a bad read</h2>
+<ol>
+<li><strong>Recheck in 15 minutes</strong> (air and food both). Door discipline first: shut, seal, and look &mdash; ajar doors, a prep-rush load, a hot delivery just shelved.</li>
+<li><strong>Still high? Probe the food.</strong> Food in range &rarr; behavior problem, note the action line, tell the shift lead, move on. Food out of range &rarr; start the 4-hour clock on paper: write the time on the log, right then.</li>
+<li><strong>Move the stock, not the problem.</strong> Product to the deepest-cold unit or ice chests (the <a href="open-restaurant-incident-response-system-checklist.html">open-restaurant incident playbook</a> keeps ice chests on the storm list for exactly this), and the write-off decision gets made against the log&rsquo;s timestamps, not vibes.</li>
+<li><strong>Call the tech and write the ticket.</strong> If the recheck fails and it is not a door, this is a P1 &mdash; a <a href="maintenance-work-order-template.html">work order goes out the same hour</a>, with the log readings as the symptom history. The log is also how the <a href="preventive-maintenance-schedule-template.html">PM schedule</a> learns: three flags in a month on the same unit is not bad luck, it is a scheduled fix.</li>
+</ol>
+<p>And the quiet part that makes the whole thing stick: <strong>a flag that gets a fast recovery is a win, not a failure.</strong> A log with one flagged-and-fixed row a month is a working log. A log with zero flags in six months is usually a magic pen (&sect;8).</p>
+
+<h2>6. The Sunday walk &mdash; thirty minutes that save the week</h2>
+<p>Once a week, one person walks every cold unit with the log sheet and answers four questions per unit:</p>
+<ul>
+<li><strong>Gasket:</strong> dollar-bill test &mdash; close the door on a bill at four points; if it slides out freely at any of them, the seal is leaking cold (and money) all week. Order the gasket; it is a $45 part that reads as a $7,300 quarter if ignored.</li>
+<li><strong>Coils and drain:</strong> condenser coil dusty or furry? Brush it. Drain line and pan clear? A blocked drain masquerades as a cooling failure and ruins a floor.</li>
+<li><strong>Thermometer sanity:</strong> probe reads against the unit display within a degree or two? A lying display is the most dangerous instrument in the kitchen &mdash; the log&rsquo;s independent probe is the check.</li>
+<li><strong>The trend, not the reading:</strong> scan the week&rsquo;s rows per unit. Creeping averages, a flag pattern before the Sunday rush, the same door shelf always warmest &mdash; trends get a line on the <a href="preventive-maintenance-schedule-template.html">schedule</a>; readings only get reactions.</li>
+</ul>
+
+<h2>7. Inspector day &mdash; the 30-second answer</h2>
+<p>When the inspector asks for temperature records, the whole conversation is different when the log is complete:</p>
+<ul>
+<li><strong>Keep it 12 months.</strong> Local rules vary (90 days is a common floor); a year of sheets in a binder answers every &ldquo;show me&rdquo; including the ones about last quarter.</li>
+<li><strong>No gaps is the point.</strong> A missed row is fine if the sheet says why (&ldquo;closed Monday, holiday&rdquo;). A mysterious three-day hole reads exactly like the thing it is.</li>
+<li><strong>Show the flags.</strong> An inspector who sees a flagged read with a 15-minute recheck, a corrective line and a timestamp trusts the log &mdash; perfect logs with no corrections are the ones that invite the deep dive. Honest logs read as competence; magic logs read as fiction.</li>
+</ul>
+<p>The same log also settles the argument every kitchen eventually has &mdash; <em>was the stock already warm when it arrived?</em> &mdash; because the delivery rows and the receiving checks live on the same sheet, timestamped.</p>
+
+<h2>8. The five traps</h2>
+<ul>
+<li><strong>Logging the air only.</strong> Air is noisy; food is truth. One number gives you either constant false alarms or one silent catastrophic morning &mdash; log both, in the same row.</li>
+<li><strong>Backfilling from memory.</strong> The 16:00 read written at 19:00 close is a story, not a reading. If a read got missed, write &ldquo;missed 16:00&rdquo; &mdash; an honest gap costs nothing; a fabricated row costs the log its entire value on the day you need it.</li>
+<li><strong>The magic pen.</strong> Zero flags in six months means nobody believes the numbers &mdash; or nobody is reading them. Praise the flagged-and-fixed rows; they are the proof the sheet is alive.</li>
+<li><strong>One log for five units.</strong> &ldquo;The fridges are fine&rdquo; is not a reading. One row per unit, per check &mdash; otherwise the one drifting walk-in hides behind four healthy reach-ins.</li>
+<li><strong>The sheet in the office.</strong> A log kept where the units are not, is not kept. Clipboard on the walk-in door, pen tied on, or it becomes a December archaeology project.</li>
+</ul>
+
+<h2>Worked example &mdash; the 40-seat restaurant&rsquo;s Tuesday, two minutes at a time</h2>
+<p>This is the same walk-in from the <a href="maintenance-work-order-template.html">work order story</a> &mdash; the one that cost $7,300 the quarter before the paperwork existed. Tuesday 07:05: the morning read shows <strong>air 43&deg;F, food (door-shelf milk) 39&deg;F</strong>. Flag &mdash; air high, food fine, so it is behavior or early drift; recheck 07:20: air 43&deg;F again, door properly shut, and the dollar-bill test pulls out clean at the hinge edge. Action line: &ldquo;air high 2 checks, gasket suspect &mdash; Dave booked for PM.&rdquo; Wednesday 07:05: air 44&deg;F, food 41&deg;F &mdash; flag, clock starts on paper, stock shifted to the reach-in, and work order #0143 goes out with two days of readings stapled to it instead of one shrug. Thursday the gasket is replaced at 09:00 &mdash; before service, before the health inspector&rsquo;s unannounced Thursday visit, which ends with the inspector reading the week&rsquo;s sheet for thirty seconds and writing &ldquo;monitoring active, corrective actions documented.&rdquo;</p>
+<p>Total cost of the system: two reads a day at thirty seconds per unit, one Sunday hour, one $45 gasket ordered on a Tuesday instead of a Friday. Total cost of the alternative is already on file: <a href="equipment-downtime-log.html">six events and $7,300</a> in one quarter &mdash; because nobody was holding a thermometer at 07:05 when the drift started. The log did not fix the cooler. The log is why Tuesday found it.</p>
+
+<h2>Kits</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="cold-chain-failure-checklist.html">cold-chain failure checklist</a> is the playbook you run when a read goes bad &mdash; stabilize, move stock, decide what lives; the <a href="equipment-downtime-log.html">equipment downtime log</a> is where every confirmed failure gets costed &mdash; the temperature log catches the drift, the downtime log prices it; the <a href="maintenance-work-order-template.html">maintenance work order</a> is what a persistent flag becomes &mdash; one page, one ticket, one close-out; the <a href="preventive-maintenance-schedule-template.html">preventive maintenance schedule</a> is what the Sunday walk feeds &mdash; gaskets and coils go on the calendar before they go on the P1 list; the <a href="critical-spare-parts-list.html">critical spare parts list</a> is why the gasket is on the shelf instead of on an eleven-day lead; and the <a href="open-restaurant-incident-response-system-checklist.html">open-restaurant incident response checklist</a> is the three-day playbook that keeps the doors open while the fix happens.</em></p>
+</main>
+</body>
+</html>
