@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Response Template for Small Teams - Complete Guide 2024</title>
+    <meta name="description" content="Free incident response template for small teams without dedicated security staff. Step-by-step guide with downloadable templates and checklists.">
+    <meta property="og:title" content="Incident Response Template for Small Teams - Complete Guide 2024">
+    <meta property="og:description" content="Complete incident response template for small teams. Free download with step-by-step guide. No dedicated security staff required.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hive80-lab.github.io/ops-notes/incident-response-template-small-team-guide.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a; color: #e0e0e0; line-height: 1.6;
+            max-width: 900px; margin: 0 auto; padding: 20px;
+        }
+        .header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .header h1 { color: #4CAF50; font-size: 2.5em; margin-bottom: 15px; }
+        .header p { color: #999; font-size: 1.2em; margin-bottom: 20px; }
+        .toc { 
+            background: #111; border-radius: 8px; padding: 20px; margin: 20px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .toc h3 { color: #4CAF50; margin-bottom: 15px; }
+        .toc ul { list-style: none; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #4CAF50; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .section { margin: 40px 0; }
+        .section h2 { color: #4CAF50; margin-bottom: 20px; font-size: 1.8em; }
+        .section h3 { color: #4CAF50; margin-bottom: 15px; font-size: 1.3em; }
+        .template-box { 
+            background: linear-gradient(135deg, #1a231a, #0d1a0d); 
+            border-radius: 12px; padding: 30px; margin: 30px 0;
+            border: 2px solid #4CAF50;
+        }
+        .template-box h3 { color: #4CAF50; margin-bottom: 15px; }
+        .step { 
+            background: #111; border-radius: 8px; padding: 20px; margin: 15px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .step h4 { color: #4CAF50; margin-bottom: 10px; }
+        .cta { 
+            background: linear-gradient(135deg, #4CAF50, #45a049); 
+            color: white; padding: 30px; border-radius: 12px; 
+            text-align: center; margin: 40px 0;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        .cta h3 { margin-bottom: 20px; font-size: 1.6em; }
+        .btn { 
+            padding: 15px 30px; border-radius: 8px; text-decoration: none; 
+            font-weight: 600; font-size: 1.1em; transition: all 0.3s;
+            display: inline-block; margin: 10px;
+            border: none; cursor: pointer;
+        }
+        .btn-primary { background: white; color: #333; }
+        .btn-primary:hover { 
+            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .btn-secondary { 
+            background: transparent; color: white; border: 2px solid white;
+        }
+        .btn-secondary:hover { background: white; color: #333; }
+        .checklist { 
+            background: #111; border-radius: 8px; padding: 20px; margin: 20px 0;
+        }
+        .checklist-item { 
+            display: flex; align-items: flex-start; margin-bottom: 12px;
+            padding: 8px; border-radius: 4px;
+        }
+        .checklist-item:hover { background: #1a1a1a; }
+        .checkbox { 
+            width: 20px; height: 20px; border: 2px solid #4CAF50; 
+            border-radius: 4px; margin-right: 15px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .example { 
+            background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4CAF50;
+            padding: 15px; margin: 15px 0; border-radius: 4px;
+        }
+        .example strong { color: #4CAF50; }
+        .flash-badge { 
+            background: #ff4444; color: white; padding: 8px 16px; 
+            border-radius: 20px; font-weight: bold; display: inline-block;
+            margin-bottom: 20px;
+        }
+        .footer { 
+            text-align: center; margin-top: 40px; padding-top: 20px; 
+            border-top: 1px solid #333; color: #666;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Incident Response Template for Small Teams</h1>
+        <p>Complete guide and free templates for teams without dedicated security staff. Stop scrambling during incidents - use battle-tested templates that work.</p>
+    </div>
+
+    <div class="toc">
+        <h3>📋 Table of Contents</h3>
+        <ul>
+            <li><a href="#why-small-teams-need-incident-response">Why Small Teams Need Incident Response</a></li>
+            <li><a href="#the-first-30-minutes-checklist">The First 30 Minutes Checklist</a></li>
+            <li><a href="#incident-response-phases">Incident Response Phases</a></li>
+            <li><a href="#free-templates-download">Free Templates Download</a></li>
+            <li><a href="#complete-ops-starter-kit">Complete Ops Starter Kit</a></li>
+            <li><a href="#implementation-guide">Implementation Guide</a></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 id="why-small-teams-need-incident-response">Why Small Teams Need Incident Response</h2>
+        <p>You're the IT person for a 20-person company. A security incident hits at 2 AM. You're scrambling through old emails trying to remember what to do first. Meanwhile, the problem is getting worse.</p>
+        
+        <p>This scenario happens every day to small teams. You can't afford a dedicated security person, but you still need to handle incidents professionally.</p>
+
+        <div class="example">
+            <strong>Real example:</strong> A 30-person SaaS company lost 2 days of revenue because nobody knew how to isolate the affected database server during a ransomware incident. They had to pay the ransom.
+        </div>
+
+        <p>The solution isn't hiring more people - it's having concrete templates you can use immediately.</p>
+    </div>
+
+    <div class="section">
+        <h2 id="the-first-30-minutes-checklist">The First 30 Minutes Checklist</h2>
+        <p>What you do in the first 30 minutes determines whether an incident is a minor issue or a major disaster.</p>
+
+        <div class="template-box">
+            <h3>🚨 First 30 Minutes - Critical Actions</h3>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="item-text"><strong>DON'T PANIC</strong> - Take 30 seconds to breathe. Panic leads to mistakes.</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="item-text"><strong>DOCUMENT EVERYTHING</strong> - Screenshots, timestamps, error messages. This evidence is gold later.</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="item-text"><strong>ISOLATE THE PROBLEM</strong> - Unplug affected machines from the network if you can't identify the source.</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="item-text"><strong>PRESERVE EVIDENCE</strong> - Don't reboot servers or delete logs. Take memory dumps if possible.</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="item-text"><strong>COMMUNICATE</strong> - Let stakeholders know there's an incident. Be honest about what you know.</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="item-text"><strong>START THE LOGBOOK</strong> - Document times, actions, who you contacted, what you found.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 id="incident-response-phases">Incident Response Phases</h2>
+        <p>Small teams need a simplified incident response process. Here are the key phases:</p>
+
+        <div class="step">
+            <h4>Phase 1: Detection & Analysis</h4>
+            <p>Identify that something is wrong and assess the scope. Don't jump to conclusions - gather facts first.</p>
+        </div>
+
+        <div class="step">
+            <h4>Phase 2: Containment</h4>
+            <p>Stop the bleeding. Isolate affected systems, block malicious IPs, change compromised passwords.</p>
+        </div>
+
+        <div class="step">
+            <h4>Phase 3: Eradication</h4>
+            <p>Remove the threat. Delete malware, patch vulnerabilities, clean infected systems.</p>
+        </div>
+
+        <div class="step">
+            <h4>Phase 4: Recovery</h4>
+            <p>Restore systems from clean backups. Verify everything is working before going live.</p>
+        </div>
+
+        <div class="step">
+            <h4>Phase 5: Post-Mortem</h4>
+            <p>Learn from the incident. What went well? What didn't? How can we prevent this?</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 id="free-templates-download">Free Templates Download</h2>
+        <p>I've created a complete incident response template package specifically for small teams. Everything is copy/paste ready - no customization needed.</p>
+
+        <div class="template-box">
+            <h3>📦 What's Included in the Free Package:</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li>✅ First 30 Minutes Checklist</li>
+                <li>✅ Incident Response Template</li>
+                <li>✅ Post-Mortem Template</li>
+                <li>✅ On-Call Handoff Checklist</li>
+                <li>✅ Communication Templates</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="cta">
+        <div class="flash-badge">🔥 FLASH SALE: 75% OFF - 48 HOURS ONLY</div>
+        <h3>Get Your Free Incident Response Templates</h3>
+        <p>Download the complete template package now. No email required, no signup needed.</p>
+        <div style="margin-top: 20px;">
+            <a href="https://hive80lab.gumroad.com/l/first-30-minutes" class="btn btn-primary">Download Free Templates</a>
+            <a href="https://hive80-lab.github.io/ops-notes/ops-starter-bundle.html" class="btn btn-secondary">Get Complete Kit - 75% OFF</a>
+        </div>
+        <p style="margin-top: 15px; font-size: 0.9em;">Use code FLASH75 at checkout for 75% off all products</p>
+    </div>
+
+    <div class="section">
+        <h2 id="complete-ops-starter-kit">Complete Ops Starter Kit</h2>
+        <p>If you want everything ready to go, the complete Ops Starter Kit includes:</p>
+
+        <div class="template-box">
+            <h3>🚀 Complete Ops Starter Kit Features:</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li>📋 12+ Incident Response Templates</li>
+                <li>📞 On-Call Procedures & Handoffs</li>
+                <li>📊 Post-Mortem Templates</li>
+                <li>💾 Backup Verification Checklists</li>
+                <li>🔄 Daily Operations Templates</li>
+                <li>📱 Communication Templates</li>
+                <li>🎯 Priority Matrices</li>
+                <li>⚡ Automation Guides</li>
+            </ul>
+            <div style="text-align: center; margin-top: 20px;">
+                <div style="font-size: 1.5em; font-weight: bold; color: #4CAF50;">
+                    <span style="text-decoration: line-through; color: #666;">$14</span> $3.50
+                </div>
+                <p style="margin-top: 10px;">🔥 75% OFF - Limited to first 50 buyers</p>
+                <a href="https://hive80-lab.github.io/ops-notes/ops-starter-bundle.html" class="btn btn-primary">Get Complete Kit Now</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 id="implementation-guide">Implementation Guide</h2>
+        <p>Ready to implement these templates in your organization? Here's how:</p>
+
+        <div class="step">
+            <h4>Step 1: Download the Templates</h4>
+            <p>Get the free templates first. Review them and make sure they make sense for your team.</p>
+        </div>
+
+        <div class="step">
+            <h4>Step 2: Customize for Your Team</h4>
+            <p>Add your company name, contact information, and any specific procedures. Don't over-engineer it.</p>
+        </div>
+
+        <div class="step">
+            <h4>Step 3: Train Your Team</h4>
+            <p>Walk through the templates with your team. Make sure everyone knows where to find them.</p>
+        </div>
+
+        <div class="step">
+            <h4>Step 4: Test with a Drill</h4>
+            <p>Run a tabletop exercise. Simulate an incident and walk through the response using the templates.</p>
+        </div>
+
+        <div class="step">
+            <h4>Step 5: Review and Improve</h4>
+            <p>After your first real incident, review what worked and what didn't. Update the templates.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Part of the <a href="https://hive80-lab.github.io/ops-notes/" style="color: #4CAF50;">Hive80 Ops Notes</a> collection - 283+ free operations templates</p>
+        <p>Questions? <a href="https://hive80lab.gumroad.com/l/first-30-minutes" style="color: #4CAF50;">Contact us</a></p>
+    </div>
+
+    <script>
+        document.querySelectorAll('.checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                if (this.textContent === '✓') {
+                    this.textContent = '';
+                    this.style.background = 'transparent';
+                } else {
+                    this.textContent = '✓';
+                    this.style.background = 'rgba(76, 175, 80, 0.3)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
