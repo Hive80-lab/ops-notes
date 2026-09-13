@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Equipment Downtime Log &mdash; The Ledger That Turns Breakdowns Into a Maintenance Budget</title>
+<meta name="description" content="A seven-column downtime log for small teams: record every stop the hour it ends, triage it weekly into preventive maintenance, roll it up monthly into downtime cost per machine, and let the numbers make the repair-or-replace call &mdash; plus the 40-seat restaurant whose $45 door gasket killed a repeat compressor failure.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/equipment-downtime-log.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+
+<h1>The Equipment Downtime Log: The Ledger That Turns Breakdowns Into a Maintenance Budget</h1>
+<p class="lede">One line per breakdown, written the hour the machine comes back: which machine, how long it was down, what actually broke, what the fix was, what it cost, who fixed it, and &mdash; the column that pays for the whole page &mdash; whether it was preventable. Triaged for fifteen minutes every Friday, rolled up once a month, the log is where the <a href="preventive-maintenance-schedule-template.html">maintenance schedule</a> gets its frequencies, the <a href="critical-spare-parts-list.html">spares list</a> gets its evidence, and the repair-or-replace decision gets numbers instead of vibes.</p>
+
+<h2>1. The seven columns &mdash; recorded the hour it ends, not the week after</h2>
+<p>A downtime log that is filled in from memory on Monday is a short story collection. The entry takes ninety seconds while the details are still warm:</p>
+<ol>
+<li><strong>Machine</strong> &mdash; named the way the floor names it, plus the asset number from the <a href="asset-inventory-checklist.html">asset inventory</a>. "The walk-in" and "W-01" both go in the box, because the log is read by two audiences.</li>
+<li><strong>Started / ended, and the duration that matters</strong> &mdash; lost production time, not wrench time. A twenty-minute fix that lands mid-run on the only oven can cost more than an eight-hour fix on an idle Sunday; the log carries both clocks, and the lost-production clock is the one that pays.</li>
+<li><strong>What broke</strong> &mdash; the failure mode in plain words. Not "machine down," but "door gasket torn on the walk-in, coil iced over, compressor short-cycling on its overload." Six months of these lines is a textbook only your business owns.</li>
+<li><strong>The fix</strong> &mdash; what was actually done and which part went in. This column is where the <a href="critical-spare-parts-list.html">spares list</a> shops: every part that ended a stop is a candidate for the shelf.</li>
+<li><strong>Cost</strong> &mdash; parts, outside labour, and the production missed. Guessing is fine; consistency is not negotiable. The monthly roll-up is only as honest as this column.</li>
+<li><strong>Who fixed it</strong> &mdash; so the second occurrence finds the first occurrence's person, and the <a href="key-person-dependency-checklist.html">key-person risk</a> of never writing the fix down becomes visible.</li>
+<li><strong>Preventable? Y/N + one line</strong> &mdash; what would have caught it: the gasket check, the vibration listen, the $45 part, the filter change. This column is the seed corn of the <a href="preventive-maintenance-schedule-template.html">maintenance schedule</a>.</li>
+</ol>
+
+<h2>2. The Friday triage &mdash; fifteen minutes that close the loop</h2>
+<p>A log nobody reads is a diary with extra steps. Once a week, scan the new lines and make three moves: every <em>preventable = Y</em> event becomes a candidate task on the maintenance schedule; any failure mode that has now appeared twice in ninety days jumps the queue, because repeat offenders are the machines writing your future; and any event whose one-line "what would have caught it" needs a part goes onto the spares list with the downtime tolerance attached. Fifteen minutes on Friday buys the week where the fix is a scheduled hour instead of a scheduled crisis.</p>
+
+<h2>3. The monthly roll-up &mdash; the page where money appears</h2>
+<p>Once a month, sum the downtime hours and the cost column per machine. Two findings usually fall out. First, the 80/20 line: in a typical small fleet, two machines hold most of the pain, and the intuitive "worst machine" is often not either of them &mdash; the quiet leaker that stops for twelve minutes twice a week outranks the dramatic one. Second, the repair-or-replace threshold: when a rolling twelve months of downtime cost passes roughly a third of replacement cost &mdash; and the trend is not bending after PM and spares are in place &mdash; the machine goes on the capital list, and the <a href="annual-ops-budget-template.html">annual budget</a> gets a line item instead of a surprise. The <a href="uptime-downtime-budget.html">uptime budget</a> decides how much downtime you can afford; this roll-up shows where it actually went.</p>
+
+<h2>4. The lemon list &mdash; the annual walk with the trend line open</h2>
+<p>Once a year, rank the machines by downtime cost and read the trend, not just the total. Machines whose cost keeps climbing <em>after</em> preventive maintenance and spares are in place are lemons: the honest move is to plan the replacement, set the date, and stop feeding the ledger. The lemon list is also where you discover the opposite &mdash; the machine everyone complains about that costs almost nothing, which keeps its job and its reputation on the strength of a column of numbers.</p>
+
+<h2>The five traps</h2>
+<ul>
+<li><strong>Logging only the big outages.</strong> The dramatic four-hour failure gets written up because it was exciting; the fifteen-minute stops that happen twice a week are the ones quietly paying for nothing. The log catches every stop that ends, or it catches nothing.</li>
+<li><strong>Blame entries.</strong> The column is <em>who fixed it</em>, never <em>who broke it</em>. A log that names culprits teaches the floor to log nothing, and the ledger goes blind precisely where the money leaks.</li>
+<li><strong>Repair-hours only.</strong> Wrench time is what the invoice says; lost-production time is what the P&amp;L says. Carry both, cost the second, or the roll-up will flatter the machines that hurt you most.</li>
+<li><strong>The log nobody reads.</strong> Without the Friday triage the entries fossilise into a diary. The triage is the product; the logging is just its raw material.</li>
+<li><strong>Shoebox history.</strong> A year of events scattered across texts, sticky notes, and one manager's memory cannot be rolled up, argued with, or handed over. One page per machine per quarter &mdash; a shared spreadsheet at minimum &mdash; is what makes the log survive the <a href="key-person-dependency-checklist.html">person who was keeping it in his head</a>.</li>
+</ul>
+
+<h2>Worked example &mdash; the 40-seat restaurant and the $45 gasket</h2>
+<p>A forty-seat restaurant logged every kitchen equipment stop for a quarter. Q1 read: six downtime events, 19.5 lost-production hours, $1,150 in repairs and call-outs, and &mdash; once the missed covers were priced &mdash; about $7,300 of revenue walking out the door. The instinct had been to blame the worst day, the Saturday the combi oven threw an error and service came Monday. The roll-up said otherwise: four of the six events were the same walk-in cooler, same failure mode, compressor short-cycling on overload. The Friday triage finally caught the pattern when the second entry landed, but the habit stuck from the third.</p>
+<p>The root cause was embarrassing and cheap: a torn door gasket letting humid air in, icing the coil, starving the compressor. A $45 gasket, a defrost-cycle check added to the weekly <a href="cold-chain-failure-checklist.html">cold-chain</a> walk, and a spare gasket on the shelf with the fiche in the drawer. Q2: one event, 2.5 hours, zero call-outs. The same roll-up put the twelve-year-old combi oven on the capital list &mdash; $2,900 a year in downtime and repairs against a replacement that suddenly had a business case, a date, and a budget line instead of a Friday-night failure and a panic quote. Nothing about the kitchen changed except that the breakdowns were being counted, and the counting did the arguing.</p>
+<p>The log is not paperwork. It is the <a href="incident-post-mortem-template.html">post-mortem habit</a> applied at machine scale &mdash; every event asked once, in writing, what would have caught it &mdash; and the transfer to the generator during the outage, the switchover step in the <a href="generator-transfer-checklist.html">generator checklist</a>, is just another line: started, ended, what broke, what it cost, preventable next time?</p>
+
+<h2>Kits</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="preventive-maintenance-schedule-template.html">preventive maintenance schedule</a> is where the Friday triage sends its preventable events; the <a href="critical-spare-parts-list.html">critical spare parts list</a> is what the "what fixed it" column feeds; the <a href="uptime-downtime-budget.html">uptime budget</a> sets how much downtime you chose to allow; the <a href="cold-chain-failure-checklist.html">cold chain failure checklist</a> is the walk-in's bad day in full; and the <a href="supplier-concentration-risk.html">supplier concentration map</a> is the reason some of those lead times ran long.</em></p>
+
+</main>
+</body>
+</html>
