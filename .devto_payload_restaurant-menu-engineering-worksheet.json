@@ -1,0 +1,16 @@
+{
+  "article": {
+    "title": "Restaurant Menu Engineering Worksheet",
+    "published": true,
+    "body_markdown": "# Restaurant Menu Engineering Worksheet\n\nA menu engineering worksheet for restaurants: plot each menu item by popularity (units sold) and profitability (contribution margin), classify into Stars, Plowhorses, Puzzles, and Dogs, and decide whether to promote, reprice, or remove. Stop guessing what sells and start data-driven menu decisions.\n\n**The four quadrants:**\n- **Stars:** High popularity, high profitability \u2014 protect and feature\n- **Plowhorses:** High popularity, low profitability \u2014 optimize or bundle\n- **Puzzles:** Low popularity, high profitability \u2014 promote and reposition\n- **Dogs:** Low popularity, low profitability \u2014 reconsider or remove\n\n**How to build it:**\n- Pull sales data (units sold, revenue) from POS\n- Calculate contribution margin (price minus plate cost)\n- Plot on matrix with averages as axis lines\n- Classify and act accordingly\n\n**Why it matters:** The KPI dashboard shows overall food cost. This worksheet shows which items drive that number and which drag it down.\n\n**Get the full ops kit:** [Ops Starter Kit](https://hive80lab.gumroad.com/l/ops-starter-kit) \u2014 templates, runbooks, and checklists for service businesses.\n\n**Free lead magnet:** [First 30 Minutes](https://hive80lab.gumroad.com/l/first-30) \u2014 the exact onboarding checklist we use to win clients in the first half-hour.\n\n**More tools:**\n- [Ops Starter Kit Vol. 2](https://hive80lab.gumroad.com/l/ops-starter-kit-vol.-2)\n- [Agent Ops 24/7](https://hive80lab.gumroad.com/l/agent-ops-24-7)\n- [Automation Starter Pack](https://hive80lab.gumroad.com/l/automation-starter-pack)\n\n#restaurant #menu #engineering #profitability\n",
+    "tags": [
+      "restaurant",
+      "menu",
+      "engineering",
+      "profitability"
+    ],
+    "series": "ops-notes",
+    "slug": "restaurant-menu-engineering-worksheet-2ff07b",
+    "canonical_url": "https://hive80-lab.github.io/ops-notes/restaurant-menu-engineering-worksheet.html"
+  }
+}
