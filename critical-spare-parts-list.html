@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Critical Spare Parts List &mdash; The Shelf That Turns a Breakdown Into an Annoyance</title>
+<meta name="description" content="A one-page critical spare parts list for small teams: five columns (what the part gates, source and lead time, shelf quantity and reorder point, last-used date), the 48-hour rule, the two-bin reorder point, and the kill list &mdash; plus the CNC shop whose $340 drive on the shelf beat the eleven-day OEM lead time on a $180k contract.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/critical-spare-parts-list.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+<h1>The Critical Spare Parts List: The Shelf That Turns a Breakdown Into an Annoyance</h1>
+<p class="lede">One page, five columns, built from the maintenance log in an afternoon: which parts gate which revenue, where they come from and how long they actually take to arrive, how many sit on the shelf, when the shelf tells you to reorder, and which spares are dead weight. The 48-hour rule that decides what belongs on the shelf, the two-bin point that keeps the shelf from draining silently, and the kill list that frees the cash hiding in parts for machines you retired years ago.</p>
+
+<p>The <a href="preventive-maintenance-schedule-template.html">preventive maintenance schedule</a> stops failures from happening. This page covers the ones that happen anyway &mdash; because a schedule changes the odds, never to zero. The difference between a breakdown and an outage is usually not skill and not luck; it is whether the part that failed was already on a shelf you own. An OEM with an eleven-day lead time does not care that your machine stopped on day one of your biggest contract. The shelf is the only supplier whose lead time you control.</p>
+
+<h2>1. The list &mdash; five columns, one table, no more than a page</h2>
+<p>Walk the floor with the person who fixes things and fill it in one sitting:</p>
+<ol>
+<li><strong>The part</strong> &mdash; named as the floor names it, with the manufacturer part number written next to it. &ldquo;The little green board in the VMC cabinet&rdquo; is how tribal knowledge talks; the part number is how a 2 a.m. order gets placed by someone who was not there.</li>
+<li><strong>What it gates</strong> &mdash; the machine, and behind the machine, the revenue. &ldquo;Lathe&rdquo; is not the column; &ldquo;lathe &rarr; the aerospace lot due the 14th, $31k&rdquo; is. This column is what makes the list defensible when someone asks why $2,400 of inventory is sitting on a shelf.</li>
+<li><strong>Source and real lead time</strong> &mdash; not the quoted lead time, the real one: the last time you actually bought it, how long did it take? Stocked locally in two days is a different risk class than factory-shipped in three weeks, and the class decides whether it belongs on the shelf at all.</li>
+<li><strong>Shelf quantity and reorder point</strong> &mdash; how many you hold, and the level at which you buy another. Two-bin is the honest version: one bin in use, one bin sealed; when the working bin empties, the sealed bin comes out and a replacement goes on order the same day. No counting, no judgement, no forgetting.</li>
+<li><strong>Last used</strong> &mdash; the date the spare was last consumed. This column feeds the kill list: a spare that has not moved in three years on a machine you replaced in year two is not insurance, it is dead stock with a part number.</li>
+</ol>
+
+<h2>2. The 48-hour rule &mdash; what belongs on the shelf</h2>
+<p>The test is simple and unforgiving: <strong>if the part gates revenue and its real lead time is longer than you can tolerate the machine being down, it belongs on the shelf.</strong> A two-day lead on a machine you can live without for a week &mdash; order on demand. A three-week factory lead on the machine that produces your payroll &mdash; that is the shelf. Downtime tolerance is the honest measure, and it comes from the same <a href="single-point-of-failure-audit-checklist.html">failure-pain ranking</a> the maintenance schedule uses: the assets at the top of that list are where this list starts.</p>
+<p>Cost is the tiebreaker, not the gate. A $340 drive that saves a $180k contract is not a $340 part; it is cheap insurance with a part number. The line to draw is at the extremes: consumables and commodity parts with same-day local availability never need shelf space, and six-figure spares for one machine get a different treatment &mdash; a service contract, a shared spare with a neighbour, or a documented second machine.</p>
+
+<h2>3. The reorder point &mdash; the shelf that refills itself</h2>
+<p>A shelf with no reorder point is a battery that drains silently. The first spare you use feels free; the point of the list is that using a spare <em>starts an order</em>, not that using a spare was possible. Two-bin makes the trigger physical: the empty bin goes on the purchase bench, not back to the shelf. If your volume is lumpy, set the reorder point at one plus the number you would burn during the replenishment lead &mdash; then let the <a href="stocktake-checklist.html">stocktake</a> check the shelf against the list once a quarter, because shrinkage, borrowing, and &ldquo;just this once&rdquo; raids are how shelves lie.</p>
+
+<h2>4. The kill list &mdash; the cash hiding on your own shelves</h2>
+<p>Once a year, walk the shelf with the last-used column open. Anything for a retired machine, superseded by a revision, or never touched in two years goes on the kill list: sell it, return it, give it to the trade school, or scrap it &mdash; but get it off the shelf and its value back into the business. A shelf audit at a twelve-person shop found sixty-two spares; eighteen belonged to machines retired before the current owner bought the company. Dead stock: $2,100. The kill list is also where you discover the opposite failure &mdash; the gap where the list says a spare exists and the shelf says otherwise, which is precisely the kind of lie you want to find in an afternoon, not during a breakdown.</p>
+
+<h2>The five traps</h2>
+<ul>
+<li><strong>Buying spares for everything.</strong> The list exists to rank, and the 48-hour rule exists to exclude. Spares for every part of every machine is capital that sleeps &mdash; shelf the part that gates revenue with a long lead, and let the <a href="supplier-concentration-risk.html">supplier map</a> carry the risk you did not shelf.</li>
+<li><strong>The spare for the machine that left.</strong> Shelves drift. Machines retire, spares stay. The last-used column and the annual kill-list walk are the fix; without them the shelf becomes a museum with inventory carrying costs.</li>
+<li><strong>No reorder point.</strong> The worst version of a spare is the one you used in March and remembered in September &mdash; empty shelf, long lead, breakdown twice. Two-bin or min-max, and the reorder happens the day the bin empties, not the day someone remembers.</li>
+<li><strong>Untested spares.</strong> The drive on the shelf that was never powered up, the seal that does not fit the revision you actually run, the fuse kit for the wrong amperage. A spare is a promise about the future; test or fit-check it on the maintenance schedule&rsquo;s cadence, or it is a part-shaped hope.</li>
+<li><strong>Spares without the fiche.</strong> The part on the shelf is half the fix; the other half is the manual, the torque spec, the wiring diagram, the password to the drive&rsquo;s configuration. Store them together, or the shelf serves whoever remembers &mdash; and the <a href="key-person-dependency-checklist.html">key person</a> who remembers is on leave the week it fails.</li>
+</ul>
+
+<h2>Worked example &mdash; the CNC shop with $340 on the shelf and $180k on the machine</h2>
+<p>A twelve-person CNC machine shop ran its production through one 1998 vertical machining centre &mdash; not by plan, but because it held tolerance like nothing else they could afford to replace, and the <a href="preventive-maintenance-schedule-template.html">maintenance schedule</a> kept it alive. The failure that eventually came was the servo drive: a burnt board, machine dark, mid-way through an aerospace lot worth $180k with a delivery penalty attached. The OEM quoted eleven days for the replacement drive. The shop&rsquo;s owner had heard a version of this story from a neighbouring shop eighteen months earlier &mdash; same machine class, same failure, same eleven-day quote, a lost batch and a lost customer &mdash; and had spent one afternoon building exactly this list from that neighbour&rsquo;s expensive education.</p>
+<p>The shelf had the drive: $340, bought eight months earlier when the list was built, bin-and-seal, never needed until now. The fiche was in the same drawer &mdash; parameter sheet, torque specs, the configuration backup on a labelled USB stick. Forty minutes from dark machine to spindle turning. The lot shipped on time; the penalty clause never woke. The list also caught two things in that same afternoon-walk: a $140 fuse kit whose amperage matched the old spindle motor rather than the current one (replaced, fit-checked), and eleven spares for a bandsaw scrapped in 2023, later sold to the scrap dealer&rsquo;s parts counter for $410 &mdash; dead stock out, coffee money in, and one page that turned the worst day of the neighbouring shop&rsquo;s year into a forty-minute Tuesday.</p>
+<p>The shelf is not a cost. It is the <a href="hot-spare-loaner-laptop-checklist.html">hot-spare principle</a> applied to the machines that pay the rent: you are not buying parts, you are buying back lead time you do not control &mdash; at shelf prices instead of penalty prices.</p>
+
+<h2>Kits</h2>
+<p>Every page ships with a kit block &mdash; the paid tools behind the free advice:</p>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced incident response &amp; communications &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all 5 kits in one download &mdash; $49</li>
+</ul>
+
+<p><em>Related: the <a href="preventive-maintenance-schedule-template.html">preventive maintenance schedule</a> is the plan that decides how often the shelf gets opened; the <a href="supplier-concentration-risk.html">supplier concentration map</a> covers the parts you chose not to shelf and the vendor who gates them; the <a href="asset-inventory-checklist.html">asset inventory</a> is the machine list this page ranks parts against; the <a href="vendor-outage-runbook.html">vendor outage runbook</a> is the 48-hour playbook when the part is not on any shelf, yours or the OEM&rsquo;s; and the <a href="hot-spare-loaner-laptop-checklist.html">hot-spare checklist</a> applies the same shelf logic to the laptops and phones your team runs on.</em></p>
+
+</main>
+</body>
+</html>
