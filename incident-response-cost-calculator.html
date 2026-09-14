@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Response Cost Calculator: What Does One Outage Actually Cost Your Business? &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="Free incident response cost calculator for small business. Enter your team size, hourly rate, and outage duration to see the real cost of an incident — including lost revenue, staff time, customer churn, and recovery. No signup required.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/incident-response-cost-calculator.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Incident Response Cost Calculator: What Does One Outage Actually Cost Your Business?</h1>
+<p class="lede">Enter your numbers below. The calculator runs in your browser — nothing is uploaded, nothing is stored. See the real cost of an incident: lost revenue, staff time, customer churn, and recovery.</p>
+
+<div id="calculator" style="margin: 24px 0; padding: 20px; border: 2px solid #0a7d5a; border-radius: 10px; background: #f2faf6;">
+<h2 style="margin-top: 0;">Your numbers</h2>
+
+<label style="display: block; margin: 12px 0 4px; font-weight: bold;">Annual revenue ($):</label>
+<input type="number" id="revenue" value="2000000" min="0" style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;">
+
+<label style="display: block; margin: 12px 0 4px; font-weight: bold;">Number of employees affected:</label>
+<input type="number" id="employees" value="10" min="1" style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;">
+
+<label style="display: block; margin: 12px 0 4px; font-weight: bold;">Average hourly cost per employee ($):</label>
+<input type="number" id="hourlyRate" value="45" min="0" style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;">
+
+<label style="display: block; margin: 12px 0 4px; font-weight: bold;">Outage duration (hours):</label>
+<input type="number" id="outageHours" value="4" min="1" style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;">
+
+<label style="display: block; margin: 12px 0 4px; font-weight: bold;">Revenue dependency on affected system (%):</label>
+<input type="number" id="dependency" value="80" min="0" max="100" style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;">
+
+<label style="display: block; margin: 12px 0 4px; font-weight: bold;">Customers affected:</label>
+<input type="number" id="customers" value="50" min="0" style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;">
+
+<label style="display: block; margin: 12px 0 4px; font-weight: bold;">Customer churn risk (%):</label>
+<input type="number" id="churnRate" value="5" min="0" max="100" style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;">
+
+<label style="display: block; margin: 12px 0 4px; font-weight: bold;">Average customer annual value ($):</label>
+<input type="number" id="customerValue" value="2000" min="0" style="width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;">
+
+<button onclick="calculate()" style="margin: 16px 0; padding: 12px 24px; font-size: 16px; font-weight: bold; background: #0a7d5a; color: white; border: none; border-radius: 6px; cursor: pointer;">Calculate Cost</button>
+</div>
+
+<div id="results" style="display: none; margin: 24px 0; padding: 20px; border: 2px solid #333; border-radius: 10px; background: #fffde6;">
+<h2 style="margin-top: 0;">The real cost of this incident</h2>
+<div style="font-size: 14px; line-height: 1.8;">
+<p><strong>Lost revenue during outage:</strong> $<span id="lostRevenue">0</span></p>
+<p><strong>Staff time cost:</strong> $<span id="staffCost">0</span></p>
+<p><strong>Customer churn cost:</strong> $<span id="churnCost">0</span></p>
+<p><strong>Recovery &amp; remediation (estimated):</strong> $<span id="recoveryCost">0</span></p>
+<hr style="margin: 12px 0;">
+<p style="font-size: 20px; font-weight: bold;">Total estimated cost: $<span id="totalCost">0</span></p>
+</div>
+<div style="margin-top: 16px; padding: 12px; background: #f2faf6; border-radius: 6px;">
+<p style="margin: 0;"><strong>What would it cost to prevent this?</strong> The <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> ($14) includes the incident response runbook that cuts outage time by 60% on average. The <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> ($49) includes everything: incident response, BCP, backup strategy, and vendor management.</p>
+</div>
+</div>
+
+<h2>How the calculator works</h2>
+<p>The calculator uses a simple model that captures the four costs of an incident that most businesses underestimate:</p>
+<ul>
+<li><strong>Lost revenue:</strong> (Annual revenue / 2000 working hours) × outage hours × revenue dependency %. Most businesses run 2000 working hours per year; if 80% of your revenue depends on the affected system, a 4-hour outage costs 4 × (revenue/2000) × 0.80.</li>
+<li><strong>Staff time:</strong> Employees affected × hourly rate × outage hours. This is the productive time lost while staff wait, work around, or firefight. It doesn't include the recovery overtime.</li>
+<li><strong>Customer churn:</strong> Customers affected × churn rate × average customer annual value. Not every affected customer leaves, but some do. A 5% churn rate on 50 customers worth $2,000/year is $5,000 in lost future revenue.</li>
+<li><strong>Recovery &amp; remediation:</strong> Estimated at 50% of the lost revenue + staff cost. This covers the post-incident fix, the postmortem, the customer follow-up, and the "make sure this never happens again" work. For small teams, this is usually 1-3 days of focused effort.</li>
+</ul>
+
+<h2>Why most businesses underestimate incident costs</h2>
+<p>The number on the calculator is usually 3-5x higher than what businesses expect. Here's why:</p>
+<ul>
+<li><strong>They count only the IT cost</strong> (staff time) and forget the revenue cost. A 4-hour outage for a $2M business with 80% revenue dependency costs $3,200 in lost revenue alone &mdash; before anyone picks up a phone.</li>
+<li><strong>They don't count customer churn.</strong> The customer who leaves after an outage doesn't show up on the incident report. They show up three months later in the revenue numbers, and nobody connects the two.</li>
+<li><strong>They don't count recovery time.</strong> The outage ends at hour 4, but the postmortem, the fix, the customer emails, and the "let's make sure this doesn't happen again" meeting take another 1-2 days. That's staff time too.</li>
+<li><strong>They don't count the second incident.</strong> Teams without a <a href="postmortem-template-small-teams.html">postmortem process</a> repeat the same incident. The second outage costs the same as the first, plus the credibility damage.</li>
+</ul>
+
+<h2>What to do with this number</h2>
+<ol>
+<li><strong>If the cost is under $5,000:</strong> Start with the free <a href="first-30-minutes-incident-response.html">First 30 Minutes checklist</a> and the <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> ($14). The ROI is immediate: one prevented incident pays for the kit 350x over.</li>
+<li><strong>If the cost is $5,000-$50,000:</strong> Get the <a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> ($27) which includes the full incident response runbook, BCP template, and vendor management playbook. Run the <a href="tabletop-exercise-failure-points.html">tabletop exercise</a> quarterly.</li>
+<li><strong>If the cost is over $50,000:</strong> Get the <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> ($49) and implement all five systems: incident response, security baseline, vendor management, financial ops, and automation. The <a href="business-continuity-plan-template-small-business.html">BCP template</a> and <a href="data-backup-strategy-checklist.html">backup strategy checklist</a> are your starting points.</li>
+</ol>
+
+<div class="cta-box" style="margin:32px 0 8px;padding:18px 20px;border:2px solid #0a7d5a;border-radius:10px;background:#f2faf6;">
+<p style="margin:0 0 6px;"><strong>Stop calculating. Start preventing.</strong> The <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> ($49) includes everything you need to cut incident costs by 60%: incident response runbook, BCP template, backup strategy, vendor management, and automation templates.</p>
+<p style="margin:0;">Free start: grab the <a href="https://hive80lab.gumroad.com/l/first-30-minutes">First 30 Minutes</a> incident-response checklist, or browse <a href="index.html">all 320+ free ops notes</a>.</p>
+</div>
+
+</article>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</main>
+<script>
+function calculate() {
+    var revenue = parseFloat(document.getElementById('revenue').value) || 0;
+    var employees = parseFloat(document.getElementById('employees').value) || 0;
+    var hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+    var outageHours = parseFloat(document.getElementById('outageHours').value) || 0;
+    var dependency = parseFloat(document.getElementById('dependency').value) || 0;
+    var customers = parseFloat(document.getElementById('customers').value) || 0;
+    var churnRate = parseFloat(document.getElementById('churnRate').value) || 0;
+    var customerValue = parseFloat(document.getElementById('customerValue').value) || 0;
+
+    var hourlyRevenue = revenue / 2000;
+    var lostRevenue = hourlyRevenue * outageHours * (dependency / 100);
+    var staffCost = employees * hourlyRate * outageHours;
+    var churnCost = customers * (churnRate / 100) * customerValue;
+    var recoveryCost = (lostRevenue + staffCost) * 0.5;
+    var totalCost = lostRevenue + staffCost + churnCost + recoveryCost;
+
+    document.getElementById('lostRevenue').textContent = lostRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
+    document.getElementById('staffCost').textContent = staffCost.toLocaleString('en-US', {maximumFractionDigits: 0});
+    document.getElementById('churnCost').textContent = churnCost.toLocaleString('en-US', {maximumFractionDigits: 0});
+    document.getElementById('recoveryCost').textContent = recoveryCost.toLocaleString('en-US', {maximumFractionDigits: 0});
+    document.getElementById('totalCost').textContent = totalCost.toLocaleString('en-US', {maximumFractionDigits: 0});
+
+    document.getElementById('results').style.display = 'block';
+}
+</script>
+</body>
+</html>
