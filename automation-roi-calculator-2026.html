@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation ROI Calculator 2026 — See How Much You Save | Hive80 Lab</title>
+<meta name="description" content="Free interactive calculator: see how much time and money automation saves your small team. Calculate ROI of DevOps automation, incident response automation, and workflow automation.">
+<meta name="keywords" content="automation roi, devops automation calculator, workflow automation, time savings calculator">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:800px;margin:0 auto;padding:20px;line-height:1.6;color:#333}
+h1{color:#1a1a2e}
+h2{color:#16213e;border-bottom:2px solid #0f3460;padding-bottom:5px}
+.calc{background:#f8f9fa;padding:20px;border-radius:8px;margin:20px 0}
+input{padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:4px;width:200px}
+button{background:#0f3460;color:#fff;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:16px}
+.result{font-size:20px;font-weight:bold;color:#e94560;margin:10px 0}
+.cta{background:#0f3460;color:#fff;padding:15px;border-radius:8px;margin:20px 0;text-align:center}
+.cta a{color:#fff;font-weight:bold;text-decoration:underline}
+</style>
+</head>
+<body>
+<h1>Automation ROI Calculator 2026</h1>
+<p>How much could automation save your team? Enter your numbers below and find out.</p>
+
+<div class="calc">
+<h2>Your Current Situation</h2>
+<label>Team size:</label><br>
+<input type="number" id="team" value="3" placeholder="3"><br>
+<label>Manual tasks per week (hours per person):</label><br>
+<input type="number" id="manual" value="10" placeholder="10"><br>
+<label>Average hourly rate ($):</label><br>
+<input type="number" id="rate" value="75" placeholder="75"><br>
+<label>Incidents per month:</label><br>
+<input type="number" id="incidents" value="4" placeholder="4"><br>
+<label>Average MTTR (minutes):</label><br>
+<input type="number" id="mttr" value="90" placeholder="90"><br>
+<br>
+<button onclick="calcROI()">Calculate ROI</button>
+<div id="result" class="result"></div>
+</div>
+
+<h2>What Automation Can Do for Small Teams</h2>
+<h3>1. CI/CD Pipeline Automation</h3>
+<p>Automating your build, test, and deploy pipeline saves 5-10 hours/week per engineer. No more manual deploys, no more "it works on my machine."</p>
+
+<h3>2. Incident Response Automation</h3>
+<p>Automated alert routing, runbook triggering, and communication templates reduce MTTR by 50-75%. A 2-hour incident becomes a 30-minute incident.</p>
+
+<h3>3. Workflow Automation</h3>
+<p>Automating repetitive tasks (report generation, log rotation, backup verification, health checks) saves 5-15 hours/week across the team.</p>
+
+<h3>4. AI-Powered Operations</h3>
+<p>An AI ops agent can handle first-pass incident triage, draft communications, and execute pre-approved remediation steps — reducing the need for human intervention by 60%.</p>
+
+<h2>The Math: Why Automation Pays for Itself</h2>
+<p>Consider a 3-person team spending 10 hours/week each on manual tasks at $75/hour:</p>
+<ul>
+<li>Current cost: 3 × 10 × $75 × 52 = <strong>$117,000/year</strong></li>
+<li>With 70% automation: $117,000 × 0.30 = <strong>$35,100/year</strong></li>
+<li>Annual savings: <strong>$81,900</strong></li>
+<li>Cost of automation tools: $0-$500/year (free tiers + templates)</li>
+<li>ROI: <strong>16,280%</strong></li>
+</ul>
+
+<div class="cta">
+<h3>Start Automating Today</h3>
+<p>🚀 <a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack — Pick-First Workflows ($19)</a></p>
+<p>🤖 <a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7 — AI-Powered Operations ($19)</a></p>
+<p>📦 <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle — Everything ($49)</a></p>
+<p>🆓 <a href="https://hive80lab.gumroad.com/l/first-30-minutes">Free: The First 30 Minutes Checklist</a></p>
+</div>
+
+<h2>Related Resources</h2>
+<ul>
+<li><a href="https://dev.to/hive80lab/how-to-build-a-247-incident-response-capability-without-hiring-3dec">How to Build 24/7 Incident Response Without Hiring</a></li>
+<li><a href="https://dev.to/hive80lab/the-5-minute-incident-triage-system-that-saves-small-teams-hours-342j">The 5-Minute Incident Triage System</a></li>
+<li><a href="https://dev.to/hive80lab/why-your-on-call-schedule-is-costing-you-money-and-how-to-fix-it-792">Why Your On-Call Schedule Is Costing You Money</a></li>
+</ul>
+
+<script>
+function calcROI(){
+  var t=parseFloat(document.getElementById('team').value)||0;
+  var m=parseFloat(document.getElementById('manual').value)||0;
+  var r=parseFloat(document.getElementById('rate').value)||0;
+  var i=parseFloat(document.getElementById('incidents').value)||0;
+  var mttr=parseFloat(document.getElementById('mttr').value)||0;
+  
+  var manualCost=t*m*r*52;
+  var incidentCost=t*i*mttr/60*r*12;
+  var total=manualCost+incidentCost;
+  var savings=total*0.70;
+  var net=savings-500; // minus tool cost
+  
+  document.getElementById('result').innerHTML=
+    'Current annual cost: $'+total.toLocaleString('en-US',{maximumFractionDigits:0})+
+    '<br>Manual task cost: $'+manualCost.toLocaleString('en-US',{maximumFractionDigits:0})+
+    '<br>Incident cost: $'+incidentCost.toLocaleString('en-US',{maximumFractionDigits:0})+
+    '<br>Potential annual savings (70% automation): $'+savings.toLocaleString('en-US',{maximumFractionDigits:0})+
+    '<br>Net savings after tool costs: $'+net.toLocaleString('en-US',{maximumFractionDigits:0});
+}
+</script>
+</body>
+</html>

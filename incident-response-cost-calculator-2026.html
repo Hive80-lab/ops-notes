@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incident Response Cost Calculator 2026 — Free Tool | Hive80 Lab</title>
+<meta name="description" content="Calculate the true cost of incidents for your small team. Free interactive calculator. See how much downtime costs you per hour, per incident, per year.">
+<meta name="keywords" content="incident response cost, downtime calculator, mttr calculator, devops cost, sre calculator">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:800px;margin:0 auto;padding:20px;line-height:1.6;color:#333}
+h1{color:#1a1a2e}
+h2{color:#16213e;border-bottom:2px solid #0f3460;padding-bottom:5px}
+.calc{background:#f8f9fa;padding:20px;border-radius:8px;margin:20px 0}
+input,select{padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:4px;width:200px}
+button{background:#0f3460;color:#fff;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:16px}
+button:hover{background:#16213e}
+.result{font-size:24px;font-weight:bold;color:#e94560;margin:10px 0}
+.cta{background:#0f3460;color:#fff;padding:15px;border-radius:8px;margin:20px 0;text-align:center}
+.cta a{color:#fff;font-weight:bold;text-decoration:underline}
+.warning{background:#fff3cd;padding:10px;border-radius:4px;border-left:4px solid #ffc107}
+</style>
+</head>
+<body>
+<h1>Incident Response Cost Calculator 2026</h1>
+<p>How much is downtime costing your business? Use this free calculator to find out — and see how much you could save with better incident response.</p>
+
+<div class="calc">
+<h2>Enter Your Numbers</h2>
+<label>Annual revenue ($):</label><br>
+<input type="number" id="revenue" value="1000000" placeholder="1000000"><br>
+<label>Hours of operation per week:</label><br>
+<input type="number" id="hours" value="168" placeholder="168"><br>
+<label>Number of incidents per year:</label><br>
+<input type="number" id="incidents" value="12" placeholder="12"><br>
+<label>Average MTTR (minutes):</label><br>
+<input type="number" id="mttr" value="120" placeholder="120"><br>
+<label>Engineers involved per incident:</label><br>
+<input type="number" id="engineers" value="3" placeholder="3"><br>
+<label>Average engineer hourly rate ($):</label><br>
+<input type="number" id="rate" value="75" placeholder="75"><br>
+<br>
+<button onclick="calculate()">Calculate Cost</button>
+<div id="result" class="result"></div>
+</div>
+
+<h2>What This Calculator Tells You</h2>
+<p>Most teams dramatically underestimate their incident costs. They think about the engineer time but forget:</p>
+<ul>
+<li><strong>Lost revenue</strong> — every minute of downtime costs you revenue</li>
+<li><strong>Lost productivity</strong> — engineers fighting fires aren't building features</li>
+<li><strong>Customer churn</strong> — repeated incidents drive customers away</li>
+<li><strong>Reputation damage</strong> — SLA breaches trigger penalty clauses</li>
+<li><strong>Team burnout</strong> — bad on-call leads to turnover ($50K-$100K per replacement)</li>
+</ul>
+
+<div class="warning">
+<strong>Key insight:</strong> Reducing your MTTR from 2 hours to 30 minutes doesn't just save 1.5 hours of downtime — it saves 1.5 hours of revenue loss, 1.5 hours of engineer time, and reduces customer impact by 75%.
+</div>
+
+<h2>How to Reduce Your Incident Costs</h2>
+<h3>1. Build a Runbook Library</h3>
+<p>Document your top 5 incident types with step-by-step remediation. A junior engineer following a runbook can resolve incidents 3x faster than one improvising.</p>
+
+<h3>2. Automate Alert Routing</h3>
+<p>Every alert should create a ticket with context — not just a page. The on-call engineer should know what broke, where to look, and what to try first.</p>
+
+<h3>3. Practice Incident Response</h3>
+<p>Run a "game day" once a quarter. Simulate an incident and have your team respond. You'll find gaps in your runbooks before a real incident does.</p>
+
+<h3>4. Use Communication Templates</h3>
+<p>Don't write status updates from scratch during an incident. Pre-write templates for SEV1, SEV2, and SEV3 communications.</p>
+
+<h3>5. Postmortem Every Incident</h3>
+<p>Every incident is a learning opportunity. Write a postmortem within 24 hours. Identify root cause, action items, and owners.</p>
+
+<div class="cta">
+<h3>Ready to Reduce Your Incident Costs?</h3>
+<p>Get the complete incident response toolkit:</p>
+<p>📦 <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle — All 5 Kits ($49)</a></p>
+<p>🚀 <a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit — Essential Runbooks ($14)</a></p>
+<p>🤖 <a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7 — AI-Powered Incident Response ($19)</a></p>
+<p>🆓 <a href="https://hive80lab.gumroad.com/l/first-30-minutes">Free: The First 30 Minutes Checklist</a></p>
+</div>
+
+<h2>Related Resources</h2>
+<ul>
+<li><a href="https://dev.to/hive80lab/how-to-build-a-247-incident-response-capability-without-hiring-3dec">How to Build 24/7 Incident Response Without Hiring</a></li>
+<li><a href="https://dev.to/hive80lab/the-5-minute-incident-triage-system-that-saves-small-teams-hours-342j">The 5-Minute Incident Triage System</a></li>
+<li><a href="https://dev.to/hive80lab/why-your-on-call-schedule-is-costing-you-money-and-how-to-fix-it-792">Why Your On-Call Schedule Is Costing You Money</a></li>
+</ul>
+
+<script>
+function calculate(){
+  var rev=parseFloat(document.getElementById('revenue').value)||0;
+  var hrs=parseFloat(document.getElementById('hours').value)||1;
+  var inc=parseFloat(document.getElementById('incidents').value)||0;
+  var mttr=parseFloat(document.getElementById('mttr').value)||0;
+  var eng=parseFloat(document.getElementById('engineers').value)||0;
+  var rate=parseFloat(document.getElementById('rate').value)||0;
+  
+  var revPerMin=rev/(hrs*52);
+  var downtimeMin=inc*mttr;
+  var lostRev=revPerMin*downtimeMin;
+  var engCost=inc*mttr/60*eng*rate;
+  var total=lostRev+engCost;
+  var potentialSavings=total*0.625; // 62.5% savings from reducing MTTR by 62.5%
+  
+  document.getElementById('result').innerHTML=
+    'Annual incident cost: $'+total.toLocaleString('en-US',{maximumFractionDigits:0})+
+    '<br>Revenue lost to downtime: $'+lostRev.toLocaleString('en-US',{maximumFractionDigits:0})+
+    '<br>Engineer time cost: $'+engCost.toLocaleString('en-US',{maximumFractionDigits:0})+
+    '<br>Potential savings with better response: $'+potentialSavings.toLocaleString('en-US',{maximumFractionDigits:0});
+}
+</script>
+</body>
+</html>

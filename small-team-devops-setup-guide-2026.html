@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Small Team DevOps Setup Guide 2026 — From Zero to CI/CD in a Weekend | Hive80 Lab</title>
+<meta name="description" content="Complete DevOps setup guide for small teams (1-5 engineers). CI/CD, monitoring, incident response, on-call. Step-by-step with free templates.">
+<meta name="keywords" content="devops setup, small team devops, ci cd setup, devops guide 2026, startup devops">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:800px;margin:0 auto;padding:20px;line-height:1.6;color:#333}
+h1{color:#1a1a2e}
+h2{color:#16213e;border-bottom:2px solid #0f3460;padding-bottom:5px}
+h3{color:#0f3460}
+.step{background:#f8f9fa;padding:15px;border-radius:8px;margin:15px 0;border-left:4px solid #0f3460}
+.cta{background:#0f3460;color:#fff;padding:15px;border-radius:8px;margin:20px 0;text-align:center}
+.cta a{color:#fff;font-weight:bold;text-decoration:underline}
+code{background:#e9ecef;padding:2px 6px;border-radius:3px;font-family:monospace}
+</style>
+</head>
+<body>
+<h1>Small Team DevOps Setup Guide 2026</h1>
+<p><strong>From Zero to CI/CD in a Weekend</strong> — A practical guide for teams of 1-5 engineers.</p>
+
+<p>Most DevOps guides assume you have a dedicated platform team. This one doesn't. If you're a startup or small team trying to set up proper DevOps without hiring, this is your roadmap.</p>
+
+<h2>The Weekend Roadmap</h2>
+
+<div class="step">
+<h3>Saturday Morning: Version Control & Branching</h3>
+<ul>
+<li>Use GitHub (free for small teams)</li>
+<li>Branching strategy: <code>main</code> (production) + feature branches</li>
+<li>Protect <code>main</code>: require PR reviews, pass CI</li>
+<li>Set up branch cleanup: auto-delete merged branches</li>
+</ul>
+<p><strong>Time:</strong> 1 hour | <strong>Cost:</strong> Free</p>
+</div>
+
+<div class="step">
+<h3>Saturday Afternoon: CI/CD Pipeline</h3>
+<ul>
+<li>GitHub Actions (free: 2,000 min/month for private repos)</li>
+<li>Pipeline stages: lint → test → build → deploy</li>
+<li>Deploy on merge to <code>main</code> (continuous deployment)</li>
+<li>Add a manual approval gate for production deploys if needed</li>
+</ul>
+<p><strong>Time:</strong> 3 hours | <strong>Cost:</strong> Free (GitHub Actions)</p>
+</div>
+
+<div class="step">
+<h3>Sunday Morning: Monitoring & Alerting</h3>
+<ul>
+<li><strong>Uptime monitoring:</strong> UptimeRobot (free, 50 monitors)</li>
+<li><strong>Error tracking:</strong> Sentry (free tier: 5K errors/month)</li>
+<li><strong>Logs:</strong> Better Stack or Paperboy (free tiers)</li>
+<li><strong>Alerting:</strong> PagerDuty (free for up to 5 users)</li>
+</ul>
+<p><strong>Time:</strong> 2 hours | <strong>Cost:</strong> Free tiers</p>
+</div>
+
+<div class="step">
+<h3>Sunday Afternoon: Incident Response</h3>
+<ul>
+<li>Write runbooks for your top 3 incident types</li>
+<li>Set up a Slack/Teams incident channel (auto-create via webhook)</li>
+<li>Create communication templates (SEV1, SEV2, SEV3)</li>
+<li>Define escalation paths</li>
+<li>Do a 30-minute practice incident (game day)</li>
+</ul>
+<p><strong>Time:</strong> 3 hours | <strong>Cost:</strong> Free (templates below)</p>
+</div>
+
+<h2>The Tool Stack (All Free or Freemium)</h2>
+<table border="1" style="border-collapse:collapse;width:100%">
+<tr style="background:#0f3460;color:#fff"><th>Category</th><th>Tool</th><th>Free Tier</th></tr>
+<tr><td>Version Control</td><td>GitHub</td><td>Unlimited public repos</td></tr>
+<tr><td>CI/CD</td><td>GitHub Actions</td><td>2,000 min/month</td></tr>
+<tr><td>Uptime Monitoring</td><td>UptimeRobot</td><td>50 monitors</td></tr>
+<tr><td>Error Tracking</td><td>Sentry</td><td>5K errors/month</td></tr>
+<tr><td>Logging</td><td>Better Stack</td><td>1GB/month</td></tr>
+<tr><td>Alerting</td><td>PagerDuty</td><td>5 users</td></tr>
+<tr><td>On-Call Scheduling</td><td>PagerDuty</td><td>5 users</td></tr>
+<tr><td>Incident Management</td><td>Slack/Teams</td><td>Free tier</td></tr>
+</table>
+
+<h2>Common Pitfalls to Avoid</h2>
+<h3>1. Over-Engineering Your Pipeline</h3>
+<p>Don't build a 20-stage pipeline on day one. Start with lint → test → deploy. Add stages as you need them.</p>
+
+<h3>2. Alerting on Everything</h3>
+<p>If you get 100 alerts/day, you'll start ignoring them. Alert on user-impacting issues only. Use warnings for non-critical metrics.</p>
+
+<h3>3. No Runbooks</h3>
+<p>"We'll figure it out" is not an incident response plan. Write runbooks for your top 3-5 incident types before you need them.</p>
+
+<h3>4. Skipping Postmortems</h3>
+<p>Every incident is a free lesson. Write a postmortem within 24 hours. Share it with the team. Track action items.</p>
+
+<h3>5. Manual Deploys</h3>
+<p>If you're still SSH-ing into servers to deploy, stop. Automate it. A CI/CD pipeline pays for itself in the first week.</p>
+
+<div class="cta">
+<h3>Get the Complete DevOps Toolkit</h3>
+<p>Everything you need to set up DevOps for your small team:</p>
+<p>📦 <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle — All 5 Kits ($49)</a></p>
+<p>🚀 <a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack — Workflow Templates ($19)</a></p>
+<p>🤖 <a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7 — AI-Powered Operations ($19)</a></p>
+<p>🆓 <a href="https://hive80lab.gumroad.com/l/first-30-minutes">Free: The First 30 Minutes Checklist</a></p>
+</div>
+
+<h2>Related Articles</h2>
+<ul>
+<li><a href="https://dev.to/hive80lab/how-to-build-a-247-incident-response-capability-without-hiring-3dec">How to Build 24/7 Incident Response Without Hiring</a></li>
+<li><a href="https://dev.to/hive80lab/the-5-minute-incident-triage-system-that-saves-small-teams-hours-342j">The 5-Minute Incident Triage System</a></li>
+<li><a href="https://dev.to/hive80lab/why-your-on-call-schedule-is-costing-you-money-and-how-to-fix-it-792">Why Your On-Call Schedule Is Costing You Money</a></li>
+</ul>
+</body>
+</html>
