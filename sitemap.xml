@@ -1605,4 +1605,10 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/small-business-operations-checklist-2026</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
 </urlset>
