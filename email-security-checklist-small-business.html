@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Security Checklist for Small Business: The 7 Controls That Stop 95% of Attacks &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="An email security checklist for small business: the 7 controls that stop 95% of email-borne attacks (SPF, DKIM, DMARC, 2FA, password manager, phishing training, mailbox forwarding rules), the configuration steps, and the audit script. Includes worked example.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/email-security-checklist-small-business.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Email Security Checklist for Small Business: The 7 Controls That Stop 95% of Email-Borne Attacks</h1>
+<p class="lede">The seven controls, the configuration steps for each, the audit script that checks them all, and the forwarding rule that attackers love and nobody monitors.</p>
+
+<p>Email is still the #1 attack vector for small businesses. Not because the attacks are sophisticated &mdash; because the defenses are incomplete. A business that sets up SPF but not DMARC, that has 2FA on the admin account but not on the shared mailbox, that trains staff on phishing but doesn't check the auto-forwarding rules that attackers set after a successful phish &mdash; that business has gaps, and attackers find gaps. This checklist covers the seven controls that, together, stop the vast majority of email-borne attacks. Each one takes under an hour to implement.</p>
+
+<h2>1. SPF (Sender Policy Framework) &mdash; who's allowed to send as you</h2>
+<p>A DNS record that lists the servers authorized to send email from your domain. Without it, anyone can spoof your domain and send email that looks like it came from you. With it, receiving servers reject (or flag) email from unauthorized senders.</p>
+<p><strong>Configure:</strong> Add a TXT record to your DNS: <code>v=spf1 include:_spf.google.com include:mailgun.org ~all</code> (replace with your actual email providers). The <code>~all</code> means "soft fail for anything not listed" &mdash; start here, move to <code>-all</code> (hard fail) after 2 weeks of clean monitoring. Check your current SPF record with: <code>dig TXT yourdomain.com</code> or use the <a href="https://mxtoolbox.com/spf.aspx">MXToolbox SPF lookup</a>.</p>
+
+<h2>2. DKIM (DomainKeys Identified Mail) &mdash; cryptographic signature</h2>
+<p>A digital signature added to every email your server sends, verified by the receiving server against a public key in your DNS. SPF says "this server is allowed"; DKIM says "this email was not modified in transit." Together they make spoofing your domain nearly impossible.</p>
+<p><strong>Configure:</strong> Your email provider (Google Workspace, Microsoft 365, Mailgun) has a DKIM setup guide &mdash; it generates a key pair, gives you a TXT record to add to DNS, and signs outgoing email automatically. Verify with: <code>dig TXT selector._domainkey.yourdomain.com</code>. The <a href="ssl-certificate-expiry-checklist.html">SSL certificate expiry checklist</a> covers the broader DNS/TLS security surface.</p>
+
+<h2>3. DMARC (Domain-based Message Authentication) &mdash; the enforcement layer</h2>
+<p>DMARC tells receiving servers what to do when SPF or DKIM fail. Without DMARC, spoofed email from your domain is delivered. With DMARC, it's rejected, quarantined, or reported &mdash; your choice. This is the control most small businesses skip, and it's the one that would have stopped their domain being used in a phishing campaign.</p>
+<p><strong>Configure:</strong> Start with monitoring mode: <code>v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com</code>. This sends reports but doesn't reject anything &mdash; review the reports for 2 weeks to see what's being sent as you. Then move to <code>p=quarantine</code> (send failures to spam), then <code>p=reject</code> (block failures entirely). The <a href="security-audit-report-template.html">security audit report template</a> includes DMARC verification.</p>
+
+<h2>4. 2FA on every mailbox (not just admins)</h2>
+<p>The admin account has 2FA. The shared info@ mailbox does not. The attacker doesn't target the admin &mdash; they target the shared mailbox, read the inbox, find a conversation with a customer, and reply with "please send the payment to this new account." 2FA on every mailbox stops this.</p>
+<p><strong>Configure:</strong> In Google Workspace or Microsoft 365, enforce 2FA organization-wide. Use authenticator apps (not SMS where possible &mdash; SIM swapping is real). The <a href="passkeys-rollout-checklist.html">passkeys rollout checklist</a> covers the modern upgrade from 2FA to passkeys. For shared mailboxes, use a shared password manager entry (see #5) and require 2FA on the mailbox itself.</p>
+
+<h2>5. Password manager with unique passwords per mailbox</h2>
+<p>If every mailbox uses the same password, one breach is all of them. A password manager (1Password, Bitwarden, Keeper) with unique passwords per mailbox means one compromised password doesn't unlock the rest. The <a href="password-manager-rollout-small-business.html">password manager rollout checklist</a> has the full deployment plan.</p>
+<p><strong>Configure:</strong> Choose a business-tier password manager, create a vault per team, share mailbox credentials through the vault (not email), and enforce it as the only way to store credentials. Remove passwords from spreadsheets, sticky notes, and browser autofill. The <a href="secrets-rotation-checklist.html">secrets rotation checklist</a> covers the periodic password rotation policy.</p>
+
+<h2>6. Phishing training (quarterly, not annual)</h2>
+<p>Annual phishing training doesn't work. The half-life of security awareness is about 3 months. Quarterly training &mdash; 30 minutes, real examples, hands-on &mdash; keeps the muscle memory alive. The <a href="49-cybersecurity-awareness-training-checklist.html">cybersecurity awareness training checklist</a> has the full session plan.</p>
+<p><strong>Configure:</strong> Run a simulated phishing campaign quarterly (tools like GoPhish are free). Track who clicks, train them immediately (not punitively), and measure the click rate over time. A team that drops from 25% click rate to 3% in 6 months is your human firewall. The <a href="phishing-response-checklist-small-teams.html">phishing response checklist</a> covers what to do when someone inevitably clicks.</p>
+
+<h2>7. Mailbox forwarding rule audit (the one nobody does)</h2>
+<p>After a successful phishing attack, the first thing the attacker does is create a forwarding rule: "forward all email containing 'invoice' or 'payment' to attacker@gmail.com." This rule hides itself from the user's view (in Outlook, it's under "rules and alerts" &mdash; but the attacker sets it to not show in the rules list). The user never sees it. The attacker receives every invoice and payment conversation in real time. This is how business email compromise (BEC) happens &mdash; and it's the most expensive email attack, averaging $50,000+ per incident for small businesses.</p>
+<p><strong>Configure:</strong> Monthly, run a script that exports all forwarding rules for all mailboxes and reviews them. In Microsoft 365: <code>Get-Mailbox -ResultSize Unlimited | Get-InboxRule | Where-Object {$_.RedirectTo -ne $null -or $_.ForwardTo -ne $null}</code>. In Google Workspace: check forwarding settings in the Admin Console under each user. Any forwarding rule to an external address that the user didn't set is an active compromise. The <a href="user-access-review-checklist.html">user access review checklist</a> includes this audit as part of the monthly review cycle.</p>
+
+<h2>Worked example: the construction company that lost $47,000</h2>
+<p>A 30-person construction company had SPF, 2FA on admin accounts, and annual phishing training. They did not have DMARC, 2FA on the shared accounts@ mailbox, or a forwarding-rule audit. An attacker phished the accounts@ mailbox credentials (the password was shared among 4 people and had been in use for 3 years), logged in, created a forwarding rule for "invoice" and "payment" emails, and for 6 weeks monitored every invoice conversation. Then they sent a fake email from the company's domain (possible because no DMARC) to a customer, changing the bank details on a $47,000 invoice. The customer paid. The company didn't discover the compromise until the customer called about the "payment confirmation" that never came. The fix: DMARC set to reject, 2FA on all mailboxes, password manager deployed, forwarding rules audited monthly, and phishing training moved to quarterly. Total cost of the fix: 2 days of IT time and $300 in password manager licenses. The $47,000 was not recovered.</p>
+
+<aside class="kit">
+<h2>Put this to work</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; includes the email security audit checklist, phishing response runbook, and security awareness training plan &mdash; $49</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; advanced security controls including DMARC configuration and forwarding-rule audit scripts &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist for when email compromise is discovered</li>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; automated forwarding-rule audit and DMARC report parsing &mdash; $19</li>
+</ul>
+<p class="hint">Launch week: 20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="phishing-response-checklist-small-teams.html">Phishing Response Checklist (the first hour after someone clicks)</a></li>
+<li><a href="password-manager-rollout-small-business.html">Password Manager Rollout for Small Business</a></li>
+<li><a href="passkeys-rollout-checklist.html">Passkeys Rollout Checklist</a></li>
+<li><a href="security-audit-checklist.html">Security Audit Checklist for Small Teams</a></li>
+<li><a href="user-access-review-checklist.html">User Access Review Checklist</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="49-cybersecurity-awareness-training-checklist.html">Cybersecurity Awareness Training Checklist</a></li>
+<li><a href="ransomware-recovery-checklist.html">Ransomware Recovery Checklist</a></li>
+</ul>
+</aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+<p>Need all of it at once? The <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> collects all five ops kits in one download &mdash; $49.</p>
+</main>
+</body>
+</html>

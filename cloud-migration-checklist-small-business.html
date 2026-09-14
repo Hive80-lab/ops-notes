@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cloud Migration Checklist for Small Business: Move Without Losing Data, Customers, or Weekends &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A cloud migration checklist for small business: the five-phase migration (assess, plan, migrate, verify, cutover), the data integrity checks that catch silent corruption, and the rollback plan that saves your cutover weekend. Includes worked example.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/cloud-migration-checklist-small-business.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Cloud Migration Checklist for Small Business: Move Without Losing Data, Customers, or Weekends</h1>
+<p class="lede">The five-phase migration, the data integrity checks that catch silent corruption, the DNS cutover that doesn't lose email, and the rollback plan that saves your Saturday.</p>
+
+<p>Cloud migration for small businesses fails the same way every time: the team treats it as a move (pick up, put down) instead of a migration (copy, verify, switch, verify again, then decommission). The data looks fine in the new system until someone opens a customer record and finds the email field truncated at 40 characters, or the date format flipped from DD/MM to MM/DD, or the related records that didn't migrate because the foreign key constraint was different. This checklist is for teams migrating their first major system to the cloud &mdash; email, file storage, CRM, or accounting.</p>
+
+<h2>Phase 1: Assess (week 1)</h2>
+<ul>
+<li><strong>Inventory what you're moving.</strong> Not just "the file server" &mdash; how many files, how many shared folders, what permissions, what integrations (the accounting software that pulls from a shared folder, the scanner that emails to a distribution list). The <a href="software-license-register-template.html">software license register</a> and <a href="service-catalog-template.html">service catalog</a> capture the dependencies.</li>
+<li><strong>Identify the showstoppers.</strong> Legacy applications that can't run in the cloud. Compliance requirements that mandate on-prem storage. Bandwidth limitations (if your upload speed is 10 Mbps and you have 500 GB to migrate, that's 4.5 days of constant transfer). The <a href="single-point-of-failure-audit-checklist.html">single point of failure audit</a> identifies what breaks if the migration goes wrong.</li>
+<li><strong>Estimate the real cost.</strong> Not just the subscription price &mdash; the migration labor, the parallel-run period (running both systems for 2-4 weeks), the training, and the "we didn't think of that" budget (plan 20% on top of the estimate). The <a href="annual-ops-budget-template.html">annual ops budget template</a> has the cost-comparison framework.</li>
+</ul>
+
+<h2>Phase 2: Plan (week 2)</h2>
+<ul>
+<li><strong>Choose the migration window.</strong> A weekend when the system is least used. Not a holiday weekend (support is thin). Not month-end (if it's accounting). Check the <a href="seasonal-peak-readiness-checklist.html">seasonal peak calendar</a>.</li>
+<li><strong>Write the rollback plan.</strong> If the migration fails at 11 PM Saturday, what's the plan? The old system needs to stay running in parallel until the cutover is verified. "We'll figure it out" at midnight is not a rollback plan. The <a href="change-management-checklist-small-teams.html">change management checklist</a> has the gate questions.</li>
+<li><strong>Notify everyone who will notice.</strong> Customers (if there's a downtime window), staff (who may need different login instructions Monday morning), and third parties who integrate with the system. Use the <a href="incident-communication-templates.html">communication templates</a> &mdash; a migration is a planned incident.</li>
+<li><strong>Pre-stage the data.</strong> Start the bulk data transfer during the week before the cutover. Most cloud providers support a pre-seed (initial sync) followed by a delta sync at cutover. This turns a 48-hour transfer into a 30-minute delta.</li>
+</ul>
+
+<h2>Phase 3: Migrate (the week of)</h2>
+<ul>
+<li><strong>Run the bulk transfer.</strong> Monitor the transfer rate, error count, and any file-type exclusions. Large files, files with special characters in the name, and files over 15 GB (OneDrive's limit) need special handling.</li>
+<li><strong>Verify data integrity.</strong> Compare record counts, file counts, and total size between source and destination. Then spot-check 10 random records/files &mdash; open them, verify the content matches. Record counts can match while content is corrupted (encoding issues, truncation, date format flips). The <a href="post-deploy-verification-checklist.html">post-deploy verification checklist</a> has the full verification matrix.</li>
+<li><strong>Test access from outside the office.</strong> Cloud means anywhere-access, but it also means the old "it works because you're on the LAN" assumptions are gone. Test from a phone, from home, from a coffee shop. If it doesn't work from outside, you've migrated to a system that's less accessible than the one you left.</li>
+</ul>
+
+<h2>Phase 4: Cutover (the weekend)</h2>
+<ol>
+<li><strong>Final delta sync.</strong> Copy only what changed since the bulk transfer. This should be minutes, not hours.</li>
+<li><strong>Switch DNS.</strong> If migrating email or web, update DNS records with the low TTL you set in phase 2. Plan for DNS propagation (up to 48 hours globally, though usually 1-4 hours). The <a href="ssl-certificate-expiry-runbook.html">SSL certificate runbook</a> covers the cert side of the cutover.</li>
+<li><strong>Verify in the new system.</strong> Log in as a real user (not admin). Create a test record. Edit it. Delete it. Send a test email. Upload a file. If any of these fail, consult the rollback plan.</li>
+<li><strong>Keep the old system running.</strong> Do not decommission the source for at least 2 weeks. You will need it &mdash; either for rollback or for the "we forgot to migrate that folder" discovery.</li>
+</ol>
+
+<h2>Phase 5: Verify (the 2 weeks after)</h2>
+<ul>
+<li><strong>Daily check for the first week:</strong> are users able to work? Are there support tickets that trace to the migration? Is the old system still needed (check before decommissioning)?</li>
+<li><strong>Decommission the old system.</strong> Only after 2 weeks of clean operation. Back it up first &mdash; the <a href="data-backup-strategy-checklist.html">backup strategy checklist</a> applies to the decommissioned system too. Update the <a href="service-catalog-template.html">service catalog</a> to reflect the new system.</li>
+<li><strong>Run the after-action review.</strong> What went well, what didn't, what would you do differently. The <a href="after-action-report-template.html">after-action report template</a> captures this for the next migration.</li>
+</ul>
+
+<h2>Worked example: the 20-person marketing agency</h2>
+<p>A 20-person marketing agency migrated from an on-prem file server to SharePoint Online. They pre-staged 800 GB during the week (took 3 days at 25 Mbps), ran the delta sync on Saturday morning (12 minutes), cut over DNS at 10 AM, and verified by 11 AM. Monday morning, three issues surfaced: (1) a shared scanner couldn't email to the new SharePoint library (needed a different email address format), (2) two freelancers couldn't access external-shared folders (permission model was different from NTFS), and (3) the accounting integration that pulled from a shared folder broke (the folder path changed). All three were fixable within the day because the old server was still running. The agency kept the old server for two weeks, fixed the scanner on Monday, re-shared the folders on Tuesday, and updated the accounting integration on Wednesday. Decommissioned the old server on day 15. Total migration cost: the SharePoint licenses, 8 hours of IT contractor time, and one Saturday morning. The key: they pre-staged, they kept the old system running, and they didn't decommission until everything worked.</p>
+
+<aside class="kit">
+<h2>Put this to work</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; includes cloud migration automation templates, verification scripts, and cutover checklist &mdash; $19</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all five ops kits including migration, backup, and change management &mdash; $49</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; change management and post-deploy verification &mdash; $14</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist for when migration goes wrong</li>
+</ul>
+<p class="hint">Launch week: 20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="change-management-checklist-small-teams.html">Change Management Checklist for Small Teams</a></li>
+<li><a href="data-backup-strategy-checklist.html">Data Backup Strategy Checklist</a></li>
+<li><a href="post-deploy-verification-checklist.html">Post-Deploy Verification Checklist</a></li>
+<li><a href="saas-sprawl-audit-checklist.html">SaaS Sprawl Audit Checklist</a></li>
+<li><a href="remote-work-security-checklist.html">Remote Work Security Checklist</a></li>
+<li><a href="server-decommissioning-checklist.html">Server Decommissioning Checklist</a></li>
+<li><a href="single-point-of-failure-audit-checklist.html">Single Point of Failure Audit Checklist</a></li>
+<li><a href="after-action-report-template.html">After-Action Report Template</a></li>
+</ul>
+</aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+<p>Need all of it at once? The <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> collects all five ops kits in one download &mdash; $49.</p>
+</main>
+</body>
+</html>

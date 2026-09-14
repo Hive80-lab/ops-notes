@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Backup Strategy Checklist: The 3-2-1 Rule That Survives Ransomware, Flood, and the Employee Who Quit &mdash; HIVE80lab Ops Notes</title>
+<meta name="description" content="A data backup strategy checklist for small business: the 3-2-1 rule explained, the backup types that matter, the restore test that proves the backup works, and the five questions that expose a false sense of security. Includes worked example.">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/data-backup-strategy-checklist.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
+<main>
+<article>
+<h1>Data Backup Strategy Checklist: The 3-2-1 Rule That Survives Ransomware, Flood, and the Employee Who Quit</h1>
+<p class="lede">The 3-2-1 rule explained in plain English, the backup types that actually matter, the restore test that separates a backup from a wish, and the five questions that expose a false sense of security.</p>
+
+<p>A backup that has never been restored is an archive of hope. The question is not "do we have backups?" &mdash; every business answers yes to that. The question is "when the server is gone, how long until we're back, and who knows how to do it?" This checklist answers that question for small teams that don't have a dedicated backup administrator.</p>
+
+<h2>The 3-2-1 rule &mdash; and why it's the minimum, not the goal</h2>
+<p>Three copies of your data, on two different media, with one copy offsite. It's the baseline because it covers the three ways data is lost: hardware failure (copy 2 covers it), site disaster (the offsite copy covers it), and corruption/ransomware (the air-gapped copy covers it). But the rule has a gap that small businesses fall into regularly: if all three copies are reachable by the same account, ransomware encrypts all three. The 3-2-1 rule needs a fourth element: <strong>one copy that is offline or immutable</strong>.</p>
+
+<h2>The backup types that matter</h2>
+<ul>
+<li><strong>Full backup</strong> &mdash; everything, every time. Slow, storage-heavy, but the simplest to restore from. For small teams with under 500 GB, a weekly full is practical.</li>
+<li><strong>Incremental backup</strong> &mdash; only what changed since the last backup. Fast, small, but restore requires the last full plus every increment since. One corrupt increment breaks the chain.</li>
+<li><strong>Differential backup</strong> &mdash; everything changed since the last full. Middle ground: faster than full, simpler to restore than incremental (just the full plus the latest differential).</li>
+<li><strong>Snapshot</strong> &mdash; a point-in-time copy, usually at the storage/array level. Fast, but lives on the same hardware &mdash; a snapshot is not a backup until it's copied elsewhere.</li>
+</ul>
+<p>For most small teams: weekly full + daily differential is the sweet spot. It's simple, the restore is two-step, and the storage cost is predictable. The <a href="backup-restore-drill-checklist.html">backup restore drill checklist</a> walks through the actual restore test.</p>
+
+<h2>The restore test (the part everyone skips)</h2>
+<p>Once a quarter, pick a random Tuesday, and restore the most recent backup to a machine that is not the production machine. Then <em>open files</em>. Not just "did the restore complete" &mdash; actually open a spreadsheet, a document, the database. The restore test catches: corrupted backups that "succeeded" with zero bytes, encrypted backups where the key is lost, version mismatches that make the data unusable, and the discovery that nobody knows how to initiate the restore. Schedule it on the <a href="preventive-maintenance-schedule-template.html">preventive maintenance schedule</a> so it doesn't get skipped.</p>
+
+<p>The test answers four questions:</p>
+<ol>
+<li><strong>How long did the restore take?</strong> This is your real <a href="rto-rpo-small-teams.html">RTO</a>, not the number in the BCP.</li>
+<li><strong>How much data was lost?</strong> This is your real RPO &mdash; the gap between the last successful backup and the failure point.</li>
+<li><strong>Could the person who did it explain it to someone else?</strong> If the restore requires tribal knowledge from one person, that person's holiday is your single point of failure.</li>
+<li><strong>Did the applications work after restore, or just the files?</strong> A database restore that doesn't reconnect to the application is a file copy, not a recovery.</li>
+</ol>
+
+<h2>The five questions that expose false security</h2>
+<ol>
+<li><strong>Where is the backup encryption key stored, and who can access it?</strong> If the key is on the same server as the backup, ransomware takes both. If the key is in one person's password manager and that person is on leave, the backup is unreachable. Store the key in a <a href="secrets-rotation-checklist.html">secrets management system</a> with at least two authorized people.</li>
+<li><strong>How long do we retain backups, and can we restore from 30 days ago?</strong> Ransomware can sit dormant for weeks before activating. If your retention is 14 days, the clean backup may already be gone. The <a href="ransomware-recovery-checklist.html">ransomware recovery checklist</a> covers the containment side; the backup strategy is what makes recovery possible.</li>
+<li><strong>What happens to cloud-synced files (OneDrive, Google Drive, Dropbox) during ransomware?</strong> Sync is not backup. Ransomware encrypts local files, the sync client uploads the encrypted versions, and now your "cloud backup" is also encrypted. Pause sync immediately at the first sign of infection &mdash; the <a href="phishing-response-checklist-small-teams.html">phishing response checklist</a> covers the first-hour actions.</li>
+<li><strong>Who is the backup vendor's support contact, and have we ever called them?</strong> The day you need support is not the day to find the phone number. Test the support path during a quarterly review, not during an incident.</li>
+<li><strong>If the office burned down tonight, where is the offsite backup, and how do we access it?</strong> The offsite copy needs to be accessible without anything that was in the office. If the credentials are on the office desktop, the offsite copy is offsite and unreachable.</li>
+</ol>
+
+<h2>Worked example: the law firm that lost three months</h2>
+<p>A 15-person law firm had "backups" &mdash; a NAS in the office, synced to a cloud storage bucket, with 30-day retention. They felt secure. When ransomware hit on a Thursday evening, it encrypted the NAS (reachable via mapped drive), the sync client uploaded the encrypted files to the cloud bucket (overwriting the clean copies), and by Friday morning, both copies were encrypted. The 30-day retention meant 30 days of encrypted files. The firm lost three months of matter files because the last clean backup was from a quarterly full that had run 90 days earlier &mdash; the daily incrementals were all post-infection. The fix: an air-gapped external drive that was connected only during the backup window and disconnected immediately after, plus immutable cloud storage (WORM &mdash; write once, read many) that cannot be overwritten even by an authenticated account. The air-gapped copy cost $200. The data loss cost them three months of billable work and a client relationship.</p>
+
+<aside class="kit">
+<h2>Put this to work</h2>
+<ul>
+<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2</a> &mdash; includes the backup strategy template, restore test runbook, and ransomware recovery playbook &mdash; $27</li>
+<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all five ops kits including backup, incident response, and BCP &mdash; $49</li>
+<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free incident quick-start checklist</li>
+<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; automated backup verification and restore-test scheduling &mdash; $19</li>
+</ul>
+<p class="hint">Launch week: 20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p>
+</aside>
+
+<aside class="related">
+<h2>Related notes</h2>
+<ul>
+<li><a href="ransomware-recovery-checklist.html">Ransomware Recovery Checklist (First 48 Hours)</a></li>
+<li><a href="backup-restore-drill-checklist.html">Backup Restore Drill Checklist</a></li>
+<li><a href="disaster-recovery-plan-template-small-teams.html">Disaster Recovery Plan Template for Small Teams</a></li>
+<li><a href="secrets-rotation-checklist.html">Secrets Rotation Checklist</a></li>
+<li><a href="server-hardening-checklist-small-teams.html">Server Hardening Checklist for Small Teams</a></li>
+<li><a href="business-continuity-plan-template-small-business.html">Business Continuity Plan Template for Small Business</a></li>
+<li><a href="rto-rpo-small-teams.html">RTO and RPO for Small Teams</a></li>
+<li><a href="single-point-of-failure-audit-checklist.html">Single Point of Failure Audit Checklist</a></li>
+</ul>
+</aside>
+<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
+</article>
+<p>Need all of it at once? The <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> collects all five ops kits in one download &mdash; $49.</p>
+</main>
+</body>
+</html>
