@@ -1580,4 +1580,29 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/business-continuity-plan-template-small-business</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/change-management-checklist-small-teams</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/data-backup-strategy-checklist</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/cloud-migration-checklist-small-business</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hive80-lab.github.io/ops-notes/email-security-checklist-small-business</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
