@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On-Call Runbook Template for Small DevOps Teams (Free 2026)</title>
+    <meta name="description" content="Free on-call runbook template for small DevOps teams. What to do when paged, escalation paths, common fixes, and post-incident steps.">
+    <meta name="keywords" content="on-call runbook, devops runbook, incident response template, on-call checklist, operations runbook">
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/on-call-runbook-template-2026">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1a1a2e; max-width: 720px; margin: 0 auto; padding: 20px; }
+        h1 { font-size: 1.8em; margin: 20px 0 10px; color: #16213e; }
+        h2 { font-size: 1.4em; margin: 25px 0 10px; color: #16213e; }
+        h3 { font-size: 1.1em; margin: 15px 0 8px; color: #16213e; }
+        p { margin: 10px 0; }
+        ol { margin: 10px 0 10px 25px; }
+        li { margin: 5px 0; }
+        .checklist { background: #f8f9fa; border-left: 4px solid #00d4ff; padding: 15px 20px; margin: 15px 0; border-radius: 4px; }
+        .cta { background: linear-gradient(135deg, #00d4ff, #0099cc); color: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; }
+        .cta a { display: inline-block; background: white; color: #0099cc; padding: 10px 25px; border-radius: 6px; text-decoration: none; font-weight: bold; margin: 10px 5px; }
+        .free-cta { background: #28a745; }
+        .free-cta a { color: #28a745; }
+        .meta { color: #666; font-size: 0.9em; }
+        .tag { background: #e9ecef; padding: 3px 10px; border-radius: 12px; font-size: 0.85em; display: inline-block; margin: 2px; }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px 20px; margin: 15px 0; border-radius: 4px; }
+        code { background: #f1f1f1; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+        .section { border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin: 12px 0; }
+    </style>
+</head>
+<body>
+    <h1>On-Call Runbook Template for Small DevOps Teams</h1>
+    <p class="meta">Updated 2026 - 12 min read - Template included</p>
+    <div><span class="tag">#DevOps</span><span class="tag">#OnCall</span><span class="tag">#Runbook</span><span class="tag">#Operations</span></div>
+    <p>When the pager goes off at 3am, you need a runbook that tells you exactly what to do. Not a 200-page document. A one-page runbook that gets you from "alert" to "resolved" fast.</p>
+    <h2>Section 1: When You Get Paged</h2>
+    <div class="checklist"><ol>
+        <li><strong>Acknowledge the page within 5 minutes.</strong></li>
+        <li><strong>Check the alert details:</strong> What service? What metric?</li>
+        <li><strong>Check the dashboard:</strong> Real issue or fluke?</li>
+        <li><strong>Check recent changes:</strong> Deployments in last 2 hours?</li>
+        <li><strong>Determine severity:</strong> SEV1, SEV2, or SEV3.</li>
+        <li><strong>Create an incident channel</strong> if SEV1 or SEV2.</li>
+    </ol></div>
+    <h2>Section 2: Quick Fixes by Symptom</h2>
+    <div class="section"><h3>Service is Down (HTTP 502/503)</h3><ol><li>Check if process is running</li><li>Check recent deployments</li><li>Roll back if needed</li><li>Check resource limits</li><li>Check logs</li><li>Restart if needed</li></ol></div>
+    <div class="section"><h3>High Error Rate (5xx)</h3><ol><li>Check error logs for patterns</li><li>Check database connections</li><li>Check external API status pages</li><li>Check for recent config changes</li><li>Roll back if bad deploy</li></ol></div>
+    <div class="section"><h3>High Latency</h3><ol><li>Check CPU/memory usage</li><li>Check database slow queries</li><li>Check network/DNS</li><li>Check queue depth</li><li>Scale up if resource-constrained</li></ol></div>
+    <div class="section"><h3>Database Issues</h3><ol><li>Check connection pool</li><li>Check slow queries</li><li>Check disk space</li><li>Check replication lag</li><li>Check for locks</li><li>Kill long-running queries if blocking</li></ol></div>
+    <div class="section"><h3>Disk Space Full</h3><ol><li>Check disk usage</li><li>Find large files</li><li>Check log files</li><li>Rotate/compress old logs</li><li>Clean up temp files</li></ol></div>
+    <h2>Section 3: Escalation</h2>
+    <table style="width:100%; border-collapse: collapse; margin: 15px 0;"><tr style="background: #f8f9fa;"><th style="border: 1px solid #ddd; padding: 8px;">Severity</th><th style="border: 1px solid #ddd; padding: 8px;">Who</th><th style="border: 1px solid #ddd; padding: 8px;">Response</th></tr><tr><td style="border: 1px solid #ddd; padding: 8px;">SEV1</td><td style="border: 1px solid #ddd; padding: 8px;">On-call + Lead + CTO</td><td style="border: 1px solid #ddd; padding: 8px;">5 min</td></tr><tr><td style="border: 1px solid #ddd; padding: 8px;">SEV2</td><td style="border: 1px solid #ddd; padding: 8px;">On-call + Lead</td><td style="border: 1px solid #ddd; padding: 8px;">15 min</td></tr><tr><td style="border: 1px solid #ddd; padding: 8px;">SEV3</td><td style="border: 1px solid #ddd; padding: 8px;">On-call</td><td style="border: 1px solid #ddd; padding: 8px;">Next day</td></tr></table>
+    <h2>Section 4: Communication Templates</h2>
+    <div class="checklist"><p><code>[SEV2] [Service] experiencing elevated error rates<br>Started: [timestamp]<br>Impact: [affected]<br>Status: Investigating<br>Next update: [15 min]</code></p></div>
+    <h2>Section 5: Post-Incident</h2>
+    <div class="checklist"><ol><li>Schedule post-mortem within 48h</li><li>Write timeline of events</li><li>Identify root cause and contributing factors</li><li>Create action items with owners</li><li>Update this runbook with learnings</li></ol></div>
+    <div class="warning"><strong>Pro tip:</strong> Keep this runbook next to your pager. Print it. Pin it. Use it.</div>
+    <h2>Get the Complete Runbook</h2>
+    <div class="cta"><h3>Ops Starter Kit - Incident Response</h3><p>Complete runbook, templates, checklists. $14 (or $7 with LAUNCH50).</p><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Get the Kit ($14)</a></div>
+    <div class="cta free-cta"><h3>Free: First 30 Minutes Checklist</h3><p>The essential companion to this runbook.</p><a href="https://hive80lab.gumroad.com/l/first-30-minutes">Download Free</a></div>
+    <p>Use code <code>LAUNCH50</code> for 50% off.</p>
+    <ul><li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit-vol-2">Ops Starter Kit Vol. 2 ($27)</a></li><li><a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7 ($19)</a></li><li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle ($49)</a></li></ul>
+    <hr><p class="meta">Hive80 Lab - <a href="https://hive80lab.gumroad.com">Visit our store</a></p>
+</body>
+</html>
