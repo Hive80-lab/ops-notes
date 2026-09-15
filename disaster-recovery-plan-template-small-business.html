@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disaster Recovery Plan Template for Small Business — Free Checklist</title>
+<meta name="description" content="A practical disaster recovery plan template for small businesses. Step-by-step checklist, RTO/RPO guidance, and a free downloadable template to get started today.">
+<meta name="keywords" content="disaster recovery plan template, small business disaster recovery, DR plan checklist, business continuity, RTO RPO">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/disaster-recovery-plan-template-small-business.html">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:800px;margin:0 auto;padding:20px;line-height:1.6;color:#1a1a1a}
+h1{font-size:1.8em;border-bottom:2px solid #0066cc;padding-bottom:10px}
+h2{font-size:1.4em;margin-top:2em;color:#0066cc}
+h3{font-size:1.2em;margin-top:1.5em}
+.checklist{background:#f0f7ff;border-left:4px solid #0066cc;padding:15px 20px;margin:20px 0;border-radius:4px}
+.checklist ul{padding-left:20px}
+.checklist li{margin:8px 0}
+.cta{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:20px;margin:25px 0}
+.cta h3{margin-top:0;color:#856404}
+.btn{display:inline-block;background:#0066cc;color:#fff;padding:10px 25px;border-radius:5px;text-decoration:none;font-weight:bold;margin:5px}
+.btn:hover{background:#0052a3}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em}
+table{width:100%;border-collapse:collapse;margin:20px 0}
+th,td{border:1px solid #ddd;padding:10px;text-align:left}
+th{background:#0066cc;color:#fff}
+</style>
+</head>
+<body>
+<h1>Disaster Recovery Plan Template for Small Business</h1>
+<p><strong>Free checklist + step-by-step guide.</strong> A disaster recovery plan doesn't need to be 80 pages. It needs to answer four questions: what breaks, who fixes it, how fast, and from what backup. Here's the template small teams actually use.</p>
+
+<h2>What a Disaster Recovery Plan Actually Is</h2>
+<p>A disaster recovery (DR) plan is the document you open at 2am when something critical has failed. It tells you, in order: what to do first, who to call, where the backups are, and how long each step should take. If your DR plan takes more than 60 seconds to find and 10 minutes to start executing, it's too complicated.</p>
+
+<p>Most small businesses skip DR planning because the templates they find are enterprise-grade: 40-page documents with risk matrices, RACI charts, and vendor SLAs. You don't need that. You need a one-page plan that any team member can execute at 2am.</p>
+
+<h2>The Four Questions Your DR Plan Must Answer</h2>
+
+<div class="checklist">
+<h3>1. What breaks? (Your critical systems inventory)</h3>
+<p>List every system your business depends on, ranked by how fast its loss costs you money:</p>
+<ul>
+<li>☐ Website / e-commerce platform — <em>how long can it be down before revenue stops?</em></li>
+<li>☐ Email / communications — <em>how long before customers notice?</em></li>
+<li>☐ CRM / customer database — <em>how long before sales can't function?</em></li>
+<li>☐ Accounting / billing system — <em>how long before payroll is at risk?</em></li>
+<li>☐ File storage / documents — <em>how long before work stops?</em></li>
+<li>☐ Custom applications / APIs — <em>how long before downstream systems fail?</em></li>
+</ul>
+</div>
+
+<div class="checklist">
+<h3>2. Who fixes it? (Your response team)</h3>
+<p>For each critical system, name one person who owns recovery:</p>
+<ul>
+<li>☐ Primary contact (name, phone, email)</li>
+<li>☐ Secondary contact (name, phone, email)</li>
+<li>☐ External vendor support (name, contract number, phone)</li>
+<li>☐ Escalation path (who decides to declare a disaster vs. an incident?)</li>
+</ul>
+<p><strong>The rule:</strong> if only one person knows how to recover a system, that system has a single point of failure — the person.</p>
+</div>
+
+<div class="checklist">
+<h3>3. How fast? (RTO and RPO)</h3>
+<p>For each critical system, write two numbers:</p>
+<table>
+<tr><th>System</th><th>RTO (Recovery Time Objective)</th><th>RPO (Recovery Point Objective)</th></tr>
+<tr><td>Website</td><td>4 hours</td><td>1 hour</td></tr>
+<tr><td>Email</td><td>8 hours</td><td>24 hours</td></tr>
+<tr><td>CRM</td><td>4 hours</td><td>1 hour</td></tr>
+<tr><td>Accounting</td><td>24 hours</td><td>24 hours</td></tr>
+</table>
+<p><strong>RTO</strong> = how long can it be down? <strong>RPO</strong> = how much data can you lose? These two numbers drive every backup and recovery decision.</p>
+</div>
+
+<div class="checklist">
+<h3>4. From what backup? (Your recovery source)</h3>
+<p>For each system, document where the recovery comes from:</p>
+<ul>
+<li>☐ Backup location (cloud, local, offsite)</li>
+<li>☐ Backup frequency (real-time, hourly, daily, weekly)</li>
+<li>☐ Last tested recovery date — <em>if you haven't tested recovery, you don't have a backup, you have an archive</em></li>
+<li>☐ Recovery steps (the exact commands or clicks to restore)</li>
+<li>☐ Verification steps (how you confirm the recovery worked)</li>
+</ul>
+</div>
+
+<h2>The 30-Minute DR Plan Template</h2>
+<p>Here's the minimum viable DR plan. Fill it in, print it, and tape it to the wall next to your server (or your laptop):</p>
+
+<div class="checklist">
+<h3>Section 1: Declaration</h3>
+<ul>
+<li>☐ Who declares a disaster? (name + role)</li>
+<li>☐ What triggers a disaster declaration? (system down > X hours, data loss > Y, security breach)</li>
+<li>☐ How is the team notified? (group chat, phone tree, email)</li>
+</ul>
+<h3>Section 2: System-by-System Recovery</h3>
+<p>For each critical system (one block each):</p>
+<ul>
+<li>☐ System name</li>
+<li>☐ Owner (primary + backup)</li>
+<li>☐ RTO / RPO</li>
+<li>☐ Backup location and how to access it</li>
+<li>☐ Recovery steps (numbered, executable)</li>
+<li>☐ Verification command or check</li>
+<li>☐ Vendor support contact (if applicable)</li>
+</ul>
+<h3>Section 3: Communication</h3>
+<ul>
+<li>☐ Internal communication template (who, what, when, next update)</li>
+<li>☐ Customer communication template (status page, email, social)</li>
+<li>☐ Stakeholder notification list</li>
+</ul>
+<h3>Section 4: Post-Recovery</h3>
+<ul>
+<li>☐ All-clear criteria</li>
+<li>☐ Post-mortem deadline (within 2 business days)</li>
+<li>☐ Plan update trigger (what did we learn?)</li>
+</ul>
+</div>
+
+<h2>The One Thing That Kills DR Plans</h2>
+<p>Untested recovery. A backup that has never been restored is a hope, not a backup. The #1 cause of extended outages in small businesses is discovering, mid-disaster, that the backup is corrupted, incomplete, or from three months ago.</p>
+
+<p><strong>Test your recovery every quarter.</strong> Pick one system, restore it to a test environment, and verify it works. If you can't do a full restore in your RTO during a test, you won't do it during a real disaster.</p>
+
+<div class="cta">
+<h3>📋 Get the Full Disaster Recovery Template</h3>
+<p>Our <strong>Ops Starter Kit</strong> includes a complete DR plan template, incident response checklists, and recovery verification forms — all designed for small teams with no dedicated DR staff.</p>
+<p>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-starter-kit">Get the Ops Starter Kit ($19)</a>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Get the Mega Bundle (All 5 Kits, $49)</a>
+</p>
+<p style="font-size:0.9em;color:#666;">30-day money-back guarantee. Instant download. No subscription.</p>
+</div>
+
+<h2>Common Questions</h2>
+<h3>How often should I update my DR plan?</h3>
+<p>Review it quarterly. Update it immediately after any system change (new vendor, new infrastructure, team member departure). The plan is useless if it references systems you no longer use or people who've left.</p>
+
+<h3>Do I need a DR plan if I'm fully in the cloud?</h3>
+<p>Yes. Cloud providers fail. AWS, Google Cloud, and Azure have all had multi-hour regional outages. Your DR plan for cloud systems should document: which region you're in, your failover region, and how to trigger the failover.</p>
+
+<h3>What's the difference between a DR plan and a business continuity plan?</h3>
+<p>A DR plan covers IT system recovery. A business continuity plan covers the whole business: where employees work if the office is inaccessible, how payroll runs if accounting is down, how customers are served if the primary tool is unavailable. Your DR plan is a subset of your BCP.</p>
+
+<h3>How much should a small business spend on DR?</h3>
+<p>Less than you think. The free tools — automated cloud backups, health checks, and a written plan — cover 90% of small business DR needs. The expensive part is not having a plan when you need one.</p>
+
+<div class="cta">
+<h3>🚀 Ready to Build Your Full Ops Stack?</h3>
+<p>Get all our operations templates in one download:</p>
+<p>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Hive80 Ops Mega Bundle — $49</a>
+</p>
+<p style="font-size:0.9em;color:#666;">Includes: Ops Starter Kit, Ops Starter Kit Vol. 2, Automation Starter Pack, Agent Ops 24/7, and Ops Field Cards.</p>
+</div>
+
+<hr>
+<p style="font-size:0.85em;color:#999;">Hive80 Lab — Operations templates for small teams. <a href="https://hive80lab.gumroad.com">Visit our store</a> | <a href="https://hive80-lab.github.io/ops-notes/">Browse all templates</a></p>
+</body>
+</html>

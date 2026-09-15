@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Operations Runbook Template for Small Teams — Free Guide</title>
+<meta name="description" content="A practical IT operations runbook template for small teams. Covers daily ops, on-call procedures, system documentation, and incident response. Free checklist included.">
+<meta name="keywords" content="IT operations runbook, ops runbook template, small team operations, IT documentation, on-call runbook">
+<link rel="canonical" href="https://hive80-lab.github.io/ops-notes/it-operations-runbook-template.html">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:800px;margin:0 auto;padding:20px;line-height:1.6;color:#1a1a1a}
+h1{font-size:1.8em;border-bottom:2px solid #0066cc;padding-bottom:10px}
+h2{font-size:1.4em;margin-top:2em;color:#0066cc}
+h3{font-size:1.2em;margin-top:1.5em}
+.checklist{background:#f0f7ff;border-left:4px solid #0066cc;padding:15px 20px;margin:20px 0;border-radius:4px}
+.checklist ul{padding-left:20px}
+.checklist li{margin:8px 0}
+.cta{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:20px;margin:25px 0}
+.cta h3{margin-top:0;color:#856404}
+.btn{display:inline-block;background:#0066cc;color:#fff;padding:10px 25px;border-radius:5px;text-decoration:none;font-weight:bold;margin:5px}
+.btn:hover{background:#0052a3}
+.section{border:1px solid #ddd;border-radius:8px;padding:20px;margin:20px 0}
+.section h3{color:#0066cc}
+</style>
+</head>
+<body>
+<h1>IT Operations Runbook Template for Small Teams</h1>
+<p><strong>Free template + step-by-step guide.</strong> An IT operations runbook is the document that lets anyone on your team keep things running — not just the person who built it. Here's the template small teams actually use, with every section filled in.</p>
+
+<h2>What an IT Operations Runbook Actually Is</h2>
+<p>A runbook is a collection of procedures: what to do when things are normal, what to do when things break, and how to tell the difference. It's the difference between "only Sarah knows how to restart the database" and "anyone on the team can follow the runbook and restart the database correctly."</p>
+
+<p>The goal isn't to document everything. The goal is to document the things that happen repeatedly and the things that happen at 2am — because those are the things that go wrong when nobody's thinking clearly.</p>
+
+<h2>The Six Sections Every Runbook Needs</h2>
+
+<div class="section">
+<h3>Section 1: System Inventory</h3>
+<p>What exists, where it lives, and who owns it. One row per system.</p>
+<div class="checklist">
+<ul>
+<li>☐ System name</li>
+<li>☐ What it does (one sentence)</li>
+<li>☐ Where it's hosted (provider, region, URL)</li>
+<li>☐ Owner (primary + backup)</li>
+<li>☐ Dependencies (what else needs to be up for this to work?)</li>
+<li>☐ Monitoring: what alerts exist? who receives them?</li>
+<li>☐ Last reviewed date</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h3>Section 2: Daily Operations</h3>
+<p>The things that happen every day, every week, every month. If it's not written down, it's not happening consistently.</p>
+<div class="checklist">
+<h4>Daily</h4>
+<ul>
+<li>☐ Check monitoring dashboard (what time, by whom)</li>
+<li>☐ Review overnight alerts (any that weren't auto-resolved?)</li>
+<li>☐ Verify backups completed (check the log, not the schedule)</li>
+<li>☐ Check disk space on critical systems</li>
+<li>☐ Review error logs for new patterns</li>
+</ul>
+<h4>Weekly</h4>
+<ul>
+<li>☐ Apply security patches (schedule, test, deploy)</li>
+<li>☐ Review access logs for anomalies</li>
+<li>☐ Test one backup recovery (rotate through systems)</li>
+<li>☐ Update system inventory if anything changed</li>
+</ul>
+<h4>Monthly</h4>
+<ul>
+<li>☐ Review and rotate API keys / credentials</li>
+<li>☐ Review vendor contracts and renewals</li>
+<li>☐ Run the 10-minute automation review</li>
+<li>☐ Update the runbook with anything that changed</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h3>Section 3: On-Call Procedures</h3>
+<p>What happens when someone gets paged at 2am. The runbook's most important section.</p>
+<div class="checklist">
+<ul>
+<li>☐ On-call schedule (who's on call this week? rotation?)</li>
+<li>☐ Alert routing: which alerts page the phone vs. go to email?</li>
+<li>☐ First response SLA: how fast should the on-call person acknowledge?</li>
+<li>☐ Escalation: when and how to escalate to the next person?</li>
+<li>☐ "Wake the boss" criteria: what warrants calling leadership at 3am?</li>
+<li>☐ Handoff: how does the on-call person pass unresolved issues to the next shift?</li>
+</ul>
+</div>
+<p><strong>The shift handover log:</strong> A 10-minute sheet at the end of each shift — what happened, what's in progress, what the next shift needs to watch. This is the single most underrated ops document.</p>
+</div>
+
+<div class="section">
+<h3>Section 4: Incident Response Procedures</h3>
+<p>For each common incident type, a numbered procedure. Not a essay — a checklist.</p>
+<div class="checklist">
+<h4>System Down</h4>
+<ol>
+<li>☐ Acknowledge the alert (stop the pager)</li>
+<li>☐ Check the monitoring dashboard for scope (one system or multiple?)</li>
+<li>☐ Post in the incident channel: "Investigating [system] down since [time]"</li>
+<li>☐ Check recent changes (deploy log, config changes, vendor status page)</li>
+<li>☐ Follow the system-specific recovery procedure (link to it)</li>
+<li>☐ Verify recovery (run the smoke test)</li>
+<li>☐ Post all-clear and update the incident log</li>
+</ol>
+<h4>Security Incident</h4>
+<ol>
+<li>☐ Isolate the affected system (do NOT power off — preserve evidence)</li>
+<li>☐ Activate the incident response team</li>
+<li>☐ Preserve logs (copy before they rotate)</li>
+<li>☐ Assess scope: what data, what systems, what users?</li>
+<li>☐ Contact legal/insurance if data breach is suspected</li>
+<li>☐ Document everything (timeline, actions, decisions)</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<h3>Section 5: System-Specific Procedures</h3>
+<p>One page per critical system. The format:</p>
+<div class="checklist">
+<ul>
+<li>☐ System name and description</li>
+<li>☐ How to check if it's healthy (the exact command or URL)</li>
+<li>☐ How to restart it (step by step, with the exact commands)</li>
+<li>☐ How to check logs (where are they, what to look for)</li>
+<li>☐ Common failure modes and fixes (the top 3)</li>
+<li>☐ How to roll back a deployment (the exact steps)</li>
+<li>☐ Vendor support contact (if managed service)</li>
+<li>☐ Dependencies: what else needs to be up?</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h3>Section 6: Contact Directory</h3>
+<p>Everyone and everything you might need to reach at 2am.</p>
+<div class="checklist">
+<ul>
+<li>☐ Team members (name, role, phone, email, timezone)</li>
+<li>☐ Vendor support (company, contract #, phone, hours, SLA)</li>
+<li>☐ Escalation contacts (management, legal, insurance)</li>
+<li>☐ Customer communication owners (who writes the status page?)</li>
+</ul>
+</div>
+</div>
+
+<h2>How to Start (When You Have Nothing)</h2>
+<p>If you're starting from zero, don't try to write the whole runbook at once. Start with the one thing that will save you the most pain:</p>
+
+<ol>
+<li><strong>Write the system inventory first.</strong> 30 minutes. List every system, where it lives, who owns it. This alone prevents 50% of ops confusion.</li>
+<li><strong>Pick the system that breaks most often.</strong> Write its recovery procedure. One page. Test it by having someone else follow it.</li>
+<li><strong>Write the on-call schedule.</strong> Who's on call, how they're reached, when they escalate. Even if it's just two people.</li>
+<li><strong>Add one procedure per week.</strong> The runbook grows organically. Don't try to write it all in one sitting.</li>
+</ol>
+
+<h2>The Runbook Anti-Patterns</h2>
+<div class="checklist">
+<ul>
+<li>❌ <strong>The 200-page runbook.</strong> Nobody reads it. Keep each procedure to one page.</li>
+<li>❌ <strong>The runbook that's never tested.</strong> If someone else can't follow it and get the right result, it's not a runbook — it's a diary.</li>
+<li>❌ <strong>The runbook that's out of date.</strong> Systems change. If the runbook references servers you decommissioned 6 months ago, it's worse than no runbook.</li>
+<li>❌ <strong>The runbook only one person understands.</strong> If only the author can use it, the runbook has failed its purpose.</li>
+</ul>
+</div>
+
+<div class="cta">
+<h3>📋 Get the Complete Runbook Template Pack</h3>
+<p>Our <strong>Ops Starter Kit</strong> includes a full IT operations runbook template, incident response checklists, on-call procedures, and system documentation forms — all designed for small teams.</p>
+<p>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-starter-kit">Get the Ops Starter Kit — $19</a>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Get the Mega Bundle (All 5 Kits) — $49</a>
+</p>
+<p style="font-size:0.9em;color:#666;">30-day money-back guarantee. Instant download. No subscription.</p>
+</div>
+
+<h2>Common Questions</h2>
+<h3>How long should a runbook be?</h3>
+<p>Each procedure should fit on one page. The total runbook length depends on how many systems you have, but if any single procedure exceeds one page, it's too complex. Break it down or simplify the system.</p>
+
+<h3>Should the runbook be in a wiki or a document?</h3>
+<p>Either works, as long as it's searchable and editable by the team. The key: it needs to be accessible during an outage. If your runbook is in the same system that's down, you have a problem. Keep an offline copy.</p>
+
+<h3>How often should I update the runbook?</h3>
+<p>Update it whenever something changes (new system, new procedure, team change). Review it monthly. Test one procedure per month by having someone who didn't write it follow it step by step.</p>
+
+<div class="cta">
+<h3>🚀 Build Your Complete Ops Stack</h3>
+<p>Everything you need in one download:</p>
+<p>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Hive80 Ops Mega Bundle — $49</a>
+</p>
+<p style="font-size:0.9em;color:#666;">Includes: Ops Starter Kit, Vol. 2, Automation Pack, Agent Ops 24/7, and Ops Field Cards.</p>
+</div>
+
+<hr>
+<p style="font-size:0.85em;color:#999;">Hive80 Lab — Operations templates for small teams. <a href="https://hive80lab.gumroad.com">Visit our store</a> | <a href="https://hive80-lab.github.io/ops-notes/">Browse all templates</a></p>
+</body>
+</html>

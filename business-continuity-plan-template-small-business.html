@@ -1,80 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Business Continuity Plan Template for Small Business: The One-Page BCP That Actually Works &mdash; HIVE80lab Ops Notes</title>
-<meta name="description" content="A business continuity plan template for small business: the five sections that matter (contacts, dependencies, critical processes, recovery steps, test schedule), the single page that fits on the wall, and the quarterly test that keeps it honest. Includes worked example.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Continuity Plan Template for Small Business — Free Guide</title>
+<meta name="description" content="A practical business continuity plan template for small businesses. Covers workforce disruption, system failure, vendor loss, and crisis communication. Free checklist included.">
+<meta name="keywords" content="business continuity plan template, small business BCP, continuity planning, crisis management, business resilience">
 <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/business-continuity-plan-template-small-business.html">
-<link rel="stylesheet" href="style.css">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:800px;margin:0 auto;padding:20px;line-height:1.6;color:#1a1a1a}
+h1{font-size:1.8em;border-bottom:2px solid #0066cc;padding-bottom:10px}
+h2{font-size:1.4em;margin-top:2em;color:#0066cc}
+h3{font-size:1.2em;margin-top:1.5em}
+.checklist{background:#f0f7ff;border-left:4px solid #0066cc;padding:15px 20px;margin:20px 0;border-radius:4px}
+.checklist ul{padding-left:20px}
+.checklist li{margin:8px 0}
+.cta{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:20px;margin:25px 0}
+.cta h3{margin-top:0;color:#856404}
+.btn{display:inline-block;background:#0066cc;color:#fff;padding:10px 25px;border-radius:5px;text-decoration:none;font-weight:bold;margin:5px}
+.btn:hover{background:#0052a3}
+.scenario{border:1px solid #ddd;border-radius:8px;padding:20px;margin:20px 0}
+.scenario h3{color:#0066cc}
+</style>
 </head>
 <body>
-<header><a href="index.html">HIVE80lab &mdash; Ops notes</a></header>
-<main>
-<article>
-<h1>Business Continuity Plan Template for Small Business: The One-Page BCP That Actually Works</h1>
-<p class="lede">The five sections that matter, the single page that fits on the wall beside the fire extinguisher, and the quarterly test that turns a document into a plan.</p>
+<h1>Business Continuity Plan Template for Small Business</h1>
+<p><strong>Free template + step-by-step guide.</strong> A business continuity plan (BCP) answers one question: when the worst happens, how does the business keep running? Here's the template small teams use — no consultants, no 200-page documents, just the decisions that matter.</p>
 
-<p>Most small businesses write a business continuity plan once &mdash; for the insurer, for the landlord, for the compliance checkbox &mdash; and then file it where nobody looks until the day it's needed, at which point the key person is unreachable, the passwords are in their head, and the "plan" is a Word document on a server that's currently down. The fix is not a bigger document. It's a one-page plan that fits on the wall, names the people who act, and gets tested every quarter so the muscle memory exists before the emergency does.</p>
+<h2>What a Business Continuity Plan Actually Does</h2>
+<p>A BCP is the document your team opens when something fundamental has gone wrong — not just a server crash, but a situation that disrupts how the business operates. Office inaccessible. Key person unavailable. Vendor goes dark. Legal crisis. The BCP tells you what to do in the first hour, the first day, and the first week.</p>
 
-<h2>The one-page BCP &mdash; five sections</h2>
+<p>The mistake most small businesses make: treating the BCP as a compliance document. It's not. It's an operational tool. If your team can't pick it up and act on it in 10 minutes, it's too long.</p>
 
-<h3>1. Who acts (the contact tree)</h3>
-<p>Not an org chart &mdash; a decision tree. Who declares the incident? Who has authority to spend money on emergency repairs, cloud failover, or a temp venue? Who is the backup for each role? List mobile numbers, not desk phones. Include at least one out-of-area contact (cell towers go down in storms). The <a href="incident-command-roles-small-teams.html">incident command roles</a> page has the full role definitions; for the one-pager, you need names, numbers, and the order they get called.</p>
+<h2>The Four Disruptions Your BCP Must Cover</h2>
 
-<h3>2. What breaks first (dependency map)</h3>
-<p>List the three to five things that, if they stop, the business stops. For most small businesses: internet/phone, the core application (POS, booking system, ERP), power, and key personnel. For each, note: how long can we last without it (the <a href="rto-rpo-small-teams.html">RTO</a>), what's the immediate workaround, and who owns the fix. A restaurant's POS going down for 30 minutes is survivable with pen-and-paper; the same 30 minutes for an online retailer during a flash sale is a disaster. The dependency map tells you which minutes matter.</p>
-
-<h3>3. Critical processes (the keep-running list)</h3>
-<p>Not every process &mdash; the ones that generate revenue or have a legal deadline. For each: what's the manual fallback, where are the instructions, and who can run them. If your booking system is down, can the front desk take walk-ins with a clipboard? If payroll can't run on Thursday, what's the latest it can run before Friday close? The <a href="runbook-template.html">runbook template</a> gives you the structure for documenting each fallback; the BCP just needs to name them.</p>
-
-<h3>4. Recovery steps (the first 4 hours)</h3>
-<p>The first four hours after a disruption are where plans succeed or fail. List the steps in order: declare, assess, communicate, stabilize, recover. Who calls the ISP? Who calls the customers? Who posts the status page? The <a href="first-30-minutes-incident-response.html">First 30 Minutes</a> checklist covers the initial response; the BCP extends it to the first half-day. Include the <a href="incident-communication-templates.html">communication templates</a> so nobody is writing a customer email from scratch at 2 AM.</p>
-
-<h3>5. Test schedule (the part everyone skips)</h3>
-<p>A plan that has never been tested is a wish. Schedule a <a href="tabletop-exercise-failure-points.html">tabletop exercise</a> every quarter &mdash; 30 minutes, one scenario, the people named in section 1. Walk through: "The server room flooded overnight. It's 7 AM. What do we do?" If the answer is "call Dave" and Dave left the company in March, the test just earned its keep. Update the plan after every test and every real incident &mdash; the <a href="after-action-report-template.html">after-action report</a> feeds straight back into section 1.</p>
-
-<h2>What kills BCPs in small businesses</h2>
+<div class="scenario">
+<h3>Scenario 1: Workforce Disruption</h3>
+<p><em>Office inaccessible, key person unavailable, mass illness, evacuation.</em></p>
+<div class="checklist">
 <ul>
-<li><strong>The plan is 40 pages.</strong> Nobody reads 40 pages in an emergency. One page on the wall beats 40 pages in a binder. The detail goes in the <a href="runbook-template.html">runbooks</a>; the BCP is the index.</li>
-<li><strong>It names people, not roles.</strong> "Call Sarah" stops working when Sarah leaves. "Call the operations lead (currently Sarah)" survives a staff change. Review the names every quarter.</li>
-<li><strong>It's never been tested.</strong> The first time you read the plan should not be the first time you need it. A 30-minute tabletop every quarter is enough. The <a href="simulation-preparation-checklist.html">simulation preparation checklist</a> has the scenario library.</li>
-<li><strong>It doesn't account for the person who wrote it being unavailable.</strong> If the IT manager wrote the plan and the IT manager is the one in hospital, the plan needs to be readable by someone who isn't the IT manager. Plain English, no jargon, no acronyms without expansion.</li>
-<li><strong>It covers IT and forgets the building.</strong> A burst pipe above the server rack is not an IT problem; it's a facilities problem that becomes an IT problem. The BCP covers the business, not just the technology. Include <a href="power-failure-it-checklist.html">power failure</a>, physical access, and <a href="server-room-environment-monitoring.html">environmental monitoring</a>.</li>
+<li>☐ Where does the team work if the office is closed? (remote, secondary site, home)</li>
+<li>☐ Who has access to critical systems remotely? (list names + systems)</li>
+<li>☐ How does the team communicate? (group chat, phone tree, email alias)</li>
+<li>☐ What's the minimum team size to keep operating? (who's essential?)</li>
+<li>☐ Cross-training: who can cover for the missing person? (documented, not assumed)</li>
+<li>☐ Payroll continuity: how does payroll run if finance is unavailable?</li>
+</ul>
+</div>
+</div>
+
+<div class="scenario">
+<h3>Scenario 2: System Failure</h3>
+<p><em>Core system down, data loss, cyberattack, cloud provider outage.</em></p>
+<div class="checklist">
+<ul>
+<li>☐ Which systems are critical vs. nice-to-have? (ranked list)</li>
+<li>☐ For each critical system: backup location, recovery steps, RTO/RPO</li>
+<li>☐ Who declares a system failure vs. a disaster? (escalation threshold)</li>
+<li>☐ Cyberattack response: who isolates, who investigates, who communicates?</li>
+<li>☐ Customer notification template (pre-written, fill-in-the-blanks)</li>
+</ul>
+</div>
+<p><strong>Link to your DR plan:</strong> The BCP references your disaster recovery plan for IT-specific recovery steps. Don't duplicate — point.</p>
+</div>
+
+<div class="scenario">
+<h3>Scenario 3: Vendor/Supply Chain Disruption</h3>
+<p><em>Critical vendor goes out of business, supply chain breaks, SaaS provider has extended outage.</em></p>
+<div class="checklist">
+<ul>
+<li>☐ List of critical vendors (ranked by business impact if they fail)</li>
+<li>☐ For each: alternative vendor identified? (yes/no + name)</li>
+<li>☐ Contract exit terms documented? (notice period, data export, transition support)</li>
+<li>☐ Data portability: can you export your data from this vendor? (format, frequency)</li>
+<li>☐ Vendor communication plan: who contacts the vendor, who tracks the response?</li>
+</ul>
+</div>
+</div>
+
+<div class="scenario">
+<h3>Scenario 4: Reputation/Legal Crisis</h3>
+<p><em>Data breach, customer lawsuit, regulatory inquiry, public relations crisis.</em></p>
+<div class="checklist">
+<ul>
+<li>☐ Who is the spokesperson? (one person, named in advance)</li>
+<li>☐ Legal counsel contact (name, phone, retainer status)</li>
+<li>☐ Insurance contact (policy number, coverage type, claim process)</li>
+<li>☐ Customer communication: pre-approved templates for breach notification</li>
+<li>☐ Internal communication: what to tell employees, what NOT to tell employees</li>
+<li>☐ Regulatory notification: which agencies, what deadlines, who files?</li>
+</ul>
+</div>
+</div>
+
+<h2>The One-Page BCP Template</h2>
+<p>Print this. Fill it in. Tape it to the wall.</p>
+
+<div class="checklist">
+<h3>Business Continuity Plan — [Company Name]</h3>
+<p><strong>Last updated:</strong> [date] | <strong>Next review:</strong> [date + 90 days]</p>
+<p><strong>Plan owner:</strong> [name, phone, email]</p>
+<p><strong>Alternate owner:</strong> [name, phone, email]</p>
+
+<h3>Critical Systems (ranked)</h3>
+<ol>
+<li>[System 1] — Owner: [name] — RTO: [hours] — Backup: [location]</li>
+<li>[System 2] — Owner: [name] — RTO: [hours] — Backup: [location]</li>
+<li>[System 3] — Owner: [name] — RTO: [hours] — Backup: [location]</li>
+</ol>
+
+<h3>Critical Vendors (ranked)</h3>
+<ol>
+<li>[Vendor 1] — Service: [what they do] — Alt: [backup vendor] — Exit: [notice period]</li>
+<li>[Vendor 2] — Service: [what they do] — Alt: [backup vendor] — Exit: [notice period]</li>
+</ol>
+
+<h3>Emergency Contacts</h3>
+<ul>
+<li>Team lead: [name, phone]</li>
+<li>IT/Systems: [name, phone]</li>
+<li>Legal: [name, phone]</li>
+<li>Insurance: [provider, policy #, phone]</li>
+<li>Key vendor contacts: [list]</li>
 </ul>
 
-<h2>Worked example: the 12-person accounting firm</h2>
-<p>A 12-person accounting firm in Adelaide lost their server room to a burst pipe on a Sunday night. Monday morning, 7 AM, the office manager arrived to water on the floor. The BCP on the wall said: call the operations lead (Sarah), declare, assess, communicate. Sarah arrived at 7:15, saw the water, called the plumber (listed in section 1), called the IT contractor (listed in section 1), and sent the pre-written staff SMS (section 4 template): "Office closed today, work from home, client calls forwarded to mobiles." By 8 AM, staff were redirected, client phone numbers were forwarded, and the IT contractor was recovering from the previous night's cloud backup. The firm lost one day of office time. Without the plan, they would have lost the week &mdash; and tax season was six weeks out.</p>
-
-<p>The lesson: the plan worked because it was one page, it was on the wall, the names were current (tested the month before), and the cloud backup was already running (the <a href="data-backup-strategy-checklist.html">backup strategy checklist</a> had been completed three months earlier). The plan didn't prevent the flood. It compressed the recovery from a week to a day.</p>
-
-<aside class="kit">
-<h2>Put this to work</h2>
+<h3>Communication Templates</h3>
 <ul>
-<li><a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> &mdash; all five ops kits including the BCP template, incident response runbook, and communication templates &mdash; $49</li>
-<li><a href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit</a> &mdash; incident response for small teams, includes the one-page BCP template &mdash; $14</li>
-<li><a href="https://hive80lab.gumroad.com/l/first-30-minutes">The First 30 Minutes</a> &mdash; free one-page incident quick-start checklist</li>
-<li><a href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack</a> &mdash; automated backup verification and test scheduling &mdash; $19</li>
+<li>Internal alert: "We are activating the BCP due to [event]. Team leads, check in at [time]. Next update at [time]."</li>
+<li>Customer notice: "We are experiencing [issue]. We're working on it. We'll update you by [time]."</li>
+<li>All-clear: "The situation is resolved. [Service] is operating normally. We'll share a summary within [n] days."</li>
 </ul>
-<p class="hint">Launch week: 20% off any paid kit with code <strong>HIVE20</strong> at checkout.</p>
-</aside>
+</div>
 
-<aside class="related">
-<h2>Related notes</h2>
-<ul>
-<li><a href="disaster-recovery-plan-template-small-teams.html">Disaster Recovery Plan Template for Small Teams</a></li>
-<li><a href="first-30-minutes-incident-response.html">The First 30 Minutes of Any Incident</a></li>
-<li><a href="incident-communication-templates.html">Incident Communication Templates</a></li>
-<li><a href="tabletop-exercise-failure-points.html">Tabletop Exercises: Where Small Teams Fail</a></li>
-<li><a href="after-action-report-template.html">After-Action Report Template</a></li>
-<li><a href="rto-rpo-small-teams.html">RTO and RPO for Small Teams</a></li>
-<li><a href="single-point-of-failure-audit-checklist.html">Single Point of Failure Audit Checklist</a></li>
-<li><a href="seasonal-peak-readiness-checklist.html">Seasonal Peak Readiness Checklist</a></li>
-</ul>
-</aside>
-<footer>Part of the HIVE80lab ops kit. Free templates + paid <a href="https://hive80lab.gumroad.com/">kits at hive80lab.gumroad.com</a>.</footer>
-</article>
-<p>Need all of it at once? The <a href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Ops Mega Bundle</a> collects all five ops kits in one download &mdash; $49.</p>
-</main>
+<h2>How to Test Your BCP (Without a Real Crisis)</h2>
+<p>A BCP that's never been tested is a theory. Here's the 30-minute test every small team should run quarterly:</p>
+
+<div class="checklist">
+<ol>
+<li>☐ Pick one scenario (e.g., "office is closed for 3 days")</li>
+<li>☐ Set a timer for 10 minutes</li>
+<li>☐ Have the plan owner open the BCP and walk through what they'd do</li>
+<li>☐ Time how long it takes to find every contact, every backup location, every recovery step</li>
+<li>☐ Note anything that's missing, outdated, or unclear</li>
+<li>☐ Fix one thing before the next test</li>
+</ol>
+</div>
+<p>If the plan owner can't get through the scenario in 10 minutes, the plan is too complex. Simplify it.</p>
+
+<h2>The Most Common BCP Failure</h2>
+<p>Stale contacts. The #1 reason BCPs fail in real crises: the phone numbers don't work anymore. The vendor contact left. The IT person moved on. The insurance broker changed. A BCP with outdated contacts is worse than no plan — it creates false confidence.</p>
+
+<p><strong>Review contacts every 90 days.</strong> Set a calendar reminder. Send a test message to every contact on the list. If it bounces, fix it that day.</p>
+
+<div class="cta">
+<h3>📋 Get the Complete Operations Template Pack</h3>
+<p>Our <strong>Hive80 Ops Mega Bundle</strong> includes business continuity templates, disaster recovery checklists, incident response runbooks, and communication templates — all designed for small teams.</p>
+<p>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Get the Mega Bundle — $49</a>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-starter-kit">Get the Starter Kit — $19</a>
+</p>
+<p style="font-size:0.9em;color:#666;">30-day money-back guarantee. Instant download. No subscription.</p>
+</div>
+
+<h2>Common Questions</h2>
+<h3>Do I need a BCP if I'm a solo founder?</h3>
+<p>Yes — especially if you're solo. If you're the only person who knows how everything works, a BCP ensures someone else can step in if you can't. Document your systems, passwords (in a password manager, not the BCP), and recovery steps so a contractor or family member can keep the business running.</p>
+
+<h3>How long should a small business BCP be?</h3>
+<p>One to five pages. If it's longer, you're writing for compliance, not for use. The test: can someone pick it up at 2am and act on it? If they need to read 20 pages first, it's too long.</p>
+
+<h3>What's the difference between a BCP and an incident response plan?</h3>
+<p>An incident response plan covers a specific type of event (security breach, system outage). A BCP covers the business-wide impact: how does the business keep running while the incident is being resolved? Your IR plan feeds into your BCP.</p>
+
+<div class="cta">
+<h3>🚀 Build Your Complete Ops Stack</h3>
+<p>Everything you need in one download:</p>
+<p>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-mega-bundle">Hive80 Ops Mega Bundle — $49</a>
+</p>
+<p style="font-size:0.9em;color:#666;">Includes: Ops Starter Kit, Vol. 2, Automation Pack, Agent Ops 24/7, and Ops Field Cards (12 checklists).</p>
+</div>
+
+<hr>
+<p style="font-size:0.85em;color:#999;">Hive80 Lab — Operations templates for small teams. <a href="https://hive80lab.gumroad.com">Visit our store</a> | <a href="https://hive80-lab.github.io/ops-notes/">Browse all templates</a></p>
 </body>
 </html>
