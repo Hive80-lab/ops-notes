@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent Operations Checklist - Run 24/7 AI Agents Without 3AM Alerts | Hive80 Lab</title>
+<meta name="description" content="Free 12-point AI agent operations checklist: monitoring, kill-switches, budget caps, escalation paths. Used by ops teams running agents in production. Download the full Agent Ops kit.">
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 720px; margin: 0 auto; padding: 24px; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 100%); color: #fff; line-height: 1.6; }
+a { color: #7ec8ff; }
+.card { background: rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; margin: 16px 0; }
+.btn { display: inline-block; background: #2ea44f; color: #fff; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: 700; margin: 6px 6px 0 0; }
+.price { color: #ffd166; font-weight: 700; }
+h1 { font-size: 1.6em; } li { margin: 8px 0; }
+.small { color: #9fb3c8; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<h1>AI Agent Operations: The 12-Point Checklist That Stops 3AM Alerts</h1>
+<p class="small">Hive80 Lab &middot; Free resource &middot; Updated for production agent fleets</p>
+<p>Teams running AI agents in production fail the same way every time: no budget caps, no kill-switch, no escalation path when the agent hits an edge case. This checklist is what we use to audit an agent deployment before it's allowed to touch real work or real money.</p>
+<div class="card">
+<h2>The 12 points</h2>
+<ol>
+<li><b>Kill-switch</b> — one command stops every agent, tested weekly.</li>
+<li><b>Budget caps</b> — per-agent daily spend limit with hard stop at 100%.</li>
+<li><b>Escalation path</b> — agent hands off to a human before it does damage, not after.</li>
+<li><b>Idempotent actions</b> — every write can be replayed safely.</li>
+<li><b>Audit log</b> — every action recorded, tamper-evident, greppable.</li>
+<li><b>Heartbeat monitoring</b> — silent agents are treated as failed agents.</li>
+<li><b>Rate limiting</b> — per-API quotas enforced client-side, not just server-side.</li>
+<li><b>Secret hygiene</b> — credentials rotated, never in prompts or logs.</li>
+<li><b>Output validation</b> — agent output checked before it reaches customers.</li>
+<li><b>Rollback plan</b> — you can revert any agent action in under 5 minutes.</li>
+<li><b>Cost attribution</b> — every task tags its token spend.</li>
+<li><b>Failure drills</b> — monthly chaos test: unplug it and see what breaks.</li>
+</ol>
+</div>
+<div class="card">
+<h2>Want the full operating system?</h2>
+<p>We package this exact system — monitoring configs, budget caps, escalation playbooks, audit tooling — as ready-to-deploy kits:</p>
+<p><a class="btn" href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops 24/7 &middot; <span class="price">A$19</span></a>
+<a class="btn" href="https://hive80lab.gumroad.com/l/automation-starter-pack">Automation Starter Pack &middot; <span class="price">A$19</span></a>
+<a class="btn" href="https://hive80lab.gumroad.com/l/ops-starter-kit">Ops Starter Kit &middot; <span class="price">A$19.75</span></a></p>
+<p class="small">Instant download &middot; one-time price &middot; free updates</p>
+</div>
+<p class="small"><a href="index.html">&larr; All free playbooks &amp; templates</a></p>
+</body>
+</html>
