@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your backups are lying to you: the 5-minute restore test most small teams skip</title>
+<link rel="canonical" href="https://dev.to/hive80lab/your-backups-are-lying-to-you-the-5-minute-restore-test-most-small-teams-skip-1j5d">
+<meta name="description" content="A backup you have never restored is a hope, not a capability. Run the 5-minute restore test today.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<article>
+<h1>Your backups are lying to you: the 5-minute restore test most small teams skip</h1>
+<p>Last quarter a company told me their backups were "fine." Then a ransomware crew encrypted both the primary file server and the backup NAS that was mounted as a drive letter on the same server.</p>
+<p>They had backups. They had never restored from them.</p>
+<p><strong>The uncomfortable truth:</strong> a backup you have never restored is a hope, not a capability.</p>
+<h2>The 5-minute restore test</h2>
+<p>Do this today, on any one system you care about:</p>
+<ol>
+<li><strong>Pick one recent file or small folder</strong> (not the whole VM — start small).</li>
+<li><strong>Restore it to a <em>different</em> location</strong> (<code>/tmp/restore-test</code> or a temp folder), never over the live copy.</li>
+<li><strong>Open the file.</strong> Actually open it. Corrupt backups look fine in the console and fail on open.</li>
+<li><strong>Write down how long it took.</strong> That number — not your retention policy — is your real recovery point.</li>
+<li><strong>Set a recurring reminder.</strong> Monthly is fine. Weekly is better for anything critical.</li>
+</ol>
+<p>If step 2 fails, you just paid five minutes to discover a data-loss incident in advance instead of during one. That is the cheapest incident you will ever have.</p>
+<h2>Two traps that quietly break restores</h2>
+<p><strong>Trap 1: the backup account can see the production network.</strong> If your backup job runs as a domain admin from a machine that domain admins can log into, ransomware gets both copies in one move. Isolate the backup target at least one hop away.</p>
+<p><strong>Trap 2: nobody knows where the restore procedure lives.</strong> A restore runbook that only exists in one veteran's head leaves the company the day they do. Write it on one page. Store it somewhere reachable when your file server is the thing that's down.</p>
+<h2>What "good enough" looks like</h2>
+<ul>
+<li>One restore test per month, logged with date + time taken</li>
+<li>Backup credentials that are not domain admin</li>
+<li>A one-page restore runbook anyone on the team can follow</li>
+<li>One offsite or immutable copy that production admins can't touch</li>
+</ul>
+<p>None of this is exotic. All of it is the difference between "we have backups" and "we will be running again by lunch."</p>
+<p>Related: <a href="rto-rpo-small-teams.html">RTO vs RPO for small teams</a> · <a href="backup-restore-runbook-template.html">backup &amp; restore runbook templates</a> · <a href="ops-funnel-landing.html">Ops Starter Kit (pay what you want)</a></p>
+<p>Field notes cross-posted on <a href="https://dev.to/hive80lab">Dev.to</a>.</p>
+</article>
+</main>
+</body>
+</html>
