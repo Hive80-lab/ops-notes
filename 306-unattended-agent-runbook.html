@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unattended Agent Runbook | The 3 AM Pager Problem</title>
+    <meta name="description" content="How to run autonomous agents overnight without waking up to ruin: evidence-based success criteria, signed health probes, retry ceilings, the missing middle tier, and the 5-minute morning audit.">
+    <meta name="keywords" content="unattended automation, agent monitoring, 3am pager, runbook, retry ceiling, health probe, morning audit">
+    <link rel="canonical" href="https://hive80-lab.github.io/ops-notes/306-unattended-agent-runbook.html">
+    <meta name="author" content="Hive80-lab Ops Notes">
+    <meta name="robots" content="index, follow">
+    <style>
+        :root { --primary:#1a1a2e; --secondary:#16213e; --accent:#0f3460; --highlight:#e94560; --text:#f1f1f1; --muted:#a0a0a0; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; line-height:1.7; color:var(--text); background:var(--primary); margin:0; padding:0; }
+        .container { max-width:900px; margin:40px auto; padding:40px 50px; background:var(--secondary); border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.4); }
+        h1 { color:var(--highlight); margin-top:0; }
+        h2 { color:#4db5ff; border-bottom:1px solid var(--accent); padding-bottom:10px; }
+        h3 { color:#6ee7b7; }
+        code { background:#0a0a1a; padding:2px 6px; border-radius:4px; }
+        .cta { background:var(--accent); padding:20px; border-radius:8px; margin:25px 0; border:1px solid #4db5ff; }
+        .cta a { color:#ffd166; font-weight:bold; }
+        table { width:100%; border-collapse:collapse; margin:15px 0; }
+        th, td { border:1px solid var(--accent); padding:8px 12px; text-align:left; }
+        th { color:#4db5ff; }
+        @media (max-width:600px){ .container{ padding:20px; margin:10px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+<h1>The Unattended Agent Runbook: Fixing the 3 AM Pager Problem</h1>
+<p>You built an agent, gave it a schedule and a budget, and went to sleep. At 3 AM it hit an unexpected state, retried 400 times, burned your quota, and left a note in a log file you would read 8 hours later. That gap — between failure and awareness — is where unattended systems die. Here is the field-tested discipline that closes it.</p>
+
+<h2>1. Evidence, not logs</h2>
+<p>A log line is a claim. Evidence is a verifiable record: every successful step must <b>write an artifact</b> — a file, a status row, an HTTP code captured at write time. A step that claims success without an artifact is a failed step. This single rule eliminates the entire "phantom success" class of failure.</p>
+
+<h2>2. Signed probes, not process pings</h2>
+<p><code>systemctl status</code> says the process is alive. It says nothing about whether the token, DNS, or quota are dead. Your health check should do one full round trip: <b>authenticate, read one real record, write nothing</b>. That probe catches all three midnight killers in one shot.</p>
+
+<h2>3. Ceilings on every retry</h2>
+<p>A retry loop without a cap is a money pump. Cap retries per step, cap total steps per run, and when a cap trips: <b>stop and escalate</b> with the full attempt history. Flailing is worse than failing.</p>
+
+<h2>4. The three-tier escalation ladder</h2>
+<table>
+<tr><th>Tier</th><th>Meaning</th><th>Action</th></tr>
+<tr><td><b>Tier 1</b></td><td>Retryable, known pattern</td><td>Self-heal and continue</td></tr>
+<tr><td><b>Tier 2</b></td><td>Degraded capability</td><td>Continue the mission with reduced capability; log loudly</td></tr>
+<tr><td><b>Tier 3</b></td><td>Irreversible / repeated</td><td>Stop, leave a full attempt report, notify</td></tr>
+</table>
+<p>Most solo setups have tier 1 and tier 3 only. The missing <b>tier 2</b> is what turns a hiccup into an outage — a degraded-but-live run keeps the mission moving while the failed leg is repaired.</p>
+
+<h2>5. The five-minute morning audit</h2>
+<p>One command, one page: runs started / finished / failed · outward contacts made · money spent vs budget · the single oldest unresolved failure. If your morning review takes 20 minutes, you built a report, not an audit.</p>
+
+<h2>6. Someone must watch the watcher</h2>
+<p>Your monitor can die too: cron killed, laptop asleep, token rotated. Run an <b>independent second probe</b> — different network path, different credentials — whose only job is to confirm it can still see the first one. If it cannot, <i>that</i> is the alert.</p>
+
+<div class="cta">
+<p><b>Steal the whole tree:</b> the free 1-page <a href="https://hive80lab.gumroad.com/l/first-30-minutes">"first 30 minutes" incident checklist</a> needs no email. The full 25-script overnight-ops toolkit ships in the <a href="https://hive80lab.gumroad.com/l/agent-ops-24-7">Agent Ops Mega Bundle</a>. Working samples on <a href="https://github.com/Hive80-lab/ops-notes">GitHub</a>.</p>
+</div>
+
+<p><em>Related: <a href="301-revenue-recovery-plan.html">Revenue Recovery Plan</a> · <a href="303-automatic-sales-boost.html">Automatic Sales Boost</a> · <a href="304-conversion-rate-optimization-guide.html">Conversion Rate Optimization</a></em></p>
+</div>
+</body>
+</html>
